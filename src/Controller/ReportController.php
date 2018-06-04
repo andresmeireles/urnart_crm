@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class ReportController extends Controller
 {
@@ -18,10 +19,18 @@ class ReportController extends Controller
     }
 
     /**
-     * @Route("/tagReport", name="tag")
+     * @Route("/tagReport", name="tag", methods={"GET", "HEAD"})
      */
     public function tagReport()
     {
     	return $this->render('report/tagReport.html.twig');
+    }
+
+    /**
+     * @Route("/tagReport", methods={"POST"})
+     */
+    public function createReport(Request $req)
+    {
+        dump($req->request);
     }
 }

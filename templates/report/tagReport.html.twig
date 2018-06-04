@@ -11,11 +11,13 @@
     </div>
   </div>
   <hr>
+
+  <form method="POST" action="{{ path('tag') }}">
   <div class="py-2">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <a class="btn btn-primary active btn-block btn-lg" href="#">Criar etiquetas</a>
+            <input type="submit" class="btn btn-primary active btn-block btn-lg" value="Criar etiquetas">
         </div>
       </div>
     </div>
@@ -23,51 +25,32 @@
   <div class="py-3 text-center">
     <div class="container-fluid">
       <div class="row tag p-2">
-        <div class="col-md-12 badge badge-light">
+        <div class="col-md-12 badge badge-light" id="tag">
           <div class="input-group my-1 w-100">
             <div class="col-md-5">
               <input type="hidden" id="tag-value">
-              <input type="text" class="form-control mr-3 my-1 w-100" id="inlineFormInputGroup" placeholder="Nome"> </div>
-            <div class="col-md-3">
-              <input class="form-control mr-3 my-1 w-100" placeholder="Cidade" id="inlineFormInputGroup"> </div>
+              <input type="text" class="form-control mr-3 my-1 w-100" name="name[]" id="name" placeholder="Nome"></div>
             <div class="col-md-2">
-              <input type="text" class="form-control mr-3 my-1" placeholder="Quantidade" id="inlineFormInputGroup"> </div>
-            <button class="btn mx-1 btn-success add-tag">
-              <i class="fas fa-fw fa-plus"></i>
+              <input class="form-control mr-3 my-1 w-100" name="city[]" placeholder="Cidade" id="city"></div>
+            <div class="col-md-2">
+              <input type="text" class="form-control mr-3 my-1" name="amount[]" placeholder="Quantidade" id="amount"></div>
+            <button type="btn" class="btn mx-1 btn-success" add-btn="true">
+              <i class="fas fa-fw fa-plus" add-btn="true"></i>
             </button>
-            <button class="btn mx-1 btn-danger remove-tag">
-              <i class="fas fa-fw fa-times"></i>
+            <button class="btn mx-1 btn-danger" remove-btn="true">
+              <i class="fas fa-fw fa-times" remove-btn="true"></i>
             </button>
             <div class="input-group-prepend">
               <div class="input-group-text">
-                <input type="checkbox" aria-label="Checkbox for following text input" value="on"> </div>
+                <input type="hidden" value="0" id="checkValue" name="check[]">
+                <input type="checkbox" aria-label="Checkbox for following text input" id="check" value="1"></div>
             </div>
-            <input type="text" class="form-control" aria-label="Text input with checkbox" value="Casado?" disabled=""> </div>
-        </div>
-        <div class="col-md-12 badge badge-light">
-          <div class="input-group my-1 w-100">
-            <div class="col-md-5">
-              <input type="hidden" id="tag-value">
-              <input type="text" class="form-control mr-3 my-1 w-100" id="inlineFormInputGroup" placeholder="Nome"> </div>
-            <div class="col-md-3">
-              <input class="form-control mr-3 my-1 w-100" placeholder="Cidade" id="inlineFormInputGroup"> </div>
-            <div class="col-md-2">
-              <input type="text" class="form-control mr-3 my-1" placeholder="Quantidade" id="inlineFormInputGroup"> </div>
-            <button class="btn mx-1 btn-success add-tag">
-              <i class="fas fa-fw fa-plus"></i>
-            </button>
-            <button class="btn mx-1 btn-danger remove-tag">
-              <i class="fas fa-fw fa-times"></i>
-            </button>
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <input type="checkbox" aria-label="Checkbox for following text input" value="on"> </div>
-            </div>
-            <input type="text" class="form-control" aria-label="Text input with checkbox" value="Casado?" disabled=""> </div>
+            <input type="text" class="form-control" aria-label="Text input with checkbox" value="Casado?" disabled=""></div>
         </div>
       </div>
     </div>
   </div>
+  </form>
 {% endblock %}
 
 {% block customJS %}
