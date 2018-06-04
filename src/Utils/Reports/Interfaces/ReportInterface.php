@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utils\Reports\Interface;  
+namespace App\Utils\Reports\Interfaces;  
 
 interface ReportInterface
 {

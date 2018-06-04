@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use App\Utils\Reports\TagReport;
 
 class ReportController extends Controller
 {
@@ -31,6 +32,8 @@ class ReportController extends Controller
      */
     public function createReport(Request $req)
     {
-        dump($req->request);
+        $parameters = $req->request->all();
+        $report = new TagReport();
+        dump($parameters, $report->create($parameters));
     }
 }

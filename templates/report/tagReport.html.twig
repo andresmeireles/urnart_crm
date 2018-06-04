@@ -12,7 +12,7 @@
   </div>
   <hr>
 
-  <form method="POST" action="{{ path('tag') }}">
+  <form method="POST" action="{{ path('tag') }}" target="_blank">
   <div class="py-2">
     <div class="container">
       <div class="row">
@@ -29,11 +29,11 @@
           <div class="input-group my-1 w-100">
             <div class="col-md-5">
               <input type="hidden" id="tag-value">
-              <input type="text" class="form-control mr-3 my-1 w-100" name="name[]" id="name" placeholder="Nome"></div>
+              <input type="text" class="form-control mr-3 my-1 w-100" name="tag0[name]" id="name" placeholder="Nome"></div>
             <div class="col-md-2">
-              <input class="form-control mr-3 my-1 w-100" name="city[]" placeholder="Cidade" id="city"></div>
+              <input class="form-control mr-3 my-1 w-100" name="tag0[city]" placeholder="Cidade" id="city"></div>
             <div class="col-md-2">
-              <input type="text" class="form-control mr-3 my-1" name="amount[]" placeholder="Quantidade" id="amount"></div>
+              <input type="text" class="form-control mr-3 my-1" name="tag0[amount]" placeholder="Quantidade" id="amount"></div>
             <button type="btn" class="btn mx-1 btn-success" add-btn="true">
               <i class="fas fa-fw fa-plus" add-btn="true"></i>
             </button>
@@ -42,8 +42,8 @@
             </button>
             <div class="input-group-prepend">
               <div class="input-group-text">
-                <input type="hidden" value="0" id="checkValue" name="check[]">
-                <input type="checkbox" aria-label="Checkbox for following text input" id="check" value="1"></div>
+                <input type="hidden" value="0" id="checkValue" name="tag0[check]">
+                <input type="checkbox" aria-label="Checkbox for following text input" id="check"></div>
             </div>
             <input type="text" class="form-control" aria-label="Text input with checkbox" value="Casado?" disabled=""></div>
         </div>
