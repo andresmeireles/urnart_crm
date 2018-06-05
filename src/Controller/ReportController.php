@@ -25,8 +25,10 @@ class ReportController extends Controller
      */
     public function tagReport(Request $req)
     {
-        dump($req->server->add(['ola']), $req->server->all());
-        die();
+        if ($req) {
+            dump($this->get('session')->all(), $request);
+        }
+
     	return $this->render('report/tagReport.html.twig');
     }
 
@@ -36,9 +38,11 @@ class ReportController extends Controller
     public function createReport(Request $req)
     {
         $parameters = $req->request->all();
-        $report = new TagReport();
+        $report = new TagReport();  
         if (!$report->create($parameters)) {
-            return $this->redirectToRoute('tag');;
+            print_r($report->getMessage());
+            $this->get('session')->set('message', $report->getMessage());
+            return $this->redirectToRoute('tag');
         }
         die();
         $report->show();

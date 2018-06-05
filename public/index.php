@@ -4,7 +4,6 @@ use App\Kernel;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
-use Respect\Validation\Validator as v;
 
 require __DIR__.'/../vendor/autoload.php';
 

@@ -218,6 +218,9 @@
     "twig/twig": {
         "version": "v2.4.8"
     },
+    "wemersonjanuario/wkhtmltopdf-windows": {
+        "version": "0.12.2.3"
+    },
     "zendframework/zend-code": {
         "version": "3.3.0"
     },

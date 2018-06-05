@@ -11,7 +11,8 @@ use \Knp\Snappy\Pdf;
 class TagReport implements ReportInterface
 {
 	private $report;
-	private $validator;
+    private $validator;
+    private $error;
 
 	function __construct()
 	{
@@ -22,9 +23,8 @@ class TagReport implements ReportInterface
 	{
 		foreach ($params as $parameter) {
 			if (!$this->validation($parameter)) {
-				$req = new Request;
-				$req->server->add($this->validator->getErrors());
-				return false;
+				$this->error = $this->validator->getErrors();
+                return false;
 			}	
 		}
 
@@ -127,6 +127,6 @@ class TagReport implements ReportInterface
 
 	public function getMessage(): array
 	{
-		return $this->userMessage;
+		return $this->error;
 	}
 }
