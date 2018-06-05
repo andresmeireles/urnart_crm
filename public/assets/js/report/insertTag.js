@@ -102,6 +102,8 @@ $( function () {
             } 
             el.target.parentNode.querySelector('#checkValue').value = 0;
         }
-    })
+    });
+
+    
 
 });
