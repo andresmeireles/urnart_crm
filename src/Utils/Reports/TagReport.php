@@ -104,7 +104,7 @@ class TagReport implements ReportInterface
 	private function validation(array $params)
 	{
 		$this->validator->validate($params, [
-			'name' => v::notEmpty()->numeric(),
+			'name' => v::notEmpty(),
 			'city' => v::optional(v::notEmpty()),
 			'amount' => v::not(v::negative())->notEmpty(),
 			'check' => v::optional(v::boolVal())

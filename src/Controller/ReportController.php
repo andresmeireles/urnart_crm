@@ -25,8 +25,9 @@ class ReportController extends Controller
      */
     public function tagReport(Request $req)
     {
-        if ($req) {
-            dump($this->get('session')->all(), $request);
+        if ($this->get('session')->get('message')) {
+            echo "deu erro amiginho";
+            $this->get('session')->remove('message');
         }
 
     	return $this->render('report/tagReport.html.twig');
