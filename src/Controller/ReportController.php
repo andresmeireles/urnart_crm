@@ -21,10 +21,23 @@ class ReportController extends Controller
     }
 
     /**
-     * @Route("/tagReport", name="tag", methods={"GET", "HEAD"})
+     * @Route("/tagReport", name="tag", methods={"GET", "HEAD", "POST"})
      */
     public function tagReport(Request $req)
     {
+        if ($req->request->all() != []) {
+            $parameters = $req->request->all();
+            $report = new ReportFactory();  
+     
+            if (!$report->create($parameters)) {
+
+                $this->get('session')->set('message', $report->getMessage());
+                return $this->redirectToRoute('tag');
+            }
+
+            $report->show();
+        }
+
         if ($this->get('session')->get('message')) {
             $this->addFlash(
                 'message',
@@ -33,20 +46,6 @@ class ReportController extends Controller
             $this->get('session')->remove('message');
         }
 
-    	return $this->render('report/tagReport.html.twig');
-    }
-
-    /**
-     * @Route("/tagReport", methods={"POST"})
-     */
-    public function createReport(Request $req)
-    {
-        $parameters = $req->request->all();
-        $report = new TagReportCreator();  
-        if (!$report->create($parameters)) {
-            $this->get('session')->set('message', $report->getMessage());
-            return $this->redirectToRoute('tag');
-        }
-        $report->show();
+        return $this->render('report/tagReport.html.twig');
     }
 }

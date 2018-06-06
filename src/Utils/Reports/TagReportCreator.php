@@ -2,35 +2,47 @@
 
 namespace App\Utils\Reports;
 
-use \App\Utils\Reports\Interfaces\ReportInterface;
 use Symfony\Component\HttpFoundation\Request;
-use \App\Utils\Validation\ValidatorJson;
-use \Respect\Validation\Validator as v;
 use \Knp\Snappy\Pdf;
 
 class TagReportCreator implements ReportInterface
 {
+	/**
+	 * Storage the html report
+	 * @var string
+	 */
 	private $report;
-	private $validator;
-	private $error;
 
-	function __construct()
-	{
-		$this->validator = new ValidatorJson();
-	}
+	/**
+	 * Storage the error messages, if exists
+	 * @var array
+	 */
+	private $error;
 
 	public function create(array $params): bool
 	{
 		foreach ($params as $parameter) {
+			$parameters[] = array_map(function ($parameter) {
+				$result = ltrim(trim($parameter));
+				return $result;
+			}, $parameter);
+
 			if (!$this->validation($parameter)) {
-				$this->error = $this->validator->getErrors();
+				$this->error = ValidatorJson::getErrors();
 				return false;
 			}	
 		}
 
+		$this->report = $this->createBody($parameters);
+
+		return true;
+	}
+
+	private function createBody(array $params): string 
+	{
 		$image = file_get_contents(__DIR__.'/ReportTemplate/etiqueta/logo');
 
-		$header = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+		$body = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 		<html>
 		<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -41,7 +53,7 @@ class TagReportCreator implements ReportInterface
 
 		body {margin-top: 0px;margin-left: 0px;}
 
-#page_1 {position:relative; overflow: hidden;margin: 0px 0px 0px 0px;padding: 0px;border: none;width: 100%;}
+		#page_1 {position:relative; overflow: hidden;margin: 0px 0px 0px 0px;padding: 0px;border: none;width: 100%;}
 
 		.ft0{font: bold 43px "Arial";line-height: 55px;}
 		.ft1{font: 39px "Arial";line-height: 60px;}
@@ -53,6 +65,7 @@ class TagReportCreator implements ReportInterface
 		.p2{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
 		.p2{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
 		.p5{text-align: left;margin-top: 0px;margin-bottom: 0px;margin-left: 180px;white-space: nowrap;}
+		.p6{text-align: center;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
 
 		.td0{padding: 0px;margin: 0px;width: 240px;vertical-align: bottom;}
 		.td1{padding: 0px;margin: 0px;width: 491px;vertical-align: bottom;}
@@ -73,40 +86,43 @@ class TagReportCreator implements ReportInterface
 
 		foreach ($params as $param) {
 			for ($c = 0; $c < $param['amount']; $c++) {
-				$header .= '
+				$body .= '
 				<table width="100%">
 
 				<TR>
 				<TD ><P class="p1 ft0"><img src="'. $image .'" width="160px"> '. $param['name'] .'</P></TD>
-				<TD ><P class="p1 ft1">'. ( $param['check'] == 0 ? $c+1 : ceil($c+1 / 2) ) .'</P></TD>
+				<TD ><P class="p6 ft1">'. ( $param['check'] == 0 ? $c+1 : ceil($c+1 / 2) ) .'</P></TD>
 				</TR>
 				<TR>
 				<TD class="border"><P class="p5 ft4">'. $param['city'] .'</P></TD>
-				<TD class="border"><P class="p1 ft3">VOL. '. ($param['check'] == 0 ? $param['amount'] : ceil($param['amount']/2)) .'</P></TD>
+				<TD class="border"><P class="p6 ft4">VOL. '. ($param['check'] == 0 ? $param['amount'] : ceil($param['amount']/2)) .'</P></TD>
 
 				</table>';
 			}
 		}
 
-		$header .= '</page></BODY>
+		$body .= '</page></BODY>
 		</HTML>';
 
-		$this->report = $header;
+		return $body;
+	}
 
-		return true;
+	public function save(): self
+	{
+		return $this;
 	}
 
 
 	private function validation(array $params)
 	{
-		$this->validator->validate($params, [
+		ValidatorJson::validate($params, [
 			'name' => v::notEmpty(),
 			'city' => v::optional(v::notEmpty()),
 			'amount' => v::not(v::negative())->notEmpty(),
 			'check' => v::optional(v::boolVal())
 		]);
 
-		if ($this->validator->getErrors()) {
+		if (ValidatorJson::getErrors()) {
 			return false;
 		}
 

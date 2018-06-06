@@ -9,25 +9,25 @@ class ValidatorJson
 	/**
 	 * Lista de erros que podem ocorrer a um campo
 	 * 
-	 * @var array
+	 * @var static array
 	 */
-	protected $errors;
+	protected static $errors;
 
-	public function validate($params, array $validations)
+	public static function validate($params, array $validations)
 	{
-		$this->errors = '';
+		self::$errors = '';
 
 		foreach ($validations as $parameterName => $rule) {
 			try {
 				$rule->setName($parameterName)->assert($params[$parameterName]);
 			} catch (NestedValidationException $e) {
-				$this->errors = $e->getMessages();
+				self::$errors = $e->getMessages();
 			}
 		}
 	}
 
-	public function getErrors()
+	public static function getErrors()
 	{
-		return $this->errors;
+		return self::$errors;
 	}
 }
