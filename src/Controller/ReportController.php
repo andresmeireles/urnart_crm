@@ -26,7 +26,7 @@ class ReportController extends Controller
     public function tagReport(Request $req)
     {
         if ($this->get('session')->get('message')) {
-            echo "deu erro amiginho";
+            //flash message here
             $this->get('session')->remove('message');
         }
 
