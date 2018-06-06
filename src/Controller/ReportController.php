@@ -6,7 +6,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use App\Utils\Reports\TagReport;
+use App\Utils\Reports\TagReportCreator;
 
 class ReportController extends Controller
 {
@@ -26,7 +26,10 @@ class ReportController extends Controller
     public function tagReport(Request $req)
     {
         if ($this->get('session')->get('message')) {
-            //flash message here
+            $this->addFlash(
+                'message',
+                $this->get('session')->get('message')[0]
+            );
             $this->get('session')->remove('message');
         }
 
@@ -39,13 +42,11 @@ class ReportController extends Controller
     public function createReport(Request $req)
     {
         $parameters = $req->request->all();
-        $report = new TagReport();  
+        $report = new TagReportCreator();  
         if (!$report->create($parameters)) {
-            print_r($report->getMessage());
             $this->get('session')->set('message', $report->getMessage());
             return $this->redirectToRoute('tag');
         }
-        die();
         $report->show();
     }
 }

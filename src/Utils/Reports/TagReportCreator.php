@@ -8,11 +8,11 @@ use \App\Utils\Validation\ValidatorJson;
 use \Respect\Validation\Validator as v;
 use \Knp\Snappy\Pdf;
 
-class TagReport implements ReportInterface
+class TagReportCreator implements ReportInterface
 {
 	private $report;
-    private $validator;
-    private $error;
+	private $validator;
+	private $error;
 
 	function __construct()
 	{
@@ -24,7 +24,7 @@ class TagReport implements ReportInterface
 		foreach ($params as $parameter) {
 			if (!$this->validation($parameter)) {
 				$this->error = $this->validator->getErrors();
-                return false;
+				return false;
 			}	
 		}
 
@@ -39,60 +39,56 @@ class TagReport implements ReportInterface
 		<meta name="generator" content="BCL easyConverter SDK 5.0.08">
 		<style type="text/css">		
 
-		body{
-			margin-left: -17px;
-			margin-top: -10px;
-		}
+		body {margin-top: 0px;margin-left: 0px;}
 
-		#page_1 {position:relative; overflow: hidden;margin: 0px 0px 0px 28px;padding: 0px;border: none;}
+#page_1 {position:relative; overflow: hidden;margin: 0px 0px 0px 0px;padding: 0px;border: none;width: 100%;}
 
-		.ft0{font: bold 47px "Arial";line-height: 55px;}
-		.ft1{font: 53px "Arial";line-height: 60px;}
-		.ft3{font: 23px "Arial";line-height: 26px;}
-		.ft4{font: 1px "Arial";line-height: 27px;}
+		.ft0{font: bold 43px "Arial";line-height: 55px;}
+		.ft1{font: 39px "Arial";line-height: 60px;}
+		.ft3{font: 18px "Arial";line-height: 26px;}
+		.ft4{font: 24px "Arial";line-height: 27px;}
 
-		.p0{text-align: right;margin-top: 5px;margin-bottom: 0px;margin-right: 37px;white-space: nowrap;}
-		.p1{text-align: center;margin-left: 750px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
+		.p0{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
+		.p1{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
 		.p2{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
+		.p2{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
+		.p5{text-align: left;margin-top: 0px;margin-bottom: 0px;margin-left: 180px;white-space: nowrap;}
 
 		.td0{padding: 0px;margin: 0px;width: 240px;vertical-align: bottom;}
 		.td1{padding: 0px;margin: 0px;width: 491px;vertical-align: bottom;}
 		.td2{border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 240px;vertical-align: bottom;}
 		.td3{border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 491px;vertical-align: bottom;}
 
-		.tr2{height: 84px;}
-		.tr3{height: 27px;}
+		
 
-		.t0{font: bold 47px "Arial";}
-
-		.table {
-			width: 1150px;
+		.border {
+			border-bottom: #000000 1px solid;
 		}
+
+		.t0{width: 731px;font: bold 47px "Arial";}
 
 		</style>
 		</head>
-		<body>';
+		<body> <div id="page_1">';
 
 		foreach ($params as $param) {
 			for ($c = 0; $c < $param['amount']; $c++) {
 				$header .= '
+				<table width="100%">
 
-				<table class="table">
-
-				<tr>
-				<td class="tr2 td0"><p class="p0 ft0"><img src="'. $image .'" width="40%" padding="100px"> '. $param['name'] .'</p></TD>
-				<td class="tr2 td1"><p class="p1 ft1">'. ( $param['check'] == 0 ? $c+1 : ceil($c+1 / 2) ) .'</p></td>
-				</tr>
-				<tr>
-				<td class="tr3 td2"><p class="p2 ft4">&nbsp;</p></td>
-				<td class="tr3 td3"><p class="p1 ft3">VOL. '. ($param['check'] == 0 ? $param['amount'] : ceil($param['amount']/2)) .'</p></td>
-				</tr>
+				<TR>
+				<TD ><P class="p1 ft0"><img src="'. $image .'" width="160px"> '. $param['name'] .'</P></TD>
+				<TD ><P class="p1 ft1">'. ( $param['check'] == 0 ? $c+1 : ceil($c+1 / 2) ) .'</P></TD>
+				</TR>
+				<TR>
+				<TD class="border"><P class="p5 ft4">'. $param['city'] .'</P></TD>
+				<TD class="border"><P class="p1 ft3">VOL. '. ($param['check'] == 0 ? $param['amount'] : ceil($param['amount']/2)) .'</P></TD>
 
 				</table>';
 			}
 		}
 
-		$header .= '</BODY>
+		$header .= '</page></BODY>
 		</HTML>';
 
 		$this->report = $header;
