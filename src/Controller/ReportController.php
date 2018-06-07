@@ -21,35 +21,40 @@ class ReportController extends Controller
     }
 
     /**
-     * @Route("/report/{report}/tagReport", methods={"GET", "HEAD", "POST"})
+     * @Route("/report/{reportName}/report", methods={"GET", "HEAD", "POST"})
      */
-    public function tagReport(Request $req, string $report = null)
+    public function tagReport(Request $req, string $reportName = null)
     {
-        $dir = __DIR__.
+        $dir = opendir(__DIR__.'/../../templates/report/');
 
-        if ($req->request->all() != []) {
-            $parameters = $req->request->all();
-            $report = new Report('tag');  
-     
-            if (!$report->create($parameters)) {
+        while (($file = readdir($dir)) !== false) {
+            if (file_exists(__DIR__.'/../../templates/report/'.$reportName.'Report.html.twig')) {
+                if ($req->request->all() != []) {
+                    $parameters = $req->request->all();
+                    $report = new Report('tag');  
 
-                $this->get('session')->set('message', $report->getMessage());
-                return $this->redirectToRoute('tag');
+                    if (!$report->create($parameters)) {
+
+                        $this->get('session')->set('message', $report->getMessage());
+                        return $this->redirectToRoute('tag');
+                    }
+
+                    $report->createAndShow($parameters);
+                }
+
+                if ($this->get('session')->get('message')) {
+                    $this->addFlash(
+                        'message',
+                        $this->get('session')->get('message')[0]
+                    );
+                    $this->get('session')->remove('message');
+                }
+
+                return $this->render('report/tagReport.html.twig');
             }
-
-            $report->createAndShow($parameters);
         }
 
+        throw new \Exception('Page not found');   
 
-
-        if ($this->get('session')->get('message')) {
-            $this->addFlash(
-                'message',
-                $this->get('session')->get('message')[0]
-            );
-            $this->get('session')->remove('message');
-        }
-
-        return $this->render('report/tagReport.html.twig');
     }
 }
