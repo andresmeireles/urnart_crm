@@ -11,25 +11,14 @@ use \Respect\Validation\Validator as v;
 class TagReportCreator implements CreateReportInterface
 {
 	/**
-	 * Storage the html report
-	 * @var string
-	 */
-	private $report;
-
-	/**
 	 * Storage the error messages, if exists
 	 * @var array
 	 */
 	private $error;
 
 	public function createReport(array $params): ResponseReportInterface 
-    {
-        $response = new ResponseReport();
-
-
-        if (!$this->validation($params)) {
-            return $response->setErrorMessage(ValidatorJson::getMessage());     
-        }
+	{
+		$response = new ResponseReport();
 
 		$image = file_get_contents(__DIR__.'\etiqueta/logo');
 
@@ -46,13 +35,13 @@ class TagReportCreator implements CreateReportInterface
 
 		#page_1 {position:relative; overflow: hidden;margin: 0px 0px 0px 0px;padding: 0px;border: none;width: 100%;}
 
-		.ft0{font: bold 43px "Arial";line-height: 55px;}
-		.ft1{font: 39px "Arial";line-height: 60px;}
+		.ft0{font: bold 40px "Arial";line-height: 55px;}
+		.ft1{font: 45px "Arial";line-height: 15px;}
 		.ft3{font: 18px "Arial";line-height: 26px;}
 		.ft4{font: 24px "Arial";line-height: 27px;}
 
-		.p0{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
-		.p1{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
+		.p0{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: wrap;}
+		.p1{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: wrap;}
 		.p2{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
 		.p2{text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;}
 		.p5{text-align: left;margin-top: 0px;margin-bottom: 0px;margin-left: 180px;white-space: nowrap;}
@@ -74,24 +63,32 @@ class TagReportCreator implements CreateReportInterface
 		</style>
 		</head>
 		<body> <div id="page_1">';
+		
+		foreach ($params as $param) {
+			if (!$this->validation($param)) {
+				return $response->setErrorMessage(ValidatorJson::getMessage());     
 
-			for ($c = 0; $c < $params['amount']; $c++) {
+			}
+
+			for ($c = 0; $c < $param['amount']; $c++) {
+				$count = $c;
+				$count++;
 				$body .= '
 				<table width="100%">
-
 				<TR>
-				<TD ><P class="p1 ft0"><img src="'. $image .'" width="160px"> '. $params['name'] .'</P></TD>
-				<TD ><P class="p6 ft1">'. ( $params['check'] == 0 ? $c+1 : ceil($c+1 / 2) ) .'</P></TD>
+				<TD ><P class="p1 ft0"><img src="'. $image .'" width="160px"> '. $param['name'] .'</P></TD>
+				<TD ><P class="p6 ft1">'. ( $param['check'] == 0 ? $count : ceil($count/2) ) .'</P></TD>
 				</TR>
 				<TR>
-				<TD class="border"><P class="p5 ft4">'. $params['city'] .'</P></TD>
-				<TD class="border"><P class="p6 ft4">VOL. '. ($params['check'] == 0 ? $params['amount'] : ceil($params['amount']/2)) .'</P></TD>
-
-				</table>';
+				<TD class="border"><P class="p5 ft4">'. $param['city'] .'</P></TD>
+				<TD class="border"><P class="p6 ft4">VOL. '. ($param['check'] == 0 ? $param['amount'] : ceil($param['amount']/2)) .'</P></TD>
+				</tr>
+				</table>
+				';
 			}
-		
+		}
 
-		$body .= '</page></BODY>
+		$body .= '</div></BODY>
 		</HTML>';
 
 		$p = $response->setResponse($body);

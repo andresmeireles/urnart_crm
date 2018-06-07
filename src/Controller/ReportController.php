@@ -21,9 +21,9 @@ class ReportController extends Controller
     }
 
     /**
-     * @Route("/report/{reportName}/report", methods={"GET", "HEAD", "POST"})
+     * @Route("/report/{reportName}", methods={"GET", "HEAD", "POST"})
      */
-    public function tagReport(Request $req, string $reportName = null)
+    public function tagReport(Request $req, string $reportName)
     {
         $dir = opendir(__DIR__.'/../../templates/report/');
 
@@ -31,12 +31,12 @@ class ReportController extends Controller
             if (file_exists(__DIR__.'/../../templates/report/'.$reportName.'Report.html.twig')) {
                 if ($req->request->all() != []) {
                     $parameters = $req->request->all();
-                    $report = new Report('tag');  
+                    $report = new Report($reportName);  
 
                     if (!$report->create($parameters)) {
 
                         $this->get('session')->set('message', $report->getMessage());
-                        return $this->redirectToRoute('tag');
+                        return $this->redirectToRoute('report/'.$reportName.'Report.html.twig');
                     }
 
                     $report->createAndShow($parameters);
@@ -50,7 +50,9 @@ class ReportController extends Controller
                     $this->get('session')->remove('message');
                 }
 
-                return $this->render('report/tagReport.html.twig');
+                return $this->render('report/'.$reportName.'Report.html.twig', [
+                    'reportName' => $reportName
+                ]);
             }
         }
 

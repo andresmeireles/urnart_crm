@@ -32,7 +32,7 @@ class Report
     public function create(array $parameters): ResponseReportInterface
     {
         foreach ($parameters as $parameter) {
-            $param = array_map(function ($parameter) {
+            $param[] = array_map(function ($parameter) {
                 $result = ltrim(trim($parameter));
                 return $result;
             }, $parameter);

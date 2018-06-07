@@ -4,3 +4,4 @@
 # 
 # [nome] : [namespace do relatório]
 tag: '\App\Utils\Reports\ReportTemplate\TagReportCreator'
+order: '\App\Utils\Reports\ReportTemplate\OrderReportCreator'
