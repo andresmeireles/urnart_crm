@@ -1,10 +1,12 @@
 <?php 
 
-namespace \App\Utils\Reports;
+namespace App\Utils\Reports;
+
+use App\Utils\Reports\Interfaces\ResponseReportInterface;
 
 class ResponseReport implements ResponseReportInterface
 {
-    private $report;
+    private $bodyReport;
 
     private $message;
 
@@ -14,13 +16,15 @@ class ResponseReport implements ResponseReportInterface
         $this->message = $message;
     }
 
-    public function setResponse(string $body, array $message)
+    public function setResponse(string $body, ?array $message = null): ResponseReportInterface
     {
         $this->bodyReport = $body;
         $this->message = $message;
         if (!$message) {
             $this->message = array('0' => 'Sucesso');
         }
+
+        return $this;
     } 
 
     public function getBodyReport(): string
@@ -33,7 +37,7 @@ class ResponseReport implements ResponseReportInterface
         return $this->message;
     }
 
-    public function setErrorMessage(array $erroMessage): self 
+    public function setErrorMessage(array $messages): self 
     {
         $this->message = $erroMessage;
 

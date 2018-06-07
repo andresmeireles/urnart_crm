@@ -2,7 +2,13 @@
 
 namespace App\Utils\Reports\ReportTemplate;
 
-class TagReportCreator implements ReportInterface
+use \App\Utils\Reports\ResponseReport;
+use \App\Utils\Reports\Interfaces\ResponseReportInterface;
+use \App\Utils\Reports\Interfaces\CreateReportInterface;
+use \App\Utils\Validation\ValidatorJson;
+use \Respect\Validation\Validator as v;
+
+class TagReportCreator implements CreateReportInterface
 {
 	/**
 	 * Storage the html report
@@ -16,15 +22,16 @@ class TagReportCreator implements ReportInterface
 	 */
 	private $error;
 
-	public function createReport(array $params): ResposeReportInterface 
+	public function createReport(array $params): ResponseReportInterface 
     {
         $response = new ResponseReport();
 
-        if (!$this->validation($params) {
+
+        if (!$this->validation($params)) {
             return $response->setErrorMessage(ValidatorJson::getMessage());     
         }
 
-		$image = file_get_contents(__DIR__.'/ReportTemplate/etiqueta/logo');
+		$image = file_get_contents(__DIR__.'\etiqueta/logo');
 
 		$body = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 		<html>
@@ -68,27 +75,27 @@ class TagReportCreator implements ReportInterface
 		</head>
 		<body> <div id="page_1">';
 
-		foreach ($params as $param) {
-			for ($c = 0; $c < $param['amount']; $c++) {
+			for ($c = 0; $c < $params['amount']; $c++) {
 				$body .= '
 				<table width="100%">
 
 				<TR>
-				<TD ><P class="p1 ft0"><img src="'. $image .'" width="160px"> '. $param['name'] .'</P></TD>
-				<TD ><P class="p6 ft1">'. ( $param['check'] == 0 ? $c+1 : ceil($c+1 / 2) ) .'</P></TD>
+				<TD ><P class="p1 ft0"><img src="'. $image .'" width="160px"> '. $params['name'] .'</P></TD>
+				<TD ><P class="p6 ft1">'. ( $params['check'] == 0 ? $c+1 : ceil($c+1 / 2) ) .'</P></TD>
 				</TR>
 				<TR>
-				<TD class="border"><P class="p5 ft4">'. $param['city'] .'</P></TD>
-				<TD class="border"><P class="p6 ft4">VOL. '. ($param['check'] == 0 ? $param['amount'] : ceil($param['amount']/2)) .'</P></TD>
+				<TD class="border"><P class="p5 ft4">'. $params['city'] .'</P></TD>
+				<TD class="border"><P class="p6 ft4">VOL. '. ($params['check'] == 0 ? $params['amount'] : ceil($params['amount']/2)) .'</P></TD>
 
 				</table>';
 			}
-		}
+		
 
 		$body .= '</page></BODY>
 		</HTML>';
 
-		return $reponse->setResponse($body, $message);
+		$p = $response->setResponse($body);
+		return $p;
 	}
 
 	private function validation(array $params)
@@ -105,5 +112,10 @@ class TagReportCreator implements ReportInterface
 		}
 
 		return true;
+	}
+
+	public function getMessage()
+	{
+
 	}
 }

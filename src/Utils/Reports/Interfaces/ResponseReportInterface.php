@@ -1,18 +1,18 @@
 <?php
 
-namespace \App\Utils\Report\Interfaces;
+namespace App\Utils\Reports\Interfaces;
 
 interface ResponseReportInterface
 {
     /**
      * Set a array with error messages
      */
-    public function setErrorMessage(array $messages): self;
+    public function setErrorMessage(array $messages);
 
     /**
      * Get a array with errors
      */
-    public function getError(): ?array;
+    public function getError();
 
     /**
      * Set the body of report and a success message
@@ -20,15 +20,15 @@ interface ResponseReportInterface
      * @var body [string] String with report
      * @var message [array] Array with message
      */
-    public function setResponse(string $body, array $message);
+    public function setResponse(string $body, ?array $message): self;
 
     /**
      * Return the string with report
      */
-    public function getBodyReport(): string;
+    public function getBodyReport();
 
     /**
      * Return the array messsage
      */
-    public function getMessage(): array;
+    public function getMessage();
 }

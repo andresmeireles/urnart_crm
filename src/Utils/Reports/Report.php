@@ -4,34 +4,32 @@ namespace App\Utils\Reports;
 
 use \Knp\Snappy\Pdf;
 
+use App\Utils\Reports\Interfaces\ResponseReportInterface;
+
 class Report 
 {
-    private $report;
-
     private $reportFactory;
 
     private $message;
 
     function __construct($reportName)
     {
-        $reportName = strtolower($reportName);
+         $reportNameToLower = strtolower($reportName);
 
-        switch ($reportName) {
-            case 'tag':
-                $this->reportFactory = new \App\Utils\Reports\ReportTemplate\TagReportCreator();
-                break;
-            case 'freight':
-                $this->reportFactory = new \App\Utils\Reports\ReportTemplate\FreisghtInvoiceCreator();
-                break;
-            default:
-                throw new \Exception('Algo deu errado');
-                break; 
+        if (file_exists(__DIR__.'/reportList.yaml')) {
+            $report = yaml_parse_file(__DIR__.'\reportList.yaml');
+
+            if (!array_key_exists($reportNameToLower, $report)) {
+                throw new \Exception('Report '. $reportNameToLower.' not found.');
+            }
+
+            return $this->reportFactory = new $report[$reportNameToLower]();
         }
 
-        return $this->reportFactory; 
+        throw new \Exception('List of reports not found, create a reportList.yaml with reoprt names in Reports folder.'); 
     }
 
-    public function create(array $parameters): CreateReportInterface
+    public function create(array $parameters): ResponseReportInterface
     {
         foreach ($parameters as $parameter) {
             $param = array_map(function ($parameter) {
@@ -40,9 +38,7 @@ class Report
             }, $parameter);
         }
 
-        $this->report = $this->reportFactory->createReport($param);
-
-        return $this->report;
+        return $this->reportFactory->createReport($param);
     }
 
     public function save(CreateReportInterface $report): bool
@@ -50,14 +46,17 @@ class Report
           
     }
 
-    public function show(CreateReportInterface $report): void
+    public function show(ResponseReportInterface $report): void
     {
-        $pdf = new Pdf(__DIR__.'/../../')
+        $pdf = new Pdf(__DIR__.'\..\..\..\vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltopdf.exe');
+
+        header('Content-Type: application/pdf');
+        echo $pdf->getOutputFromHtml($report->getBodyReport());
     } 
 
     public function createAndShow(array $parameters)
     {
-        $this->create($parameters);
-        $this->show($this->report);
+        $report = $this->create($parameters);
+        $this->show($report);
     }
 }

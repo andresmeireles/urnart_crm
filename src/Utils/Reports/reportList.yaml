@@ -1,0 +1,6 @@
+# Lista de Relatorios disponiveis.
+# 
+# Organizar com o seginte comando
+# 
+# [nome] : [namespace do relatório]
+tag: '\App\Utils\Reports\ReportTemplate\TagReportCreator'
