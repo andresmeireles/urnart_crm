@@ -2,7 +2,7 @@
 
 namespace App\Utils\Reports\Interfaces;  
 
-interface ReportInterface
+interface CreateReportInterface 
 {
     /**
      * create
@@ -10,17 +10,7 @@ interface ReportInterface
      * @var ARRAY $parans => array contendo os dados para criação do relatorios
      *
      */
-    public function create(array $parans);
-
-    /**
-     * Salva o relátorio criado em uma pasta
-     * 
-     * @return self retorna uma instancia do objeto
-     */
-    public function save();
-
-    // mostra o relatório criado
-    public function show();
+    public function createReport(array $parans);
 
     /**
      * Return a message for user

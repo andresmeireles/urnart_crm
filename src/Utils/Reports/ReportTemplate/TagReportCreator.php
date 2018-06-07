@@ -1,9 +1,6 @@
 <?php
 
-namespace App\Utils\Reports;
-
-use Symfony\Component\HttpFoundation\Request;
-use \Knp\Snappy\Pdf;
+namespace App\Utils\Reports\ReportTemplate;
 
 class TagReportCreator implements ReportInterface
 {
@@ -19,27 +16,14 @@ class TagReportCreator implements ReportInterface
 	 */
 	private $error;
 
-	public function create(array $params): bool
-	{
-		foreach ($params as $parameter) {
-			$parameters[] = array_map(function ($parameter) {
-				$result = ltrim(trim($parameter));
-				return $result;
-			}, $parameter);
+	public function createReport(array $params): ResposeReportInterface 
+    {
+        $response = new ResponseReport();
 
-			if (!$this->validation($parameter)) {
-				$this->error = ValidatorJson::getErrors();
-				return false;
-			}	
-		}
+        if (!$this->validation($params) {
+            return $response->setErrorMessage(ValidatorJson::getMessage());     
+        }
 
-		$this->report = $this->createBody($parameters);
-
-		return true;
-	}
-
-	private function createBody(array $params): string 
-	{
 		$image = file_get_contents(__DIR__.'/ReportTemplate/etiqueta/logo');
 
 		$body = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -104,14 +88,8 @@ class TagReportCreator implements ReportInterface
 		$body .= '</page></BODY>
 		</HTML>';
 
-		return $body;
+		return $reponse->setResponse($body, $message);
 	}
-
-	public function save(): self
-	{
-		return $this;
-	}
-
 
 	private function validation(array $params)
 	{
@@ -127,18 +105,5 @@ class TagReportCreator implements ReportInterface
 		}
 
 		return true;
-	}
-
-	public function show()
-	{
-		$pdf = new Pdf(__DIR__.'\..\..\..\vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltopdf.exe');
-
-		header('Content-Type: application/pdf');
-		echo $pdf->getOutputFromHtml($this->report);
-	}
-
-	public function getMessage(): array
-	{
-		return $this->error;
 	}
 }
