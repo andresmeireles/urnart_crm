@@ -95,7 +95,7 @@ class TagReportCreator implements CreateReportInterface
 		return $p;
 	}
 
-	private function validation(array $params)
+	private function validation(array $params): bool
 	{
 		ValidatorJson::validate($params, [
 			'name' => v::notEmpty(),

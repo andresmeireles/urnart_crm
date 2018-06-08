@@ -17,6 +17,17 @@ class OrderReportCreator implements CreateReportInterface
 		$response = new ResponseReport();
 	}
 
+	private function validation(array $params): bool
+	{
+		if (ValidatorJson::getErrors()) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public function getMessage(): array
-	{}
+	{
+
+	}
 }
