@@ -1,0 +1,101 @@
+{% extends 'headerTemplate.html.twig' %}
+
+{% block body %}
+  <header>
+    <nav class="navbar top-navbar navbar-expand-md bg-dark navbar-dark">
+      <div class="navbar-header">
+        <a class="navbar-brand text-white" href="#">Urnart</a>
+      </div>
+      <ul class="navbar-nav mr-auto">
+        <li class="d-none d-md-block" id="hideMenusNames">
+          <i class="fas fa-2x fa-align-justify"></i>
+        </li>
+        <li class="d-md-none">
+          <i class="fas fa-2x fa-cloud" id="showMenus"></i>
+        </li>
+      </ul>
+      <button class="navbar-toggler navbar-toggler-left fas fa-sign-out-alt"></button>
+      <div class="navbar-collapse text-center justify-content-end">
+        <ul class="navbar-nav d-none d-sm-block">
+          <li class="nav-item text-right">
+            <a class="nav-link" href="#">
+              <i class="fas fw fa-sign-out-alt fa-lg"></i> Sair</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="bg-primary sidebar-sticky p-1">
+        <ul class="list-unstyled" id="menus">
+          <li class="my-1">
+            <div class="my-1">
+              <img src="caes-e-gatos-1.jpg" style="width: 45px; height:40px" class="rounded-circle">
+              <span class="float-right my-1">&nbsp;&nbsp;Nome do amiginho</span>
+            </div>
+          </li>
+          <li class="noline text">
+            <a href="#">
+              <div class="d-flex align-items-center">
+                <i class="fa fa-fw fa-home fa-2x my-1"></i>
+                <span class="">&nbsp;&nbsp;Dashboard</span>
+              </div>
+            </a>
+          </li>
+          <li class="noline">
+            <a href="#">
+              <div class="d-flex align-items-center">
+                <i class="far fa-fw fa-2x fa-file-alt my-1"></i>
+                <span class="">&nbsp;&nbsp;Relatórios</span>
+              </div>
+            </a>
+          </li>
+          <li class="noline">
+            <a href="#">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-fw fa-2x fa-shopping-cart my-1"></i>
+                <span class="">&nbsp;&nbsp;Pedido</span>
+              </div>
+            </a>
+          </li>
+          <li class="noline">
+            <a href="#">
+              <div class="d-flex align-items-center">
+                <i class="far fa-fw fa-2x fa-sticky-note my-1"></i>
+                <span class="">&nbsp;&nbsp;Formulários</span>
+              </div>
+            </a>
+          </li>
+          <li class="noline">
+            <a href="#">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-fw fa-2x fa-calculator my-1"></i>
+                <span class="">&nbsp;&nbsp;Financeiro</span>
+              </div>
+            </a>
+          </li>
+          <li class="noline">
+            <a href="#">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-fw fa-2x fa-address-card my-1"></i>
+                <span class="">&nbsp;&nbsp;Clientes</span>
+              </div>
+            </a>
+          </li>
+          <li class="noline">
+            <a href="#">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-fw fa-2x fa-box-open my-1"></i>
+                <span class="">&nbsp;&nbsp;Estoque</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col py-3 px-4" id="content">
+      	{% block content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
