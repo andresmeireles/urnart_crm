@@ -31,14 +31,20 @@ class Report
 
     public function create(array $parameters): ResponseReportInterface
     {
-        foreach ($parameters as $parameter) {
-            $param[] = array_map(function ($parameter) {
-                $result = ltrim(trim($parameter));
-                return $result;
-            }, $parameter);
+
+        foreach ($parameters as $key => $value) { 
+            if (is_array($value)) {
+                $parameters[$key] = array_map(function ($parameter) {
+                    $result = ltrim(trim($parameter));
+                    return $result;
+                }, $value);
+                continue;   
+            }
+
+            $parameters[$key] = ltrim(trim($value));
         }
 
-        return $this->reportFactory->createReport($param);
+        return $this->reportFactory->createReport($parameters);
     }
 
     public function save(CreateReportInterface $report): bool

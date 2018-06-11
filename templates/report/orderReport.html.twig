@@ -10,7 +10,7 @@
         <div class="col-12">
           <h1 class="">Pedido n° 0001</h1>
         <hr>
-          <form>
+          <form method="POST" action="/report/{{ reportName }}">
            <div class="row">
           <div class="col-md-12 my-1">
             <input type="submit" class="btn btn-primary active btn-block btn-lg" value="Criar pedido">
@@ -38,14 +38,16 @@
                   <div class="row m-1">
                     <div class="col-md-12" id="tag">
                       <div class="input-group my-1 w-100" id="cloneableField">
-                        <div class="col-6">
+                        <div class="col-4">
                           <input type="hidden" input-number='true' value="1">
                           <input type="text" class="form-control" name="cloneableField0[model]" id="model" placeholder="Urna" required="required"></div>
                         <div class="col">
                           <input type="number" class="form-control" name="cloneableField0[price]" id="price" placeholder="Preço" required="required">
                         </div>
                         <div class="col">
-                          <input type="number" class="form-control" name="cloneableField0[amount]" id="amount" placeholder="Quantidade" required="required"></div>
+                          <input type="number" class="form-control" name="cloneableField0[amount]" id="amount" placeholder="Qnt" required="required"></div>
+                        <div class="col-2">
+                          <input type='text' class="form-control" id="totalPrice" disabled></div>  
                         <button type="submit" class="btn btn-success" add-btn="true">
                           <span class="fas fa-fw fa-plus" add-btn="true"></span>
                         </button>

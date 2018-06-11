@@ -30,42 +30,44 @@ $(function () {
 	});
 
 	document.addEventListener('change', function (el) {
-		if (el.target.id == 'price') {
 
-			var prices = document.querySelectorAll('#price');
-			var sumPrices = 0
+		if (el.target.id == 'price' || el.target.id == 'amount') {
+			var row = el.target.parentNode.parentNode;
 
-			for(var c=0; c < prices.length; c++) {
-				var intPrice =  prices[c].value
-				intPrice = parseInt(intPrice);
+			var amount = ( isNaN(parseInt(row.querySelector('#amount').value)) ? 1 : (row.querySelector('#amount').value) );
 
-				sumPrices += intPrice;
-			}
+			row.querySelector('#amount').value = amount;
 
-			sumPrices = parseFloat(sumPrices);
+			var qnt = parseInt(row.querySelector('#amount').value);
 
-			allProductsPrice.innerHTML = sumPrices;
+			var productTotalPrice = parseInt(row.querySelector('#price').value) * qnt;
+			row.querySelector('#totalPrice').value = productTotalPrice;
 
-			calculateTotalPrice(sumPrices);
+			calculateProducts();
+			recalculate();
+		}
 
-			return true;
+		if (el.target.id == 'freight' || el.target.id == 'discount') {
+			recalculate();
 		}
 	});
 
-	var calculateTotalPrice = function (price) {
+	var calculateProducts = function () {
+		var allPrices = document.querySelectorAll('#totalPrice');
+		var allPricesSum = 0;
 
-		var freight = ( parseInt(document.querySelector('#freight').value) == 'NaN' ? 0 : parseInt(document.querySelector('#freight').value) );
-		var discount = (parseInt(document.querySelector('#discount').value) == 'NaN' ? 0 : parseInt(document.querySelector('#discount').value));
+		for (var c=0; c < allPrices.length; c++) {
+			var intPrice = parseInt(allPrices[c].value);
+			allPricesSum += intPrice;
+		}
 
-		totalPrice.innerHTML = (price + freight) - discount;
-
-		return true;
+		allProductsPrice.innerHTML = allPricesSum;
 	};
 
 	var recalculate = function () { 
-		var products = parseInt(document.querySelector('#allProductsPrice').innerHTML); 
-		var freight = ( parseInt(document.querySelector('#freight').value) == 'NaN' ? 0 : parseInt(document.querySelector('#freight').value) );
-		var discount = (parseInt(document.querySelector('#discount').value) == 'NaN' ? 0 : parseInt(document.querySelector('#discount').value));	
+		var products = ( isNaN(parseInt(allProductsPrice.innerHTML)) ? 0 : parseInt(allProductsPrice.innerHTML) ); 
+		var freight = ( isNaN(parseInt(document.querySelector('#freight').value)) ? 0 : parseInt(document.querySelector('#freight').value) );
+		var discount = ( isNaN(parseInt(document.querySelector('#discount').value)) ? 0 : parseInt(document.querySelector('#discount').value));
 
 		totalPrice.innerHTML = (products + freight) - discount;	
 

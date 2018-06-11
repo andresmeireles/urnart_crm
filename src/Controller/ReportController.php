@@ -23,7 +23,7 @@ class ReportController extends Controller
     /**
      * @Route("/report/{reportName}", methods={"GET", "HEAD", "POST"})
      */
-    public function tagReport(Request $req, string $reportName)
+    public function createReport(Request $req, string $reportName)
     {
         $dir = opendir(__DIR__.'/../../templates/report/');
 
