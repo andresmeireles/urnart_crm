@@ -66,7 +66,6 @@ $( function () {
             cloneEl.querySelector('#name').focus();
 
             tagNumber += 1;
-            console.log(tagNumber);
             return true;		
         }
     });

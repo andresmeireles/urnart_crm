@@ -1,10 +1,20 @@
 {% extends 'index.html.twig' %}
 
+{% block customJS %}
+<script src="/assets/js/report/cloneField.js" type="text/javascript"></script>
+{% endblock %}
+
 {% block content %}
-<h1 class="">Pedido n° 0001</h1>
-        <hr>
+
         <div class="col-12">
+          <h1 class="">Pedido n° 0001</h1>
+        <hr>
           <form>
+           <div class="row">
+          <div class="col-md-12 my-1">
+            <input type="submit" class="btn btn-primary active btn-block btn-lg" value="Criar pedido">
+          </div>
+        </div>
             <div class="row">
               <div class="col">
                 <fieldset class="border border-light my-1">
@@ -12,14 +22,11 @@
                   <div class="row m-1">
                     <div class="form-group col">
                       <label> Nome do cliente </label>
-                      <input type="text" value="Nome do cliente" class="form-control"> </div>
+                      <input type="text" value="Nome do cliente" class="form-control" name="clientName"> </div>
                     <div class="form-group col">
                       <label> Cidade </label>
-                      <input type="text" value="Cidade" class="form-control"> </div>
-                    <div class="form-group col-2">
-                      <label> Data </label>
-                      <input type="date" value="Cidade" class="form-control"> </div>
-                  </div>
+                      <input type="text" value="Cidade" class="form-control" name="clientName"> </div>
+                    </div>
                 </fieldset>
               </div>
             </div>
@@ -29,12 +36,15 @@
                   <legend class="px-1 bg-light">Produtos</legend>
                   <div class="row m-1">
                     <div class="col-md-12" id="tag">
-                      <div class="input-group my-1 w-100">
+                      <div class="input-group my-1 w-100" id="cloneableField">
+                        <div class="col-6">
+                          <input type="hidden" input-number='true' value="1">
+                          <input type="text" class="form-control" name="cloneableField0[model]" id="model" placeholder="Urna" required="required"></div>
                         <div class="col">
-                          <input type="hidden" value="1">
-                          <input type="text" class="form-control my-1" id="inlineFormInputGroup" placeholder="Urna"> </div>
-                        <div class="col-3">
-                          <input type="text" class="form-control my-1" placeholder="Cidade" id="inlineFormInputGroup"> </div>
+                          <input type="number" class="form-control" name="cloneableField0[price]" id="price" placeholder="Preço" required="required">
+                        </div>
+                        <div class="col">
+                          <input type="number" class="form-control" name="cloneableField0[amount]" id="amount" placeholder="Quantidade" required="required"></div>
                         <button type="submit" class="btn btn-success" add-btn="true">
                           <span class="fas fa-fw fa-plus" add-btn="true"></span>
                         </button>
@@ -50,16 +60,16 @@
                   <div class="row m-1">
                     <div class="col-12">
                       <div class="form-group">
-                        <divl class="input-group">
+                        <div class="input-group">
                           <h3>Total Produtos&nbsp;</h3>
                           <h3>R$&nbsp;&nbsp;</h3>
-                          <h3>10,00</h3>
-                        </divl>
-                        <divl class="input-group">
+                          <h3 class>0,00</h3>
+                        </div>
+                        <div class="input-group">
                           <h3>Valor Final &nbsp;</h3>
                           <h3>R$&nbsp;&nbsp;</h3>
-                          <h3>10,00</h3>
-                        </divl>
+                          <h3>0,00</h3>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -72,7 +82,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Seleciona a forma de pagamento</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" name="formPg">
                         <small>Caso a opção seja putra seleciona outro</small>
                       </div>
                       <div class="form-group">
@@ -81,21 +91,38 @@
                           <div class="input-group-prepend">
                             <div class="input-group-text">R$</div>
                           </div>
-                          <input type="number" class="form-control"> </div>
+                          <input type="number" class="form-control" name="freight"></div>
                       </div>
                       <div class="form-group">
                         <label>Desconto</label>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
-                              <input type="checkbox" value="on"> </div>
+                              <input type="checkbox" value="on"></div>
                           </div>
                           <div class="input-group-prepend">
                             <div class="input-group-text">R$</div>
                           </div>
-                          <input type="number" class="form-control" disabled="">
-                          <small>Caso exista algum desconto marque a opção</small>
+                          <input type="number" class="form-control" disabled="" name="discont">
                         </div>
+                          <small class="form-text text-muted">Caso exista algum desconto marque a opção</small>
+                      </div>
+                      <div class="form-group">
+                        <label>Barco & Transportadora</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control" name="transporter">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>Porto</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <input type="checkbox" value="on"> </div>
+                          </div>
+                          <input type="number" class="form-control" disabled="" name="port">
+                        </div>
+                          <small class="form-text text-muted">Caso exista porto marque a opção</small>
                       </div>
                     </div>
                   </div>
@@ -108,7 +135,7 @@
                   <legend class="px-1 bg-light">Observações</legend>
                   <div class="row m-1">
                     <div class="form-group col">
-                      <textarea class="form-control" value="escreve aqui"></textarea>
+                      <textarea class="form-control" value="escreve aqui" name="observation"></textarea>
                     </div>
                   </div>
                 </fieldset>
