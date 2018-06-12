@@ -1,0 +1,7 @@
+# Lista de Relatorios disponiveis.
+# 
+# Organizar com o seginte comando
+# 
+# [nome] : [namespace do relatório]
+tag: '\App\Utils\Form\FormTemplate\TagFormCreator'
+order: '\App\Utils\Form\FormTemplate\OrderFormCreator'

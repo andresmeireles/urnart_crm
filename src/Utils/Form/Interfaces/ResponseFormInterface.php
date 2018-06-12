@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Utils\Reports\Interfaces;
+namespace App\Utils\Form\Interfaces;
 
-interface ResponseReportInterface
+interface ResponseFormInterface
 {
     /**
      * Set a array with error messages
@@ -15,17 +15,17 @@ interface ResponseReportInterface
     public function getError();
 
     /**
-     * Set the body of report and a success message
+     * Set the body of Form and a success message
      *
-     * @var body [string] String with report
+     * @var body [string] String with Form
      * @var message [array] Array with message
      */
     public function setResponse(string $body, ?array $message): self;
 
     /**
-     * Return the string with report
+     * Return the string with Form
      */
-    public function getBodyReport();
+    public function getBodyForm();
 
     /**
      * Return the array messsage

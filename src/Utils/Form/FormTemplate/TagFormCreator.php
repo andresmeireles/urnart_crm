@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Utils\Reports\ReportTemplate;
+namespace App\Utils\Form\FormTemplate;
 
-use \App\Utils\Reports\ResponseReport;
-use \App\Utils\Reports\Interfaces\ResponseReportInterface;
-use \App\Utils\Reports\Interfaces\CreateReportInterface;
+use \App\Utils\Form\ResponseForm;
+use App\Utils\Form\Parameters;
+use \App\Utils\Form\Interfaces\ResponseFormInterface;
+use \App\Utils\Form\Interfaces\CreateFormInterface;
 use \App\Utils\Validation\ValidatorJson;
 use \Respect\Validation\Validator as v;
 
-class TagReportCreator implements CreateReportInterface
+class TagFormCreator implements CreateFormInterface
 {
 	/**
 	 * Storage the error messages, if exists
@@ -16,9 +17,11 @@ class TagReportCreator implements CreateReportInterface
 	 */
 	private $error;
 
-	public function createReport(array $params): ResponseReportInterface 
+	public function createForm(Parameters $params): ResponseFormInterface 
 	{
-		$response = new ResponseReport();
+		$parameters = $params->getClonedParameters();
+
+		$response = new ResponseForm();
 
 		$image = file_get_contents(__DIR__.'\etiqueta/logo');
 
@@ -52,8 +55,6 @@ class TagReportCreator implements CreateReportInterface
 		.td2{border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 240px;vertical-align: bottom;}
 		.td3{border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 491px;vertical-align: bottom;}
 
-		
-
 		.border {
 			border-bottom: #000000 1px solid;
 		}
@@ -64,10 +65,9 @@ class TagReportCreator implements CreateReportInterface
 		</head>
 		<body> <div id="page_1">';
 		
-		foreach ($params as $param) {
+		foreach ($parameters as $param) {
 			if (!$this->validation($param)) {
 				return $response->setErrorMessage(ValidatorJson::getMessage());     
-
 			}
 
 			for ($c = 0; $c < $param['amount']; $c++) {

@@ -1,24 +1,24 @@
 <?php 
 
-namespace App\Utils\Reports;
+namespace App\Utils\Form;
 
-use App\Utils\Reports\Interfaces\ResponseReportInterface;
+use App\Utils\Form\Interfaces\ResponseFormInterface;
 
-class ResponseReport implements ResponseReportInterface
+class ResponseForm implements ResponseFormInterface
 {
-    private $bodyReport;
+    private $bodyForm;
 
     private $message;
 
     function __construct(string $body = null, array $message = null)
     {
-        $this->bodyReport = $body;
+        $this->bodyForm = $body;
         $this->message = $message;
     }
 
-    public function setResponse(string $body, ?array $message = null): ResponseReportInterface
+    public function setResponse(string $body, ?array $message = null): ResponseFormInterface
     {
-        $this->bodyReport = $body;
+        $this->bodyForm = $body;
         $this->message = $message;
         if (!$message) {
             $this->message = array('0' => 'Sucesso');
@@ -27,9 +27,9 @@ class ResponseReport implements ResponseReportInterface
         return $this;
     } 
 
-    public function getBodyReport(): string
+    public function getBodyForm(): string
     {
-        return $this->bodyReport;
+        return $this->bodyForm;
     }
 
     public function getMessage(): array
