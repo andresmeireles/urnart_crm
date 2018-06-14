@@ -5,3 +5,4 @@
 # [nome] : [namespace do relatório]
 tag: '\App\Utils\Form\FormTemplate\TagFormCreator'
 order: '\App\Utils\Form\FormTemplate\OrderFormCreator'
+travel: '\App\Utils\Form\FormTemplate\TravelFormCreator'

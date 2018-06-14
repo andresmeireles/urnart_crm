@@ -74,8 +74,8 @@ $(function () {
 			 * Busca em #cloneable fields marcados com required em branco
 			 * caso estaj aem branco bloqueia a criação de um novo campo
 			 */
-			for (var c=0; c < document.querySelectorAll('#cloneableField [required="required"]').length; c++) {
-				if (document.querySelectorAll('#cloneableField [required="required"]')[c].value == '') {
+			for (var c=0; c < document.querySelectorAll('#cloneableField [required]').length; c++) {
+				if (document.querySelectorAll('#cloneableField [required]')[c].value == '') {
 					alert('Preencher campos antes de acrescentar novo registro');
 					return false;
 				}

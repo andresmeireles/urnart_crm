@@ -1,0 +1,75 @@
+{% extends 'index.html.twig' %}
+
+{% block customJS %}
+<script src="/assets/js/form/cloneField.js" type="text/javascript"></script>
+{%  endblock %}
+
+{% block content %}
+      <div class="col py-3 px-4">
+        <div class="col-12">
+          <h1 class="display-3">Romaneio</h1>
+          <hr> </div>
+        <div class="row">
+          <div class="col">
+            <form method="POST" action="/form/{{ formName }}" target="_blank">
+              <div class="row">
+                <div class="col-8">
+                  <input type="submit" class="btn btn-primary btn-block" value="Criar Romaneio"> </div>
+                <div class="col-4">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="type" id="inlineRadio1" value="0" required="">
+                    <label class="form-check-label" for="inlineRadio1">Entrega</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="type" id="inlineRadio1" value="1" required="">
+                    <label class="form-check-label" for="inlineRadio1">Carregamente</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row py-2">
+                <div class="col">
+                  <fieldset class="border border-light">
+                    <legend class="px-1 bg-light">Produtos</legend>
+                    <div class="row m-1">
+                      <div class="col-md-12">
+                        <div class="input-group w-100">
+                          <div class="col-3">Nome do Cliente</div>
+                          <div class="col"> Cidade </div>
+                          <div class="col-3 text-center"> Tamnho das Urnas </div>
+                          <div class="col"> Faturamento </div>
+                          <div class="col"> Frete </div>
+                          <div class="col-1">&nbsp;</div>
+                        </div>
+                        <div class="input-group my-1 w-100" id="cloneableField">
+                          <div class="col-3">
+                            <input type="hidden" input-number="true" value="1">
+                            <input type="text" class="form-control my-1" placeholder="Nome" id="name" name="cloneableField0[name]" required> </div>
+                          <div class="col">
+                            <input type="text" class="form-control my-1" placeholder="Cidade" id="city" name="cloneableField0[city]" required> </div>
+                          <div class="col-1">
+                            <input type="text" class="form-control my-1" placeholder="G" id="urnG" name="cloneableField0[urnG]" required> </div>
+                          <div class="col-1">
+                            <input type="text" class="form-control my-1" placeholder="M" id="urnM" name="cloneableField0[urnM]" required> </div>
+                          <div class="col-1">
+                            <input type="text" class="form-control my-1" placeholder="P" id="urnP" name="cloneableField0[urnP]" required> </div>
+                          <div class="col">
+                            <input type="text" class="form-control my-1" placeholder="Tipo" id="type" name="cloneableField0[type]" required> </div>
+                          <div class="col">
+                            <input type="text" class="form-control my-1" placeholder="Valor" id="freight" name="cloneableField0[freight]" required> </div>
+                          <button type="submit" class="btn btn-success" add-btn="true">
+                            <span class="fas fa-fw fa-plus" add-btn="true"></span>
+                          </button>
+                          <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
+                            <i class="fas fa-fw fa-times" remove-btn="true"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+{% endblock %}
