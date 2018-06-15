@@ -11,8 +11,25 @@ use \Respect\Validation\Validator as v;
 
 class TravelFormCreator implements CreateFormInterface
 {
+	private $message;
+
 	public function createForm(Parameters $parameters): ResponseFormInterface
 	{
+		foreach ($parameters->getClonedParameters() as $clonedParameter) {
+			ValidatorJson::validate($clonedParameter, [
+				'name' => v::notEmpty()->not(v::numeric()),
+				'city' => v::notEmpty()->not(v::numeric())
+			]);	
+		}
+
+		ValidatorJson::validate($parameters->getNonClonedParameters(), [
+			'driverName' => v::notEmpty()->not(v::numeric())
+		]);
+
+		if (ValidatorJson::getErrors()) {
+			$this->getMessage();
+		}
+
 		$body = $this->createFormBody($parameters->getClonedParameters());
 
 		echo $body;
@@ -21,7 +38,7 @@ class TravelFormCreator implements CreateFormInterface
 
 	public function getMessage()
 	{
-
+		return $this->message = ValidatorJson::getErrors();
 	}
 
 	private function createFormBody(array $parameters): string

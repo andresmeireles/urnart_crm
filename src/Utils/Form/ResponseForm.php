@@ -12,8 +12,9 @@ class ResponseForm implements ResponseFormInterface
 
     function __construct(string $body = null, array $message = null)
     {
-        $this->bodyForm = $body;
-        $this->message = $message;
+        if ($body != null) {
+            $this->setResponse($body, $message);
+        }
     }
 
     public function setResponse(string $body, ?array $message = null): ResponseFormInterface
