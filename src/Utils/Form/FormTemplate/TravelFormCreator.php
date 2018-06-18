@@ -30,7 +30,7 @@ class TravelFormCreator implements CreateFormInterface
 			$this->getMessage();
 		}
 
-		$body = $this->createFormBody($parameters->getClonedParameters());
+		$body = $this->createFormBody($parameters);
 
 		echo $body;
 		die();
@@ -41,8 +41,10 @@ class TravelFormCreator implements CreateFormInterface
 		return $this->message = ValidatorJson::getErrors();
 	}
 
-	private function createFormBody(array $parameters): string
+	private function createFormBody(Parameters $parameters): string
 	{
+		$parameter = $parameters->getNonClonedParameters();
+		$clonedParameters = $parameters->getClonedParameters();
 		$background = file_get_contents(__DIR__.'/travel-form/file');
 		$itemsCounter = 1;
 		$pageCounter = 1;
@@ -54,6 +56,11 @@ class TravelFormCreator implements CreateFormInterface
 		<META http-equiv="X-UA-Compatible" content="IE=8">
 		<TITLE>bcl_1500003992.htm</TITLE>
 		<META name="generator" content="BCL easyConverter SDK 5.0.08">
+		<script type="text/javascript">
+		document.addEventListener("DOMContentLoaded", function () {
+			window.print();
+			});
+			</script>
 		<STYLE type="text/css">
 
 		body {margin-top: 0px;margin-left: 0px;}
@@ -63,7 +70,7 @@ class TravelFormCreator implements CreateFormInterface
 		#page_1 #p1dimg1 {position:absolute;top:0px;left:19px;z-index:-1;width:679px;height:798px;}
 		#page_1 #p1dimg1 #p1img1 {width:679px;height:798px;}
 
-		#page_2 {position:relative; overflow: hidden;margin: 14px 0px 15px 0px;padding: 0px;border: none;width: 794px;}
+		#page_2 {position:relative; overflow: hidden;margin: 14px 0px 55px 0px;padding: 0px;border: none;width: 794px;}
 
 		#page_2 #p2dimg1 {position:absolute;top:0px;left:19px;z-index:-1;width:679px;height:798px;}
 		#page_2 #p2dimg1 #p2img1 {width:679px;height:798px;}
@@ -120,7 +127,7 @@ class TravelFormCreator implements CreateFormInterface
 		<DIV class="dclr"></DIV>
 		<P class="p0 ft0">Urnas Mart Ltda</P>
 		<P class="p1 ft1">CNPJ. <NOBR>05.020.839/0001-05</NOBR></P>
-		<P class="p2 ft3">Relatório de Viagem <SPAN class="ft2">– </SPAN>RODRIGO</P>
+		<P class="p2 ft3">Relatório de Viagem <SPAN class="ft2">– </SPAN>'. $parameter['driverName'] .'</P>
 		<TABLE cellpadding=0 cellspacing=0 class="t0">
 		<TR>
 		<TD class="tr0 td0"><P class="p3 ft4">Data Saída:</P></TD>
@@ -130,7 +137,7 @@ class TravelFormCreator implements CreateFormInterface
 		<P class="p4 ft4">Chegada:<SPAN style="padding-left:178px;">Hora:</SPAN><SPAN style="padding-left:139px;">KM:</SPAN></P>
 		<P class="p5 ft4">PERCOR:</P>';
 
-		foreach ($parameters as $parameter) {
+		foreach ($clonedParameters as $parameter) {
 			if ($itemsCounter == 0) {
 				$body .= '<DIV id="page_2">
 				<DIV id="p2dimg1">
