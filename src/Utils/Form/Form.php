@@ -17,7 +17,7 @@ class Form
          $FormNameToLower = strtolower($FormName);
 
         if (file_exists(__DIR__.'/formList.yaml')) {
-            $Form = yaml_parse_file(__DIR__.'\formList.yaml');
+            $Form = yaml_parse_file(__DIR__.'/formList.yaml');
 
             if (!array_key_exists($FormNameToLower, $Form)) {
                 throw new \Exception('Form '. $FormNameToLower.' not found.');

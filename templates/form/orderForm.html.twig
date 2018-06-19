@@ -1,5 +1,7 @@
 {% extends 'index.html.twig' %}
 
+{% block tittle %}Pedido{% endblock %}
+
 {% block customJS %}
 <script src="/assets/js/form/cloneField.js" type="text/javascript"></script>
 <script src="/assets/js/form/order.js" type="text/javascript"></script>
@@ -8,7 +10,7 @@
 {% block content %}
   
         <div class="col-12">
-          <h1 class="">Pedido n° 0001</h1>
+          <h1 class="">Novo Pedido</h1>
         <hr>
           <form method="POST" action="/form/{{ formName }}" target="_blank">
            <div class="row">

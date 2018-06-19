@@ -1,52 +1,51 @@
 {% extends 'index.html.twig' %}
 
+{% block title %}Criação de Formularios{% endblock %}
+
 {% block content %}
 	<div class="col p-3">
         <h1 class="">Descpacho de caminhão</h1>
         <div class="row">
           <div class="col-sm-3">
             <ul class="">
-              <li>
-                <a >Devoluções</a>
-              </li>
-              <li>
-                <a>Carta Frete</a>
-              </li>
-              <li>
-                <a>Etiquetas Por Cliente</a>
-              </li>
+              <li><a >Devoluções</a></li>
+              <li><a>Carta Frete</a></li>
+              <li><a>Etiquetas Por Cliente</a></li>
             </ul>
           </div>
           <div class="col-sm-3">
             <ul class="">
-              <li>
-                <a href="form/tag" class="text-dark">Etiquetas Manual</a>
-              </li>
-              <li>
-                <a>Recibos</a>
-              </li>
-              <li>
-                <a href="form/romaneio" class="text-dark">Romaneio</a>
-              </li>
+              <li><a href="form/tag" class="text-dark">Etiquetas Manual</a></li>
+              <li><a>Recibos</a></li>
+              <li><a href="form/romaneio" class="text-dark">Romaneio</a></li>
             </ul>
           </div>
           <div class="col-sm-3">
             <ul class="">
-              <li>
-                <a href="form/travel" class="text-dark">Viagem</a>
-              </li>
+              <li><a href="form/travel" class="text-dark">Viagem</a></li>
             </ul>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <hr class="text-success"> </div>
+            <hr class="text-success"></div>
         </div>
         <h1 class="">Pedido</h1>
+        <div class="row">
+        <div class="col-sm-3">
         <ul class="">
-          <li><a href="/form/order" class="text-dark">Criar Pedido</a></li>
-          <li>Two</li>
-          <li>Three</li>
+          <li>Autorização de Retirada</li>
+          <li>Fatura</li>
+          <li>Nota promissória</li>
         </ul>
       </div>
+      <div class="col-sm-3">
+        <ul class="">
+          <li><a href="/form/order" class="text-dark">Ordem de pedido</a></li>
+          <li>Recibo</li>
+          <li></li>
+        </ul>
+      </div>
+      </div>
+    </div>
 {% endblock %}
