@@ -1,0 +1,63 @@
+<style>
+  body { size: A4 portrait; }
+  
+  #half-page { height: 13cm; width: 21cm; background-color:yellow }
+  #form { padding: 10px; }
+  .f-right { float: right; }
+  .f-left { float: left; }
+  .clear { clear:both }
+  .body { padding: 0px 30px 0px 30px; }
+  .body p { font-size: 18px}  
+  
+  .footer { border: 1px solid black; padding: 0px 30px 0px 30px; font-size: 18px }
+  .img img { width: 120px; height: 100px; display:inline;}
+  .date { margin: 70px 250px 0px 0px; float:right}
+  .center { text-align:center }
+  .sign { margin: 30px 0px 0px 0px }
+  .c { margin: 0px 0px 0px 90px;}
+  
+</style>
+
+<body>
+<div id="half-page">
+<div id="form">
+<div class="head">
+<div class="f-right">Urnas Mart Ltda</div>
+<div class="f-left">05.020.839/0001.05</div>
+<div class="clear"></div>
+<div class="f-left">(91) 3256 1106</div>
+</div>
+<div class="clear"></div>
+<div class="body">
+  <h2 class="center">CARTA FRETE</h2>
+  <p>Á</p>
+  <p><span class="f-left">123 - Cliente Legal</span><span class="f-right">R$ 10,00</span></p>
+  <div class="clear"></div>
+  <p class>Pagar ao portador o Valor de R$ 200,00 (DUZENTOS reais) referente ao frete de urnas do pedido de número 21098, conforme combinado.  
+</p><p>Atenciosamente,</p>
+</div>
+<div class="footer">
+  <div class="img f-left">
+    <img src="https://google.com/google.jpg">
+    <div class="clear"></div>
+    <small>Urnas Mart</small>
+  </div>
+  <div class="date">Data:____/____/________</div>
+  <div class="clear"></div>
+  <div class="sign">
+    <div class="f-left">
+    <span>____________________________</span>
+    <br>
+    <div class="c">Cliente</div>
+    </div>
+    <div class="f-right">
+    <span>____________________________</span>
+    <br>
+    <div class="c">Recebedor</div>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
+</div>
+</div>
+</body>
