@@ -1,0 +1,71 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Carta Frete{% endblock %}
+
+{% block customJS %}
+<script src="/assets/js/form/cloneField.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+<div class="col py-3 px-4">
+        <div class="col-12" >
+          <h1 class="display-3">Carta Frete</h1>
+          <hr> </div>
+        <div class="row">
+          <div class="col">
+            <form method="POST" action="/form/{{ formName }}" target="_blank">
+              <div class="row">
+                <div class="col-8 col-md-12">
+                  <input type="submit" class="btn btn-primary btn-block" value="Criar Carta Frete"> </div>
+              </div>
+              <div class="row py-2">
+                <div class="col">
+                  <fieldset class="border border-light">
+                    <legend class="px-1 bg-light">Criar</legend>
+                    <div class="row m-1">
+                      <div class="col-md-12">
+                        <div class="input-group w-100">
+                          <div class="col-1">N°</div>
+                          <div class="col">Cliente</div>
+                          <div class="col-2">Cidade</div>
+                          <div class="col-1">Estado</div>
+                          <div class="col-2">Frete</div>
+                          <div class="col-2">N° Pedido</div>
+                          <div class="col-1">&nbsp;</div>
+                        </div>
+                        <div class="input-group my-1 w-100" id="cloneableField">
+                          <div class="col-1">
+                            <input type="hidden" input-number="true" value="1">
+                            <input type="text" class="form-control my-1" id="number" name="cloneableField0[number]" placeholder="N°" required=""> </div>
+                          <div class="col">
+                            <input type="text" class="form-control my-1" id="clientName" name="cloneableField0[clientName]" placeholder="Nome" required=""> </div>
+                          <div class="col-2">
+                            <input type="text" class="form-control my-1" id="clientCity" name="cloneableField0[clientCity]" placeholder="Nome" required=""> </div>
+                            <div class="col-1">
+                            <input type="text" class="form-control my-1" id="clientState" name="cloneableField0[clientState]" placeholder="Estado" required="" size="2" maxlength="2"> </div>
+                          <div class="col-2">
+                            <div class="input-group my-1">
+                              <div class="input-group-prepend">
+                                <div class="input-group-text">R$</div>
+                              </div>
+                              <input type="number" class="form-control" id="freight" name="cloneableField0[freight]" placeholder="Valor" required=""> </div>
+                          </div>
+                          <div class="col-2">
+                            <input type="text" class="form-control my-1" id="orderNumber" name="cloneableField0[orderNumber]" placeholder="Numero" required=""> </div>
+                          <button type="submit" class="btn btn-success" add-btn="true">
+                            <span class="fas fa-fw fa-plus" add-btn="true"></span>
+                          </button>
+                          <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
+                            <i class="fas fa-fw fa-times" remove-btn="true"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+{% endblock %}

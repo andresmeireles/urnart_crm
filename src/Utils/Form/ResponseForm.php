@@ -28,7 +28,7 @@ class ResponseForm implements ResponseFormInterface
         return $this;
     } 
 
-    public function getBodyForm(): string
+    public function getBodyForm(): ?string
     {
         return $this->bodyForm;
     }
@@ -38,9 +38,9 @@ class ResponseForm implements ResponseFormInterface
         return $this->message;
     }
 
-    public function setErrorMessage(array $messages): self 
+    public function setErrorMessage(array $messages): ResponseFormInterface 
     {
-        $this->message = $erroMessage;
+        $this->message = $messages;
 
         return $this;
     }

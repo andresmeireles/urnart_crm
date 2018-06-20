@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "153a1e1c714c72f34c7f2288970cc981",
+    "content-hash": "e20fd516c53673dcb90209a6cd6144af",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2988,6 +2988,50 @@
                 "wkhtmltopdf"
             ],
             "time": "2015-06-30T20:19:22+00:00"
+        },
+        {
+            "name": "wgenial/numeroporextenso",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wgenial/numeroporextenso-php.git",
+                "reference": "7bba3b9eca10bc2cd050c06ed3644823ae157cd8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wgenial/numeroporextenso-php/zipball/7bba3b9eca10bc2cd050c06ed3644823ae157cd8",
+                "reference": "7bba3b9eca10bc2cd050c06ed3644823ae157cd8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "WGenial\\NumeroPorExtenso\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Giovani Generali",
+                    "email": "giovani.generali@gmail.com",
+                    "homepage": "http://www.wgenial.com.br"
+                }
+            ],
+            "description": "Converte numeral em valor por extenso.",
+            "keywords": [
+                "brasil",
+                "extenso",
+                "moeda",
+                "numero",
+                "real"
+            ],
+            "time": "2018-01-12T17:26:34+00:00"
         },
         {
             "name": "zendframework/zend-code",

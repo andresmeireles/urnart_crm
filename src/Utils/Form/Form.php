@@ -12,7 +12,7 @@ class Form
 
     private $message;
 
-    function __construct($FormName)
+    function __construct(string $FormName)
     {
          $FormNameToLower = strtolower($FormName);
 

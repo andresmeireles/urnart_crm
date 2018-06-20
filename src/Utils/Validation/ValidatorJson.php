@@ -13,6 +13,8 @@ class ValidatorJson
 	 */
 	protected static $errors;
 
+	private function __construct() {}
+
 	public static function validate($params, array $validations)
 	{
 		self::$errors = '';

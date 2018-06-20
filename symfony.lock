@@ -221,6 +221,9 @@
     "wemersonjanuario/wkhtmltopdf-windows": {
         "version": "0.12.2.3"
     },
+    "wgenial/numeroporextenso": {
+        "version": "2.0.0"
+    },
     "zendframework/zend-code": {
         "version": "3.3.0"
     },
