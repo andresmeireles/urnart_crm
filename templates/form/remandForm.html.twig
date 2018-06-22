@@ -14,7 +14,7 @@
 </div>
 <div class="row">
 	<div class="col">
-	<form>
+	<form method="POST" action="/form/{{ formName }}" target="_blank">
 		<div class="row">
 			<div class="col-8 col-md-12">
 					<input type="submit" class="btn btn-primary btn-block" value="Criar"> 
@@ -27,7 +27,7 @@
 						<a href="#product" id="product-tab" class="nav-link active text-dark" data-toggle="tab" aria-controls="product" aria-select="true" tab>Produtos</a>
 					</li>
 					<li class="nav-item">
-						<a href="#cheque" id="cheque-tab" class="nav-link text-dark" data-toggle="tab" aria-controls="cheque" aria-select="true" tab>Cheque</a>
+						<a href="#cheque" id="chq-tab" class="nav-link text-dark" data-toggle="tab" aria-controls="cheque" aria-select="true" tab>Cheque</a>
 					</li>
 				</ul>
 
@@ -46,13 +46,13 @@
 											</div>
 											<div class="row">
 												<div class="col-1">
-													<input class="form-control" id="n" name="field[n]" placeholder="N°"> 
+													<input class="form-control" id="number" name="clientNumber" placeholder="N°"> 
 												</div>
 												<div class="col">
-													<input class="form-control" id="clientName" name="field[clientName]" placeholder="Nome">
+													<input class="form-control" id="clientName" name="clientName" placeholder="Nome">
 												</div>
 												<div class="col">
-													<input class="form-control" id="clientCity" name="field[clientCity]" placeholder="Nome"> 
+													<input class="form-control" id="clientCity" name="clientCity" placeholder="Nome"> 
 												</div>
 											</div>
 											<div class="row py-3">
@@ -70,7 +70,7 @@
 															<button type="submit" class="btn btn-success" add-btn="true">
 																<span class="fas fa-fw fa-plus" id="add-btn" add-btn="true"></span>
 															</button>
-															<button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
+															<button type="submit" class="btn mx-1 btn-danger" remove-btn="true" disabled="">
 																<i class="fas fa-fw fa-times" id="remove-btn" remove-btn="true"></i>
 															</button>
 														</div>
@@ -81,58 +81,78 @@
 									</div>
 								</fieldset>
 							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="cheque" role="tabpanel" aria-labelledby="chq-tab">
+						<div class="py-2" id="chq">
+							<div class="col" id="chq-form">
+								<fieldset class="border border-light">
+									<legend class="px-1 bg-light">Devolução de Cheque</legend>
+									<div class="row m-1">
+										<div class="col-md-12 px-4" id="chq-tab">
+											<div class="row">
+												<div class="col-1">N°</div>
+												<div class="col">Cliente</div>
+												<div class="col">Cidade</div>
+											</div>
+											<div class="row">
+												<div class="col-1">
+													<input class="form-control" id="number" name="clientNumber" placeholder="N°"> 
+												</div>
+												<div class="col">
+													<input class="form-control" id="clientName" name="clientName" placeholder="Nome">
+												</div>
+												<div class="col">
+													<input class="form-control" id="clientCity" name="clientCity" placeholder="Nome"> 
+												</div>
+											</div>
+											<div class="row py-3">
+												<div class="col">
+													<fieldset class="border border-light">
+														<legend class="px-1 bg-light" >Informação do Cheque</legend>
+														<div class="row p-1">
+														<div class="col-8">
+															<fieldset class="border border-secondary">
+																<legend class="px-1 bg-secondary">Geral</legend>
+																<div class="col">
+																	<div class="input-group mb-2">
+																		<input type="text" id="chqName" class="form-control" name="chqName" placeholder="Nome no Cheque">
+																	</div>
+																	<div class="input-group mb-2">
+																		<input type="text" class="form-control" id="chqNumber" name="chqNumber" placeholder="Nome no Cheque">
+																	</div>
+																	<div class="input-group mb-2">
+																		<input type="date" class="form-control" id="chqDate" name="chqDate" value="20/12/1992">
+																	</div>
+																</div>
+															</fieldset>
+														</div>
+														<div class="col-4">
+															<fieldset class="border border-secondary">
+																<legend class="px-1 bg-secondary">Outros</legend>
+																<div class="col">
+																	<div class="input-group mb-2">
+																		<div class="input-group-prepend">
+																			<div class="input-group-text">R$</div>
+																		</div>
+																	<input type="number" class="form-control" id="value" name="chqValue" placeholder="Valor">
+																	</div>
+																	<div class="input-group mb-2">
+																		<input type="text" class="form-control" id="bank" name="chqBank" placeholder="Banco">
+																	</div>
+																</div>
+															</fieldset>
+														</div>
+														</div>
+													</fieldset>
+												</div>
+											</div>
 										</div>
 									</div>
-									<div class="tab-pane fade" id="cheque" role="tabpanel" aria-labelledby="cheque-tab">
-										<!--
-													<div class="py-2" id="chq">
-														<fieldset class="border border-light">
-																	<legend class="px-1 bg-light">Devolução de Cheque</legend>
-																	<div class="row m-1">
-																		<div class="col-md-12">
-																			<div class="input-group w-100" id="cleneableField">
-																				<div class="col-1">N°</div>
-																				<div class="col">Cliente</div>
-																				<div class="col-2">Cidade</div>
-																				<div class="col">Frete</div>
-																				<div class="col">N° Pedido</div>
-																				<div class="col-1">&nbsp;</div>
-																			</div>
-																			<div class="input-group my-1 w-100" >
-																				<div class="col-1">
-																					<input type="hidden" value="1">
-																					<input type="text" class="form-control my-1" id="inlineFormInputGroup" placeholder="N°"> 
-																				</div>
-																				<div class="col">
-																					<input type="text" class="form-control my-1" placeholder="Nome" id="inlineFormInputGroup"> 
-																				</div>
-																				<div class="col-2">
-																					<input type="text" class="form-control my-1" placeholder="Nome" id="inlineFormInputGroup"> 
-																				</div>
-																				<div class="col">
-																					<div class="input-group">
-																						<div class="input-group-prepend">
-																							<div class="input-group-text">R$</div>
-																						</div>
-																						<input type="number" class="form-control" placeholder="Valor"> 
-																					</div>
-																				</div>
-																				<div class="col">
-																					<input type="text" class="form-control my-1" placeholder="Valor" id="inlineFormInputGroup">
-																				</div>
-																				<button type="submit" class="btn btn-success" add-btn="true">
-																					<span class="fas fa-fw fa-plus" add-btn="true"></span>
-																				</button>
-																				<button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
-																					<i class="fas fa-fw fa-times" remove-btn="true"></i>
-																				</button>
-																			</div>
-																		</div>
-																	</div>
-																</fieldset>
-															</div>
-														-->
-														</div>
+								</fieldset>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -1,20 +1,29 @@
-var prodForm = document.querySelector('#prod-form');
+document.addEventListener('DOMContentLoaded', function () {	
+	var prod = document.querySelector('#prod');	
+	var pForm = prod.innerHTML;
 
-document.addEventListener('DOMContentLoaded', function () {
-	var xForm = Object.assign({}, prodForm);
+	var chq = document.querySelector('#chq');
+	var cForm = chq.innerHTML;
+
+	var chqForm = document.querySelector('#chq-form');
+	chqForm.remove();
 
 	document.addEventListener('click', function (el) {
 
 		if (el.target.id == 'product-tab') {
-			var prod = document.querySelector('#prod');
-			prod.after(xForm);
-			alert('Apertou no tab');
+			var chqF = document.querySelector('#chq-form');
+			chqF.remove();
+
+			var prodF = document.querySelector('#prod');
+			prodF.innerHTML = pForm;
 		}
 
-		if (el.target.id == 'cheque-tab') {
-			var prod = document.querySelector('#prod-form');
-			prod.remove();
-			console.log(prod);
+		if (el.target.id == 'chq-tab') {
+			var chq = document.querySelector('#chq');
+			chq.innerHTML = cForm;
+
+			var prodF = document.querySelector('#prod-form');
+			prodF.remove();
 		}
 	});
 

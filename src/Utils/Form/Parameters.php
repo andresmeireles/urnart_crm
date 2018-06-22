@@ -33,11 +33,8 @@ class Parameters
 		return $this->nonClonedParameters;
 	}
 
-	public function getClonedParameters(): array
+	public function getClonedParameters(): ?array
 	{
-		if ($this->clonedParameters == []) {
-			throw new \Exception('Não existem parametros clonados');
-		}
 		return $this->clonedParameters;
 	}
 }
