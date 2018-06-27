@@ -1,0 +1,91 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Retirada de Urnas{% endblock %}
+
+{% block customJS %}
+<script src="/assets/js/form/cloneField.js"></script>
+<script>
+$(function () {
+    $   ('#date').val($.format.date(new Date(), 'dd MM yyyy'));
+});
+</script>
+{% endblock %}
+
+{% block content %}
+    <div class="col py-3 px-4">
+        <div class="col-12">
+          <h1 class="display-3">Autorizada de Retirada</h1>
+          <hr> </div>
+        <div class="row">
+          <div class="col">
+            <form method="POST" action="/form/{{ formName }}" target="_blank">
+              <div class="row">
+                <div class="col">
+                  <input type="submit" class="btn btn-primary btn-block" value="Criar Autorização de Retirada"> 
+                </div>
+              </div>
+                  <div class="my-1">
+                  <fieldset class="border border-light">
+                    <legend class="px-1 bg-light">Informações</legend>
+                    <div class="row m-1">
+                      <div class="col-md-12">
+                        <div class="input-group my-1 w-100">
+                          <div class="col-8">
+                            <input type="text" class="form-control" id="clientName" name="clientName" placeholder="Nome do Cliente" required>
+                          </div>
+                          <div class="col-4">
+                            <input type="date" class="form-control" id="date">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                  </div>
+              <div class="row py-2">
+                <div class="col">
+                  <fieldset class="border border-light">
+                    <legend class="px-1 bg-light">Produtos</legend>
+                    <div class="row m-1">
+                      <div class="col-md-12">
+                        <div class="input-group w-100">
+                          <div class="col-7">Nome do Produto</div>
+                          <div class="col-3"> Quantidade </div>
+                        </div>
+                        <div class="input-group my-1 w-100" id="cloneableField">
+                          <div class="col-7">
+                            <input type="hidden" input-number="true" value="1">
+                            <input type="text" class="form-control my-1" placeholder="Nome" id="prdName" name="cloneableField0[prodName]" required> </div>
+                          <div class="col-3">
+                            <input type="text" class="form-control my-1" placeholder="Cidade" id="amount" name="cloneableField0[amount]" required> </div>
+                          <div class="col">
+                          <button type="submit" class="btn btn-success" add-btn="true">
+                            <span class="fas fa-fw fa-plus" add-btn="true"></span>
+                          </button>
+                          <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
+                            <i class="fas fa-fw fa-times" remove-btn="true"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <div class="my-1">
+                  <fieldset class="border border-light">
+                    <legend class="px-1 bg-light">Observações</legend>
+                    <div class="row m-1">
+                      <div class="col-md-12">
+                        <div class="input-group my-1 w-100">
+                          <div class="col">
+                            <textarea class="form-control" placeholder="Obeservação aqui" id="observation" name="observation"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+{% endblock %}

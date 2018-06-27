@@ -20,7 +20,7 @@ class ReceiptFormCreator implements CreateFormInterface
 		$response = new ResponseForm();
 
 		$clonedParameters = $parameters->getClonedParameters();
-
+		
 		foreach ($clonedParameters as $parameter) {
 			ValidatorJson::validate($parameter, [
 				'number' => v::notEmpty()->numeric()->positive(),
@@ -79,8 +79,6 @@ class ReceiptFormCreator implements CreateFormInterface
 
 		foreach ($parameters as $param) {
 			$freightFloat = number_format($param['price'], 2, '.', '');
-			echo $freightFloat;
-			die();
 			$number = $extenseNumber->converter($freightFloat);
 			$freightPrice = number_format($param['price'], 2, ',', '.');
 			$body .= '<div id="page">';

@@ -13,10 +13,4 @@ interface CreateFormInterface
      * @return ResponseFormInterface  Retorna um objeto de resposta
      */
     public function createForm(Parameters $parameters): ResponseFormInterface;
-
-    /**
-     * Return a message for user
-     * @return array Array with the messages for the user
-     */
-    public function getMessage();
 }

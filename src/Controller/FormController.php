@@ -24,8 +24,8 @@ class FormController extends Controller
     public function createReport(Request $req, string $formName)
     {
         $dir = opendir(__DIR__.'/../../templates/form/');
-
-        while (($file = readdir($dir)) !== false) {
+        
+        while ((readdir($dir)) !== false) {
             if (file_exists(__DIR__.'/../../templates/form/'.$formName.'Form.html.twig')) {
                 if ($req->request->all() != []) {
                     $parameters = $req->request->all();

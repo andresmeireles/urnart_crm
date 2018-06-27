@@ -5,15 +5,15 @@ namespace App\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class StorageController extends Controller
+class OrderController extends Controller
 {
     /**
-     * @Route("/storage", name="storage")
+     * @Route("/order", name="order")
      */
     public function index()
     {
-        return $this->render('storage/index.html.twig', [
-            'controller_name' => 'StorageController',
+        return $this->render('order/index.html.twig', [
+            'controller_name' => 'OrderController',
         ]);
     }
 }
