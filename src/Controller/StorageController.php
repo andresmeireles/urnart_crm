@@ -16,4 +16,20 @@ class StorageController extends Controller
             'controller_name' => 'StorageController',
         ]);
     }
+
+    /**
+     * @Route("/storage/feedstock", name="feedstock")
+     */
+    public function feedstock()
+    {
+        
+    }
+
+    /**
+     * @Route("/storage/prodStock", name="showProd")
+     */
+    public function prodStock()
+    {
+
+    }
 }

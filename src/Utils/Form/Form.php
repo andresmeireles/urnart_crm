@@ -5,6 +5,7 @@ namespace App\Utils\Form;
 use \Knp\Snappy\Pdf;
 use App\Utils\Form\Parameters;
 use App\Utils\Form\Interfaces\ResponseFormInterface;
+use Symfony\Component\Yaml\Yaml;
 
 class Form 
 {
@@ -17,8 +18,8 @@ class Form
          $FormNameToLower = strtolower($FormName);
 
         if (file_exists(__DIR__.'/formList.yaml')) {
-            $Form = yaml_parse_file(__DIR__.'/formList.yaml');
-
+            $Form = Yaml::parse(file_get_contents(__DIR__.'/formList.yaml'));
+            
             if (!array_key_exists($FormNameToLower, $Form)) {
                 throw new \Exception('Form '. $FormNameToLower.' not found.');
             }
@@ -31,7 +32,6 @@ class Form
 
     public function create(array $parameters): ResponseFormInterface
     {
-
         foreach ($parameters as $key => $value) { 
             if (is_array($value)) {
                 $parameters[$key] = array_map(function ($parameter) {
@@ -43,7 +43,8 @@ class Form
 
             $parameters[$key] = ltrim(trim($value));
         }
-
+        dump($parameters);
+        die();
         return $this->FormFactory->createForm(new Parameters($parameters));
     }
 

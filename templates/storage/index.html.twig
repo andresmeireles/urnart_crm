@@ -1,20 +1,122 @@
-{% extends 'base.html.twig' %}
+{% extends 'index.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Estoques{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/StorageController.php'|file_link(0) }}">src/Controller/StorageController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/storage/index.html.twig'|file_link(0) }}">templates/storage/index.html.twig</a></code></li>
-    </ul>
+{% block content %}
+<div class="col p-3">
+        <h1>Estoques</h1>
+        <hr>
+    <div class="row px-2">
+        <div class="m-1">
+            <div class="card bg-primary" style="width: 14rem;">
+            <div class="card-body">
+                <h5 class="card-title"><b>Matéria Prima</b></h5>
+                <a href="#" class="card-link text-dark">Detalhes</a>
+            </div>
+            </div>
+        </div>
+        <div class="m-1">
+            <div class="card bg-secondary" style="width: 14rem;">
+            <div class="card-body">
+                <h5 class="card-title"><b>Produtos</b></h5>
+                <a href="#" class="card-link text-dark">Detalhes</a>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="row px-2">
+        <div class="col">
+            <div class="mx-1 my-3">
+            <h2>Resumo
+            <hr></h2>
+            <div class="col">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link text-dark active" id="feedstock-tab" data-toggle="tab" href="#feedstock" role="tab" aria-controls="home" aria-selected="true"><b>Matéria Prima</b></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" id="product-tab" data-toggle="tab" href="#products" role="tab" aria-controls="profile" aria-selected="false"><b>Produção</b></a>
+                </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="feedstock" role="tabpanel" aria-labelledby="feedstock-tab">
+                    <div class="m-2">
+                        <div class="row my-2 mx-0">
+                            <div class="mx-2"><i class="badge badge-warning">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto precisa de atenção</div><div class="mx-2"><i class="badge badge-danger">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto em quantidade mínima</div>
+                        </div>
+                        <table class="table table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th style="width: 10%">#</th>
+                                    <th style="width: 50%">Nome</th>
+                                    <th style="width: 30%">Quantidade</th>
+                                    <th style="width: 10%">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row"><b>1</b></th>
+                                    <td><b>Mark</b></td>
+                                    <td><b>Otto</b></td>
+                                    <td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
+                                </tr>
+                                <tr class="bg-danger">
+                                    <th scope="row"><b>1</b></th>
+                                    <td><b>Mark</b></td>
+                                    <td><b>Otto</b></td>
+                                    <td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
+                                </tr>
+                                <tr class="bg-warning">
+                                    <th scope="row"><b>1</b></th>
+                                    <td><b>Mark</b></td>
+                                    <td><b>Otto</b></td>
+                                    <td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
+                    <div class="m-2">
+                        <div class="row my-2 mx-0">
+                            <div class="mx-2"><i class="badge badge-warning">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto precisa de atenção</div><div class="mx-2"><i class="badge badge-danger">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto em quantidade mínima</div>
+                        </div>
+                        <table class="table table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th style="width: 10%">#</th>
+                                    <th style="width: 50%">Nome</th>
+                                    <th style="width: 30%">Quantidade</th>
+                                    <th style="width: 10%">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row"><b>1</b></th>
+                                    <td><b>Mark</b></td>
+                                    <td><b>Otto</b></td>
+                                    <td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
+                                </tr>
+                                <tr class="bg-danger">
+                                    <th scope="row"><b>1</b></th>
+                                    <td><b>Mark</b></td>
+                                    <td><b>Otto</b></td>
+                                    <td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
+                                </tr>
+                                <tr class="bg-warning">
+                                    <th scope="row"><b>1</b></th>
+                                    <td><b>Mark</b></td>
+                                    <td><b>Otto</b></td>
+                                    <td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
