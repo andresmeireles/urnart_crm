@@ -1,4 +1,5 @@
 import './src/sidebarAction.js';
+import './src/globals.js';
 import './src/form/cloneField.js';
 import './src/form/remand.js';
 
@@ -12,4 +13,5 @@ var dateMask = new IMask(
 	{
 		mask: Date,
 		lazy: false,
-	});
+	}
+);

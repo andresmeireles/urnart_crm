@@ -3,6 +3,8 @@
 namespace App\Utils\Form;
 
 use App\Utils\Form\Interfaces\ResponseFormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class ResponseForm implements ResponseFormInterface
 {
@@ -48,5 +50,12 @@ class ResponseForm implements ResponseFormInterface
     public function getError(): ?array
     {
         return $this->message;
+    }
+
+    public function redirectError(string $route, array $message)
+    {
+        $session = new Session;
+        $session->getFlashBag()->set('error', $message);
+        return new RedirectResponse('/form/'.$route);
     }
 }

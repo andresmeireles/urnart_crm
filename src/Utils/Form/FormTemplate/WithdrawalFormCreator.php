@@ -16,22 +16,24 @@ class WithdrawalFormCreator implements CreateFormInterface
         $clonedParams = $parameters->getClonedParameters();
         $nonCloned = $parameters->getNonClonedParameters();
 
-        ValidatorJson::validate($clonedParams, [
-            'amount' => v::notEmpty()->numeric()->positive()->noWhiteSpace(),
-            'prodName' => v::notEmpty()->alpha()
-        ]);
+        foreach ($clonedParams as $clone) {
+            ValidatorJson::validate($clone, [
+                'amount' => v::notEmpty()->numeric()->positive()->noWhitespace(),
+                'prodName' => v::notEmpty()->alpha()
+            ]);   
+        }
 
         ValidatorJson::validate($nonCloned, [
-            'clientName' => v::notEmpty()->alpha()
+            'clientName' => v::notEmpty()->numeric()
         ]);
-
-        if (ValidatorJson::getErrors()) {
-            $response = ValidatorJson::getErrors();
-            return new ResponseForm($response);
-        }
 
         $response = $this->createBody($parameters);
         return new ResponseForm($response);
+    }
+
+    private function getDate(\DateTime $date): string 
+    {
+        return $date->format('d/m/Y');
     }
 
     private function createBody (Parameters $parameters): string 
@@ -47,12 +49,14 @@ class WithdrawalFormCreator implements CreateFormInterface
         </script>
         <style>
         * { font: 18px "Arial";}
-        #page { height: 21cm;  width: 29.7cm; border: 1px solid black }
-        #half-page { width: 29cm; height: 10cm; margin:10px;}
+        #page { height: 29.7cm;  width: 21cm; border: 1px solid black }
+        #half-page { width: 21cm; height: 14cm; }
         .center { text-align: center }
         
         .table { width: 100%; border: 2px solid black}
         
+        .titulo {font-size: 29px; margin-bottom: 10px}
+
         #head th,
         #bhead th,
         #footer td,
@@ -64,13 +68,13 @@ class WithdrawalFormCreator implements CreateFormInterface
         
         <div id="page">
         <div id="half-page">
-          <div class="center">Autorização de Retirada de Urnas</div>
+          <div class="center titulo">Autorização de Retirada de Urnas</div>
           <table cellspacing=0 class="table">
             <tr id="head">
               <th>Cliente</th>
               <th>'.$nonCloned['clientName'] .'</th>
               <th>Data</th>
-              <th>10/10/2010</th>
+              <th>'. ($nonCloned['date'] == '__.__.____' ? $this->getDate(new \DateTime('now')) : $this->getDate(new \DateTime($nonCloned['date']))) .'</th>
             </tr>
             <tr id="bHead">
               <th>Quantidade</th>

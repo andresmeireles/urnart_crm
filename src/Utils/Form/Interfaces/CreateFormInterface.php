@@ -12,5 +12,5 @@ interface CreateFormInterface
      * @param  Parameters $parameters Objeto com parametros clonados e não clonados
      * @return ResponseFormInterface  Retorna um objeto de resposta
      */
-    public function createForm(Parameters $parameters): ResponseFormInterface;
+    public function createForm(Parameters $parameters);
 }

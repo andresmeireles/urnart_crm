@@ -2,6 +2,17 @@
 
 {% block title %}Retirada de Urnas{% endblock %}
 
+{% block errorMessage %}
+  {% for message in app.flashes('error') %}
+    <div class="alert alert-danger alert-dismissible fade show flash">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endfor %}
+{% endblock %}
+
 {% block content %}
     <div class="col py-3 px-4">
         <div class="col-12">
@@ -9,7 +20,7 @@
           <hr> </div>
         <div class="row">
           <div class="col">
-            <form method="POST" action="/form/{{ formName }}" target="_blank">
+            <form method="POST" action="/form/{{ formName }}">
               <div class="row">
                 <div class="col">
                   <input type="submit" class="btn btn-primary btn-block" value="Criar Autorização de Retirada"> 
@@ -22,7 +33,7 @@
                       <div class="col-md-12">
                         <div class="input-group my-1 w-100">
                           <div class="col-8">
-                            <input type="text" class="form-control" id="clientName" name="clientName" placeholder="Nome do Cliente" required>
+                            <input type="text" class="form-control" id="clientName" name="clientName" placeholder="Nome do Cliente">
                           </div>
                           <div class="col-4">
                             <input type="text" class="form-control f-date" id="date" name="date">
@@ -47,7 +58,7 @@
                             <input type="hidden" input-number="true" value="1">
                             <input type="text" class="form-control my-1" placeholder="Nome" id="prdName" name="cloneableField0[prodName]" required> </div>
                           <div class="col-3">
-                            <input type="text" class="form-control my-1" placeholder="Cidade" id="amount" name="cloneableField0[amount]" required> </div>
+                            <input type="text" class="form-control my-1" placeholder="Numero" id="amount" name="cloneableField0[amount]" required> </div>
                           <div class="col">
                           <button type="submit" class="btn btn-success" add-btn="true">
                             <span class="fas fa-fw fa-plus" add-btn="true"></span>

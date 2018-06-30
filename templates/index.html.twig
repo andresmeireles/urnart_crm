@@ -104,8 +104,9 @@
       </div>
     </div>
       <div class="col py-3 px-4" id="content">
+        {% block errorMessage %}{% endblock %}
         <div class="row">
-      	{% block content %}{% endblock %}
+        {% block content %}{% endblock %}
         </div>
       </div>
     </div>

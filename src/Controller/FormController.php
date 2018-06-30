@@ -6,6 +6,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Cookie;
+use App\Utils\Validation\ValidatorJson;
 use App\Utils\Form\Form;
 
 class FormController extends Controller
@@ -23,6 +26,8 @@ class FormController extends Controller
      */
     public function createReport(Request $req, string $formName)
     {
+        $session = new Session;
+        $session->start();
         $dir = opendir(__DIR__.'/../../templates/form/');
         
         while ((readdir($dir)) !== false) {
@@ -31,21 +36,24 @@ class FormController extends Controller
                     $parameters = $req->request->all();
                     $form = new Form($formName);  
 
-                    if (!$form->create($parameters)) {
+                    $body = $form->create($parameters);
 
-                        $this->get('session')->set('message', $form->getMessage());
-                        return $this->redirectToRoute('form/'.$formName.'Form.html.twig');
+                    if ($form->fail()) {
+                        $session->set('error', $form->getMessage());
+                        return $this->redirect('/form/'.$formName);
                     }
 
-                    $form->createAndShow($parameters);
+                    $form->show($body);
                 }
 
-                if ($this->get('session')->get('message')) {
-                    $this->addFlash(
-                        'message',
-                        $this->get('session')->get('message')[0]
-                    );
-                    $this->get('session')->remove('message');
+                if ($session->get('error')) {
+                    foreach ($session->get('error') as $message) {
+                        $this->addFlash(
+                            'error',
+                            $message
+                        );
+                    }
+                    $session->remove('error');
                 }
 
                 return $this->render('form/'.$formName.'Form.html.twig', [

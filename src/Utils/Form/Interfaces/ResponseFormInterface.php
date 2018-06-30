@@ -31,4 +31,7 @@ interface ResponseFormInterface
      * Return the array messsage
      */
     public function getMessage();
+
+
+    public function redirectError(string $route, array $message);
 }

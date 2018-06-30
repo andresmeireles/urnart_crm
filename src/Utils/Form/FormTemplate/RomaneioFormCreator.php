@@ -31,10 +31,6 @@ class RomaneioFormCreator implements CreateFormInterface
 			]);
 		}
 
-		if (ValidatorJson::getErrors()) {
-			$this->getMessage();
-		}
-
 		if ($parameters->getNonClonedParameters()['type'] == 0) {
 			$response = $this->createTravelRomaneio($clonedParameters);
 			return new ResponseForm($response);

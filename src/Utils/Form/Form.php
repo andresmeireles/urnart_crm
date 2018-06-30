@@ -2,20 +2,22 @@
 
 namespace App\Utils\Form;
 
-use \Knp\Snappy\Pdf;
 use App\Utils\Form\Parameters;
 use App\Utils\Form\Interfaces\ResponseFormInterface;
+use App\Utils\Validation\ValidatorJson; 
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpFoundation\Request;
+use Knp\Snappy\Pdf;
 
 class Form 
 {
     private $FormFactory;
-
-    private $message;
+    private $formName;
 
     function __construct(string $FormName)
     {
-         $FormNameToLower = strtolower($FormName);
+        $this->formName = $FormName;
+        $FormNameToLower = strtolower($FormName);
 
         if (file_exists(__DIR__.'/formList.yaml')) {
             $Form = Yaml::parse(file_get_contents(__DIR__.'/formList.yaml'));
@@ -30,7 +32,7 @@ class Form
         throw new \Exception('List of Forms not found, create a FormList.yaml with reoprt names in Forms folder.'); 
     }
 
-    public function create(array $parameters): ResponseFormInterface
+    public function create(array $parameters)
     {
         foreach ($parameters as $key => $value) { 
             if (is_array($value)) {
@@ -43,14 +45,29 @@ class Form
 
             $parameters[$key] = ltrim(trim($value));
         }
-        dump($parameters);
-        die();
-        return $this->FormFactory->createForm(new Parameters($parameters));
+
+        $formResponse = $this->FormFactory->createForm(new Parameters($parameters));
+
+        if (ValidatorJson::getErrors()) {
+            return $this->fail();
+        }
+
+        return $formResponse;
     }
 
     public function save(CreateFormInterface $Form): bool
     {
           
+    }
+
+    public function fail()
+    {
+        return true;
+    }
+
+    public function getMessage()
+    {
+        return ValidatorJson::getErrors();
     }
 
     public function show(ResponseFormInterface $Form): string
