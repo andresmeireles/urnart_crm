@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use App\Utils\Validation\ValidatorJson;
 use App\Utils\Form\Form;
 
@@ -28,8 +27,8 @@ class FormController extends Controller
     {
         $session = new Session;
         $session->start();
-        $dir = opendir(__DIR__.'/../../templates/form/');
         
+        $dir = opendir(__DIR__.'/../../templates/form/');
         while ((readdir($dir)) !== false) {
             if (file_exists(__DIR__.'/../../templates/form/'.$formName.'Form.html.twig')) {
                 if ($req->request->all() != []) {
@@ -42,7 +41,7 @@ class FormController extends Controller
                         $session->set('error', $form->getMessage());
                         return $this->redirect('/form/'.$formName);
                     }
-
+                    
                     $form->show($body);
                 }
 

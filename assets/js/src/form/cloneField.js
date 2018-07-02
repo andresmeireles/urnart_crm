@@ -56,10 +56,10 @@ $(function () {
     document.addEventListener('click', function (el) {
         if (el.target.id == 'check') {
             if ( el.target.checked ) {
-                el.target.parentNode.querySelector('#checkValue').value = 1;
+                el.target.parentNode.querySelector('#check').value = 1;
                 return true;
             } 
-            el.target.parentNode.querySelector('#checkValue').value = 0;
+            el.target.parentNode.querySelector('#check').value = 0;
         }
     });
 
@@ -103,8 +103,7 @@ $(function () {
            		cloneElInputs[c].value = cloneElInputs[c].defaultValue;
            	}
 
-			cloneEl.querySelector('[input-number]').value = iNumber;
-			cloneEl.querySelector('[input-number]').removeAttribute('name')           	
+			cloneEl.querySelector('[input-number]').value = iNumber;          	
 
 			// cria o campo novo
             node.after(cloneEl);

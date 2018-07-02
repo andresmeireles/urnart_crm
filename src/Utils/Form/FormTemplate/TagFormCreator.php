@@ -11,118 +11,96 @@ use \Respect\Validation\Validator as v;
 
 class TagFormCreator implements CreateFormInterface
 {
-	/**
-	 * Storage the error messages, if exists
-	 * @var array
-	 */
-	private $error;
-
 	public function createForm(Parameters $params): ResponseFormInterface 
 	{
 		$parameters = $params->getClonedParameters();
 
 		$response = new ResponseForm();
 
-		$image = file_get_contents(__DIR__.'\etiqueta/logo');
+		$image = file_get_contents(__DIR__.'/etiqueta/logo');
 
-		$body = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-		<HTML>
-		<HEAD>
-		<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<META http-equiv="X-UA-Compatible" content="IE=8">
-		<TITLE>Etiquetas</TITLE>
-		<META name="generator" content="BCL easyConverter SDK 5.0.08">
-		<script type="text/javascript">
-		document.addEventListener("DOMContentLoaded", function () {
-			window.print();
-			});
-			</script>
-		<STYLE type="text/css">
+		$body = '<style>
+			
+		.tag {width: 100%; margin: 10 0 17 0;}
+		.img { width: 23%;}
+		img { max-width: 100%; 
+			max-height: 100%; }
 
-		body {margin-top: 0px;margin-left: 0px;}
+			.clear { clear: both; }
+			.right { float: right }
+			.left { float: left }
 
-		#page_1 {position:relative; overflow: hidden;margin: 0px 0px 0px 0px;padding: 0px;border: none;width: 762px;}
-		#page_1 #id_1 {border:none;margin: 0px 0px 0px 0px;padding: 0px;border:none;width: 730px;overflow: hidden;}
+			.font-sz0 { font-size: 40px }
+			.font-sz1 { font-size: 35px }
+			.font-sz2 { font-size: 25px }
 
-		.ft0{font: bold 31px "Arial";line-height: 55px;}
-		.ft1{font: 53px "Arial";line-height: 60px;}
-		.ft2{font: 1px "Arial";line-height: 28px;}
-		.ft3{font: 23px "Arial";line-height: 26px;}
-		.ft4{font: 1px "Arial";line-height: 27px;}
-		.ft5{font: bold 54px "Arial";line-height: 55px;}
+			.c-0 { width: 21%; height: 4%}
+			.c-1 { width: 65%; height: 4%}
+			.c-2 { width: 12%; height: 5%}
 
-		.p0{text-align: left;margin-top: 0px;margin-bottom: 0px;}
-		.p1{text-align: right;padding-left: 30px;margin-top: 0px;margin-bottom: 0px;}
-		.p2{text-align: left;margin-top: 0px;margin-bottom: 0px;}
-		.p3{text-align: left;margin-top: 0px;margin-bottom: 0px;}
+			.cb-0 { width: 21%; height: 2%}
+			.cb-1 { width: 65%; height: 2%}
+			.cb-2 { width: 12%; height: 2%}
 
-		.td0{padding: 0px;margin: 0px;vertical-align: bottom;}
-		.td1{padding: 0px;margin: 0px;vertical-align: bottom;}
-		.td2{border-bottom: #000000 1px solid;padding: 0px;margin: 0px;vertical-align: bottom;}
-		.td3{border-bottom: #000000 1px solid;padding: 0px;margin: 0px;vertical-align: bottom;}
-		.td5{padding: 0px;margin: 0px;width: 120px;vertical-align: bottom;}
+			.center { text-align: center }
 
-		.tr0{height: 70px;}
-		.tr1{height: 30px;}
-
-		.t0{width: 730px;font: bold 47px "Arial";}
-
-		</STYLE>
-		</HEAD>
-		<BODY>
-		<DIV id="page_1">
-		<DIV id="id_1">
-		<TABLE cellpadding=0 cellspacing=0 class="t0">';
-
-		foreach ($parameters as $param) {
-			if (!$this->validation($param)) {
-				return $response->setErrorMessage(ValidatorJson::getMessage());     
+			.bottom .clear {
+				border-bottom: 1px solid black;
+				padding-top: 6px;
 			}
 
-			for ($c = 0; $c < $param['amount']; $c++) {
-				$count = $c;
-				$count++;
-				$body .= '<TR>
-				<td class="tr0 td5"><img src="'. $image .'" width="90px"></td>
-				<TD class="tr0 td0"><P class="p0 '. (($param['city'] != "") ? 'ft0' : "ft5") .'">'. $param['name'] .'</P></TD>
-				<TD class="tr0 td1"><P class="p1 ft1">'. ( $param['check'] == 0 ? $count : ceil($count/2) ) .'</P></TD>
-				</TR>
-				<TR>
-				<TD class="tr1 td2"><P class="p2 ft2">&nbsp;</P></TD>
-				<TD class="tr1 td2"><P class="p2 ft3">'. $param['city'] .'</P></TD>
-				<TD class="tr1 td3"><P class="p1 ft3">VOL. '. ($param['check'] == 0 ? $param['amount'] : ceil($param['amount']/2)) .'</P></TD>
-				</TR>';
+			</style>
+
+			<div id="page">';
+
+			foreach ($parameters as $param) {
+
+				for ($c = 0; $c < $param['amount']; $c++) {
+					$count = $c;
+					$count++;
+					
+					if ($c == 10) {
+						$body .= '</div><div id="page">';
+					} 
+
+					$body .= '<div class="tag">
+					<div class="top">
+					<div class="img left c-0">
+					<img src="'. $image .'">
+					</div>
+					<div class="left c-1"><span class="font-sz1">'. $param['name'] .'</span></div>
+					<div class="right c-2 center"><span class="font-sz0">'. ( isset($param['check']) ? ceil($count/2) : $count ) .'</span></div>
+					</div>
+					<div class="clear"></div>
+					<div class="bottom">
+					<div class="left cb-0">&nbsp;</div>
+					<div class="left cb-1"><span class="font-sz2">'. $param['city'] .'</span></div>
+					<div class="right center cb-2"><span class="font-sz2">VOL. '. ( isset($param['check']) ? ceil($param['amount']/2) : $param['amount']) .'</span></div>    
+					<div class="clear"></div>    
+					</div>
+					</div>';
+				}
 			}
+
+			$body .= '</div>';
+
+			$p = $response->setResponse($body);
+			return $p;
 		}
 
-		$body .= '</TABLE>
-		</DIV>
-		</DIV>
-		</BODY>
-		</HTML>';
+		private function validation(array $params): bool
+		{
+			ValidatorJson::validate($params, [
+				'name' => v::notEmpty(),
+				'city' => v::optional(v::notEmpty()),
+				'amount' => v::not(v::negative())->notEmpty(),
+				'check' => v::optional(v::boolVal())
+			]);
 
-		$p = $response->setResponse($body);
-		return $p;
-	}
+			if (ValidatorJson::getErrors()) {
+				return false;
+			}
 
-	private function validation(array $params): bool
-	{
-		ValidatorJson::validate($params, [
-			'name' => v::notEmpty(),
-			'city' => v::optional(v::notEmpty()),
-			'amount' => v::not(v::negative())->notEmpty(),
-			'check' => v::optional(v::boolVal())
-		]);
-
-		if (ValidatorJson::getErrors()) {
-			return false;
+			return true;
 		}
-
-		return true;
 	}
-
-	public function getMessage()
-	{
-
-	}
-}

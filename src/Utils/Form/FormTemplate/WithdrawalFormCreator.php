@@ -24,7 +24,7 @@ class WithdrawalFormCreator implements CreateFormInterface
         }
 
         ValidatorJson::validate($nonCloned, [
-            'clientName' => v::notEmpty()->numeric()
+            'clientName' => v::notEmpty()->alpha()
         ]);
 
         $response = $this->createBody($parameters);

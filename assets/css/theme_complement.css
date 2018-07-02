@@ -2,3 +2,8 @@ a .noline{text-decoration: none !important;}
 .noline a:hover {text-decoration: none !important;
     color: white;        
 }   
+
+.modal-custom {
+	width: 80% !important;
+    margin: 1.75rem auto;
+}
