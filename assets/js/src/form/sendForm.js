@@ -3,10 +3,13 @@ document.addEventListener('DOMContentLoaded', function () {
 	routeUrl = routeUrl.getAttribute('action');
 
 	document.addEventListener('click', function (el) {
+		if (document.querySelector('#modal')) {
+			document.querySelector('#modal').remove();
+		}
+
 		if (el.target.id == 'submit') {
 			var form = document.querySelector('form');
 			let formInfo = new FormData(form);
-			//el.preventDefault();
 			axios({
 				method: 'post',
 				url: routeUrl,
@@ -17,31 +20,22 @@ document.addEventListener('DOMContentLoaded', function () {
 				var form = createFormModal(body);
 				var doc = document.querySelector('body');
 				doc.innerHTML += form;
-				var rmv = document.querySelector('[data-toggle]');
-				rmv.id="show";
-				console.log(form, body);
+				openModal();
 			});
 		}
 	});
 
 	var createFormModal = function (body) {
 		var content = `
-		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-custom" role="document">
-		<div class="modal-content">
-		<div class="modal-header">
-		<h5 class="modal-title">Formulario Para Impressão</h5>
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-		</button>
+		<div class="d-none py-4" id="modal">
+		<div class="card">
+		<div class="card-header">Formulário para impressão <span class="f-right">Nº de Paginas: <b class="total"></b></span></div>
+		<div class="card-body fitable">
+		<div class="card-text fix-height" id="printable">`+ body +`</div>
 		</div>
-		<div class="modal-body">
-		`+ body +`
-		</div>
-		<div class="modal-footer">
-		<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-		<button type="button" class="btn btn-primary">Imprimir</button>
-		</div>
+		<div class="card-footer text-muted">
+		<button class="btn btn-danget">Fechar</button>
+		<button class="btn btn-primary" onclick="printForm()">Imprimir</button>
 		</div>
 		</div>
 		</div>`;

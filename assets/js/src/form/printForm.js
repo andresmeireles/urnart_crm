@@ -1,3 +1,8 @@
-document.addEventListener('DOMContentLoaded', function () {
-	window.print();
-})
+module.exports = function () {
+	$.print('#printable', {
+		globalStyles: false,
+		mediaPrint: true,
+	});
+
+	$.fancybox.close();
+}

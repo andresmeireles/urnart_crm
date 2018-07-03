@@ -1,0 +1,20 @@
+#page { width: 21cm; height:29.7cm; padding: 10px 10px 30px 10px; margin: 0px 0px 37.5px 0px;}
+img { max-width: 100%; max-height: 100%; }
+
+.fit { display: inline-block }	
+.tag {width: 100%; margin: 10 0 17 0;}
+.img { width: 23%;}
+.clear { clear: both; }
+.right { float: right }
+.left { float: left }
+.font-sz0 { font-size: 40px }
+.font-sz1 { font-size: 35px }
+.font-sz2 { font-size: 25px }
+.c-0 { width: 21%; height: 4%}
+.c-1 { width: 65%; height: 4%}
+.c-2 { width: 12%; height: 5%}
+.cb-0 { width: 21%; height: 2%}
+.cb-1 { width: 65%; height: 2%}
+.cb-2 { width: 12%; height: 2%}
+.center { text-align: center }
+.bottom .clear { border-bottom: 1px solid black; padding-top: 6px;}

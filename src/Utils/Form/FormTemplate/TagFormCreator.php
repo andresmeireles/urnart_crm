@@ -19,38 +19,58 @@ class TagFormCreator implements CreateFormInterface
 
 		$image = file_get_contents(__DIR__.'/etiqueta/logo');
 
-		$body = '<style>
-			
-		.tag {width: 100%; margin: 10 0 17 0;}
-		.img { width: 23%;}
-		img { max-width: 100%; 
-			max-height: 100%; }
+		$pageCounter = 0;
 
+		$body = '
+			<style media="print">
+				#page { width: 21cm; height:30.7cm; padding: 0px 10px 0px 10px; margin: 0px 0px 39.5px 0px; border: 3px solid green}
+			img { max-width: 100%; max-height: 100%; }
+
+			.top { margin-bottom: 30px; margin-top: 20px;}
+			.fit { display: inline-block }	
+			.tag {width: 100%; margin: 10 0 17 0;}
+			.img { width: 23%;}
 			.clear { clear: both; }
 			.right { float: right }
 			.left { float: left }
-
 			.font-sz0 { font-size: 40px }
 			.font-sz1 { font-size: 35px }
-			.font-sz2 { font-size: 25px }
-
-			.c-0 { width: 21%; height: 4%}
-			.c-1 { width: 65%; height: 4%}
-			.c-2 { width: 12%; height: 5%}
-
-			.cb-0 { width: 21%; height: 2%}
-			.cb-1 { width: 65%; height: 2%}
-			.cb-2 { width: 12%; height: 2%}
-
+			.font-sz2 { font-size: 22px }
+			.c-0 { width: 12%; height: 4%}
+			.c-1 { width: 58%; height: 4%; margin-left: 10px}
+			.c-2 { width: 20%; height: 4%}
+			.cb-0 { width: 12%; height: 2%}
+			.cb-1 { width: 58%; height: 2%; margin-left: 10px}
+			.cb-2 { width: 20%; height: 2%}
 			.center { text-align: center }
-
-			.bottom .clear {
-				border-bottom: 1px solid black;
-				padding-top: 6px;
-			}
-
+			.bottom .clear { border-bottom: 1px solid black; padding-top: 6px;}
 			</style>
 
+			<style>
+
+		img { max-width: 100%; max-height: 100%; }
+
+		.top { margin-bottom: 10px;}
+		.fit { display: inline-block }	
+		.tag {width: 100%; margin: 10 0 17 0;}
+		.img { width: 23%;}
+		.clear { clear: both; }
+		.right { float: right }
+		.left { float: left }
+		.font-sz0 { font-size: 40px }
+		.font-sz1 { font-size: 35px }
+		.font-sz2 { font-size: 22px }
+		.c-0 { width: 15%; height: 4%}
+		.c-1 { width: 58%; height: 4%; margin-left: 10px;}
+		.c-2 { width: 20%; height: 5%}
+		.cb-0 { width: 15%; height: 2%}
+		.cb-1 { width: 58%; height: 2%; margin-left: 10px}
+		.cb-2 { width: 20%; height: 2%}
+		.center { text-align: center }
+		.bottom .clear { border-bottom: 1px solid black; padding-top: 6px;}
+		</style>
+
+			<div id="print">
 			<div id="page">';
 
 			foreach ($parameters as $param) {
@@ -59,8 +79,9 @@ class TagFormCreator implements CreateFormInterface
 					$count = $c;
 					$count++;
 					
-					if ($c == 10) {
+					if ($pageCounter == 11) {
 						$body .= '</div><div id="page">';
+						$pageCounter = 0;
 					} 
 
 					$body .= '<div class="tag">
@@ -79,10 +100,11 @@ class TagFormCreator implements CreateFormInterface
 					<div class="clear"></div>    
 					</div>
 					</div>';
+					$pageCounter++;
 				}
 			}
 
-			$body .= '</div>';
+			$body .= '</div></div>';
 
 			$p = $response->setResponse($body);
 			return $p;
