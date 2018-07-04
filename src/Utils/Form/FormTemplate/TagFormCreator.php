@@ -70,7 +70,6 @@ class TagFormCreator implements CreateFormInterface
 		.bottom .clear { border-bottom: 1px solid black; padding-top: 6px;}
 		</style>
 
-			<div id="print">
 			<div id="page">';
 
 			foreach ($parameters as $param) {
@@ -98,7 +97,6 @@ class TagFormCreator implements CreateFormInterface
 					<div class="left cb-1"><span class="font-sz2">'. $param['city'] .'</span></div>
 					<div class="right center cb-2"><span class="font-sz2">VOL. '. ( isset($param['check']) ? ceil($param['amount']/2) : $param['amount']) .'</span></div>    
 					<div class="clear"></div>    
-					</div>
 					</div>';
 					$pageCounter++;
 				}
