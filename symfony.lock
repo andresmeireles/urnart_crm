@@ -41,6 +41,9 @@
             "ref": "c1431086fec31f17fbcfe6d6d7e92059458facc1"
         }
     },
+    "doctrine/event-manager": {
+        "version": "v1.0.0"
+    },
     "doctrine/inflector": {
         "version": "v1.3.0"
     },
@@ -56,11 +59,14 @@
     "doctrine/orm": {
         "version": "v2.6.1"
     },
+    "doctrine/persistence": {
+        "version": "v1.0.0"
+    },
+    "doctrine/reflection": {
+        "version": "v1.0.0"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
-    },
-    "knplabs/knp-snappy": {
-        "version": "v1.0.4"
     },
     "nikic/php-parser": {
         "version": "v4.0.1"
@@ -172,9 +178,6 @@
     },
     "symfony/polyfill-php72": {
         "version": "v1.8.0"
-    },
-    "symfony/process": {
-        "version": "v4.1.0"
     },
     "symfony/profiler-pack": {
         "version": "v1.0.3"

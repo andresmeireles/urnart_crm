@@ -2,6 +2,10 @@
 	margin: 0px 70px 0px 0px;
 }
 
+.cursor-decoration {
+	cursor: pointer;
+}
+
 a .noline{text-decoration: none !important;}
 .noline a:hover {text-decoration: none !important;
 	color: white;        

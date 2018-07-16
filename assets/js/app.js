@@ -15,7 +15,7 @@ const print = require('jQuery.print');
 
 import Tablesort from 'tablesort';
 import './src/sidebarAction.js';
-import './src/globals.js';
+import './src/globals';
 import './src/form/createFormModal.js';
 import './src/form/cloneField.js';
 import './src/form/remand.js';

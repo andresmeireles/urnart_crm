@@ -4,11 +4,25 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 	if(document.querySelector('.numbers-only')) {
-		alert('contruir seletor de numeros apenas');
+		document.querySelector('.numbers-only').addEventListener('keypress', function (evt) {
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+				evt.preventDefault();
+				return false;
+			}
+			return true;
+		});
 	}
 
 	if (document.querySelector('.numbers-float-only')) {
-		alert("contruir selecionador de numeros e pontos flutuantes");
+		document.querySelector('.numbers-float-only').addEventListener('keypress', function (evt) {
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+				evt.preventDefault();
+				return false;
+			}
+			return true;
+		});	
 	}
 
 	if (document.addEventListener('click', function (el) {

@@ -1,121 +1,122 @@
 {% extends '/index.html.twig' %}
 
 {% block title %}
-Meteria Prima
+	Meteria Prima
 {% endblock %}
 
 {% block content %}
-<div class="col p-3">
-	<h1>Estoques</h1>
-	<hr>
-	<div class="row px-2">
-		<div class="col">
-			<div class="action-buttons">
-				<a href="/feedstock/add" data-action="add" class="btn btn-primary">Adicionar Produto</a>
-				<a href="/feedstock/inStock" class="btn btn-primary">Chegada</a>
-				<a href="/feedstock/outStock" class="btn btn-primary">Saida</a>
-			</div>
-			<div class="mx-0 my-3">
-				<div class="col">
-					<ul class="nav nav-tabs" id="myTab" role="tablist">
-						<li class="nav-item">
-							<a class="nav-link text-dark active" id="feedstock-tab" data-toggle="tab" href="#feedstock" role="tab" aria-controls="home" aria-selected="true"><b>Resumo</b></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" id="product-tab" data-toggle="tab" href="#products" role="tab" aria-controls="profile" aria-selected="false"><b>Estatisticas</b></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" id="product-tab" data-toggle="tab" href="#products" role="tab" aria-controls="profile" aria-selected="false"><b>Relatórios</b></a>
-						</li>
+	<div class="col p-3">
+		<h1>Estoques</h1>
+		<hr>
+		<div class="row px-2">
+			<div class="col">
+				<div class="action-buttons">
+					<a href="/feedstock/add" data-action="add" class="btn btn-primary">Adicionar Produto</a>
+					<a href="/feedstock/inStock" class="btn btn-primary">Chegada</a>
+					<a href="/feedstock/outStock" class="btn btn-primary">Saida</a>
+				</div>
+				<div class="mx-0 my-3">
+					<div class="col">
+						<ul class="nav nav-tabs" id="myTab" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link text-dark active" id="feedstock-tab" data-toggle="tab" href="#feedstock" role="tab" aria-controls="home" aria-selected="true"><b>Resumo</b></a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" id="product-tab" data-toggle="tab" href="#products" role="tab" aria-controls="profile" aria-selected="false"><b>Estatisticas</b></a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" id="product-tab" data-toggle="tab" href="#products" role="tab" aria-controls="profile" aria-selected="false"><b>Relatórios</b></a>
+							</li>
 
-						<li class="nav-item">
-							<a class="nav-link text-dark" id="product-tab" data-toggle="tab" href="#products" role="tab" aria-controls="profile" aria-selected="false"><b>Listas</b></a>
-						</li>
-					</ul>
-					<div class="tab-content" id="myTabContent">
-						<div class="tab-pane fade show active" id="feedstock" role="tabpanel" aria-labelledby="feedstock-tab">
-							<div class="m-0">
-								<div class="row my-2 mx-0">
-									<div class="mx-2"><i class="badge badge-warning">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto precisa de atenção</div><div class="mx-2"><i class="badge badge-danger">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto em quantidade mínima</div>
+							<li class="nav-item">
+								<a class="nav-link text-dark" id="product-tab" data-toggle="tab" href="#products" role="tab" aria-controls="profile" aria-selected="false"><b>Listas</b></a>
+							</li>
+						</ul>
+						<div class="tab-content" id="myTabContent">
+							<div class="tab-pane fade show active" id="feedstock" role="tabpanel" aria-labelledby="feedstock-tab">
+								<div class="m-0">
+									<div class="row my-2 mx-0">
+										<div class="mx-2"><i class="badge badge-warning">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto precisa de atenção</div><div class="mx-2"><i class="badge badge-danger">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto em quantidade mínima</div>
+									</div>
+									<table class="table table-hover tablesorter sortable">
+										<thead class="table-primary">
+											<tr>
+												<th >#</th>
+												<th width="18%" data-sort-default>Nome</th>
+												<th>Qnt</th>
+												<th>UN</th>
+												<th>Min.</th>
+												<th>Max.</th>
+												<th>Dpto</th>
+												<th>Fornecedor</th>
+												<th >&nbsp;</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th scope="row"><b>1</b></th>
+												<td><b>Babado</b></td>
+												<td><b>800</b></td>
+												<td><b>UN</b></td>
+												<td>300</td>
+												<td>1000</td>
+												<td>Produção</td>
+												<td>Baidu Corp</td>
+												<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
+											</tr>
+											<tr class="bg-danger">
+												<th scope="row"><b>1</b></th>
+												<td><b>AAn</b></td>
+												<td><b>Otto</b></td>
+												<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
+											</tr>
+											<tr class="bg-warning">
+												<th scope="row"><b>1</b></th>
+												<td><b>Mark</b></td>
+												<td><b>Otto</b></td>
+												<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
+											</tr>
+										</tbody>
+									</table>
 								</div>
-								<table class="table table-hover tablesorter sortable">
-									<thead class="table-primary">
-										<tr>
-											<th >#</th>
-											<th width="18%" data-sort-default>Nome</th>
-											<th>Qnt</th>
-											<th>UN</th>
-											<th>Min.</th>
-											<th>Max.</th>
-											<th>Dpto</th>
-											<th>Fornecedor</th>
-											<th >&nbsp;</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<th scope="row"><b>1</b></th>
-											<td><b>Babado</b></td>
-											<td><b>800</b></td>
-											<td><b>UN</b></td>
-											<td>300</td>
-											<td>1000</td>
-											<td>Produção</td>
-											<td>Baidu Corp</td>
-											<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
-										</tr>
-										<tr class="bg-danger">
-											<th scope="row"><b>1</b></th>
-											<td><b>AAn</b></td>
-											<td><b>Otto</b></td>
-											<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
-										</tr>
-										<tr class="bg-warning">
-											<th scope="row"><b>1</b></th>
-											<td><b>Mark</b></td>
-											<td><b>Otto</b></td>
-											<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
-										</tr>
-									</tbody>
-								</table>
 							</div>
-						</div>
-						<div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
-							<div class="m-2">
-								<div class="row my-2 mx-0">
-									<div class="mx-2"><i class="badge badge-warning">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto precisa de atenção</div><div class="mx-2"><i class="badge badge-danger">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto em quantidade mínima</div>
+							<div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
+								<div class="m-2">
+									<div class="row my-2 mx-0">
+										<div class="mx-2"><i class="badge badge-warning">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto precisa de atenção</div><div class="mx-2"><i class="badge badge-danger">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto em quantidade mínima</div>
+									</div>
+									<table class="table table-hover">
+										<thead class="table-primary">
+											<tr>
+												<th style="width: 10%">#</th>
+												<th style="width: 50%">Nome</th>
+												<th style="width: 30%">Quantidade</th>
+												<th style="width: 10%">Ações</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th scope="row"><b>1</b></th>
+												<td><b>Mark</b></td>
+												<td><b>Otto</b></td>
+												<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
+											</tr>
+											<tr class="bg-danger">
+												<th scope="row"><b>1</b></th>
+												<td><b>Mark</b></td>
+												<td><b>Otto</b></td>
+												<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
+											</tr>
+											<tr class="bg-warning">
+												<th scope="row"><b>1</b></th>
+												<td><b>Mark</b></td>
+												<td><b>Otto</b></td>
+												<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
 								</div>
-								<table class="table table-hover">
-									<thead class="table-primary">
-										<tr>
-											<th style="width: 10%">#</th>
-											<th style="width: 50%">Nome</th>
-											<th style="width: 30%">Quantidade</th>
-											<th style="width: 10%">Ações</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<th scope="row"><b>1</b></th>
-											<td><b>Mark</b></td>
-											<td><b>Otto</b></td>
-											<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
-										</tr>
-										<tr class="bg-danger">
-											<th scope="row"><b>1</b></th>
-											<td><b>Mark</b></td>
-											<td><b>Otto</b></td>
-											<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
-										</tr>
-										<tr class="bg-warning">
-											<th scope="row"><b>1</b></th>
-											<td><b>Mark</b></td>
-											<td><b>Otto</b></td>
-											<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a>
-											</td>
-										</tr>
-									</tbody>
-								</table>
 							</div>
 						</div>
 					</div>
@@ -123,102 +124,110 @@ Meteria Prima
 			</div>
 		</div>
 	</div>
-</div>
 
-<div class="py-4 col-md-11" id="add">
-	<div class="card">
-		<div class="card-header">Adicionar Produto</div>
-		<div class="card-body fitable">
-			<div class="card-text fix-height">
-				<form id="form-add">
-					<div class="row">
+	<div class="py-4 col-md-11 d-none" id="add">
+		<div class="card">
+			<div class="card-header">Adicionar Produto</div>
+			<div class="card-body fitable">
+				<div class="card-text fix-height">
+					<form id="form-add">
+						<div class="row">
 
-						<div class="col-md-8">
-							<fieldset class="border border-light">
+							<div class="col-md-8">
+								<fieldset class="border border-light">
 
-								<legend class="bg-light px-1">Informações Básicas</legend>
-								<div class="col-md-12 py-2">
-									<div class="form-group">
-										<label for="productName" class="required">Nome do produto</label>
-										<input type="text" class="form-control" name="name" placeholder="Insira o nome aqui" required>
+									<legend class="bg-light px-1">Informações Básicas</legend>
+									<div class="col-md-12 py-2">
+										<div class="form-group">
+											<label for="productName" class="required">Nome do produto</label>
+											<input type="text" class="form-control" name="name" placeholder="Insira o nome aqui" required>
+										</div>
+										<div class="form-group">
+											<label for="description">Descrição</label>
+											<textarea class="form-control" placeholder="Descrição opcional"></textarea>
+										</div>
+										<div class="form-group">
+											<label for="usedIn">Usado nos modelos</label>
+											<input type="text" name="type" class="form-control" value="criar um selecionador de varios modelos básicos">
+										</div>
+										<div class="form-group">
+											<label for="mainVendor" class="required">Fornecedor Principal</label>
+											<input type="text" class="form-control" name="mainVendor" placeholder="Fornecedor principal" required>
+										</div>
+										<div class="form-group">
+											<label for="otherVendors">Outros Fornecedores</label>
+											<select name="otherVendors[]" class="d-none" id="otherVendors" multiple></select>
+											<div id="inputOtherVendors" class="p-1">
+													<small>Aperte abaixo para incluir outros fornecedores</small><br>
+												<div class="input-group my-2">
+													<ul class="form-control py-2" id="vendorsList"></ul>
+													<div class="input-group-append">
+														<span class="input-group-text cursor-decoration" id="removeAll">x</span>
+													</div>
+												</div>
+												<input type="text" class="d-none form-control" placeholder="Insira o nome e aprte ENTER">
+											</div>
+										</div>
 									</div>
-									<div class="form-group">
-										<label for="description">Descrição</label>
-										<textarea class="form-control" placeholder="Descrição opcional"></textarea>
-									</div>
-									<div class="form-group">
-										<label for="usedIn">Usado nos modelos</label>
-										<input type="text" name="type" class="form-control" value="criar um selecionador de varios modelos básicos">
-									</div>
-									<div class="form-group">
-										<label for="mainVendor" class="required">Fornecedor Principal</label>
-										<input type="text" class="form-control" name="mainVendor" placeholder="Fornecedor principal" required>
-									</div>
-									<div class="form-group">
-										<label for="otherVendors">Outros Fornecedores</label>
-										<select name="otherVendors[]" multiple></select>
-										<ul id="inputVendor" class="form-control"></ul>
-									</div>
-								</div>
 
-							</fieldset>
+								</fieldset>
+							</div>
+
+							<div class="col-md-4">
+								<fieldset class="border border-light">
+									<legend for="unitAndAmount" class="bg-light">UND e QNT</legend>
+									<div class="col-md-12 px-2">
+
+										<div class="form-group">
+											<label for="unit" required="required">Tipo de unidade</label>
+											<select class="form-control" required>
+												<option selected disabled>Selecione</option>
+												<option>Fazer buscador de opções aqui</option>
+											</select>
+										</div>
+
+										<div class="form-group">
+											<label for="departament" class="required">Departamento</label>
+											<input type="text" name="departament" class="form-control" placeholder="Departamento" requied>
+										</div>
+
+										<div class="form-group">
+											<label for="maxStock" class="required">Estoque Maximo</label>
+											<input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Max" requied>
+										</div>
+
+										<div class="form-group">
+											<label for="maxStock" class="required">Estoque Mínimo</label>
+											<input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Min" requied>
+										</div>
+
+										<div class="form-group">
+											<label for="unit" class="required">Periocidade de Reabastecimento</label>
+											<select class="form-control" required>
+												<option selected disabled>Selecione</option>
+												<option value="15">15 dias</option>
+												<option value="30">30 dias</option>
+												<option value="45">45 dias</option>
+												<option>Outro</option>
+											</select>
+										</div>
+
+										<div class="form-group">
+											<label for="otherPeriocid">Informe a periocidade</label>
+											<input type="text" name="customPeriocid" class="form-control numbers-only" placeholder="Informe os dias campo invisivel">
+										</div>
+
+									</div>
+								</fieldset>
+							</div>
+
 						</div>
-
-						<div class="col-md-4">
-							<fieldset class="border border-light">
-								<legend for="unitAndAmount" class="bg-light">UND e QNT</legend>
-								<div class="col-md-12 px-2">
-									
-									<div class="form-group">
-										<label for="unit" required="required">Tipo de unidade</label>
-										<select class="form-control" required>
-											<option selected disabled>Selecione</option>
-											<option>Fazer buscador de opções aqui</option>
-										</select>
-									</div>
-
-									<div class="form-group">
-										<label for="departament" class="required">Departamento</label>
-										<input type="text" name="departament" class="form-control" placeholder="Departamento" requied>
-									</div>
-
-									<div class="form-group">
-										<label for="maxStock" class="required">Estoque Maximo</label>
-										<input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Max" requied>
-									</div>
-
-									<div class="form-group">
-										<label for="maxStock" class="required">Estoque Mínimo</label>
-										<input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Min" requied>
-									</div>
-
-									<div class="form-group">
-										<label for="unit" class="required">Periocidade de Reabastecimento</label>
-										<select class="form-control" required>
-											<option selected disabled>Selecione</option>
-											<option value="15">15 dias</option>
-											<option value="30">30 dias</option>
-											<option value="45">45 dias</option>
-											<option>Outro</option>
-										</select>
-									</div>
-
-									<div class="form-group">
-										<label for="otherPeriocid">Informe a periocidade</label>
-										<input type="text" name="customPeriocid" class="form-control numebers-only" placeholder="Informe os dias campo invisivel">
-									</div>
-
-								</div>
-							</fieldset>
-						</div>
-
-					</div>
-				</form>
+					</form>
+				</div>
+			</div>
+			<div class="card-footer text-muted">
+				<button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>
+				<button class="btn btn-primary" onclick="insert()">Imprimir</button>
 			</div>
 		</div>
-		<div class="card-footer text-muted">
-			<button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>
-			<button class="btn btn-primary" onclick="printForm()">Imprimir</button>
-		</div>
-	</div>
 	{% endblock %}
