@@ -56,19 +56,39 @@ class FreightLetterFormCreator implements CreateFormInterface
 		document.addEventListener("DOMContentLoaded", function () {
 			window.print();
 			});
+		
 			</script>
-		<style>
+
+		<style media="print">
   		#page { size: A4 portrait;}
   		#half-page { height: 14cm; width: 21cm; margin: 0px 0px 100px 0px; background: url('. $imageBackground .') center no-repeat; -webkit-print-color-adjust: exact; }
-  		#form { padding: 10px; font: 15px "Arial"; }
+  		#form-cf { padding: 10px; font: 15px; }
 		.f-right { float: right; }
 		.f-left { float: left; }
 		.clear { clear:both }
-		.body { padding: 0px 30px 0px 30px; }
-		.body p, div { font: 18px "Arial"}  
+		.body-cf { padding: 0px 30px 0px 30px; }
+		.body-cf { font: 18px "Arial"}  
 
-		.footer { padding: 0px 30px 0px 30px; font: 18px "Arial"; }
-		.img img { width: 120px; height: 100px; display:inline;}
+		.foote-cf { padding: 0px 30px 0px 30px; font: 18px; }
+		.img-cf img { width: 120px; height: 100px; display:inline;}
+		.date { margin: 70px 250px 0px 0px; float:right}
+		.center { text-align:center }
+		.sign { margin: 30px 0px 0px 0px }
+		.c { margin: 0px 0px 0px 90px;}
+		</style>	
+			
+		<style>
+  		#page { size: A4 portrait;}
+  		#half-page { background: url('. $imageBackground .') center no-repeat; -webkit-print-color-adjust: exact; }
+  		#form-cf { padding: 10px; font: 15px "Arial"; }
+		.f-right { float: right; }
+		.f-left { float: left; }
+		.clear { clear:both }
+		.body-cf { padding: 0px 30px 0px 30px; }
+		.body-cf { font: 18px "Arial"}  
+
+		.footer-cf { padding: 0px 30px 0px 30px; font: 18px ; }
+		.img-cf img { width: 120px; height: 100px; display:inline;}
 		.date { margin: 70px 250px 0px 0px; float:right}
 		.center { text-align:center }
 		.sign { margin: 30px 0px 0px 0px }
@@ -84,7 +104,7 @@ class FreightLetterFormCreator implements CreateFormInterface
 			$body .= '<div id="page">';
 
 			$halfPage = '<div id="half-page">
-			<div id="form">
+			<div id="form-cf">
 			<div class="head">
 			<div class="f-right">Urnas Mart Ltda</div>
 			<div class="f-left">05.020.839/0001.05</div>
@@ -92,7 +112,7 @@ class FreightLetterFormCreator implements CreateFormInterface
 			<div class="f-left">(91) 3256 1106</div>
 			</div>
 			<div class="clear"></div>
-			<div class="body">
+			<div class="body-cf">
 			<h2 class="center">CARTA FRETE</h2>
 			<p>Á</p>
 			<div><span class="f-left">'. $param['number'] .' - '. $param['clientName'] .'</span><span class="f-right">R$ '. $freightPrice .'</span><br><span class="f-left">'. $param['clientCity'] .' - '. $param['clientState'] .'</span></div>
@@ -100,8 +120,8 @@ class FreightLetterFormCreator implements CreateFormInterface
 			<p class>Pagar ao portador o Valor de R$ '. $freightPrice .' ('. strtoupper($number) .') referente ao frete de urnas do pedido de número '. $param['orderNumber'] .', conforme combinado.  
 			</p><p>Atenciosamente,</p>
 			</div>
-			<div class="footer">
-			<div class="img f-left">
+			<div class="footer-cf">
+			<div class="img-cf f-left">
 			<img src="'. $imageSign .'">
 			<div class="clear"></div>
 			<small>Urnas Mart</small>

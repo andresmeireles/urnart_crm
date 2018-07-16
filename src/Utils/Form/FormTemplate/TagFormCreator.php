@@ -15,6 +15,15 @@ class TagFormCreator implements CreateFormInterface
 	{
 		$parameters = $params->getClonedParameters();
 
+		foreach ($parameters as $param) {
+			ValidatorJson::validate($param, [
+				'name' => v::notEmpty(),
+				'city' => v::optional(v::notEmpty()),
+				'amount' => v::not(v::negative())->notEmpty(),
+				'check' => v::optional(v::boolVal())
+			]);
+		}
+
 		$response = new ResponseForm();
 
 		$image = file_get_contents(__DIR__.'/etiqueta/logo');
@@ -23,7 +32,7 @@ class TagFormCreator implements CreateFormInterface
 
 		$body = '
 			<style media="print">
-				#page { width: 21cm; height:30.7cm; padding: 0px 10px 0px 10px; margin: 0px 0px 39.5px 0px; border: 3px solid green}
+				#page { width: 21cm; height:30.7cm; padding: 0px 10px 0px 10px; margin: 0px 0px 39.5px 0px;}
 			img { max-width: 100%; max-height: 100%; }
 
 			.top { margin-bottom: 30px; margin-top: 20px;}
@@ -89,14 +98,15 @@ class TagFormCreator implements CreateFormInterface
 					<img src="'. $image .'">
 					</div>
 					<div class="left c-1"><span class="font-sz1">'. $param['name'] .'</span></div>
-					<div class="right c-2 center"><span class="font-sz0">'. ( isset($param['check']) ? ceil($count/2) : $count ) .'</span></div>
+					<div class="right c-2 center"><span class="font-sz0">'. ( $param['check'] != 0 ? ceil($count/2) : $count ) .'</span></div>
 					</div>
 					<div class="clear"></div>
 					<div class="bottom">
 					<div class="left cb-0">&nbsp;</div>
 					<div class="left cb-1"><span class="font-sz2">'. $param['city'] .'</span></div>
-					<div class="right center cb-2"><span class="font-sz2">VOL. '. ( isset($param['check']) ? ceil($param['amount']/2) : $param['amount']) .'</span></div>    
+					<div class="right center cb-2"><span class="font-sz2">VOL. '. ( $param['check'] != 0 ? ceil($param['amount']/2) : $param['amount']) .'</span></div>    
 					<div class="clear"></div>    
+					</div>
 					</div>';
 					$pageCounter++;
 				}
@@ -104,23 +114,6 @@ class TagFormCreator implements CreateFormInterface
 
 			$body .= '</div></div>';
 
-			$p = $response->setResponse($body);
-			return $p;
-		}
-
-		private function validation(array $params): bool
-		{
-			ValidatorJson::validate($params, [
-				'name' => v::notEmpty(),
-				'city' => v::optional(v::notEmpty()),
-				'amount' => v::not(v::negative())->notEmpty(),
-				'check' => v::optional(v::boolVal())
-			]);
-
-			if (ValidatorJson::getErrors()) {
-				return false;
-			}
-
-			return true;
+			return 	$response->setResponse($body);
 		}
 	}

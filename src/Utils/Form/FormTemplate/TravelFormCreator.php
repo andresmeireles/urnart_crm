@@ -2,31 +2,28 @@
 
 namespace App\Utils\Form\FormTemplate;
 
-use \App\Utils\Form\ResponseForm;
+use App\Utils\Form\ResponseForm;
 use App\Utils\Form\Parameters;
-use \App\Utils\Form\Interfaces\ResponseFormInterface;
-use \App\Utils\Form\Interfaces\CreateFormInterface;
-use \App\Utils\Validation\ValidatorJson;
-use \Respect\Validation\Validator as v;
+use App\Utils\Form\Interfaces\ResponseFormInterface;
+use App\Utils\Form\Interfaces\CreateFormInterface;
+use App\Utils\Validation\ValidatorJson;
+use App\Utils\Validation\ValidationFields;
+use Respect\Validation\Validator as v;
 
 class TravelFormCreator implements CreateFormInterface
 {
 	public function createForm(Parameters $parameters): ResponseFormInterface
 	{
-		foreach ($parameters->getClonedParameters() as $clonedParameter) {
-			ValidatorJson::validate($clonedParameter, [
-				'name' => v::notEmpty()->not(v::numeric()),
-				'city' => v::notEmpty()->not(v::numeric())
-			]);	
+		foreach ($parameters->getClonedParameters() as $value) {
+			ValidatorJson::validate($value, [
+				'name' => v::notEmpty()->alpha()->not(v::numeric()),
+				'city' => v::notEmpty()
+			]);		
 		}
 
 		ValidatorJson::validate($parameters->getNonClonedParameters(), [
 			'driverName' => v::notEmpty()->not(v::numeric())
 		]);
-
-		if (ValidatorJson::getErrors()) {
-			return new ResponseForm(ValidatorJson::getErrors());
-		}
 
 		$body = $this->createFormBody($parameters);
 

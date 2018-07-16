@@ -22,7 +22,7 @@
     <div class="py-2">
       <div class="row">
         <div class="col-md-12">
-          <div class="btn btn-primary btn-block btn-lg" id="submit">Criar etiquetas</div>
+          <input type="submit" class="btn btn-primary btn-block btn-lg" id="submit" value="Criar etiquetas">
         </div>
       </div>
     </div>
@@ -31,7 +31,7 @@
         <div class="row tag p-2">
           <div class="col-md-12 badge badge-light">
             <div class="input-group my-1 w-100" id="cloneableField">
-              <div class="col-md-5">
+              <div class="col">
                 <input type="hidden" input-number="true" name="cloneableField0[row]" id="row" value="1">
                 <input type="text" class="form-control mr-3 my-1 w-100" name="cloneableField0[name]" id="name" placeholder="Nome" required></div>
                 <div class="col-md-2">
@@ -40,11 +40,14 @@
                 <div class="col-md-2">
                   <input type="number" class="form-control mr-3 my-1" name="cloneableField0[amount]" placeholder="Quantidade" id="amount" required>
                 </div>
-                <div class="input-group-prepend col">
-                  <div class="input-group-text">
-                    <input type="checkbox" value="0" id="check" name="cloneableField0[check]">
-                  </div>
-                  <div class="form-control col" aria-label="Text input with checkbox">Casado?</div>
+                <div class="input-group col-md-2 my-1 ">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <input type="hidden" value="0" id="check" name="cloneableField0[check]">
+                      <input type="checkbox" value="0" id="check" name="cloneableField0[check]">
+                    </span>
+                  </div>  
+                    <input type="text" class="form-control" value="Casado?" disabled>
                 </div>
                 <button type="btn" class="btn mx-1 btn-success" add-btn="true">
                   <i class="fas fa-fw fa-plus" add-btn="true"></i>

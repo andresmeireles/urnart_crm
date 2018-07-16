@@ -22,7 +22,7 @@ class StorageController extends Controller
      */
     public function feedstock()
     {
-        
+        return $this->render('storage/feedstock.html.twig');
     }
 
     /**

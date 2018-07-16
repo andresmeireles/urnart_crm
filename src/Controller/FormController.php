@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use App\Utils\Validation\ValidatorJson;
+use Symfony\Component\HttpFoundation\Response;
 use App\Utils\Form\Form;
 
 class FormController extends Controller
@@ -38,8 +38,12 @@ class FormController extends Controller
                     $body = $form->create($parameters);
 
                     if ($form->fail()) {
+                        $response =  json_encode($form->getMessage());
+                        return new Response($response, 200);
+                        /**
                         $session->set('error', $form->getMessage());
                         return $this->redirect('/form/'.$formName);
+                        */
                     }
                     
                     $form->show($body);

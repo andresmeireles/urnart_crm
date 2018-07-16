@@ -48,21 +48,25 @@ class Form
 
         $formResponse = $this->FormFactory->createForm(new Parameters($parameters));
 
+        if ($this->fail()) {
+            return ValidatorJson::getErrors();
+        }
+
         return $formResponse;
     }
 
-    public function save(CreateFormInterface $Form): bool
-    {
-          
-    }
-
-    public function fail()
+    public function fail() 
     {
         if (ValidatorJson::getErrors()) {
             return true;
         }
 
         return false;
+    }
+
+    public function save(CreateFormInterface $Form): bool
+    {
+          
     }
 
     public function getMessage()

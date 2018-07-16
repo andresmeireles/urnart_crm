@@ -24,8 +24,8 @@ class OrderFormCreator implements CreateFormInterface
 			'formPg' => v::notEmpty()->not(v::numeric()),
 			'freight' => v::optional(v::numeric()->positive()),
 			'discount' => v::optional(v::numeric()->positive()),
-			'transporter' => v::optional(v::alpha()->numeric()),
-			'port' => v::optional(v::alpha()->numeric()),
+			'transporter' => v::optional(v::alpha()),
+			'port' => v::optional(v::alpha()),
 			'observation' => v::optional(v::notBlank())
 		]);
 

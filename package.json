@@ -11,7 +11,8 @@
         "node-sass": "^4.9.0",
         "popper.js": "^1.14.3",
         "print-js": "^1.0.47",
-        "sass-loader": "^7.0.3"
+        "sass-loader": "^7.0.3",
+        "tablesort": "^5.0.2"
     },
     "license": "UNLICENSED",
     "private": true,

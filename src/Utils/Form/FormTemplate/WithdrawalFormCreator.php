@@ -42,14 +42,8 @@ class WithdrawalFormCreator implements CreateFormInterface
         $nonCloned = $parameters->getNonClonedParameters();
 
         $body = '
-        <script type="text/javascript">
-            document.addEventListener("DOMContentLoaded", function () {
-			    window.print();
-			});
-        </script>
         <style>
-        * { font: 18px "Arial";}
-        #page { height: 29.7cm;  width: 21cm; border: 1px solid black }
+        #page { height: 29.7cm;  width: 21cm; border: 1px solid black; font: 18px "Arial" }
         #half-page { width: 21cm; height: 14cm; }
         .center { text-align: center }
         
@@ -58,9 +52,9 @@ class WithdrawalFormCreator implements CreateFormInterface
         .titulo {font-size: 29px; margin-bottom: 10px}
 
         #head th,
-        #bhead th,
+        #bHead th,
         #footer td,
-        #observation td { border-top: 2px solid black; border-bottom: 2px solid black; border-left: 1px solid}
+        #observation td { border-top: 2px solid black; border-bottom: 2px solid black; border-left: 1px solid black; }
         
         #body td,
         #spacer td { border-bottom: 1px solid black; border-left: 1px solid }

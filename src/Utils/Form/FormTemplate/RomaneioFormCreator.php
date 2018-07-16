@@ -21,17 +21,17 @@ class RomaneioFormCreator implements CreateFormInterface
 
 		foreach ($clonedParameters as $parameter) {
 			ValidatorJson::validate($parameter, [
-				'name' => v::notEmpty()->not(v::numeric()),
-				'city' => v::notEmpty()->not(v::numeric()),
-				'urnG' => v::notEmpty()->not(v::nullType()->stringType()),
-				'urnM' => v::notEmpty()->not(v::nullType()->stringType()),
-				'urnP' => v::notEmpty()->not(v::nullType()->stringType()),
+				'name' => v::stringType()->notEmpty()->not(v::numeric()),
+				'city' => v::stringType()->notEmpty()->not(v::numeric()),
+				'urnG' => v::notEmpty(),
+				'urnM' => v::notEmpty(),
+				'urnP' => v::alnum(),
 				'type' => v::notEmpty()->not(v::nullType()->stringType()),
 				'freight' => v::notEmpty()->positive()->not(v::nullType()->stringType()->negative())
 			]);
 		}
 
-		if ($parameters->getNonClonedParameters()['type'] == 0) {
+		if ($parameters->getNonClonedParameters()['type'] == 1) {
 			$response = $this->createTravelRomaneio($clonedParameters);
 			return new ResponseForm($response);
 		}
@@ -59,12 +59,37 @@ class RomaneioFormCreator implements CreateFormInterface
 		<head>
 		<title>Romaneio</title>
 		</head>
+		<style type="text/css" media="print">
+		@page{size:landscape}
+
+		.t0{width: 922px;margin-top: 6px;font: 17px "Calibri"; border: 1px solid black}
+
+		.head { border-bottom: 1px solid black; text-align: center; padding: 2px 0 0 3px; font-size: 20px;}
+		.head2 span { margin: 0 80px 0 0; font-size: 20px}
+		.head1 td { border-bottom: 1px solid black; }
+
+		.hbody td {
+			font-weight: bold;
+			font-size: 22px;
+			border-right: 1px solid black;
+			border-bottom: 1px solid black;
+		}
+
+		.body td { border-right: 1px solid black; border-bottom: 1px solid black; }
+
+		.space td { border-bottom: 1px solid black; }
+
+		.foot td { border-right: 1px solid black}
+
+		.no-border { border-right: 1px solid white !important }
+		.lp { padding: 0 0 0 2px;}
+		.center { text-align:center }
+		</style>
+		
 		<style type="text/css">
 		@page{size:landscape}
 
 		body {margin-top: 0px;margin-left: 0px;}
-
-		#page_1 {position:relative; overflow: hidden;margin: 114px 0px 446px 89px;padding: 0px;border: none;width: 1034px;}
 
 		.t0{width: 922px;margin-top: 6px;font: 17px "Calibri"; border: 1px solid black}
 

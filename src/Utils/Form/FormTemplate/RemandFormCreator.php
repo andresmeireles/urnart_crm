@@ -37,11 +37,7 @@ class RemandFormCreator implements CreateFormInterface
 		$imgSign = file_get_contents(__DIR__.'/carta-frete/sign');
 		$imgBackground = file_get_contents(__DIR__.'/carta-frete/background');
 
-		$body = '<script type="text/javascript">
-		document.addEventListener("DOMContentLoaded", function () {
-			window.print();
-			});
-			</script>
+		$body = '
 			<style>
 		#page { size: A4 portrait; }
 		#half-page { height: 13cm; width: 21cm; margin: 0px 0px 100px 0px; background: url('. $imgBackground .') center no-repeat; -webkit-print-color-adjust: exact; }
@@ -49,8 +45,8 @@ class RemandFormCreator implements CreateFormInterface
 			.f-right { float: right; }
 			.f-left { float: left; }
 			.clear { clear:both }
-			.body { padding: 0px 30px 0px 30px; }
-			.body p, div { font: 18px "Arial"}  
+			.body-cf { padding: 0px 30px 0px 30px; }
+			.body-cf { font: 18px "Arial"}  
 
 			.footer { padding: 0px 30px 0px 30px; font: 18px "Arial"; }
 			.img img { width: 120px; height: 100px; display:inline;}
@@ -72,7 +68,7 @@ class RemandFormCreator implements CreateFormInterface
 			<div class="f-left">(91) 3256 1106</div>
 			</div>
 			<div class="clear"></div>
-			<div class="body">
+			<div class="body-cf">
 			<h2 class="center">DEVOLUÇÃO DE CHEQUE</h2>
 			<div>Á</div>
 			<div><span class="f-left">'. $parameters['clientNumber'] .' - '. $parameters['clientName'] .'</span><br><span class="f-left">'. $parameters['clientCity'] .'</span></div>
@@ -125,10 +121,7 @@ class RemandFormCreator implements CreateFormInterface
 			$param = $parameters->getNonClonedParameters();
 			$cParam = $parameters->getClonedParameters();
 
-			$body = '<script type="text/javascript">
-					document.addEventListener("DOMContentLoaded", function () {
-					window.print();
-				});
+			$body = '
 				</script>
 				<style>
 			    #page { size: A4 portrait;}
@@ -137,8 +130,8 @@ class RemandFormCreator implements CreateFormInterface
 				.f-right { float: right; }
 				.f-left { float: left; }
 				.clear { clear:both }
-				.body { padding: 0px 30px 0px 30px; }
-				.body p, div { font: 18px "Arial"}  
+				.body-cf { padding: 0px 30px 0px 30px; }
+				.body-cf { font: 18px "Arial"}  
 
 				.footer { padding: 0px 30px 0px 30px; font: 18px "Arial"; }
 				.img img { width: 120px; height: 100px; display:inline;}
@@ -160,7 +153,7 @@ class RemandFormCreator implements CreateFormInterface
 				<div class="f-left">(91) 3256 1106</div>
 				</div>
 				<div class="clear"></div>
-				<div class="body">
+				<div class="body-cf">
 				<h2 class="center">PROTOCOLO DE DEVOLUÇÃO</h2>
 				<p>Á</p>
 				<div><span class="f-left">'. $param['clientNumber'] .' - '. $param['clientName'] .'</span><br><span class="f-left">'. $param['clientCity'] .'</span></div>

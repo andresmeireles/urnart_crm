@@ -23,9 +23,7 @@ class ValidatorJson
 	 * @return void
 	 */
 	public static function validate($params, array $validations)
-	{
-		self::$errors = '';
-
+	{	
 		foreach ($validations as $parameterName => $rule) {
 			try {
 				$rule->setName($parameterName)->assert($params[$parameterName]);
