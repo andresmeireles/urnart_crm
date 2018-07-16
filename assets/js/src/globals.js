@@ -1,3 +1,11 @@
+module.exports = function (formAdd) {
+	alert()
+	var requiredFormInputs = document.querySelectorAll('#'+formAdd+' [required]');
+	for (var input of requiredFormInputs) {
+		console.log(input);
+	}
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 	$('.flash').each(function (index) {
 		$(this).fadeOut(3000);
@@ -14,15 +22,25 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	}
 
-	if (document.querySelector('.numbers-float-only')) {
-		document.querySelector('.numbers-float-only').addEventListener('keypress', function (evt) {
-			var charCode = (evt.which) ? evt.which : evt.keyCode;
-			if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-				evt.preventDefault();
-				return false;
-			}
-			return true;
-		});	
+	if (document.querySelectorAll('.numbers-float-only')) {
+		var inputs = document.querySelectorAll('.numbers-float-only');
+
+		for (var input of inputs) {
+			input.addEventListener('keypress', function (evt) {
+				var charCode = (evt.which) ? evt.which : evt.keyCode;
+				
+				if (charCode == 44) {
+					return true;
+				}
+
+				if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+					evt.preventDefault();
+					return false;
+				}
+
+				return true;
+			});
+		}	
 	}
 
 	if (document.addEventListener('click', function (el) {

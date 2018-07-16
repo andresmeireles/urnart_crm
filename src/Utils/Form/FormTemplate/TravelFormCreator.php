@@ -16,7 +16,7 @@ class TravelFormCreator implements CreateFormInterface
 	{
 		foreach ($parameters->getClonedParameters() as $value) {
 			ValidatorJson::validate($value, [
-				'name' => v::notEmpty()->alpha()->not(v::numeric()),
+				'name' => v::notEmpty(),//->alpha()->not(v::numeric()),
 				'city' => v::notEmpty()
 			]);		
 		}

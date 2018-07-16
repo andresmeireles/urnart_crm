@@ -64,7 +64,27 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 	document.querySelector('#inputOtherVendors input').addEventListener('blur', function (el) {
-			hideInputField();
+		hideInputField();
+	});
+
+	document.querySelector('#periocid').addEventListener('change', function (el) {
+		if (el.target.value == 'Outro') {
+			var customInput = document.querySelector('#customPeriocid');
+			customInput.querySelector('input').setAttribute('name', 'periocid');
+			customInput.querySelector('input').setAttribute('required', '');
+			customInput.classList.remove('d-none');
+		}
+
+		if (el.target.value != 'Outro') {
+			var customInput = document.querySelector('#customPeriocid');
+			if (!customInput.classList.contains('d-none')) {
+				customInput.classList.add('d-none');
+				customInput.querySelector('input').removeAttribute('name');
+				customInput.querySelector('input').removeAttribute('required');
+				customInput.querySelector('input').value = '';
+			}
+		}
+		console.log(el.target.value);
 	});
 
 	var addOnUl = function (value) {

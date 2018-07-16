@@ -9,6 +9,7 @@ global.messageSend = require('./src/messageDispatcher');
 global.openModal = require('./src/form/createFormModal.js');
 global.modal = require('./src/openModal');
 global.printForm = require('./src/form/printForm');
+global.insert = require('./src/globals');
 
 const fancybox = require('@fancyapps/fancybox');
 const print = require('jQuery.print');

@@ -156,11 +156,12 @@
 										</div>
 										<div class="form-group">
 											<label for="otherVendors">Outros Fornecedores</label>
-											<select name="otherVendors[]" class="d-none" id="otherVendors" multiple></select>
+											<select name="otherVendors[]" class="d-none" id="otherVendors" multiple>
+											</select>
 											<div id="inputOtherVendors" class="p-1">
-													<small>Aperte abaixo para incluir outros fornecedores</small><br>
+												<small>Aperte abaixo para incluir outros fornecedores</small><br>
 												<div class="input-group my-2">
-													<ul class="form-control py-2" id="vendorsList"></ul>
+													<ul class="form-control py-1" id="vendorsList"></ul>
 													<div class="input-group-append">
 														<span class="input-group-text cursor-decoration" id="removeAll">x</span>
 													</div>
@@ -179,7 +180,7 @@
 									<div class="col-md-12 px-2">
 
 										<div class="form-group">
-											<label for="unit" required="required">Tipo de unidade</label>
+											<label for="unit" class="required">Tipo de unidade</label>
 											<select class="form-control" required>
 												<option selected disabled>Selecione</option>
 												<option>Fazer buscador de opções aqui</option>
@@ -188,33 +189,33 @@
 
 										<div class="form-group">
 											<label for="departament" class="required">Departamento</label>
-											<input type="text" name="departament" class="form-control" placeholder="Departamento" requied>
+											<input type="text" name="departament" class="form-control" placeholder="Departamento" required>
 										</div>
 
 										<div class="form-group">
 											<label for="maxStock" class="required">Estoque Maximo</label>
-											<input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Max" requied>
+											<input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Max" required>
 										</div>
 
 										<div class="form-group">
 											<label for="maxStock" class="required">Estoque Mínimo</label>
-											<input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Min" requied>
+											<input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Min" required>
 										</div>
 
 										<div class="form-group">
 											<label for="unit" class="required">Periocidade de Reabastecimento</label>
-											<select class="form-control" required>
+											<select class="form-control" id="periocid" name="periocid" required>
 												<option selected disabled>Selecione</option>
 												<option value="15">15 dias</option>
 												<option value="30">30 dias</option>
 												<option value="45">45 dias</option>
-												<option>Outro</option>
+												<option id="other">Outro</option>
 											</select>
 										</div>
 
-										<div class="form-group">
-											<label for="otherPeriocid">Informe a periocidade</label>
-											<input type="text" name="customPeriocid" class="form-control numbers-only" placeholder="Informe os dias campo invisivel">
+										<div class="form-group d-none" id="customPeriocid">
+											<label for="otherPeriocid" class="required">Informe a periocidade</label>
+											<input type="text" class="form-control numbers-only" placeholder="Periodicidade em dias">
 										</div>
 
 									</div>
@@ -225,9 +226,9 @@
 					</form>
 				</div>
 			</div>
-			<div class="card-footer text-muted">
+			<div class="card-footer text-muted"> 
 				<button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>
-				<button class="btn btn-primary" onclick="insert()">Imprimir</button>
+				<button class="btn btn-primary" onclick="insert()">Adicionar</button>
 			</div>
 		</div>
 	{% endblock %}

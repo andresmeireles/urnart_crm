@@ -21,13 +21,13 @@ class RomaneioFormCreator implements CreateFormInterface
 
 		foreach ($clonedParameters as $parameter) {
 			ValidatorJson::validate($parameter, [
-				'name' => v::stringType()->notEmpty()->not(v::numeric()),
+				'name' => v::stringType()->notEmpty(),
 				'city' => v::stringType()->notEmpty()->not(v::numeric()),
-				'urnG' => v::notEmpty(),
-				'urnM' => v::notEmpty(),
+				'urnG' => v::alnum(),
+				'urnM' => v::alnum(),
 				'urnP' => v::alnum(),
 				'type' => v::notEmpty()->not(v::nullType()->stringType()),
-				'freight' => v::notEmpty()->positive()->not(v::nullType()->stringType()->negative())
+				'freight' => v::notEmpty()->not(v::nullType()->stringType())
 			]);
 		}
 
@@ -156,7 +156,11 @@ class RomaneioFormCreator implements CreateFormInterface
 			</tr>';
 
 			$number ++;
-			$totalFreight += $param['freight'];
+
+			if (is_numeric($param['freight'])) {
+				$totalFreight += $param['freight'];
+			}
+
 			$totalP += $param['urnP'];
 			$totalM += $param['urnM'];
 			$totalG += $param['urnG'];
