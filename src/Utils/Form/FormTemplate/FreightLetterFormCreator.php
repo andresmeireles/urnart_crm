@@ -24,7 +24,7 @@ class FreightLetterFormCreator implements CreateFormInterface
 		foreach ($clonedParameters as $parameter) {
 			ValidatorJson::validate($parameter, [
 				'number' => v::notEmpty()->numeric()->positive(),
-				'clientName' => v::notEmpty()->alpha()->not(v::numeric()),
+				'clientName' => v::notEmpty()->stringType()->not(v::numeric()),
 				'clientCity' => v::notEmpty()->alpha()->not(v::numeric()),
 				'clientState' => v::notEmpty()->alpha()->length(2, 2)->not(v::numeric()),
 				'freight' => v::notEmpty()->numeric()->positive(),

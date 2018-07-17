@@ -22,6 +22,7 @@ import './src/form/cloneField.js';
 import './src/form/remand.js';
 import './src/form/sendForm.js';
 import './src/storage/feedstock';
+import pdfjs from 'pdfjs-dist';
 
 if (document.querySelector('.sortable')) {
 	Tablesort(document.querySelector('.sortable'));
@@ -39,8 +40,8 @@ var loadingDiv = document.getElementById('loading');
 
 function showSpinner() {
   loadingDiv.style.visibility = 'visible';
-}
+};
 
 function hideSpinner() {
   loadingDiv.style.visibility = 'hidden';
-}
+};

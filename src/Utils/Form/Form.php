@@ -7,7 +7,9 @@ use App\Utils\Form\Interfaces\ResponseFormInterface;
 use App\Utils\Validation\ValidatorJson; 
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Knp\Snappy\Pdf;
+use Dompdf\Dompdf;
 
 class Form 
 {
@@ -76,11 +78,27 @@ class Form
 
     public function show(ResponseFormInterface $Form): string
     {
-        //$pdf = new Pdf(__DIR__.'\..\..\..\vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltopdf.exe');
-        echo $Form->getBodyForm();
+        $pdf = new Pdf(__DIR__.'\..\..\..\vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltopdf.exe');
+        $x = $Form->getBodyForm();
+        $pdf->setOption('encoding', 'UTF-8');
+        $pdf->setOption('page-height', '297.0');
+        $pdf->setOption('page-width', '210.0');
+        if (file_exists(__DIR__.'/../../../public/form/bill.pdf')) {
+            unlink(__DIR__.'/../../../public/form/bill.pdf');
+        }
+        $pdf->generateFromHtml($x, __DIR__.'/../../../public/form/bill.pdf');
+        echo $x;
+        die();
         //header('Content-Type: application/pdf');
         //echo $pdf->getOutputFromHTML($Form->getBodyForm());
-        die();
+        return new Response( 
+            $x,
+            200, 
+            array(
+                'Content-Type'          => 'application/pdf',
+                'Content-Disposition'   => 'inline; filename="zone.pdf"'
+            )
+        );
     } 
 
     public function createAndShow(array $parameters)

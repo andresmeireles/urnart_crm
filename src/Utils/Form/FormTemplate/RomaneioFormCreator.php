@@ -26,12 +26,12 @@ class RomaneioFormCreator implements CreateFormInterface
 				'urnG' => v::alnum(),
 				'urnM' => v::alnum(),
 				'urnP' => v::alnum(),
-				'type' => v::notEmpty()->not(v::nullType()->stringType()),
-				'freight' => v::notEmpty()->not(v::nullType()->stringType())
+				'type' => v::notEmpty(),
+				'freight' => v::notEmpty()->not(v::nullType()->stringType()),
 			]);
 		}
 
-		if ($parameters->getNonClonedParameters()['type'] == 1) {
+		if ($parameters->getNonClonedParameters()['type'] == 0) {
 			$response = $this->createTravelRomaneio($clonedParameters);
 			return new ResponseForm($response);
 		}

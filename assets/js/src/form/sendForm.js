@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		})
 		.then(function (response) {
 			loadingDiv.style.visibility = 'hidden';
-			
+			//document.location.reload();
 			if ((typeof response.data) == 'object') {
 				var message = messageSend('warning', response.data);
 				document.querySelector('#message').innerHTML += message;
@@ -39,10 +39,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	var createFormModal = function (body) {
 		var content = `
 		<div class="d-none py-4" id="modal">
-		<div class="card">
+		<div class="card fix-height widthable">
 		<div class="card-header">Formulário para impressão</div>
-		<div class="card-body fitable">
-		<div class="card-text fix-height" id="printable">`+ body +`</div>
+		<div class="card-body" id="printable">
+		<object data="/form/bill.pdf" type="application/pdf" width="100%" height="100%">
+		  <a href="https://sumanbogati.github.io/tiny.pdf">test.pdf</a>
+		</object>
 		</div>
 		<div class="card-footer text-muted">
 		<button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>

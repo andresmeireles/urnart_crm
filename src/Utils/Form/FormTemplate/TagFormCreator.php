@@ -28,58 +28,47 @@ class TagFormCreator implements CreateFormInterface
 
 		$image = file_get_contents(__DIR__.'/etiqueta/logo');
 
-		$pageCounter = 0;
+		$pageCounter = -1;
 
 		$body = '
 		<style>
-		img { max-width: 100%; max-height: 100%; }
+		.tag-page1 { width: 25cm; margin: 0px 0px 80px 0px;}
 
-		.top { margin-bottom: 10px;}
-		.fit { display: inline-block }	
-		.tag {width: 84%;}
-		.img { width: 23%;}
-		.clear { clear: both; }
-		.right { float: right }
-		.left { float: left }
-		.font-sz0 { font-size: 45px }
-		.font-sz1 { font-size: 40px }
-		.font-sz2 { font-size: 37px }
-		.c-0 { width: 15%; height: 4%}
-		.c-1 { width: 58%; height: 4%; margin-left: 10px;}
-		.c-2 { width: 20%; height: 5%}
-		.cb-0 { width: 15%; height: 2%}
-		.cb-1 { width: 58%; height: 2%; margin-left: 10px}
-		.cb-2 { width: 20%; height: 2%}
-		.center { text-align: center }
-		.bottom .clear { border-bottom: 1px solid black; padding-top: 6px;}
+		.s-tag {margin: 5px 0px 0px 0px;}
+		.i-tag {margin: 0px 0px 0px 0px;}
+
+		.s-tag div {margin: 0px 15px 0px 0px;}
+		.i-tag div {margin: 0px 15px 0px 0px;}
+
+		.tag-img { max-width: 100%; max-height: 100%: }
+		.tag-box-1 { width: 3cm; height: 3cm; padding-top: 20px; overflow: hidden }
+		.tag-box-2 { width: 15cm; height: 3cm; overflow: hidden}
+		.tag-box-3 { width: 3cm; height: 3cm; overflow: hidden}
+		.tag-box-4 { width: 14cm; overflow: hidden; }
+		.tag-box-5 { width: 3cm; overflow: hidden; }
+		.tag-box-6 { width: 3cm; overflow: hidden; }
+
+		.tag-center { text-align: center }
+
+		.tag-float-right { float: right; }
+		.tag-float-left { float: left; }
+		.tag-clear { clear: both; width: 100%}
+
+		.t-right { padding: 0px 0px 0px 10px; } 
+
+		.t-font-sz0 { font: bold 30px Arial, Serif; padding-top: 2px; }
+		.t-font-sz1 { font: bold 60px Arial, Serif; }
+		.t-font-sz3 { font: bold 32px Arial, Serif; } 
+		.t-font-sz4 { font: bold 22px Arial, Serif; }
+		.t-font-sz5 { font: bold 35px Arial, Serif; padding: 7px 0px 0px 0px; }
+		.t-font-sz6 { font: bold 55px Arial, Serif; padding-top: 7px; }
+
+		.t-border { border-bottom: 1px solid black}
+
+		.t-w100 { width: 100% }
 		</style>
 
-		<style media="print">
-			#page { width: 21cm; height:30.7cm; padding: 0px 10px 0px 10px; margin: 0px 0px 39px 0px;}
-		img { max-width: 100%; max-height: 100%; }
-
-		.top { margin-bottom: 15px; margin-top: 10px;}
-		.fit { display: inline-block }	
-		.tag {width: 100%; margin: 10 0 17 0;}
-		.img { width: 23%;}
-		.clear { clear: both; }
-		.right { float: right }
-		.left { float: left }
-		.font-sz0 { font-size: 50px }
-		.font-sz1 { font-size: 38px }
-		.font-sz3 { font-size: 35px }
-		.font-sz2 { font-size: 35px }
-		.c-0 { width: 12%; height: 10%}
-		.c-1 { width: 65%; height: 10%; margin-left: 10px}
-		.c-2 { width: 15%; height: 10%}
-		.cb-0 { width: 12%; height: 8%}
-		.cb-1 { width: 58%; height: 8%; margin-left: 10px}
-		.cb-2 { width: 20%; height: 8%}
-		.center { text-align: center }
-		.bottom .clear { border-bottom: 1px solid black; padding-top: 6px;}
-		</style>
-
-		<div id="page">';
+		<div class="tag-page1">';
 
 		foreach ($parameters as $param) {
 
@@ -87,27 +76,30 @@ class TagFormCreator implements CreateFormInterface
 				$count = $c;
 				$count++;
 
-				if ($pageCounter == 8) {
-					$body .= '</div><div id="page">';
+				if ($pageCounter == 9) {
+					$body .= '</div><div id="tag-page1">';
 					$pageCounter = 0;
 				} 
 
 				$body .= '<div class="tag">
-				<div class="top">
-				<div class="img left c-0">
-				<img src="'. $image .'">
+				<div class="s-tag t-border">
+				
+				<div class="tag-box-1 tag-float-left"><img class="tag-img" src="'. $image .'"></div>
+				
+				<div class="tag-box-2 tag-float-left">
+				<span class="t-w100 tag-float-left '. ( $param['city'] == '' ? "t-font-sz6" : ( (strlen($param['name']) > 27) ? "t-font-sz0" : "t-font-sz5" ) )  .'">'. $param['name'] .'</span>
+				<span class="tag-float-left t-font-sz3 t-w100">'. $param['city'] .'</span>
 				</div>
-				<div class="left c-1"><span class="'. ( (strlen($param['name']) > 27) ? "font-sz3" : "font-sz1") .'"><b>'. $param['name'] .'</b></span></div>
-				<div class="right c-2 center"><span class="font-sz0">'. ( $param['check'] != 0 ? ceil($count/2) : $count ) .'</span></div>
-				</div>
-				<div class="clear"></div>
-				<div class="bottom">
-				<div class="left cb-0">&nbsp;</div>
-				<div class="left cb-1"><span class="font-sz2">'. $param['city'] .'</span></div>
-				<div class="right center cb-2"><span class="font-sz2">VOL. '. ( $param['check'] != 0 ? ceil($param['amount']/2) : $param['amount']) .'</span></div>    
-				<div class="clear"></div>    
+				
+				<div class="tag-box-3 tag-float-left t-right">
+				<span class="t-font-sz1 tag-float-left t-w100">'. ( $param['check'] != 0 ? ceil($count/2) : $count ) .'</span>
+				<span class="t-font-sz4 tag-float-left t-w100">VOL. '. ( $param['check'] != 0 ? ceil($param['amount']/2) : $param['amount']) .'</span>
+				</div> 
+				<div class="tag-clear"></div>
+				
 				</div>
 				</div>';
+
 				$pageCounter++;
 			}
 		}

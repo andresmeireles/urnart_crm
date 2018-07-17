@@ -65,8 +65,29 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "dompdf/dompdf": {
+        "version": "v0.8.2"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "knplabs/knp-snappy": {
+        "version": "v1.0.4"
+    },
+    "knplabs/knp-snappy-bundle": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.5",
+            "ref": "c81bdcf4a9d4e7b1959071457f9608631865d381"
+        }
+    },
+    "mpdf/mpdf": {
+        "version": "v7.1.1"
+    },
+    "myclabs/deep-copy": {
+        "version": "1.8.1"
     },
     "nikic/php-parser": {
         "version": "v4.0.1"
@@ -76,6 +97,15 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.2.0"
+    },
+    "paragonie/random_compat": {
+        "version": "v2.0.17"
+    },
+    "phenx/php-font-lib": {
+        "version": "0.5.1"
+    },
+    "phenx/php-svg-lib": {
+        "version": "v0.3.2"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -91,6 +121,12 @@
     },
     "respect/validation": {
         "version": "1.1.16"
+    },
+    "sabberworm/php-css-parser": {
+        "version": "8.1.0"
+    },
+    "setasign/fpdi": {
+        "version": "1.6.2"
     },
     "symfony/asset": {
         "version": "v4.1.1"
@@ -178,6 +214,9 @@
     },
     "symfony/polyfill-php72": {
         "version": "v1.8.0"
+    },
+    "symfony/process": {
+        "version": "v4.1.1"
     },
     "symfony/profiler-pack": {
         "version": "v1.0.3"
