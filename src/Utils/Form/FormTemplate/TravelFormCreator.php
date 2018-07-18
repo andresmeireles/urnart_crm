@@ -27,7 +27,7 @@ class TravelFormCreator implements CreateFormInterface
 
 		$body = $this->createFormBody($parameters);
 
-		return new ResponseForm($body);
+		return new ResponseForm($bodyForm);
 	}
 
 	private function createFormBody(Parameters $parameters): string
@@ -40,20 +40,20 @@ class TravelFormCreator implements CreateFormInterface
 		$pageCounter = 1;
 
 		$body = '
-		<style media="print">
+		<style>
 			#doc {}
 
-		.first-page { margin: 0px 0px 0px 0px; width: 21cm; height: 29.7cm; border: 1px solid black; position: relative; background: url("") center no-repeat; -webkit-print-color-adjust: exact;}
-		.page { margin: 80px 0px 0px 0px; width: 21cm; height: 29.7cm; border: 1px solid black; position: relative; background: url("") center no-repeat; -webkit-print-color-adjust: exact;}
+		.first-page { margin: 0px 0px 0px 0px; width: 100%; height: 100%; border: 1px solid black; position: relative; background: url("") center no-repeat; -webkit-print-color-adjust: exact;}
+		.page { margin: 80px 0px 0px 0px; width: 100%; height: 100%; border: 1px solid black; position: relative; background: url("") center no-repeat; -webkit-print-color-adjust: exact;}
 		.content { padding: 15px; }
 
-		.fit { max-width: 100%; max-height: 100% }
+		.fit { width: 300px; height: 150px }
 		.f-left { float: left; }
 		.clear { clear: both;}  
 		.center { text-align: center}
 
 		.img { width: 19%}
-		.img img { margin: 20 0 0 100;}
+		.img img { margin: 0 0 0 0;}
 		.head { margin: 20 0 0 100;}
 		.head span { display: block; margin: 3px 0px 0 0px; padding: 0px 0px 0px 100px;}
 		.rzs { font-weight: bolder; font-size: 25px }
@@ -70,44 +70,6 @@ class TravelFormCreator implements CreateFormInterface
 		.h-line { margin: 0px 0px 0px 0px; }
 		.h-line hr { margin: 20px 0px 30px 0px; }
 		.row-f .c-name { margin: 10px 0px 10px 0px; }
-		.info span { margin: 0px 100px 0px 0px; }
-
-		.footer { position: absolute; bottom: 0; left: 0; right: 0; margin: 0 0 10 0; }
-		.f-content span { display: block; margin: 3px 0px 0px 0px; font: italic 15px "Fire Sans", serif ;}
-		.pg_number { right: 0; position: absolute; margin: 0 20px 0 0px; }
-		</style>
-
-		<style>
-
-		#doc {}
-
-		.first-page { border: 1px solid black; position: relative; }
-		.page { margin: 80px 0px 0px 0px; border: 1px solid black; position: relative;}
-		.content { padding: 15px; }
-
-		.fit { max-width: 100%; max-height: 100% }
-		.f-left { float: left; }
-		.clear { clear: both;}  
-		.center { text-align: center}
-
-		.img { width: 19%}
-		.img img { margin: 20 0 0 0;}
-		.head { margin: 20 0 0 100;}
-		.head span { display: block; margin: 3px 0px 0 0;}
-		.rzs { font-weight: bolder; font-size: 25px }
-
-		.first-body { margin: 50px 0 0px 0px; }
-		.body { margin: 0px 0 0px 0px; }
-		.title { font: bold 20px "Fire Sans", serif; margin: 0 0 20px 0; }
-		.row-f-f .title { margin: 0px 0 20px 0px}
-		.row-f-f { margin: 10px 0px 0px 0px; }
-		.row-f-f div { margin: 0 0 6px 0;}
-		.line span { margin: 0px 180px 0px 0px; }
-		.tp { margin-left: 434px}
-
-		.h-line { margin: 0px 0px 0px 0px; }
-		.h-line hr { margin: 20px 0px 30px 0px; }
-		.row-f-f .c-name { margin: 10px 0px 10px 0px; }
 		.info span { margin: 0px 100px 0px 0px; }
 
 		.footer { position: absolute; bottom: 0; left: 0; right: 0; margin: 0 0 10 0; }

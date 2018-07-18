@@ -23,12 +23,24 @@ a .noline{text-decoration: none !important;}
 	overflow: auto;
 }
 
+.f-box {
+	position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.filltxt {
+	object-fit: fill;
+}
+
 .fix-height {
-	height: 36em;
+	height: 34em;
 }
 
 .widthable {
-	width: 36em;
+	width: 72em;
 }
 
 .f-right {

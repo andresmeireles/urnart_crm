@@ -42,7 +42,25 @@ document.addEventListener('DOMContentLoaded', function () {
 		<div class="card fix-height widthable">
 		<div class="card-header">Formulário para impressão</div>
 		<div class="card-body" id="printable">
-		<object data="/form/bill.pdf" type="application/pdf" width="100%" height="100%">
+		<object data="/form/bill.pdf" type="application/pdf" width="100%" height="380em">
+			<embed src="/form/bill.pdf" type="application/pdf">
+		  	<a href="https://sumanbogati.github.io/tiny.pdf">test.pdf</a>
+		</object>
+		</div>
+		<div class="card-footer text-muted">
+		<button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>
+		<button class="btn btn-primary" onclick="printForm()">Imprimir</button>
+		</div>
+		</div>
+		</div>`;
+		return content;
+	/**
+		var content = `
+		<div class="d-none py-4" id="modal">
+		<div class="card fix-height widthable">
+		<div class="card-header">Formulário para impressão</div>
+		<div class="card-body" id="printable">
+		<object data="/forms/bill.pdf" type="application/pdf" width="100%" height="380em">
 		  <a href="https://sumanbogati.github.io/tiny.pdf">test.pdf</a>
 		</object>
 		</div>
@@ -52,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		</div>
 		</div>
 		</div>`;
-
 		return content;
+		*/
 	}
 });

@@ -9,11 +9,13 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class ResponseForm implements ResponseFormInterface
 {
     private $bodyForm;
-
+    private $orientation;
     private $message;
 
-    function __construct(string $body = null, array $message = null)
+    function __construct(string $body = null, string $orientation = 'Portrait' ,array $message = null)
     {
+        $this->orientation = $orientation;
+
         if ($body != null) {
             $this->setResponse($body, $message);
         }
@@ -38,6 +40,11 @@ class ResponseForm implements ResponseFormInterface
     public function getMessage(): array
     {
         return $this->message;
+    }
+
+    public function getOrientation(): string 
+    {
+        return $this->orientation;
     }
 
     public function setErrorMessage(array $messages): ResponseFormInterface 

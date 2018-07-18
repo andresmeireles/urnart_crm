@@ -13,7 +13,7 @@ use App\Utils\Form\Form;
 class FormController extends Controller
 {
     /**
-     * @Route("/form", name="form")
+     * @Route("/forms", name="form")
      */
     public function index()
     {
@@ -21,7 +21,7 @@ class FormController extends Controller
     }
 
     /**
-     * @Route("/form/{formName}", methods={"GET", "HEAD", "POST"})
+     * @Route("/forms/{formName}", methods={"GET", "HEAD", "POST"})
      */
     public function createReport(Request $req, string $formName)
     {

@@ -53,9 +53,9 @@ class ReceiptFormCreator implements CreateFormInterface
 		$extenseNumber = new NumeroPorExtenso();
 
 		$body = '
-		<style media="print">
-  		#page { size: A4 portrait;}
-  		#half-page { height: 14cm; width: 21cm; margin: 0px 0px 100px 0px; background: url('. $imageBackground .') center no-repeat; -webkit-print-color-adjust: exact; }
+		<style>
+		#page { width: 100%; height: 100% }
+  		#half-page { height: 50%; width: 100%; margin: 10px 0px 10px 0px; }
   		#form { padding: 10px; font: 15px "Arial"; }
 		.f-right { float: right; }
 		.f-left { float: left; }
@@ -69,26 +69,7 @@ class ReceiptFormCreator implements CreateFormInterface
 		.center { text-align:center }
 		.sign { margin: 30px 0px 0px 0px }
 		.c { margin: 0px 0px 0px 90px;}
-		</style>
-
-		<style>
-  		#page { size: A4 portrait;}
-  		#half-page { margin: 0px 0px 100px 0px; background: url('. $imageBackground .') center no-repeat; -webkit-print-color-adjust: exact; }
-		.f-right { float: right; }
-		.f-left { float: left; }
-		.clear { clear:both }
-		.body { padding: 0px 30px 0px 30px; }
-		.body p, .body div { font: 18px "Arial"}  
-
-		.footer { padding: 0px 30px 0px 30px; font: 18px "Arial"; }
-		.img img { width: 120px; height: 100px; display:inline;}
-		.date { margin: 70px 250px 0px 0px; float:right}
-		.center { text-align:center }
-		.sign { margin: 30px 0px 0px 0px }
-		.c { margin: 0px 0px 0px 90px;}
-		</style>
-
-		<body>';
+		</style>';
 
 		foreach ($parameters as $param) {
 			$freightFloat = number_format($param['price'], 2, '.', '');
@@ -141,8 +122,6 @@ class ReceiptFormCreator implements CreateFormInterface
 
 			$body.= '</div>';
 		}
-
-		$body .= '</body>';
 
 		return $body;
 	}

@@ -16,7 +16,7 @@ class RomaneioFormCreator implements CreateFormInterface
 		$clonedParameters = $parameters->getClonedParameters();
 
 		ValidatorJson::validate($parameters->getNonClonedParameters(), [
-			'type' => v::notEmpty()->boolVal()
+			'type' => v::notEmpty()
 		]);
 
 		foreach ($clonedParameters as $parameter) {
@@ -31,13 +31,13 @@ class RomaneioFormCreator implements CreateFormInterface
 			]);
 		}
 
-		if ($parameters->getNonClonedParameters()['type'] == 0) {
+		if ($parameters->getNonClonedParameters()['type'] == 2) {
 			$response = $this->createTravelRomaneio($clonedParameters);
-			return new ResponseForm($response);
+			return new ResponseForm($response, 'Landscape');
 		}
 
 		$response = $this->createBoardRomaneio($clonedParameters);
-		return new ResponseForm($response);
+		return new ResponseForm($response, 'Landscape');
 	}
 
 	public function getMessage()
@@ -54,15 +54,11 @@ class RomaneioFormCreator implements CreateFormInterface
 		$totalP = 0;
 		$total = 0;
 
-		$body = '<!DOCTYPE html>
-		<html>
-		<head>
-		<title>Romaneio</title>
-		</head>
-		<style type="text/css" media="print">
-		@page{size:landscape}
+		$body = '
+		<style >
+		#page_1 { width: 100%; height: 100%; border: 1px solid black }
 
-		.t0{width: 922px;margin-top: 6px;font: 17px "Calibri"; border: 1px solid black}
+		.t0{width: 100% ;margin-top: 6px;font: 17px "Calibri"; border: 1px solid black}
 
 		.head { border-bottom: 1px solid black; text-align: center; padding: 2px 0 0 3px; font-size: 20px;}
 		.head2 span { margin: 0 80px 0 0; font-size: 20px}
@@ -85,36 +81,7 @@ class RomaneioFormCreator implements CreateFormInterface
 		.lp { padding: 0 0 0 2px;}
 		.center { text-align:center }
 		</style>
-		
-		<style type="text/css">
-		@page{size:landscape}
 
-		body {margin-top: 0px;margin-left: 0px;}
-
-		.t0{width: 922px;margin-top: 6px;font: 17px "Calibri"; border: 1px solid black}
-
-		.head { border-bottom: 1px solid black; text-align: center; padding: 2px 0 0 3px; font-size: 20px;}
-		.head2 span { margin: 0 80px 0 0; font-size: 20px}
-		.head1 td { border-bottom: 1px solid black; }
-
-		.hbody td {
-			font-weight: bold;
-			font-size: 22px;
-			border-right: 1px solid black;
-			border-bottom: 1px solid black;
-		}
-
-		.body td { border-right: 1px solid black; border-bottom: 1px solid black; }
-
-		.space td { border-bottom: 1px solid black; }
-
-		.foot td { border-right: 1px solid black}
-
-		.no-border { border-right: 1px solid white !important }
-		.lp { padding: 0 0 0 2px;}
-		.center { text-align:center }
-		</style>
-		<body>
 		<div id="page_1">
 
 		<table cellpadding=0 cellspacing=0 class="t0">
@@ -183,9 +150,7 @@ class RomaneioFormCreator implements CreateFormInterface
 		</tr>
 		</table>
 		
-		</div>
-		</body>
-		</html>';
+		</div>';
 
 		return $body;
 	}

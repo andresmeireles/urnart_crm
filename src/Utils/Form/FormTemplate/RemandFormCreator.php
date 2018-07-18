@@ -39,8 +39,7 @@ class RemandFormCreator implements CreateFormInterface
 
 		$body = '
 			<style>
-		#page { size: A4 portrait; }
-		#half-page { height: 13cm; width: 21cm; margin: 0px 0px 100px 0px; background: url('. $imgBackground .') center no-repeat; -webkit-print-color-adjust: exact; }
+		#half-page { height: 50%; width: 100%; margin: 0px 0px 0px 0px; background: url('. $imgBackground .') center no-repeat; -webkit-print-color-adjust: exact; }
 		#form { padding: 10px; font: 15px "Arial"; }
 			.f-right { float: right; }
 			.f-left { float: left; }

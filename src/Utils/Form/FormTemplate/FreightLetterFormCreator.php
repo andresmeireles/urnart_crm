@@ -52,16 +52,10 @@ class FreightLetterFormCreator implements CreateFormInterface
 		$imageSign = file_get_contents(__DIR__.'/carta-frete/sign');
 		$extenseNumber = new NumeroPorExtenso();
 
-		$body = '<script type="text/javascript">
-		document.addEventListener("DOMContentLoaded", function () {
-			window.print();
-			});
-		
-			</script>
-
-		<style media="print">
+		$body = '
+		<style >
   		#page { size: A4 portrait;}
-  		#half-page { height: 14cm; width: 21cm; margin: 0px 0px 100px 0px; background: url('. $imageBackground .') center no-repeat; -webkit-print-color-adjust: exact; }
+  		#half-page { height: 50%; width: 100%; margin: 0px 0px 0px 0px; background: url('. $imageBackground .') center no-repeat; -webkit-print-color-adjust: exact; }
   		#form-cf { padding: 10px; font: 15px; }
 		.f-right { float: right; }
 		.f-left { float: left; }
@@ -75,25 +69,9 @@ class FreightLetterFormCreator implements CreateFormInterface
 		.center { text-align:center }
 		.sign { margin: 30px 0px 0px 0px }
 		.c { margin: 0px 0px 0px 90px;}
-		</style>	
-			
-		<style>
-  		#page { size: A4 portrait;}
-  		#half-page { background: url('. $imageBackground .') center no-repeat; -webkit-print-color-adjust: exact; }
-  		#form-cf { padding: 10px; font: 15px "Arial"; }
-		.f-right { float: right; }
-		.f-left { float: left; }
-		.clear { clear:both }
-		.body-cf { padding: 0px 30px 0px 30px; }
-		.body-cf { font: 18px "Arial"}  
 
-		.footer-cf { padding: 0px 30px 0px 30px; font: 18px ; }
-		.img-cf img { width: 120px; height: 100px; display:inline;}
-		.date { margin: 70px 250px 0px 0px; float:right}
-		.center { text-align:center }
-		.sign { margin: 30px 0px 0px 0px }
-		.c { margin: 0px 0px 0px 90px;}
-		</style>
+		.p-break { page-break-after: always }
+		</style>	
 
 		<body>';
 
@@ -147,7 +125,7 @@ class FreightLetterFormCreator implements CreateFormInterface
 
 			$body .= $halfPage .''. $halfPage;
 
-			$body.= '</div>';
+			$body.= '</div><div class="p-break"></div>';
 		}
 
 		$body .= '</body>';
