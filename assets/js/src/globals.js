@@ -11,6 +11,17 @@ document.addEventListener('DOMContentLoaded', function () {
 		$(this).fadeOut(3000);
 	});
 
+	document.querySelectorAll('.sender').forEach( function (el) {
+		el.addEventListener('click', function (el) {
+			var url = el.target.getAttribute('data-sender');
+			var formId = '#'+el.target.closest('form').id;
+			var formData = new FormData(formId);
+			sendSimpleRequest(el.target.getAttribute('data-sender'), formData);
+			//el.preventDefault();
+			return true;
+		});  
+	});
+
 	if(document.querySelector('.numbers-only')) {
 		document.querySelector('.numbers-only').addEventListener('keypress', function (evt) {
 			var charCode = (evt.which) ? evt.which : evt.keyCode;

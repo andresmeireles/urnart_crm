@@ -68,7 +68,7 @@ class Form
 
     public function save(CreateFormInterface $Form): bool
     {
-          
+
     }
 
     public function getMessage()
@@ -79,11 +79,13 @@ class Form
     public function show(ResponseFormInterface $Form): string
     {
     	// windows
-        //$pdf = new Pdf(__DIR__.'\..\..\..\vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltopdf.exe');
+        $pdf = new Pdf(__DIR__.'\..\..\..\vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltopdf.exe');
         
     	// linux
-    	$pdf = new Pdf(__DIR__.'/../../../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64');
+    	//$pdf = new Pdf(__DIR__.'/../../../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64');
         $html = $Form->getBodyForm();
+
+        file_put_contents(__DIR__.'/../../../public/form/bill.html', $html);
 
         $orientation = $Form->getOrientation();
 
@@ -92,23 +94,18 @@ class Form
         $pdf->setOption('encoding', 'UTF-8');
         $pdf->setOption('page-height', '297.0');
         $pdf->setOption('page-width', '210.0');
+        /**
+        $pdf->setOption('margin-bottom', '0mm');
+        $pdf->setOption('margin-top', '0mm');
+        $pdf->setOption('margin-right', '0mm');
+        $pdf->setOption('margin-left', '0mm'); */
         if (file_exists(__DIR__.'/../../../public/form/bill.pdf')) {
         	//chmod(__DIR__.'/../../../public/form/bill.pdf', 777);
             unlink(__DIR__.'/../../../public/form/bill.pdf');
         }
         $pdf->generateFromHtml($html, __DIR__.'/../../../public/form/bill.pdf');
-        echo $html;
-        die();
-        //header('Content-Type: application/pdf');
-        //echo $pdf->getOutputFromHTML($Form->getBodyForm());
-        return new Response( 
-            $x,
-            200, 
-            array(
-                'Content-Type'          => 'application/pdf',
-                'Content-Disposition'   => 'inline; filename="zone.pdf"'
-            )
-        );
+        
+        return new Response(201);
     } 
 
     public function createAndShow(array $parameters)

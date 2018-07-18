@@ -1,11 +1,11 @@
-module.exports = function() {
+module.exports = function(id) {
 
 	$.fancybox.open({
-		src: '#modal',
+		src: '#'+id,
 		type: 'inline',
 		opts: {
 			afterLoad: function () {
-				var modalWindow = document.querySelector('#modal').classList.remove('d-none');	
+				var modalWindow = document.querySelector('#'+id).classList.remove('d-none');	
 			},
 		}
 	});	

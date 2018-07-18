@@ -53,82 +53,85 @@ class FreightLetterFormCreator implements CreateFormInterface
 		$extenseNumber = new NumeroPorExtenso();
 
 		$body = '
-		<style >
-  		#page { size: A4 portrait;}
-  		#half-page { height: 50%; width: 100%; margin: 0px 0px 0px 0px; background: url('. $imageBackground .') center no-repeat; -webkit-print-color-adjust: exact; }
-  		#form-cf { padding: 10px; font: 15px; }
-		.f-right { float: right; }
-		.f-left { float: left; }
-		.clear { clear:both }
-		.body-cf { padding: 0px 30px 0px 30px; }
-		.body-cf { font: 18px "Arial"}  
-
-		.foote-cf { padding: 0px 30px 0px 30px; font: 18px; }
-		.img-cf img { width: 120px; height: 100px; display:inline;}
-		.date { margin: 70px 250px 0px 0px; float:right}
-		.center { text-align:center }
-		.sign { margin: 30px 0px 0px 0px }
-		.c { margin: 0px 0px 0px 90px;}
-
-		.p-break { page-break-after: always }
-		</style>	
-
-		<body>';
+		<style>
+		.r-page { width: 100%; height: 95%; border: 1px solid red }
+		.r-h-page { width: 100%; height: 50%; }
+		.r-head { margin: 5px 15px 0px 20px; font-size: 1.2em; font-weight: bold; height: 15%; }
+		.r-body { margin: 10px 30px 0px 40px; height: 45% }
+		.rfoot { margin: 20px 35px 0px 35px; font-size: 1.1em; font-weight: bold; height: 30% }
+		.r-0 { text-align: center }
+		.r-t { text-align: center; font-size: 1.9em; font-weight: bold }
+		.r-2, .r-3, .r-4 { font-size: 1.4em; }
+		.r-body div { margin-bottom: 5px } 
+		.rf-left { float: left }
+		.rf-right { float: right }
+		.rf-clear { clear: both }
+		.r-b-25 { width: 25% }
+		.r-b-50 { width: 50% }
+		.r-b-75 { width: 75% }
+		.r-b-100 { width: 100% }
+		.r-t-center { text-align: center; }
+		.rf-2 { margin: 70px 0px 0px 0px }
+		.b-sup { border-top: 1px solid black }
+		.break-p { page-break-after: always }
+		</style>';
 
 		foreach ($parameters as $param) {
 			$freightFloat = number_format($param['freight'], 2, '.', ',');
 			$number = $extenseNumber->converter($freightFloat);
 			$freightPrice = number_format($param['freight'], 2, ',', '.');
-			$body .= '<div id="page">';
+			$body .= '<div class="r-page break-p">';
 
-			$halfPage = '<div id="half-page">
-			<div id="form-cf">
-			<div class="head">
-			<div class="f-right">Urnas Mart Ltda</div>
-			<div class="f-left">05.020.839/0001.05</div>
-			<div class="clear"></div>
-			<div class="f-left">(91) 3256 1106</div>
+			$hBody = '<div class="r-h-page">
+			<div class="rform">
+
+			<div class="r-head">
+			<span class="rf-right">Urnas Mart Ltda</span>
+			<span class="rf-left r-b-75">05.020.839/0001-05</span>
+			<span class="rf-left r-b-75">(91) 93256-1106</span>
+			<div class="rf-clear"></div>
 			</div>
-			<div class="clear"></div>
-			<div class="body-cf">
-			<h2 class="center">CARTA FRETE</h2>
-			<p>Á</p>
-			<div><span class="f-left">'. $param['number'] .' - '. $param['clientName'] .'</span><span class="f-right">R$ '. $freightPrice .'</span><br><span class="f-left">'. $param['clientCity'] .' - '. $param['clientState'] .'</span></div>
-			<div class="clear"></div>
-			<p class>Pagar ao portador o Valor de R$ '. $freightPrice .' ('. strtoupper($number) .') referente ao frete de urnas do pedido de número '. $param['orderNumber'] .', conforme combinado.  
-			</p><p>Atenciosamente,</p>
+
+			<div class="r-body">
+			<div class="r-0">
+			<span class="r-t">Carta Frete</span>
 			</div>
-			<div class="footer-cf">
-			<div class="img-cf f-left">
-			<img src="'. $imageSign .'">
-			<div class="clear"></div>
-			<small>Urnas Mart</small>
+			<div class="r-1">À</div>
+			<div class="r-2">
+			<span class="rf-right">R$ '. $freightPrice .'</span>
+			<span class="rf-left r-b-75">'. $param['number'] .' - '. $param['clientName'] .'</span>
+			<span class="rf-left r-b-75">'. $param['clientCity'] .' - '. $param['clientState'] .'</span>
+			<div class="rf-clear"></div>
 			</div>
-			<div class="date">Data:____/____/________</div>
-			<div class="clear"></div>
-			<div class="sign">
-			<div class="f-left">
-			<span>____________________________</span>
-			<br>
-			<div class="c">Cliente</div>
+			<div class="r-3">
+			<span>
+			Pagar ao portador o Valor de R$ '. $freightPrice .' ('. strtoupper($number) .') referente ao frete de urnas do pedido de
+			número '. $param['orderNumber'] .', conforme combinado.
+			</span>
 			</div>
-			<div class="f-right">
-			<span>____________________________</span>
-			<br>
-			<div class="c">Recebedor</div>
+			<div class="r-4">Atenciosamente</div>
+			</div>
+
+			<div class="rfoot">
+			<div class="rf-1">
+			<div class="r-t-center ">
+			<span class="">DATA: ______/______/___________</span>  
+			</div>
+			<div class="rf-clear"></div>      
+			</div>
+			<div class="rf-2">
+			<span class="rf-left r-b-25 b-sup">Recebedor</span>
+			<span class="rf-right r-b-25 b-sup">Cliente</span>     
 			</div>
 			</div>
-			<div class="clear"></div>
-			</div>
-			</div>
+
+			</div>  
 			</div>';
 
-			$body .= $halfPage .''. $halfPage;
+			$body .= $hBody.''.$hBody;
 
-			$body.= '</div><div class="p-break"></div>';
+			$body .= '</div>';
 		}
-
-		$body .= '</body>';
 
 		return $body;
 	}

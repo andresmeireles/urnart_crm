@@ -27,7 +27,7 @@ class TravelFormCreator implements CreateFormInterface
 
 		$body = $this->createFormBody($parameters);
 
-		return new ResponseForm($bodyForm);
+		return new ResponseForm($body);
 	}
 
 	private function createFormBody(Parameters $parameters): string

@@ -1,5 +1,8 @@
 require('bootstrap');
 require('imask');
+require('jspdf');
+
+global.jspdf = require('jspdf');
 
 const $ = require('jquery');
 
@@ -10,6 +13,7 @@ global.openModal = require('./src/form/createFormModal.js');
 global.modal = require('./src/openModal');
 global.printForm = require('./src/form/printForm');
 global.insert = require('./src/globals');
+global.sendSimpleRequest = require('./src/sendSimpleRequest');
 
 const fancybox = require('@fancyapps/fancybox');
 const print = require('jQuery.print');

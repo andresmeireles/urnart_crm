@@ -17,7 +17,6 @@ class ReceiptFormCreator implements CreateFormInterface
 {
 	public function createForm(Parameters $parameters): ResponseFormInterface
 	{
-		$response = new ResponseForm();
 
 		$clonedParameters = $parameters->getClonedParameters();
 		
@@ -33,12 +32,12 @@ class ReceiptFormCreator implements CreateFormInterface
 		}
 
 		if (ValidatorJson::getErrors()) {
-			return $response->setErrorMessage($this->getMessage());
+			return new Response(null, null, $this->getMessage());
 		}
 
 		$body = $this->createBody($clonedParameters);
 
-		return $response->setResponse($body);
+		return new ResponseForm($body);
 	}
 
 	public function getMessage()
@@ -53,6 +52,12 @@ class ReceiptFormCreator implements CreateFormInterface
 		$extenseNumber = new NumeroPorExtenso();
 
 		$body = '
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				window.print();
+				});
+		</script>
 		<style>
 		#page { width: 100%; height: 100% }
   		#half-page { height: 50%; width: 100%; margin: 10px 0px 10px 0px; }
