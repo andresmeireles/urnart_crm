@@ -5,6 +5,8 @@ namespace App\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use App\Utils\Generic\GenericSetter;
 
 class RegisterController extends Controller
 {
@@ -32,11 +34,13 @@ class RegisterController extends Controller
     }
 
     /**
-     * @Route("/register/add/{entity}")
+     * @Route("/register/add/{entity}", methods="POST")
      */
-    public function addGenericRegister($entity, Request $request)
+    public function addGenericRegister(string $entity, GenericSetter $setter, Request $request)
     {
-        dump($request->request->all());
-        die();
+        $setter->set($entity, $request->request->all());
+        $result = $this->getDoctrine()->getRepository('App\Entity\Departament')->find(1);
+        dump($result);
+        return new Response ('sucesso', 200);     
     }
 }

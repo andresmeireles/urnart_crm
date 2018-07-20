@@ -32,7 +32,7 @@ class ReceiptFormCreator implements CreateFormInterface
 		}
 
 		if (ValidatorJson::getErrors()) {
-			return new Response(null, null, $this->getMessage());
+			return new ResponseForm(null, 'Portrait', $this->getMessage());
 		}
 
 		$body = $this->createBody($clonedParameters);

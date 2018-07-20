@@ -1,5 +1,4 @@
 module.exports = function (formAdd) {
-	alert()
 	var requiredFormInputs = document.querySelectorAll('#'+formAdd+' [required]');
 	for (var input of requiredFormInputs) {
 		console.log(input);
@@ -13,12 +12,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	document.querySelectorAll('.sender').forEach( function (el) {
 		el.addEventListener('click', function (el) {
+			el.preventDefault();
 			var url = el.target.getAttribute('data-sender');
 			var formId = '#'+el.target.closest('form').id;
-			var formData = new FormData(formId);
+			var form = document.querySelector(formId);
+			var formData = new FormData(form);			
 			sendSimpleRequest(el.target.getAttribute('data-sender'), formData);
-			//el.preventDefault();
-			return true;
+			return false;
 		});  
 	});
 

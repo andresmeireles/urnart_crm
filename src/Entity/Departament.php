@@ -21,6 +21,11 @@ class Departament
      */
     private $name;
 
+    public function __toArray()
+    {
+        return get_object_vars($this);
+    }
+
     public function getId()
     {
         return $this->id;
