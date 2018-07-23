@@ -1,8 +1,10 @@
-module.exports = function (url, method = 'POST', data = null, responseFunction = null) {
+module.exports = function (url, method = 'POST', info = null, responseFunction = null) {
 	axios({
 		method: method,
 		url: url, 
-		data: data 
+		data: {
+			id: info
+		}, 
 	})
 	.then(function (response) {
 		if (responseFunction == null) {

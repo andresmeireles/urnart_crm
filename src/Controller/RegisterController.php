@@ -55,4 +55,13 @@ class RegisterController extends Controller
         $table = $getter->getJsonData($entity);
         return new Response($table);
     }
+
+    /**
+     * @Route("/register/remove/{entity}", methods="POST")
+     */
+    public function getGenericRemover(Request $request)
+    {
+        $object = json_decode($request->getContent());
+        die();
+    }
 }

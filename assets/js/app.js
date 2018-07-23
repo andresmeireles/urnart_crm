@@ -14,6 +14,7 @@ global.modal = require('./src/openModal');
 global.printForm = require('./src/form/printForm');
 global.insert = require('./src/globals');
 global.sendSimpleRequest = require('./src/sendSimpleRequest');
+global.simpleRequest = require('./src/global/simpleRequest');
 
 const fancybox = require('@fancyapps/fancybox');
 const print = require('jQuery.print');
