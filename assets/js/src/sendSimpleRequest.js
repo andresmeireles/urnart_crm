@@ -5,9 +5,10 @@ module.exports = function (routeUrl, formData, responseFunction = null) {
 		data: formData
 	})
 	.then( function (response) {
-		responseFunction(response);
+		responseFunction(response.data, response.headers['type-message']);
+		return true;
 	})
-	.catch( function (response) {
-		alert('é tetra');
+	.catch( function (error) {
+		console.log(error);
 	});
 }

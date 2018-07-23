@@ -2,6 +2,7 @@
 namespace App\Utils\Generic;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class GenericSetter
 {
@@ -11,6 +12,9 @@ class GenericSetter
 	 */
 	private $em;
 	private $entity;
+	private $typeMessage = 'success';
+	private $devMessage;
+	private $userMessage;
 
 	function __construct(EntityManagerInterface $em)
 	{
@@ -55,12 +59,34 @@ class GenericSetter
 
 		$this->em->persist($this->entity);
 		$this->em->flush();
+		$this->userMessage = 'Item cadastrado com sucesso';
 	}
 
-	public function set(string $entity, array $parameters)
+	public function set(string $entity, array $parameters): void
 	{
 		$this->setEntity($entity);
 		$this->setFields($parameters);
-		$this->save();
+		try {
+			$this->save();	
+		} catch (UniqueConstraintViolationException $e) {
+			$this->userMessage = 'Item já cadastrado';
+			$this->devMessage = $e->getMessage();
+			$this->typeMessage = 'danger';
+		}
+	}
+
+	public function getTypeMessage(): string
+	{
+		return $this->typeMessage;
+	}
+
+	public function getMessage(): string
+	{
+		return $this->userMessage;
+	}
+
+	public function getDevMessage(): string
+	{
+		return $this->devMessage;
 	}
 }

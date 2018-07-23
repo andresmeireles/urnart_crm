@@ -4,16 +4,21 @@ namespace App\Entity;
 /**
  * Base entity with some fields and methods, for audit
  */
-abstrat class BaseEntity
+abstract class BaseEntity
 {
 	/**
-	 * @ORM\Column(type="date")
+	 * @ORM\Column(type="datetimez")
 	 */
-	private $createDate = new \DateTime('now');
+	private $createDate;
 
 	private $lastUpdate;
 
 	private $editBy;
+
+	public function __construct()
+	{
+		$this->createDate = new \DateTime('now', new DateTimeZone('America/Sao_Paulo'));
+	}
 
 	public function getCreateDate(): ?\DateTime
 	{

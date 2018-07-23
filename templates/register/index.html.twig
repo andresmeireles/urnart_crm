@@ -2,56 +2,57 @@
 
 {% block title %}Registros{% endblock %}
 
-{% block content %}
-<div class="p-3">
-    <div class="row">
-        <h1>Registros</h1>
-        <hr>
-    </div>
-    <div class="row">
-        <div class="m-1">
-            <div class="card" style="width: 14rem;">
-            <div class="card-body">
-                <h5 class="card-title"><i class="fas fa-fw fa-user"></i>&nbsp;Usuários</h5>
-                <p class="card-text">Cria e edita os atuais usuários do sistema.</p>
-                <a href="#" class="card-link text-primary">Criar</a>
-                <a href="#" class="card-link text-primary">Visualizar e Editar</a>
+    {% block content %}
+        <div class="custom-alert-message" role="alert" id="alert-message"></div>
+        <div class="p-3">
+            <div class="row">
+                <h1>Registros</h1>
+                <hr>
             </div>
+            <div class="row">
+                <div class="m-1">
+                    <div class="card" style="width: 14rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-fw fa-user"></i>&nbsp;Usuários</h5>
+                            <p class="card-text">Cria e edita os atuais usuários do sistema.</p>
+                            <a href="#" class="card-link text-primary">Criar</a>
+                            <a href="#" class="card-link text-primary">Visualizar e Editar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-1">
+                    <div class="card" style="width: 14rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-fw fa-address-card"></i>&nbsp;Cliente</h5>
+                            <p class="card-text">Cria e edita os atuais clientes do sistema.</p>
+                            <a href="#" class="card-link text-primary">Criar</a>
+                            <a href="#" class="card-link text-primary">Visualizar e Editar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-1">
+                    <div class="card" style="width: 14rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-fw fa-boxes"></i>&nbsp;Departamentos</h5>
+                            <p class="card-text">Cria departamentos da empresa.</p>
+                            <a href="#" data-action="add-departament" class="card-link text-primary">Criar</a>
+                            <a href="#" data-action="departament" class="card-link text-primary">Visualizar e Editar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-1">
+                    <div class="card" style="width: 14rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-fw fa-ruler"></i>&nbsp;Medidas</h5>
+                            <p class="card-text">Cadastra unidades metricas.</p>
+                            <a href="#" class="card-link text-primary">Criar</a>
+                            <a href="#" class="card-link text-primary">Visualizar e Editar</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="m-1">
-            <div class="card" style="width: 14rem;">
-            <div class="card-body">
-                <h5 class="card-title"><i class="fas fa-fw fa-address-card"></i>&nbsp;Cliente</h5>
-                <p class="card-text">Cria e edita os atuais clientes do sistema.</p>
-                <a href="#" class="card-link text-primary">Criar</a>
-                <a href="#" class="card-link text-primary">Visualizar e Editar</a>
-            </div>
-            </div>
-        </div>
-        <div class="m-1">
-            <div class="card" style="width: 14rem;">
-            <div class="card-body">
-                <h5 class="card-title"><i class="fas fa-fw fa-boxes"></i>&nbsp;Departamentos</h5>
-                <p class="card-text">Cria departamentos da empresa.</p>
-                <a href="#" data-action="add-departament" class="card-link text-primary">Criar</a>
-                <a href="#" data-action="departament" class="card-link text-primary">Visualizar e Editar</a>
-            </div>
-            </div>
-        </div>
-        <div class="m-1">
-            <div class="card" style="width: 14rem;">
-            <div class="card-body">
-                <h5 class="card-title"><i class="fas fa-fw fa-ruler"></i>&nbsp;Medidas</h5>
-                <p class="card-text">Cadastra unidades metricas.</p>
-                <a href="#" class="card-link text-primary">Criar</a>
-                <a href="#" class="card-link text-primary">Visualizar e Editar</a>
-            </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-{% include '/register/pages/departament.html.twig' %}
+        {% include '/register/pages/departament.html.twig' %}
 
-{% endblock %}
+    {% endblock %}

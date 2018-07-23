@@ -5,11 +5,8 @@ module.exports = function (formAdd) {
 	}
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-	$('.flash').each(function (index) {
-		$(this).fadeOut(3000);
-	});
 
+document.addEventListener('DOMContentLoaded', function () {
 	document.querySelectorAll('.sender').forEach( function (el) {
 		el.addEventListener('click', function (el) {
 			el.preventDefault();
@@ -17,7 +14,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			var formId = '#'+el.target.closest('form').id;
 			var form = document.querySelector(formId);
 			var formData = new FormData(form);			
-			sendSimpleRequest(el.target.getAttribute('data-sender'), formData);
+			sendSimpleRequest(el.target.getAttribute('data-sender'), formData, function (message, type) {
+				var messageAlert = document.querySelector('#alert-message');
+				messageAlert.innerHTML = messageSend(type, message);
+				setTimeout(function () {
+					$(document).find('#close-button').trigger('click');
+				}, 3000);
+				return true;
+			});
 			return false;
 		});  
 	});

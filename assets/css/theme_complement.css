@@ -6,6 +6,15 @@
 	cursor: pointer;
 }
 
+.custom-alert-message {
+	z-index: 99999;
+	position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 5px;
+}
+
 a .noline{text-decoration: none !important;}
 .noline a:hover {text-decoration: none !important;
 	color: white;        

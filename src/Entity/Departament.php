@@ -17,7 +17,7 @@ class Departament
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", unique=true, length=255)
      */
     private $name;
 
@@ -38,7 +38,7 @@ class Departament
 
     public function setName(string $name): self
     {
-        $this->name = $name;
+        $this->name = mb_strtolower($name);
 
         return $this;
     }

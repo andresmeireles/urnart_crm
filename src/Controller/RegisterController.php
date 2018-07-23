@@ -39,8 +39,10 @@ class RegisterController extends Controller
     public function addGenericRegister(string $entity, GenericSetter $setter, Request $request)
     {
         $setter->set($entity, $request->request->all());
-        $result = $this->getDoctrine()->getRepository('App\Entity\Departament')->find(1);
-        dump($result);
-        return new Response ('sucesso', 200);     
+        return new Response (
+            $setter->getMessage(), 
+            Response::HTTP_OK,
+            array('type-message' => $setter->getTypeMessage())
+        );     
     }
 }
