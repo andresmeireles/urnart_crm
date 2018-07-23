@@ -36,7 +36,7 @@
                             <h5 class="card-title"><i class="fas fa-fw fa-boxes"></i>&nbsp;Departamentos</h5>
                             <p class="card-text">Cria departamentos da empresa.</p>
                             <a href="#" data-action="add-departament" class="card-link text-primary">Criar</a>
-                            <a href="#" data-action="departament" class="card-link text-primary">Visualizar e Editar</a>
+                            <a href="#" data-action="departament" data-table="departament" class="card-link text-primary">Visualizar e Editar</a>
                         </div>
                     </div>
                 </div>
@@ -53,6 +53,6 @@
             </div>
         </div>
 
-        {% include '/register/pages/departament.html.twig' %}
+        {% include '/register/pages/departament.html.twig' with {'dptos': departament} %}
 
     {% endblock %}

@@ -1,25 +1,15 @@
 <?php 
 namespace App\Utils\Generic;
 
-use Doctrine\ORM\EntityManagerInterface;
+use App\Utils\Generic\GenericContainer;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
-class GenericSetter
+class GenericSetter extends GenericContainer
 {
-	/**
-	 * Entity Manager
-	 * @object
-	 */
-	private $em;
 	private $entity;
 	private $typeMessage = 'success';
 	private $devMessage;
 	private $userMessage;
-
-	function __construct(EntityManagerInterface $em)
-	{
-		$this->em = $em;
-	}
 
 	public function setEntity(string $entity): self
 	{

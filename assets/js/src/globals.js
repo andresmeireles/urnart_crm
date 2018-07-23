@@ -7,6 +7,8 @@ module.exports = function (formAdd) {
 
 
 document.addEventListener('DOMContentLoaded', function () {
+	
+	//add single elements
 	document.querySelectorAll('.sender').forEach( function (el) {
 		el.addEventListener('click', function (el) {
 			el.preventDefault();
@@ -17,6 +19,12 @@ document.addEventListener('DOMContentLoaded', function () {
 			sendSimpleRequest(el.target.getAttribute('data-sender'), formData, function (message, type) {
 				var messageAlert = document.querySelector('#alert-message');
 				messageAlert.innerHTML = messageSend(type, message);
+				
+				if (type == 'success') {
+					form.reset();	
+					setTimeout( location.reload(), 2000);
+				}
+
 				setTimeout(function () {
 					$(document).find('#close-button').trigger('click');
 				}, 3000);

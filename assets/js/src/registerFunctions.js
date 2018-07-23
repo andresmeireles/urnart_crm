@@ -1,1 +1,0 @@
-registerFunctions.js

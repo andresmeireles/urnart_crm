@@ -28,5 +28,5 @@ services:
     
     # service to do simple persistence
     # https://stackoverflow.com/questions/49618780/how-to-inject-doctrine-entity-manager-into-symfony-4-service
-    App\Utils\Generic\GenericSetter:
+    App\Utils\Generic\GenericContainer:
         arguments: ['@doctrine.orm.entity_manager']

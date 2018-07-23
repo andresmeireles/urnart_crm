@@ -7,16 +7,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Utils\Generic\GenericSetter;
+use App\Utils\Generic\GenericGetter;
 
 class RegisterController extends Controller
 {
     /**
      * @Route("/register", name="register")
      */
-    public function index()
+    public function index(GenericGetter $getter)
     {
         return $this->render('register/index.html.twig', [
-            'controller_name' => 'RegisterController',
+            'departament' => $getter->get('departament'),
         ]);
     }
 
@@ -44,5 +45,14 @@ class RegisterController extends Controller
             Response::HTTP_OK,
             array('type-message' => $setter->getTypeMessage())
         );     
+    }
+
+    /**
+     * @Route("/register/get/{entity}", methods="POST")
+     */
+    public function getGenericRegister(string $entity, GenericGetter $getter)
+    {
+        $table = $getter->getJsonData($entity);
+        return new Response($table);
     }
 }

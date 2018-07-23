@@ -74,6 +74,15 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "jms/metadata": {
+        "version": "1.6.0"
+    },
+    "jms/parser-lib": {
+        "version": "1.0.0"
+    },
+    "jms/serializer": {
+        "version": "1.12.1"
+    },
     "knplabs/knp-snappy": {
         "version": "v1.0.4"
     },
@@ -109,6 +118,12 @@
     },
     "phenx/php-svg-lib": {
         "version": "v0.3.2"
+    },
+    "phpcollection/phpcollection": {
+        "version": "0.5.0"
+    },
+    "phpoption/phpoption": {
+        "version": "1.5.0"
     },
     "psr/cache": {
         "version": "1.0.1"

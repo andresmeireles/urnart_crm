@@ -26,6 +26,7 @@ import './src/form/cloneField.js';
 import './src/form/remand.js';
 import './src/form/sendForm.js';
 import './src/storage/feedstock';
+import './src/register/registerEvents';
 import pdfjs from 'pdfjs-dist';
 
 if (document.querySelector('.sortable')) {

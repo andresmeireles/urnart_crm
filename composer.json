@@ -6,6 +6,7 @@
         "ext-iconv": "*",
         "dompdf/dompdf": "^0.8.2",
         "h4cc/wkhtmltopdf-amd64": "0.12.x",
+        "jms/serializer": "^1.12",
         "knplabs/knp-snappy-bundle": "^1.5",
         "mpdf/mpdf": "^7.1",
         "respect/validation": "^1.1",
