@@ -2,19 +2,23 @@ require('bootstrap');
 require('imask');
 require('jspdf');
 
-global.jspdf = require('jspdf');
-
 const $ = require('jquery');
 
 global.$ = global.jQuery = $;
 global.axios = require('axios');
+global.alertify = require('alertifyjs');
+
 global.messageSend = require('./src/messageDispatcher');
-global.openModal = require('./src/form/createFormModal.js');
 global.modal = require('./src/openModal');
-global.printForm = require('./src/form/printForm');
 global.insert = require('./src/globals');
 global.sendSimpleRequest = require('./src/sendSimpleRequest');
+
+global.openModal = require('./src/form/createFormModal.js');
+global.printForm = require('./src/form/printForm');
+
 global.simpleRequest = require('./src/global/simpleRequest');
+
+global.defaultDialog = require('./src/dialogs/defaultDialog')
 
 const fancybox = require('@fancyapps/fancybox');
 const print = require('jQuery.print');
@@ -28,7 +32,8 @@ import './src/form/remand.js';
 import './src/form/sendForm.js';
 import './src/storage/feedstock';
 import './src/register/registerEvents';
-import pdfjs from 'pdfjs-dist';
+import './src/register/reloadTable';
+import './src/dialogs/defaultDialog';
 
 if (document.querySelector('.sortable')) {
 	Tablesort(document.querySelector('.sortable'));

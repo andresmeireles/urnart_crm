@@ -14,9 +14,13 @@ Encore
     // uncomment to define the assets of the project
     .addEntry('app', './assets/js/app.js')
     .addStyleEntry('css/app', './assets/scss/app.scss')
+    .addStyleEntry('css/lapp', './assets/css/less/app.less')
 
     // uncomment if you use Sass/SCSS files
     .enableSassLoader()
+    
+    // uncomment if you use LESS files
+    .enableLessLoader()
 
     // uncomment for legacy applications that require $/jQuery as a global variable
     .autoProvidejQuery()

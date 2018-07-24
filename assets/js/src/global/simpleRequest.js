@@ -3,13 +3,14 @@ module.exports = function (url, method = 'POST', info = null, responseFunction =
 		method: method,
 		url: url, 
 		data: {
-			id: info
+			id: (info || '')
 		}, 
 	})
 	.then(function (response) {
-		if (responseFunction == null) {
-			return resopnse.data;
+		if (responseFunction) {
+			responseFunction(response);
+			return true;
 		}
-		responseFunction(response);
+		console.log(response.data);		
 	});
 }

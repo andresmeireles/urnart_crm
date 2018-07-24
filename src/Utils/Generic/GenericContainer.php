@@ -8,7 +8,8 @@ abstract class GenericContainer
     
 	/**
 	 * Entity Manager
-	 * @object
+	 * 
+	 * @var = object
 	 */
 	protected $em;
 
