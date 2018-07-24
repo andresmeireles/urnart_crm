@@ -22,7 +22,10 @@ document.addEventListener('DOMContentLoaded', function () {
 				
 				if (type == 'success') {
 					form.reset();	
-					setTimeout( location.reload(), 2000);
+					var name = el.target.closest('form').getAttribute('target');
+					$('#'+name+'-reload').trigger('click');
+					$.fancybox.close();
+
 				}
 
 				setTimeout(function () {

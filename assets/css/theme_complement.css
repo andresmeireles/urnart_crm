@@ -7,7 +7,7 @@
 }
 
 .custom-alert-message {
-	z-index: 99999;
+	z-index: 1000;
 	position: fixed;
     top: 0;
     left: 0;

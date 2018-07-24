@@ -9,6 +9,9 @@
 				<li class="nav-item mx-5">
 					<button data-action="add-departament" class="btn btn-primary">Adicionar</button>
 				</li>
+				<li class="nav-item mx-2">
+					<button id="departament-reload" class="btn reload"><i class="fas fa-sync reload"></i></button>
+				</li>
 			</ul>
 		</div>
 		<div class="card-body" data-name="departament">
@@ -18,7 +21,7 @@
 						<th colspan="2">Nome departamento</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="departament-body">
 					{% for dpto in dptos %}	
 					<tr>
 						<td class="d-none id-number">
@@ -28,7 +31,7 @@
 							{{ dpto.name }}
 						</td>
 						<td class="text-right">
-							<span class="badge badge-pill badge-danger remover">Remover</span>
+							<span class="badge badge-pill badge-danger remover cursor-decoration">Remover</span>
 						</td>
 					</tr>
 					{% endfor %}
@@ -43,7 +46,7 @@
 	
 	<div class="card text-center my-2">
 		<div class="card-header">
-			<form method="post" action="register/add/departament" id="add-depto-form">
+			<form method="post" action="register/add/departament" id="add-depto-form" target="departament">
 				<div class="form-group">
 					<input type="text" name="name" class="form-control" placeholder="Nome Departamento">
 				</div>
