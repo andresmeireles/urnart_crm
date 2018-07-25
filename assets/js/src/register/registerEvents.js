@@ -11,19 +11,27 @@ document.addEventListener('DOMContentLoaded', function () {
 			var rowValue = row.querySelectorAll('td')[0].innerHTML;
 			rowValue = rowValue.replace(/\s/g, '');
 			var target = '/register/remove/'+row.closest('div').getAttribute('data-name');
+			
+			$.fancybox.close();
 
-			defaultDialog('Deseja remover item ', name, entity);
-			/** 
-			simpleRequest(target, 'post', rowValue, function (response) {
-				var type = response.headers['type-message'];
-				var info = response.data;
-				var messageAlert = document.querySelector('#alert-message');
-				messageAlert.innerHTML = messageSend(type, info);
-				setTimeout(function () {
-					$(document).find('#close-button').trigger('click');
-				}, 2000);
-			});
-			row.remove();*/
+			defaultDialog(
+				'Deseja remover item ', 
+				name, 
+				entity, 
+				function () {
+					alert('ninja');
+					simpleRequest(target, 'post', rowValue, function (response) {
+						var type = response.headers['type-message'];
+						var info = response.data;
+						var messageAlert = document.querySelector('#alert-message');
+						messageAlert.innerHTML = messageSend(type, info);
+						setTimeout(function () {
+							$(document).find('#close-button').trigger('click');
+						}, 2000);
+					});
+					row.remove();
+				}
+			);
 		}
 		
 		if (el.target.classList.contains('reload')) {
@@ -31,11 +39,11 @@ document.addEventListener('DOMContentLoaded', function () {
 			var tableName = rowName.replace('reload', 'body');
 			var entity = rowName.slice(0, -7);
 			var url = `/register/get/${entity}`;
-
+			
 			var table = document.getElementById(tableName); 
 			console.log(table, tableName, rowName, el.target);
 			table.innerHTML = '';
-
+			
 			simpleRequest(url, 'post', null, function (response) {
 				var data = response.data;
 				var tr = '';
@@ -54,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					</td>
 					</tr>`;
 				}
-
+				
 				table.innerHTML = tr;
 			});
 		}

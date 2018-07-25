@@ -68,7 +68,7 @@ class RegisterController extends Controller
         return new Response(
             $crud->getMessage(),
             Response::HTTP_OK,
-            array('type-message' => $setter->getTypeMessage())
+            array('type-message' => $crud->getTypeMessage())
         );
     }
 }

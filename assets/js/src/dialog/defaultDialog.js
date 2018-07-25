@@ -1,11 +1,13 @@
 // defaultDialog
-module.exports = function (message, name, entity) {
-  var parsedMessage = message + name + ' da tabela ' + entity;
+module.exports = function (message, name, entity, responseFunction = null) {
+  var parsedMessage = message + name + ' da tabela ' + entity + '?';
   vex.dialog.confirm({
-    message: parsedMessage,
+    unsafeMessage: parsedMessage,
     callback: function (value) {
       if (value) {
-        console.log(value)
+        responseFunction()
+      } else {
+        return false
       }
     }
   });

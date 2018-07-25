@@ -7,6 +7,8 @@ const fancybox = require('@fancyapps/fancybox');
 const vexjs = require('vex-js');
 vexjs.registerPlugin(require('vex-dialog'))
 vexjs.defaultOptions.className = 'vex-theme-os'
+vexjs.dialog.buttons.YES.text = 'Sim';
+vexjs.dialog.buttons.NO.text = 'Cancelar';
 
 global.$ = global.jQuery = $;
 global.axios = require('axios');
