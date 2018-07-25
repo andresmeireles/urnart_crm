@@ -15,7 +15,7 @@
 			</ul>
 		</div>
 		<div class="card-body" data-name="departament">
-			<table class="table table-hover tablesorter sortable">
+			<table class="table table-hover tablesorter sortable" name="departamento">
 				<thead class="table-primary">
 					<tr>
 						<th colspan="2">Nome departamento</th>
@@ -27,7 +27,7 @@
 						<td class="d-none id-number">
 							{{ dpto.id }}
 						</td>
-						<td class="text-left">
+						<td class="text-left" name="{{ dpto.name }}">
 							{{ dpto.name }}
 						</td>
 						<td class="text-right">

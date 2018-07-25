@@ -92,8 +92,8 @@ class TagFormCreator implements CreateFormInterface
 				</div>
 				
 				<div class="tag-box-3 tag-float-left t-right">
-				<span class="t-font-sz1 tag-float-left t-w100">'. ( $param['check'] != 0 ? ceil($count/2) : $count ) .'</span>
-				<span class="t-font-sz4 tag-float-left t-w100">VOL. '. ( $param['check'] != 0 ? ceil($param['amount']/2) : $param['amount']) .'</span>
+				<span class="t-font-sz1 tag-float-left t-w100">'. ( ($param['check'] != 0) ? ceil($count/2) : $count ) .'</span>
+				<span class="t-font-sz4 tag-float-left t-w100">VOL. '. ( ($param['check'] != 0) ? ceil($param['amount']/2) : $param['amount']) .'</span>
 				</div> 
 				<div class="tag-clear"></div>
 				
