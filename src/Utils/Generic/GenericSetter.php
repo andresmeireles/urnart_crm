@@ -1,29 +1,11 @@
 <?php 
 namespace App\Utils\Generic;
 
-use App\Utils\Generic\GenericContainer;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-
-class GenericSetter extends GenericContainer
+trait GenericSetter 
 {
-	private $entity;
-	private $typeMessage = 'success';
-	private $devMessage;
-	private $userMessage;
-
-	public function setEntity(string $entity): self
-	{
-		$className = 'App\Entity\\'.ucfirst($entity);
-		if (class_exists($className)) {
-			$this->entity = new $className;
-			return $this;
-		}
-
-		throw new \Exception('Classe '. $entity .' não existe em App\Entity');
-	}
-
 	public function setFields(array $parameters): self
 	{
+		$this->entity = new $this->entity;
 		foreach ($parameters as $field => $value) {
 			$setterFunction = 'set'.ucfirst($field);
 			$this->entity->$setterFunction($value);

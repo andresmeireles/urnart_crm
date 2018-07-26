@@ -12,14 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			rowValue = rowValue.replace(/\s/g, '');
 			var target = '/register/remove/'+row.closest('div').getAttribute('data-name');
 			
+			// fecha caixa de dialogo
 			$.fancybox.close();
-
+			
 			defaultDialog(
 				'Deseja remover item ', 
 				name, 
 				entity, 
 				function () {
-					alert('ninja');
 					simpleRequest(target, 'post', rowValue, function (response) {
 						var type = response.headers['type-message'];
 						var info = response.data;
@@ -41,26 +41,24 @@ document.addEventListener('DOMContentLoaded', function () {
 			var url = `/register/get/${entity}`;
 			
 			var table = document.getElementById(tableName); 
-			console.log(table, tableName, rowName, el.target);
 			table.innerHTML = '';
 			
 			simpleRequest(url, 'post', null, function (response) {
 				var data = response.data;
 				var tr = '';
-				
 				for (var info of data) {
-					tr += `
-					<tr>
-					<td class="d-none id-number">
-					${info.id}
-					</td>
-					<td class="text-left" name="${info.name}">
-					${info.name}
-					</td>
-					<td class="text-right">
-					<span class="badge badge-pill badge-danger remover cursor-decoration">Remover</span>
-					</td>
-					</tr>`;
+					var fields = Object.keys(info)
+					
+					tr += '<tr>'
+					for (var field of fields) {
+						if (field == 'id') {
+							tr += `<td class="d-none id-number">${info[field]}</td>`
+							continue
+						}
+
+						tr += `<td class="text-left" name="${info[field]}">${info[field]}</td>`
+					}
+					tr += `<td class="text-right"><span class="badge badge-pill badge-danger remover cursor-decoration">Remover</span></td></tr>`;
 				}
 				
 				table.innerHTML = tr;

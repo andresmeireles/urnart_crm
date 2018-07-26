@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Utils\Generic\GenericSetter;
-use App\Utils\Generic\GenericGetter;
 use App\Utils\Generic\Crud;
 
 class RegisterController extends Controller
@@ -15,30 +14,18 @@ class RegisterController extends Controller
     /**
      * @Route("/register", name="register")
      */
-    public function index(GenericGetter $getter)
+    public function index(Crud $getter)
     {
         return $this->render('register/index.html.twig', [
             'departament' => $getter->get('departament'),
+            'unit' => $getter->get('unit'),
         ]);
-    }
-
-    /**
-     * @Route("/register/customer")
-     */
-    public function customer()
-    {
-
-    }
-
-    public function users()
-    {
-        
     }
 
     /**
      * @Route("/register/add/{entity}", methods="POST")
      */
-    public function addGenericRegister(string $entity, GenericSetter $setter, Request $request)
+    public function addGenericRegister(string $entity, Crud $setter, Request $request)
     {
         $setter->set($entity, $request->request->all());
         return new Response (
@@ -51,7 +38,7 @@ class RegisterController extends Controller
     /**
      * @Route("/register/get/{entity}", methods="POST")
      */
-    public function getGenericRegister(string $entity, GenericGetter $getter)
+    public function getGenericRegister(string $entity, Crud $getter)
     {
         $table = $getter->getJsonData($entity);
         return new Response($table);

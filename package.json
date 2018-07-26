@@ -1,20 +1,9 @@
 {
     "devDependencies": {
-        "@fancyapps/fancybox": "^3.3.5",
-        "@fortawesome/fontawesome-free": "^5.1.0",
         "@symfony/webpack-encore": "^0.19.0",
-        "axios": "^0.18.0",
-        "bootstrap": "^4.1.1",
-        "imask": "^3.4.0",
-        "jQuery.print": "^1.5.1",
-        "jquery": "^3.3.1",
-        "jspdf": "^1.4.1",
         "node-sass": "^4.9.2",
-        "pdfjs-dist": "^2.0.489",
         "popper.js": "^1.14.3",
-        "print-js": "^1.0.47",
-        "sass-loader": "^7.0.3",
-        "tablesort": "^5.0.2"
+        "sass-loader": "^7.0.3"
     },
     "license": "UNLICENSED",
     "private": true,
@@ -26,6 +15,13 @@
     },
     "dependencies": {
         "npm": "^6.1.0",
-        "vex-js": "^4.1.0"
+        "vex-js": "^4.1.0",
+        "axios": "^0.18.0",
+        "bootstrap": "^4.1.1",
+        "imask": "^3.4.0",
+        "jquery": "^3.3.1",
+        "@fancyapps/fancybox": "^3.3.5",
+        "@fortawesome/fontawesome-free": "^5.1.0",
+        "tablesort": "^5.0.2"
     }
 }
