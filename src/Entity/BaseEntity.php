@@ -11,8 +11,12 @@ abstract class BaseEntity
 	 */
 	private $createDate;
 
+	/**
+	 * @ORM\Column(type="datetimez")
+	 */
 	private $lastUpdate;
 
+	// Vai ser um campo usuario
 	private $editBy;
 
 	public function __construct()
