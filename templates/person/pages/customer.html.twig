@@ -1,0 +1,53 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Pessoa Juridica{% endblock %}
+
+{% block content %}
+    <div class="col p-2">
+        <h1>Clientes - Pessoal Juridica</h1>
+        <hr>
+    <div class="row px-1">
+        <div class="col">
+            <div class="mx-1 my-1">
+            <div class="col">
+                <div class="tab-pane" id="feedstock" role="tabpanel" aria-labelledby="feedstock-tab">
+                    <div class="m-2">
+                        <table class="table table-hover border border">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th class="d-none">id</th>
+                                    <th scope="col">Razão Social</th>
+                                    <th scope="col">CNPJ/CPF</th>
+                                    <th scope="col">Cidade</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {% if person != [] %}
+                                        {% for p in person %}
+                                            <td class="d-none" scope="row"><b>1</b></td>
+                                            <td><b>{{ p.razaoSocial }}</b></td>
+                                            <td><b>{{ p.cnpj }}</b></td>
+                                            <td><b>{{ p.city }}</b></td>
+                                            <td><b>{{ p.state }}</b></td>
+                                            <td class="text-center">
+                                                <a href="#" class="badge badge-primary">Editar</a>
+                                                <a href="#" class="badge badge-secondary">Visualizar</a>
+                                            </td>
+                                        {% endfor %}
+                                    {% else %}
+                                        <td colspan="5" class="text-center"><span style="font-size: 30px">Nenhum cadastro</span></td>
+                                    {% endif %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

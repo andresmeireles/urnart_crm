@@ -25,7 +25,7 @@
                         <div class="card-body">
                             <h5 class="card-title"><i class="fas fa-fw fa-address-card"></i>&nbsp;Cliente</h5>
                             <p class="card-text">Cria e edita os atuais clientes do sistema.</p>
-                            <a href="#" class="card-link text-primary">Criar</a>
+                            <a href="/person/customers" class="card-link text-primary">Criar</a>
                             <a href="#" class="card-link text-primary">Visualizar e Editar</a>
                         </div>
                     </div>
@@ -53,8 +53,18 @@
                 <div class="m-1">
                     <div class="card" style="width: 14rem;">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-fw fa-globe-americas"></i>&nbsp;Cidades e Estados</h5>
-                            <p class="card-text">Adiministrar cidades e estados.</p>
+                            <h5 class="card-title"><i class="fas fa-fw fa-globe-americas"></i>&nbsp;Cidades</h5>
+                            <p class="card-text">Adiministrar cidades para onde serão feitas entregas.</p>
+                            <a href="#" data-action="add-" class="card-link text-primary">Criar</a>
+                            <a href="#" data-action="" class="card-link text-primary">Visualizar e Editar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-1">
+                    <div class="card" style="width: 14rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-fw fa-globe-americas"></i>&nbsp;Estados</h5>
+                            <p class="card-text">Adiministrar estados para entregas.</p>
                             <a href="#" data-action="add-" class="card-link text-primary">Criar</a>
                             <a href="#" data-action="" class="card-link text-primary">Visualizar e Editar</a>
                         </div>
@@ -65,6 +75,5 @@
 
         {% include '/register/pages/departament.html.twig' with {'dptos': departament} %}
         {% include '/register/pages/unit.html.twig' with {'unit': unit} %}
-        {% include '/register/pages/customer.html.twig' with {'customer': customer} %}
 
     {% endblock %}

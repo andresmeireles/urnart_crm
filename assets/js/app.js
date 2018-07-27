@@ -22,6 +22,7 @@ global.sendSimpleRequest = require('./src/sendSimpleRequest');
 
 // global folder
 global.simpleRequest = require('./src/global/simpleRequest');
+global.simpleRequestForm = require('./src/global/simpleRequestForm');
 
 // forms folder
 global.openModal = require('./src/form/createFormModal.js');
@@ -43,6 +44,7 @@ import './src/form/sendForm.js';
 import './src/storage/feedstock';
 
 import './src/register/registerEvents';
+import './src/register/customer';
 
 if (document.querySelector('.sortable')) {
 	Tablesort(document.querySelector('.sortable'));

@@ -4,7 +4,7 @@ module.exports = function (url, method = 'POST', info = null, responseFunction =
 		url: url, 
 		data: {
 			id: info
-		}, 
+		},
 	})
 	.then(function (response) {
 		if (responseFunction == null) {

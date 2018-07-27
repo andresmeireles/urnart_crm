@@ -1,42 +1,66 @@
 <?php 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * Base entity with some fields and methods, for audit
+ * @ORM\MappedSuperclass()
  */
 abstract class BaseEntity
 {
 	/**
-	 * @ORM\Column(type="datetimez")
-	 */
-	private $createDate;
-
-	/**
-	 * @ORM\Column(type="datetimez")
+	 * @ORM\Column(type="datetimetz")
 	 */
 	private $lastUpdate;
 
 	// Vai ser um campo usuario
-	private $editBy;
+	//private $editBy;
+
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	private $active = false;
+
+	/**
+	 * @ORM\Column(type="datetimetz")
+	 */
+	private $createDate;
 
 	public function __construct()
 	{
 		$this->createDate = new \DateTime('now', new DateTimeZone('America/Sao_Paulo'));
 	}
 
-	public function getCreateDate(): ?\DateTime
+	protected function __toArray()
+	{
+		return get_object_vars($this);
+	}
+
+	protected function getCreateDate(): ?\DateTime
 	{
 		return $this->createDate;
 	}
 
-	public function getLastUpdate(): ?\DateTime
+	protected function getLastUpdate(): ?\DateTime
 	{
 		return $this->lastUpdate;
 	}
 
-	public function setLastUpdate(\DateTime $update): self 
+	protected function setLastUpdate(\DateTime $update): self 
 	{
 		$this->lastUpdate = $update;
+
+		return $this;
+	}
+
+	protected function getActive(): bool
+	{
+		return $this->active;
+	}
+
+	protected function setActive(bool $active): self 
+	{
+		$this->active = $active;
 
 		return $this;
 	}
