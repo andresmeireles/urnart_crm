@@ -19,7 +19,7 @@ class PersonController extends Controller
     }
 
     /**
-     * @Route("/person/customer")
+     * @Route("/person/customer", name="customer")
      */
     public function showCustomer(Crud $getter)
     {
@@ -31,7 +31,7 @@ class PersonController extends Controller
     /**
      * @Route("/person/person")
      * 
-     * Essa pagina vai ser destruida no futuro
+     * Pagina apenas para visualização de informações
      */
     public function showPerson(Crud $getter)
     {

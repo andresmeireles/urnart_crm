@@ -44,6 +44,7 @@ import './src/storage/feedstock';
 
 import './src/register/registerEvents';
 import './src/register/customer';
+import './src/register/cloneFieldCustomer';
 
 if (document.querySelector('.sortable')) {
 	$('.sortable').tablesorter({

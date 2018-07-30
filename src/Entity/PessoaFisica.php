@@ -39,9 +39,9 @@ class PessoaFisica extends BaseEntity
     private $rg;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=1)
      */
-    private $genre = M;
+    private $genre = 'M';
 
     /**
      * @ORM\Column(type="string", nullable=true)

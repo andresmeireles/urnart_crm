@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
 	
-	/**
-	* TO DO - CONFIRMAÇÂO DE REMOOÇÃO DO ELEMENTO
-	*/
 	document.addEventListener('click', function (el) {
 		if (el.target.classList.contains('remover')) {
 			var row = el.target.closest('tr');
