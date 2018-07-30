@@ -19,6 +19,8 @@ class RegisterController extends Controller
         return $this->render('register/index.html.twig', [
             'departament' => $getter->get('departament'),
             'unit' => $getter->get('unit'),
+            'state' => $getter->get('estado'),
+            'city' => $getter->get('municipio'),
         ]);
     }
 

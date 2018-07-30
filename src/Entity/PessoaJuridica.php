@@ -1,13 +1,13 @@
 <?php
-
 namespace App\Entity;
 
+use App\Entity\BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PessoaJuridicaRepository")
  */
-class PessoaJuridica
+class PessoaJuridica extends BaseEntity
 {
     /**
      * @ORM\Id()

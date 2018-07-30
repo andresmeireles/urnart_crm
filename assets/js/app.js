@@ -1,17 +1,18 @@
-require('bootstrap');
-require('imask');
+require('bootstrap')
+require('imask')
+require('tablesorter')
 
-const $ = require('jquery');
-const fancybox = require('@fancyapps/fancybox');
-const vexjs = require('vex-js');
+const $ = require('jquery')
+const fancybox = require('@fancyapps/fancybox')
+const vexjs = require('vex-js')
 vexjs.registerPlugin(require('vex-dialog'))
 vexjs.defaultOptions.className = 'vex-theme-default'
-vexjs.dialog.buttons.YES.text = 'Sim';
-vexjs.dialog.buttons.NO.text = 'Cancelar';
+vexjs.dialog.buttons.YES.text = 'Sim'
+vexjs.dialog.buttons.NO.text = 'Cancelar'
 
 //globals
-global.$ = global.jQuery = $;
-global.axios = require('axios');
+global.$ = global.jQuery = $
+global.axios = require('axios')
 global.vex = vexjs
 
 // root folder
@@ -31,8 +32,6 @@ global.printForm = require('./src/form/printForm');
 // dialogs folder
 global.defaultDialog = require('./src/dialog/defaultDialog');
 
-import Tablesort from 'tablesort';
-
 import './src/sidebarAction.js';
 import './src/globals';
 
@@ -47,7 +46,9 @@ import './src/register/registerEvents';
 import './src/register/customer';
 
 if (document.querySelector('.sortable')) {
-	Tablesort(document.querySelector('.sortable'));
+	$('.sortable').tablesorter({
+		sortList: [[1,0], [2,0]]
+	});
 }
 
 var dateMask = new IMask(

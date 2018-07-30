@@ -1,0 +1,48 @@
+<div id="estado" class="d-none">
+
+    <div class="card text-center my-2">
+        <div class="card-header text-center">
+            <ul class="nav nav-pills card-header-pills">
+                <li class="nav-item text-center">
+                    <h3>Estados</h3>
+                </li>
+                {#<li class="nav-item mx-5">
+                    &nbsp;
+                    <button data-action="add-unit" class="btn btn-primary">Adicionar</button>
+                </li>
+                <li class="nav-item mx-2">
+                    <button id="estado-reload" class="btn reload">
+                        <i class="fas fa-sync reload"></i>
+                    </button>
+                </li>#}
+            </ul>
+        </div>
+        <div class="card-body" data-name="estado" style="height: 600px; width: 600px">
+            <div class="fitable">
+                <table class="table table-hover tablesorter sortable" name="estado">
+                    <thead class="table-primary">
+                    <tr class="text-center">
+                        <th colspan="2">Estados</th>
+                        <th>UF</th>
+                    </tr>
+                    </thead>
+                    <tbody id="estado-body">
+                        {% for item in state %}
+                            <tr>
+                                <td class="d-none id-number">
+                                    {{ item.id }}
+                                </td>
+                                <td class="text-center" colspan=2 name="{{ item.nome }}">
+                                    {{ item.nome }}
+                                </td>
+                                <td class="text-left" name="{{ item.uf }}">
+                                    {{ item.uf }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+</div>
