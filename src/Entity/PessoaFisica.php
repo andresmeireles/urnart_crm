@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use App\Entity\BaseEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -45,6 +47,23 @@ class PessoaFisica extends BaseEntity
      * @ORM\Column(type="string", nullable=true)
      */
     private $birthDate;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Phone", mappedBy="owner")
+     */
+    private $phones;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Email", mappedBy="owner")
+     */
+    private $emails;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->phones = new ArrayCollection();
+        $this->emails = new ArrayCollection();
+    }
 
     /**
      * Get the value of firstName
@@ -162,6 +181,68 @@ class PessoaFisica extends BaseEntity
     public function setBirthDate(?\DateTime $birthDate): ?self
     {
         $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Phone[]
+     */
+    public function getPhones(): Collection
+    {
+        return $this->phones;
+    }
+
+    public function addPhone(Phone $phone): self
+    {
+        if (!$this->phones->contains($phone)) {
+            $this->phones[] = $phone;
+            $phone->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhone(Phone $phone): self
+    {
+        if ($this->phones->contains($phone)) {
+            $this->phones->removeElement($phone);
+            // set the owning side to null (unless already changed)
+            if ($phone->getOwner() === $this) {
+                $phone->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Email[]
+     */
+    public function getEmails(): Collection
+    {
+        return $this->emails;
+    }
+
+    public function addEmail(Email $email): self
+    {
+        if (!$this->emails->contains($email)) {
+            $this->emails[] = $email;
+            $email->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmail(Email $email): self
+    {
+        if ($this->emails->contains($email)) {
+            $this->emails->removeElement($email);
+            // set the owning side to null (unless already changed)
+            if ($email->getOwner() === $this) {
+                $email->setOwner(null);
+            }
+        }
 
         return $this;
     }

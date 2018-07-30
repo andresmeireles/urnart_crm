@@ -27,10 +27,15 @@ class Municipio
     private $nome;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estado", inversedBy="ini_uf")
-     * @ORM\JoinColumn(name="uf", referencedColumnName="uf")
+     * @ORM\Column(type="string", length=2)
      */
     private $uf;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estado", inversedBy="ini_uf")
+     * @ORM\JoinColumn(name="idUf", referencedColumnName="id")
+     */
+    private $idUf;
 
     public function getId()
     {

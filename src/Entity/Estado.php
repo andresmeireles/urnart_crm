@@ -32,14 +32,14 @@ class Estado
     private $uf;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Municipio", mappedBy="uf")
-     */
-    private $ini_uf;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $regiao;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Municipio", mappedBy="uf")
+     */
+    private $iniUf;
 
     public function getId()
     {
