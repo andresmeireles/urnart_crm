@@ -5,7 +5,75 @@
         </div>
         <div class="card-body">
             <form method="post" action="/person/add/person" id="person-form">
-                <fieldset class="p-1 border border-light">
+                <fieldset class="p-1 border border-light my-1">
+                    <legend class="bg-light">
+                        &nbsp;Informações da Empresa
+                    </legend>
+                    <div class="px-1">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="razaoSocial" class="required">Razão Social</label>
+                                <input type="text" class="form-control" name="customer[razaoSocial]" id="razaoSocial" placeholder="Razão Social" required="required">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="firstName">Nome Fantasia</label>
+                                <input type="text" class="form-control" name="customer[nomeFantsasia]" id="nomeFantasia" placeholder="Nome Fantasia">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="p-1 border border-light my-1">
+                    <legend class="bg-light">&nbsp;Informações fiscais</legend>
+                    <div class="px-1">                        
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="firstName">CNPJ</label>
+                                <input type="text" class="form-control cnpj-mask" name="customer[cnpj]" id="cnpj" placeholder="Inserir apenas numeros">
+                            </div>
+                            <div class="form-inline">
+                                <label for="situcaoCadastral" class="required">Situação Cadastral</label>
+                                <div class="input-group mx-1">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <input type="radio" class="form-check" name="customer[situacaoCadastral]" id="contribuente" value="1" required>
+                                        </div>
+                                    </div>
+                                    <div type="text" class="form-control">contribuente</div>
+                                </div>
+                                <div class="input-group mx-1">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <input type="radio" class="form-check" name="customer[situacaoCadastral]" id="contribuente" value="2" required>
+                                        </div>
+                                    </div>
+                                    <div type="text" class="form-control">não contribuente</div>
+                                </div>
+                                <div class="input-group mx-1">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <input type="radio" class="form-check" name="customer[situacaoCadastral]" id="contribuente" value="3" required>
+                                        </div>
+                                    </div>
+                                    <div type="text" class="form-control">Isento</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="firstName">Inscrição Estadual</label>
+                                <input type="text" class="form-control" name="customer[inscricaoEstadual]" id="inscricaoEstadual" placeholder="Inserir apenas numeros">
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="birthData">
+                                    <small>Data de Fundação</small>
+                                </label>
+                                <input type="text" class="form-control numbers-only date-mask" name="customer[fondationDate]" id="birthdate" placeholder="Data">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="p-1 my-1 border border-light">
                     <legend class="bg-light">
                         &nbsp;Informações de Proprietários
                         <span class="btn btn-primary btn-sm float-right m-1"><i class="fas fa-fw fa-plus"></i></span>
@@ -24,7 +92,7 @@
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label for="firstName">Cpf</label>
-                                <input type="text" class="form-control" name="person[cpf]" id="cpf" placeholder="Inserir apenas numeros">
+                                <input type="text" class="form-control cpf-mask" name="person[cpf]" id="cpf" placeholder="Inserir apenas numeros">
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="firstName">RG (Registro Geral)</label>
@@ -34,7 +102,7 @@
                                 <label for="birthData">
                                     <small>Data de Nascimento</small>
                                 </label>
-                                <input type="text" class="form-control" name="person[birthdate]" id="birthdate" placeholder="Data">
+                                <input type="text" class="form-control date-mask numbers-only" name="person[birthdate]" id="birthdate" placeholder="Data">
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="firstName">Genero</label>
@@ -47,8 +115,9 @@
                         </div>
                     </div>
                 </fieldset>
+
                 <div class="row p-2">
-                    <fieldset class="p-1 border border-light col-md-8">
+                    <fieldset class="p-1 my-1 border border-light col-md-8">
                         <legend class="bg-light">&nbsp;Endereço</legend>
                         <div class="row">
                             <div class="form-group col-md-5">
@@ -66,44 +135,47 @@
                         </div>
                         <div class="row">
                             <div class="form-group col">
-                                <input type="text" class="form-control" name="address[cep]" id="cep" placeholder="CEP">
+                                <input type="text" class="form-control cep-mask" name="address[cep]" id="cep" placeholder="CEP">
                             </div>
                             <div class="form-group col">
-                                <select name="address[estado]" class="form-control" id="estado">
+                                <select name="address[estado]" class="form-control" id="estado" target="municipio">
                                     <option selected disabled>Selecione Estado</option>
+                                    {% if estado != [] %}
+                                        {% for e in  estado %}
+                                            <option value="{{ e.id }}">{{ e.nome }}</option>
+                                        {% endfor %}
+                                    {% endif %}
                                 </select>
                             </div>
                             <div class="form-group col">
-                                <select name="address[estado]" class="form-control" id="estado">
+                                <select name="address[estado]" class="form-control" id="municipio">
                                     <option selected disabled>Selecione Municipio</option>
                                 </select>
                             </div>
                         </div>
                     </fieldset>
-                    <fieldset class="p-1 border border-light col-md-4">
+                    <fieldset class="p-1 my-1 border border-light col-md-4">
                         <legend class="bg-light">&nbsp;Contato</legend>
                         <label for="numeber">Telefone</label>
                         <div class="form-inline my-1" cloneableField>
                             <div clone-area>
-                            <div clone-field>
-                                <input type="hidden" input-number='true' value="1">
-                                <input type="text" class="form-control col-md-12 mx-1" id="phone" name="cloneableField0[phone]" placeholder="numero com ddd">
-                                <button class="btn btn-primary fas fa-plus" add-btn></button>
-                                <button class="btn btn-danger fas fa-minus" rmv-btn></button>
-                            </div>
+                                <div clone-field>
+                                    <input type="hidden" input-number='true' value="1">
+                                    <input type="text" class="form-control col-md-8 mx-1 phone-with-ddd-br numbers-only" id="phone" name="cloneableField0[phone]" placeholder="numero com ddd">
+                                    <button class="btn btn-primary fas fa-plus" add-btn></button>
+                                    <button class="btn btn-danger fas fa-minus" rmv-btn></button>
+                                </div>
                             </div>
                         </div>
-                        <label for="numeber" class="my-1">Email</label>
+                        <label for="numeber">Email</label>
                         <div class="form-inline my-1" cloneableField>
                             <div clone-area>
-                            <div clone-field>
-                            <input type="hidden" input-number='true' value="1">
-                            <input type="text" class="form-control col-8 mx-1" id="email" name="cloneableField0[email]" placeholder="email@domain.com">
-                            <div>
-                                <button class="btn btn-primary fas fa-plus" add-btn></button>
-                                <button class="btn btn-danger fas fa-minus" rmv-btn></button>
-                            </div>
-                            </div>
+                                <div clone-field>
+                                    <input type="hidden" input-number='true' value="1">
+                                    <input type="text" class="form-control col-md-8 mx-1" id="email" name="cloneableField0[email]" placeholder="nome@dominio.com">
+                                    <button class="btn btn-primary fas fa-plus" add-btn></button>
+                                    <button class="btn btn-danger fas fa-minus" rmv-btn></button>
+                                </div>
                             </div>
                         </div>
                     </fieldset>

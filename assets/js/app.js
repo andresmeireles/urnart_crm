@@ -1,6 +1,7 @@
 require('bootstrap')
 require('imask')
 require('tablesorter')
+require('jquery-mask-plugin')
 
 const $ = require('jquery')
 const fancybox = require('@fancyapps/fancybox')
@@ -32,8 +33,10 @@ global.printForm = require('./src/form/printForm');
 // dialogs folder
 global.defaultDialog = require('./src/dialog/defaultDialog');
 
-import './src/sidebarAction.js';
-import './src/globals';
+import './src/sidebarAction.js'
+import './src/globals'
+
+import './src/global/masks'
 
 import './src/form/createFormModal.js';
 import './src/form/cloneField.js';

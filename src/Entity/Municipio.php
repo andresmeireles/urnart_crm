@@ -37,6 +37,11 @@ class Municipio
      */
     private $idUf;
 
+    public function serialize(): array
+    {
+        return get_object_vars($this);
+    } 
+
     public function getId()
     {
         return $this->id;

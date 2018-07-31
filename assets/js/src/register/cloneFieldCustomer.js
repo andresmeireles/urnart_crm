@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
         checkEnable();
 
         document.addEventListener('click', function (el) {
+
+            //create new field
             if (el.target.hasAttribute('add-btn')) {
                 el.preventDefault()
                 var appendAfter = el.target.closest('[clone-area]')
@@ -21,14 +23,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
 
                 field.after(cloneField)
+                cloneField.querySelector('[type="text"]').focus()
 
                 checkEnable()
-            } 
+            }
+            
+            // remove field
+            if (el.target.hasAttribute('rmv-btn')) {
+                el.preventDefault()
+                var field = el.target.closest('[clone-field]')
+                field.remove()
+                checkEnable()
+            }
+
         })
 
     }
 
-    function checkEnable (eement) {
+    function checkEnable () {
         document.querySelectorAll('[clone-area]').forEach(function (el) {
             if (el.querySelectorAll('[rmv-btn]').length == 1) {
                 el.querySelector('.btn-danger').setAttribute('disabled', 'disabled')

@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
+use App\Utils\Generic\GenericSetter;
+use App\Utils\Generic\Crud;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Utils\Generic\GenericSetter;
-use App\Utils\Generic\Crud;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class RegisterController extends Controller
 {
@@ -44,6 +45,18 @@ class RegisterController extends Controller
     {
         $table = $getter->getJsonData($entity);
         return new Response($table);
+    }
+
+    /**
+     * @Route("/register/get/criteria/{entity}")
+     */
+    public function getRegisterWithSimpleCriteria(string $entity, Request $request, Crud $getter)
+    {
+        $criteria = (array) json_decode($request->getContent());
+        $result = $getter->getWithSimpleCriteriaJson($entity, $criteria);
+        dump($response);
+        die();
+        return new JsonResponse($result, Response::HTTP_OK);
     }
 
     /**

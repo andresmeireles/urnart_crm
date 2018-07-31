@@ -23,6 +23,16 @@ class PessoaJuridica extends BaseEntity
      */
     private $razaoSocial;
 
+    private $nomeFantasia;
+
+    private $cnpj;
+
+    private $inscriçãoEstadual;
+
+    private $inscriçãoMunicipal;
+
+    private $dataDeFundação;
+
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Proprietario", mappedBy="empresas")
      */

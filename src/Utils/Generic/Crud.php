@@ -45,7 +45,7 @@ class Crud extends GenericContainer
 		return $jsonResponse;
 	}
 
-	public function get(string $entity, ?string $type = null)
+	public function get(string $entity, ?string $type = null): ?array
 	{
 		if ($type == 'json') {
 			$this->getJsonData($entity);
@@ -53,6 +53,25 @@ class Crud extends GenericContainer
 
 		$this->setEntity($entity);
 		$data = $this->em->getRepository($this->entity)->findAll();
+		return $data;
+	}
+
+	public function getWithSimpleCriteria(string $entity, array $criteria): ?array
+	{
+		$this->setEntity($entity);
+		$data = $this->em->getRepository($this->entity)->findBy($criteria);
+		return $data;
+	}
+
+	public function getWithSimpleCriteriaJson(string $entity, array $criteria) : ? array
+	{
+		$this->setEntity($entity);
+		$data = (array) $this->em->getRepository($this->entity)->findBy($criteria);
+		dump($data);
+
+		die();	
+		$serializer = SerializerBuilder::create()->build();
+		$response = $serializer->serialize($data, 'json');
 		return $data;
 	}
 

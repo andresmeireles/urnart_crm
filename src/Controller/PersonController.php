@@ -25,6 +25,7 @@ class PersonController extends Controller
     {
         return $this->render('person/pages/customer.html.twig', [
             'person' => $getter->get('pessoaJuridica'),
+            'estado' => $getter->get('estado')
         ]);
     }
 
