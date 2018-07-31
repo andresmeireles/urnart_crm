@@ -18,7 +18,7 @@ class Phone extends BaseEntity
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $number;
 
@@ -37,7 +37,7 @@ class Phone extends BaseEntity
         return $this->number;
     }
 
-    public function setNumber(int $number): self
+    public function setNumber(?int $number): self
     {
         $this->number = $number;
 

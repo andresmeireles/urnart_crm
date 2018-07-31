@@ -39,7 +39,7 @@ class PessoaFisica extends BaseEntity
     private $rg;
 
     /**
-     * @ORM\Column(type="string", length=1)
+     * @ORM\Column(type="string", length=1, nullable=true)
      */
     private $genre;
 
@@ -171,7 +171,7 @@ class PessoaFisica extends BaseEntity
     /**
      * Get the value of birthDate
      */ 
-    public function getBirthDate(): ? \DateTime
+    public function getBirthDate(): ?\DateTime
     {
         return $this->birthDate;
     }

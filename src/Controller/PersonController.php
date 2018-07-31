@@ -1,15 +1,19 @@
 <?php
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use App\Entity\Proprietario;
 use App\Entity\Email;
 use App\Entity\Phone;
-use App\Entity\PessoaFisica;
-use App\Entity\PessoaJuridica;
+use App\Entity\Estado;
+use App\Entity\Address;
+use App\Entity\Municipio;
 use App\Utils\Generic\Crud;
+use App\Entity\PessoaFisica;
+use App\Entity\Proprietario;
+use App\Entity\PessoaJuridica;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class PersonController extends Controller
 {
@@ -55,7 +59,8 @@ class PersonController extends Controller
         $em->getConnection()->beginTransaction();
 
         try {
-            $persistData($request->request->all());
+            $this->persistPerson($request->request->all());
+            exit();
 
             $em->flush();
             $em->getConnection()->commit();
@@ -63,10 +68,11 @@ class PersonController extends Controller
             $em->getConnection()->rollback();
             throw new \Exception($e->getMessage().'. Arquivo '. $e->getFile() .' linha '. $e->getLine());
         }
+
         return new Response();
     }
 
-    public function persistData(array $data): void
+    public function persistPerson(array $data): void
     {
         extract($data);
 
@@ -79,60 +85,56 @@ class PersonController extends Controller
         $persona->setRg($person['rg']);
         $g = $person['genre'] ?? null;
         $persona->setGenre($g);
-        $persona->setBirthDate(new \DateTime(str_replace('/', '.', $person['birthDate'])));
+        $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null ;
+        $persona->setBirthDate($date);
         
         foreach ($phone as $phones) {
-            $telephone = new Phone;
-            $phones = str_replace(' ', '', str_replace('(', '', str_replace(')', '', str_replace('-', '', $phones))));
+            $telephone = new Phone();
+            $phones = (int) str_replace(' ', '', str_replace('(', '', str_replace(')', '', str_replace('-', '', $phones))));
+            
             $telephone->setNumber($phones);
+            $em->persist($telephone);
             $persona->addPhone($telephone);
         }
 
         foreach ($email as $emails) {
-            $mail = new Email;
+            $mail = new Email();
             $emails = str_replace('(', '', str_replace(')', '', str_replace('-', '', $emails)));
             $mail->setEmail($emails);
+            $em->persist($mail);
             $persona->addEmail($mail);
         }
 
         $em->persist($persona);
 
-        $proprietary = new Proprietario;
+        $proprietary = new Proprietario();
         $proprietary->setPessoaFisica($persona);
 
         $em->persist($proprietary);
 
-        $client->setRazaoSocial();
-        $client->setNomeFantasia();
-        $client->setCnpj();
-        $client->setInscricaoEstadual();
-        $client->setDataDeFundação(new \DateTime(str_replace('/', '.', $customer['foundation'])), new \DateTimeZone('America/Sao_Paulo'));
+        $client = new PessoaJuridica();
+        $client->setRazaoSocial($customer['razaoSocial']);
+        $client->setNomeFantasia($customer['nomeFantasia']);
+        $client->setCnpj($customer['cnpj']);
+        $client->setInscricaoEstadual($customer['inscricaoEstadual']);
+        $date = $customer['fondationDate'] != '' ? new \DateTime(str_replace('/', '.', $customer['fondationDate'])) : null;
+        $client->setDataDeFundacao($date);
         $client->addProprietario($proprietary);
 
         $em->persist($client);
-    }
 
-    public function persistCustomer(array $customer): void
-    {
-        $em = $this->getDoctrine()->getManager();
-        $client = new PessoaJuridica();
+        $state = isset($address['estado']) ? $em->getRepository(Estado::class)->find($address['estado']) : null;
+        $city = isset($address['municipio']) ?  $em->getRepository(Municipio::class)->find($address['municipio']) : null;
 
-       
-    }
+        $addr = new Address();
+        $addr->setMunicipio($city);
+        $addr->setEstado($state);
+        $addr->setRoad($address['road']);
+        $addr->setNeighborhood($address['neightborhood']);
+        $addr->setNumber($address['number']);
+        $addr->setZipcode($address['cep']);
 
-    public function persistPhone(Request $request)
-    {}
-
-    public function perisistEmail(Request $request)
-    {
-        dump($request->request);
-        die();
-    }
-
-    public function persistAddress(Request $request)
-    {
-        dump($request->request);
-        die();
+        $em->persist($addr);
     }
 
     public function showUsers()

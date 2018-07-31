@@ -36,6 +36,16 @@ class Address
      */
     private $zipcode;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estado", inversedBy="endereco")
+     */
+    private $estado;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Municipio", inversedBy="endereco")
+     */
+    private $municipio;
+
     public function getId()
     {
         return $this->id;
@@ -82,9 +92,35 @@ class Address
         return $this->zipcode;
     }
 
-    public function setZipcode(?int $zipcode): self
+    public function setZipcode(?string $zipcode): self
     {
+        $zipcode = str_replace('.', '', str_replace('-', '', $zipcode));
+        $zipcode = (int) $zipcode;
         $this->zipcode = $zipcode;
+
+        return $this;
+    }
+
+    public function getEstado(): ?Estado
+    {
+        return $this->estado;
+    }
+
+    public function setEstado(?Estado $estado): self
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    public function getMunicipio() : ?Municipio
+    {
+        return $this->municipio;
+    }
+
+    public function setMunicipio(?Municipio $municipio) : self
+    {
+        $this->municipio = $municipio;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MunicipioRepository")
@@ -32,10 +33,20 @@ class Municipio
     private $uf;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estado", inversedBy="ini_uf")
-     * @ORM\JoinColumn(name="idUf", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Estado", inversedBy="iniUf")
+     * @ORM\JoinColumn(name="idUf", referencedColumnName="id") 
      */
     private $idUf;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Address", mappedBy="municipio")
+     */
+    private $endereco;
+
+    public function __construct()
+    {
+        $this->endereco = new ArrayCollection();
+    }
 
     public function serialize(): array
     {
@@ -86,5 +97,36 @@ class Municipio
     public function getIdUf()
     {
         return $this->idUf; 
+    }
+
+    /**
+     * @return Collection|Address
+     */
+    public function getEndereco(): Collection
+    { 
+        return $this->endereco;
+    }
+
+    public function addEndereco(Address $endereco): self
+    {
+        if(!$this->contains($endereco)) {
+            $this->endereco[] = $endereco;
+            $endereco->setMunicipio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEndereco(Address $endereco): self
+    {
+        if ($this->endereco->contains($endereco)) {
+            $this->endereco->removeElement($endereco);
+
+            if ($endereco->getMunicipio() == $this) {
+                $endereco->setMunicipio(null);
+            }
+        }
+
+        return $this;
     }
 }
