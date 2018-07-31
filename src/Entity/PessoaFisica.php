@@ -41,7 +41,7 @@ class PessoaFisica extends BaseEntity
     /**
      * @ORM\Column(type="string", length=1)
      */
-    private $genre = 'M';
+    private $genre;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -90,7 +90,7 @@ class PessoaFisica extends BaseEntity
      */ 
     public function getLastName(): ?string
     {
-        return $this->lastname;
+        return $this->lastName;
     }
 
     /**
@@ -100,7 +100,7 @@ class PessoaFisica extends BaseEntity
      */ 
     public function setLastName(?string $lastname): ?self
     {
-        $this->lastname = $lastname;
+        $this->lastName = $lastname;
 
         return $this;
     }
@@ -120,7 +120,9 @@ class PessoaFisica extends BaseEntity
      */ 
     public function setCpf(string $cpf): ?self
     {
-        $this->cpf = $cpf;
+        $sanitizeString = str_replace('.', '', str_replace('-', '', $cpf));
+
+        $this->cpf = $sanitizeString;
 
         return $this;
     }
@@ -160,6 +162,7 @@ class PessoaFisica extends BaseEntity
      */ 
     public function setGenre(?string $genre): self
     {
+        $genre = strtolower($genre);
         $this->genre = $genre;
 
         return $this;

@@ -8,11 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 abstract class BaseEntity
 {
-	/**
-	 * @ORM\Column(type="datetimetz")
-	 */
-	private $lastUpdate;
-
 	// Vai ser um campo usuario
 	//private $editBy;
 
@@ -26,9 +21,15 @@ abstract class BaseEntity
 	 */
 	private $createDate;
 
+	/**
+	 * @ORM\Column(type="datetimetz")
+	 */
+	private $lastUpdate;
+
 	public function __construct()
 	{
-		$this->createDate = new \DateTime('now', new DateTimeZone('America/Sao_Paulo'));
+		$this->createDate = new \DateTime('now', new \DateTimeZone('America/Sao_Paulo'));
+		$this->lastUpdate = new \DateTime('now', new \DateTimeZone('America/Sao_Paulo'));
 	}
 
 	protected function __toArray()

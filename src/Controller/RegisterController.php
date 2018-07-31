@@ -54,9 +54,8 @@ class RegisterController extends Controller
     {
         $criteria = (array) json_decode($request->getContent());
         $result = $getter->getWithSimpleCriteriaJson($entity, $criteria);
-        dump($response);
-        die();
-        return new JsonResponse($result, Response::HTTP_OK);
+        $var = json_encode($result);
+        return new Response($result, Response::HTTP_OK);
     }
 
     /**

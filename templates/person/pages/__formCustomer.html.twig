@@ -102,7 +102,7 @@
                                 <label for="birthData">
                                     <small>Data de Nascimento</small>
                                 </label>
-                                <input type="text" class="form-control date-mask numbers-only" name="person[birthdate]" id="birthdate" placeholder="Data">
+                                <input type="text" class="form-control date-mask numbers-only" name="person[birthDate]" id="birthdate" placeholder="Data">
                             </div>
                             <div class="form-group col-md-2">
                                 <label for="firstName">Genero</label>
@@ -148,7 +148,7 @@
                                 </select>
                             </div>
                             <div class="form-group col">
-                                <select name="address[estado]" class="form-control" id="municipio">
+                                <select name="address[municipio]" class="form-control" id="municipio">
                                     <option selected disabled>Selecione Municipio</option>
                                 </select>
                             </div>
@@ -160,8 +160,7 @@
                         <div class="form-inline my-1" cloneableField>
                             <div clone-area>
                                 <div clone-field>
-                                    <input type="hidden" input-number='true' value="1">
-                                    <input type="text" class="form-control col-md-8 mx-1 phone-with-ddd-br numbers-only" id="phone" name="cloneableField0[phone]" placeholder="numero com ddd">
+                                    <input type="text" class="form-control col-md-8 mx-1 phone-with-ddd-br numbers-only" id="phone" name="phone[0]" placeholder="numero com ddd">
                                     <button class="btn btn-primary fas fa-plus" add-btn></button>
                                     <button class="btn btn-danger fas fa-minus" rmv-btn></button>
                                 </div>
@@ -172,7 +171,7 @@
                             <div clone-area>
                                 <div clone-field>
                                     <input type="hidden" input-number='true' value="1">
-                                    <input type="text" class="form-control col-md-8 mx-1" id="email" name="cloneableField0[email]" placeholder="nome@dominio.com">
+                                    <input type="text" class="form-control col-md-8 mx-1" id="email" name="email[0]" placeholder="nome@dominio.com">
                                     <button class="btn btn-primary fas fa-plus" add-btn></button>
                                     <button class="btn btn-danger fas fa-minus" rmv-btn></button>
                                 </div>

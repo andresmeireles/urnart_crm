@@ -1,5 +1,6 @@
 //file with single input
 document.addEventListener('DOMContentLoaded', function () {
+    iNumber = 0
 
     if (document.querySelector('[cloneableField]')) {
 
@@ -10,15 +11,14 @@ document.addEventListener('DOMContentLoaded', function () {
             //create new field
             if (el.target.hasAttribute('add-btn')) {
                 el.preventDefault()
-                var appendAfter = el.target.closest('[clone-area]')
+                
+                iNumber += 1
+                
                 var field = el.target.closest('[clone-field]')
-                console.log(field, appendAfter)
                 var cloneField = field.cloneNode(true)
                 
                 cloneField.querySelectorAll('input').forEach(function (el) {
-                    if (el.type == 'hidden') {
-                        el.value = el.value
-                    }
+                    el.name = `${el.id}[${iNumber}]`
                     el.value = ''
                 })
 

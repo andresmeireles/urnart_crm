@@ -23,14 +23,39 @@ class PessoaJuridica extends BaseEntity
      */
     private $razaoSocial;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $nomeFantasia;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $inscricaoEstadual;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $inscricaoMunicipal;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $cnpj;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $inscriçãoEstadual;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $inscriçãoMunicipal;
 
+    /**
+     * @ORM\Column(type="datetimetz")
+     */
     private $dataDeFundação;
 
     /**
@@ -85,6 +110,86 @@ class PessoaJuridica extends BaseEntity
             $this->proprietarios->removeElement($proprietario);
             $proprietario->removeEmpresa($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of dataDeFundação
+     */ 
+    public function getDataDeFundação()
+    {
+        return $this->dataDeFundação;
+    }
+
+    /**
+     * Set the value of dataDeFundação
+     *
+     * @return  self
+     */ 
+    public function setDataDeFundação(?\DateTime $dataDeFundação)
+    {
+        $this->dataDeFundação = $dataDeFundação;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of inscriçãoMunicipal
+     */ 
+    public function getInscriçãoMunicipal()
+    {
+        return $this->inscriçãoMunicipal;
+    }
+
+    /**
+     * Set the value of inscriçãoMunicipal
+     *
+     * @return  self
+     */ 
+    public function setInscriçãoMunicipal(integer $inscriçãoMunicipal): ?self
+    {
+        $this->inscriçãoMunicipal = $inscriçãoMunicipal;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of nomeFantasia
+     */ 
+    public function getNomeFantasia()
+    {
+        return $this->nomeFantasia;
+    }
+
+    /**
+     * Set the value of nomeFantasia
+     *
+     * @return  self
+     */ 
+    public function setNomeFantasia($nomeFantasia)
+    {
+        $this->nomeFantasia = $nomeFantasia;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of inscriçãoEstadual
+     */ 
+    public function getInscriçãoEstadual()
+    {
+        return $this->inscriçãoEstadual;
+    }
+
+    /**
+     * Set the value of inscriçãoEstadual
+     *
+     * @return  self
+     */ 
+    public function setInscriçãoEstadual($inscriçãoEstadual)
+    {
+        $this->inscriçãoEstadual = $inscriçãoEstadual;
 
         return $this;
     }

@@ -37,7 +37,7 @@ class Estado
     private $regiao;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Municipio", mappedBy="uf")
+     * @ORM\OneToMany(targetEntity="App\Entity\Municipio", mappedBy="idUf")
      */
     private $iniUf;
 
@@ -92,5 +92,10 @@ class Estado
         $this->regiao = $regiao;
 
         return $this;
+    }
+
+    public function getIniUf()
+    {
+        return $this->iniUf;
     }
 }

@@ -63,16 +63,13 @@ class Crud extends GenericContainer
 		return $data;
 	}
 
-	public function getWithSimpleCriteriaJson(string $entity, array $criteria) : ? array
+	public function getWithSimpleCriteriaJson(string $entity, array $criteria) : ?string
 	{
 		$this->setEntity($entity);
-		$data = (array) $this->em->getRepository($this->entity)->findBy($criteria);
-		dump($data);
-
-		die();	
 		$serializer = SerializerBuilder::create()->build();
+		$data = $this->em->getRepository($this->entity)->findBy($criteria);
 		$response = $serializer->serialize($data, 'json');
-		return $data;
+		return $response;
 	}
 
 	public function remove(string $id, string $entity = null): void

@@ -31,8 +31,23 @@ document.addEventListener('DOMContentLoaded', function () {
             var stateValue = el.target.value
             var entity = el.target.getAttribute('target')
             var url = `/register/get/criteria/${entity}`
+            var select = document.querySelector('#' + entity)
+
+            select.innerHTML = ''
+            var selected = document.createElement('option')
+            selected.text = 'Selecione'
+            selected.setAttribute('selected', '')
+            selected.setAttribute('disabled', '')
+            select.add(selected)
+
             simpleRequest(url, 'POST', stateValue, function(response) {
-                console.log(response.data)
+                var optData = response.data
+                for (var opt of optData) {
+                    var option = document.createElement('option')
+                    option.value = opt.id
+                    option.text = opt.nome
+                    select.add(option)
+                } 
             }, 'idUf')
         } 
                

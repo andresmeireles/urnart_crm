@@ -82,4 +82,9 @@ class Municipio
 
         return $this;
     }
+
+    public function getIdUf()
+    {
+        return $this->idUf; 
+    }
 }
