@@ -2,10 +2,7 @@ module.exports = function (url, method = 'POST', info = null, responseFunction =
     axios({
         method: method,
         url: url,
-        data: {
-            person: info,
-            ninja: 'olá'
-        },
+        data: info,
     })
         .then(function (response) {
             if (responseFunction == null) {

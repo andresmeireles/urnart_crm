@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var form = document.getElementById(dataTarget)
             var data = new FormData(form)
             
+            /**
             axios({
                 method: 'post',
                 url: link,
@@ -29,13 +30,11 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(function (response) {
                 console.log(response.data);
-            })
+            }) */
 
-            /** 
-            simpleRequestForm(link, 'post', null, data, function (response) {
+            simpleRequestForm(link, 'post', data, function (response) {
                 console.log(response.data);
             })
-            alert(link)*/
         }
     })
 

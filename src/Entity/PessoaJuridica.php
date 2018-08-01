@@ -76,7 +76,7 @@ class PessoaJuridica extends BaseEntity
 
     public function setRazaoSocial(?string $razaoSocial): self
     {
-        $this->razaoSocial = $razaoSocial;
+        $this->razaoSocial = trim(ltrim($razaoSocial));
 
         return $this;
     }
@@ -112,7 +112,7 @@ class PessoaJuridica extends BaseEntity
     /**
      * Get the value of dataDeFundacao
      */ 
-    public function getDataDeFundacao(): ?\DateTime
+    public function getDataDeFundacao(): ?\DateTimeInterface
     {
         return $this->dataDeFundacao->format('d-m-Y');
     }
@@ -122,7 +122,7 @@ class PessoaJuridica extends BaseEntity
      *
      * @return  self
      */ 
-    public function setDataDeFundacao(?\DateTime $dataDeFundacao): ?self
+    public function setDataDeFundacao(?\DateTimeInterface $dataDeFundacao): ?self
     {
         $this->dataDeFundacao = $dataDeFundacao;
 
@@ -164,7 +164,7 @@ class PessoaJuridica extends BaseEntity
      */ 
     public function setNomeFantasia(?string $nomeFantasia): ?self
     {
-        $this->nomeFantasia = $nomeFantasia;
+        $this->nomeFantasia = trim(ltrim($nomeFantasia));
 
         return $this;
     }
@@ -204,7 +204,7 @@ class PessoaJuridica extends BaseEntity
      */ 
     public function setCnpj(?string $cnpj): self
     {
-        $this->cnpj = $cnpj;
+        $this->cnpj = str_replace('.', '', str_replace('/', '', str_replace('-', '', $cpf)));
 
         return $this;
     }
@@ -227,5 +227,19 @@ class PessoaJuridica extends BaseEntity
         $this->situacaoCadastral = $situacaoCadastral;
 
         return $this;
+    }
+
+    public function getEstado(): ?string
+    {
+        $estado = $this->getProprietarios()->first()->getPessoaFisica()->getAddress()->getEstado();
+        $estado = $estado == null ? '' : $estado->getNome();
+        return $estado;
+    }
+
+    public function getMunicipio() : ? string
+    {
+        $municipio = $this->getProprietarios()->first()->getPessoaFisica()->getAddress()->getMunicipio();
+        $municipio = $municipio == null ? '' : $municipio->getNome() ;
+        return $municipio;
     }
 }

@@ -25,6 +25,7 @@ class Proprietario
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\PessoaFisica", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="pessoaFisica", referencedColumnName="id")
      */
     private $pessoaFisica;
 
@@ -66,7 +67,7 @@ class Proprietario
 
     public function getPessoaFisica(): ?PessoaFisica
     {
-        return $this->idPessoaFisica;
+        return $this->pessoaFisica;
     }
 
     public function setPessoaFisica(?PessoaFisica $pessoaFisica): self

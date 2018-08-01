@@ -46,6 +46,12 @@ class Address
      */
     private $municipio;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\PessoaFisica", cascade={"persist", "remove"})
+     * @Orm\JoinColumn(name="pessoaFisicaId", referencedColumnName="id")
+     */
+    private $pessoaFisicaId;
+
     public function getId()
     {
         return $this->id;
@@ -121,6 +127,26 @@ class Address
     public function setMunicipio(?Municipio $municipio) : self
     {
         $this->municipio = $municipio;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pessoaFisicaId
+     */ 
+    public function getPessoaFisicaId(): ?PessoaFisica
+    {
+        return $this->pessoaFisicaId;
+    }
+
+    /**
+     * Set the value of pessoaFisicaId
+     *
+     * @return  self
+     */ 
+    public function setPessoaFisicaId(?PessoaFisica $pessoaFisicaId): self
+    {
+        $this->pessoaFisicaId = $pessoaFisicaId;
 
         return $this;
     }

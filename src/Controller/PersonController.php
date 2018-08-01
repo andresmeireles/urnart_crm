@@ -104,12 +104,8 @@ class PersonController extends Controller
             $persona->addEmail($mail);
         }
 
-        $em->persist($persona);
-
         $proprietary = new Proprietario();
         $proprietary->setPessoaFisica($persona);
-
-        $em->persist($proprietary);
 
         $client = new PessoaJuridica();
         $client->setRazaoSocial($customer['razaoSocial']);
@@ -123,19 +119,23 @@ class PersonController extends Controller
         $situcaoCadastral = $customer['situacaoCadastral'] ?? 3;
         $client->setSituacaoCadastral($situcaoCadastral);
 
-        $em->persist($client);
-
         $state = isset($address['estado']) ? $em->getRepository(Estado::class)->find($address['estado']) : null;
         $city = isset($address['municipio']) ?  $em->getRepository(Municipio::class)->find($address['municipio']) : null;
 
         $addr = new Address();
+        $addr->setPessoaFisicaId($persona);
         $addr->setMunicipio($city);
         $addr->setEstado($state);
         $addr->setRoad($address['road']);
         $addr->setNeighborhood($address['neightborhood']);
         $addr->setNumber($address['number']);
         $addr->setZipcode($address['cep']);
+        
+        $persona->setAddress($addr);
 
+        $em->persist($proprietary);
+        $em->persist($client);
+        $em->persist($persona);
         $em->persist($addr);
     }
 

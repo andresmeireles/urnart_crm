@@ -28,23 +28,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
                                     {% if person != [] %}
                                         {% for p in person %}
+                                        <tr>
                                             <td class="d-none" scope="row"><b>1</b></td>
                                             <td><b>{{ p.razaoSocial }}</b></td>
                                             <td><b>{{ p.cnpj }}</b></td>
-                                            <td><b>{{ p.city }}</b></td>
-                                            <td><b>{{ p.state }}</b></td>
+                                            <td><b>{{ p.getEstado }}</b></td>
+                                            <td><b>{{ p.getMunicipio }}</b></td>
                                             <td class="text-center">
                                                 <a href="#" class="badge badge-primary">Editar</a>
                                                 <a href="#" class="badge badge-secondary">Visualizar</a>
                                             </td>
+                                        </tr>
                                         {% endfor %}
                                     {% else %}
+                                    <tr>
                                         <td colspan="5" class="text-center"><span style="font-size: 30px">Nenhum cadastro</span></td>
+                                    </tr>
                                     {% endif %}
-                                </tr>
                             </tbody>
                         </table>
                     </div>

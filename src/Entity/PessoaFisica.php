@@ -44,7 +44,7 @@ class PessoaFisica extends BaseEntity
     private $genre;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="datetimetz", nullable=true)
      */
     private $birthDate;
 
@@ -57,6 +57,11 @@ class PessoaFisica extends BaseEntity
      * @ORM\OneToMany(targetEntity="App\Entity\Email", mappedBy="owner")
      */
     private $emails;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Address", cascade={"persist", "remove"})
+     */
+    private $address;
 
     public function __construct()
     {
@@ -248,5 +253,22 @@ class PessoaFisica extends BaseEntity
         }
 
         return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getEstado(): ?string
+    {
+        return $this->address->getEstado()->getNome();
     }
 }

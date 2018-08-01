@@ -47,7 +47,7 @@ abstract class BaseEntity
 		return $this->lastUpdate->format('d-m-Y');
 	}
 
-	protected function setLastUpdate(\DateTime $update): self 
+	protected function setLastUpdate(\DateTimeInterface $update): self 
 	{
 		$this->lastUpdate = $update;
 

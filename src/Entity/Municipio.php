@@ -99,14 +99,6 @@ class Municipio
         return $this->idUf; 
     }
 
-    /**
-     * @return Collection|Address
-     */
-    public function getEndereco(): Collection
-    { 
-        return $this->endereco;
-    }
-
     public function addEndereco(Address $endereco): self
     {
         if(!$this->contains($endereco)) {
