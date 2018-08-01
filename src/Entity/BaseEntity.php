@@ -39,12 +39,12 @@ abstract class BaseEntity
 
 	protected function getCreateDate(): ?\DateTime
 	{
-		return $this->createDate;
+		return $this->createDate->format('d-m-Y');
 	}
 
 	protected function getLastUpdate(): ?\DateTime
 	{
-		return $this->lastUpdate;
+		return $this->lastUpdate->format('d-m-Y');
 	}
 
 	protected function setLastUpdate(\DateTime $update): self 

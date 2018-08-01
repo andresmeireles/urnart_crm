@@ -173,7 +173,7 @@ class PessoaFisica extends BaseEntity
      */ 
     public function getBirthDate(): ?\DateTime
     {
-        return $this->birthDate;
+        return $this->birthDate->format('d-m-Y');
     }
 
     /**

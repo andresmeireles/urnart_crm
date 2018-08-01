@@ -4,7 +4,7 @@
             <span style="font-size: 25px">Adicionar Cliente</span>
         </div>
         <div class="card-body">
-            <form method="post" action="/person/add/person" id="person-form">
+            <form method="post" action="/person/add/person" id="customer-form">
                 <fieldset class="p-1 border border-light my-1">
                     <legend class="bg-light">
                         &nbsp;Informações da Empresa
@@ -31,7 +31,7 @@
                                 <input type="text" class="form-control cnpj-mask" name="customer[cnpj]" id="cnpj" placeholder="Inserir apenas numeros">
                             </div>
                             <div class="form-inline">
-                                <label for="situcaoCadastral" class="required">Situação Cadastral</label>
+                                <label for="situcaoCadastral">Situação Cadastral</label>
                                 <div class="input-group mx-1">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -181,7 +181,7 @@
                 </div>
             </div>
             <div class="card-footer text-muted text-center">
-                <input type="submit" class="btn btn-secondary w-50" send="/person/add/person" target="person-form" value="Adicionar">
+                <input type="submit" class="btn btn-secondary w-50" send="/person/add/person" target="customer-form" value="Adicionar">
             </form>
         </div>
     </div>

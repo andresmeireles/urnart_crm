@@ -44,6 +44,11 @@ class PessoaJuridica extends BaseEntity
     private $cnpj;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $situacaoCadastral;
+
+    /**
      * @ORM\Column(type="datetimetz", nullable=true)
      */
     private $dataDeFundacao;
@@ -69,7 +74,7 @@ class PessoaJuridica extends BaseEntity
         return $this->razaoSocial;
     }
 
-    public function setRazaoSocial(string $razaoSocial): self
+    public function setRazaoSocial(?string $razaoSocial): self
     {
         $this->razaoSocial = $razaoSocial;
 
@@ -109,7 +114,7 @@ class PessoaJuridica extends BaseEntity
      */ 
     public function getDataDeFundacao(): ?\DateTime
     {
-        return $this->dataDeFundacao;
+        return $this->dataDeFundacao->format('d-m-Y');
     }
 
     /**
@@ -127,7 +132,7 @@ class PessoaJuridica extends BaseEntity
     /**
      * Get the value of inscricaoMunicipal
      */ 
-    public function getInscricaoMunicipal()
+    public function getInscricaoMunicipal(): ?string
     {
         return $this->inscricaoMunicipal;
     }
@@ -137,7 +142,7 @@ class PessoaJuridica extends BaseEntity
      *
      * @return  self
      */ 
-    public function setInscricaoMunicipal(integer $inscricaoMunicipal): ?self
+    public function setInscricaoMunicipal(?int $inscricaoMunicipal): ?self
     {
         $this->inscricaoMunicipal = $inscricaoMunicipal;
 
@@ -147,7 +152,7 @@ class PessoaJuridica extends BaseEntity
     /**
      * Get the value of nomeFantasia
      */ 
-    public function getNomeFantasia()
+    public function getNomeFantasia(): ?string
     {
         return $this->nomeFantasia;
     }
@@ -157,7 +162,7 @@ class PessoaJuridica extends BaseEntity
      *
      * @return  self
      */ 
-    public function setNomeFantasia($nomeFantasia)
+    public function setNomeFantasia(?string $nomeFantasia): ?self
     {
         $this->nomeFantasia = $nomeFantasia;
 
@@ -167,7 +172,7 @@ class PessoaJuridica extends BaseEntity
     /**
      * Get the value of inscricaoEstadual
      */ 
-    public function getInscricaoEstadual()
+    public function getInscricaoEstadual(): ?int
     {
         return $this->inscricaoEstadual;
     }
@@ -177,7 +182,7 @@ class PessoaJuridica extends BaseEntity
      *
      * @return  self
      */ 
-    public function setInscricaoEstadual($inscricaoEstadual)
+    public function setInscricaoEstadual(?int $inscricaoEstadual): ?self
     {
         $this->inscricaoEstadual = $inscricaoEstadual;
 
@@ -200,6 +205,26 @@ class PessoaJuridica extends BaseEntity
     public function setCnpj(?string $cnpj): self
     {
         $this->cnpj = $cnpj;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of situacaoCadastral
+     */ 
+    public function getSituacaoCadastral(): ?int
+    {
+        return $this->situacaoCadastral;
+    }
+
+    /**
+     * Set the value of situacaoCadastral
+     *
+     * @return  self
+     */ 
+    public function setSituacaoCadastral(?int $situacaoCadastral): self
+    {
+        $this->situacaoCadastral = $situacaoCadastral;
 
         return $this;
     }

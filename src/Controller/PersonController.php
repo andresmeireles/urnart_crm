@@ -60,7 +60,6 @@ class PersonController extends Controller
 
         try {
             $this->persistPerson($request->request->all());
-            exit();
 
             $em->flush();
             $em->getConnection()->commit();
@@ -85,7 +84,7 @@ class PersonController extends Controller
         $persona->setRg($person['rg']);
         $g = $person['genre'] ?? null;
         $persona->setGenre($g);
-        $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null ;
+        $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null;
         $persona->setBirthDate($date);
         
         foreach ($phone as $phones) {
@@ -116,10 +115,13 @@ class PersonController extends Controller
         $client->setRazaoSocial($customer['razaoSocial']);
         $client->setNomeFantasia($customer['nomeFantasia']);
         $client->setCnpj($customer['cnpj']);
-        $client->setInscricaoEstadual($customer['inscricaoEstadual']);
+        $inscricaoEstadual = $customer['inscricaoEstadual'] == '' ? null : $customer['inscricaoEstadual'];
+        $client->setInscricaoEstadual($inscricaoEstadual);
         $date = $customer['fondationDate'] != '' ? new \DateTime(str_replace('/', '.', $customer['fondationDate'])) : null;
         $client->setDataDeFundacao($date);
         $client->addProprietario($proprietary);
+        $situcaoCadastral = $customer['situacaoCadastral'] ?? 3;
+        $client->setSituacaoCadastral($situcaoCadastral);
 
         $em->persist($client);
 

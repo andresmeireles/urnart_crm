@@ -2,6 +2,21 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (el) {
         if (el.target.getAttribute('send')) {
             el.preventDefault()
+            var form = document.getElementById(el.target.getAttribute('target'))
+            var fieldsRequired = form.querySelectorAll('.required')
+            
+            fieldsRequired.forEach(function (element) {
+                var name = element.getAttribute('for')
+                var required = document.getElementById(name)
+                var value = required.value
+                
+                if (value == '') {
+                    required.classList.add('is-invalid')
+                    required.insertAdjacentHTML('afterend', `<small class="text-danger">Campo obrigarotio</small>`)
+                    return false
+                }
+            })
+            
             var link = el.target.getAttribute('send')
             var dataTarget = el.target.getAttribute('target')
             var form = document.getElementById(dataTarget)
@@ -14,11 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(function (response) {
                 console.log(response.data);
-                })
-            alert(link)
+            })
 
             /** 
-            simpleRequestForm(link, 'post', null, data,function (response) {
+            simpleRequestForm(link, 'post', null, data, function (response) {
                 console.log(response.data);
             })
             alert(link)*/
