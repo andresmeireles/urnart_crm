@@ -3,12 +3,12 @@
 {% block tittle %}Etiqetas Manual{% endblock %}
 
 {% block content %}
+  <div class="px-4 w-100">
   {% for message in app.flashes('message') %}
   <div class="alert alert-warning text-center" id="alert-rmv">
     <b>{{ message }}</b>
   </div>
   {% endfor %}
-
   <div class="row">
     <div class="col-md-12">
       <h1 class="display-3">Etiquetas</h1>
@@ -58,5 +58,6 @@
           </div>
         </div>
       </form>
+    </div>
     </div>
     {% endblock %}
