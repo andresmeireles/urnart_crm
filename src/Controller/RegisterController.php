@@ -2,15 +2,6 @@
 
 namespace App\Controller;
 
-<<<<<<< HEAD
-use App\Utils\Generic\Crud;
-use App\Utils\Generic\GenericGetter;
-use App\Utils\Generic\GenericSetter;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-=======
 use App\Utils\Generic\GenericSetter;
 use App\Utils\Generic\Crud;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
->>>>>>> origin/dev
 
 class RegisterController extends Controller
 {
@@ -76,14 +66,11 @@ class RegisterController extends Controller
         $object = json_decode($request->getContent());
         $id = $object->id;
         $crud->remove($id, $entity);
-<<<<<<< HEAD
-        return new Response($crud->getMessage(), Response::HTTP_OK, array('type-message' => $crud->getTypeMessage()));
-=======
+
         return new Response(
             $crud->getMessage(),
             Response::HTTP_OK,
             array('type-message' => $crud->getTypeMessage())
         );
->>>>>>> origin/dev
     }
 }

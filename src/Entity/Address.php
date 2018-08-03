@@ -47,8 +47,8 @@ class Address
     private $municipio;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\PessoaFisica", cascade={"persist", "remove"})
-     * @Orm\JoinColumn(name="pessoaFisicaId", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="App\Entity\PessoaFisica", inversedBy="address")
+     * @Orm\JoinColumn(name="pessoaFisicaId", referencedColumnName="id", onDelete="CASCADE")
      */
     private $pessoaFisicaId;
 

@@ -44,7 +44,7 @@ class PessoaJuridica extends BaseEntity
     private $cnpj;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true, options={"comment":"1-Contribuente 2-Não Contribuente 3-isento"})
      */
     private $situacaoCadastral;
 
@@ -204,7 +204,7 @@ class PessoaJuridica extends BaseEntity
      */ 
     public function setCnpj(?string $cnpj): self
     {
-        $this->cnpj = str_replace('.', '', str_replace('/', '', str_replace('-', '', $cpf)));
+        $this->cnpj = str_replace('.', '', str_replace('/', '', str_replace('-', '', $cnpj)));
 
         return $this;
     }
@@ -230,7 +230,7 @@ class PessoaJuridica extends BaseEntity
     }
 
     public function getEstado(): ?string
-    {
+    { 
         $estado = $this->getProprietarios()->first()->getPessoaFisica()->getAddress()->getEstado();
         $estado = $estado == null ? '' : $estado->getNome();
         return $estado;
@@ -239,7 +239,7 @@ class PessoaJuridica extends BaseEntity
     public function getMunicipio() : ? string
     {
         $municipio = $this->getProprietarios()->first()->getPessoaFisica()->getAddress()->getMunicipio();
-        $municipio = $municipio == null ? '' : $municipio->getNome() ;
+        $municipio = $municipio == null ? '' : $municipio->getNome();
         return $municipio;
     }
 }

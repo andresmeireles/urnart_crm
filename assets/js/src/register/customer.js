@@ -11,8 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 var value = required.value
                 
                 if (value == '') {
+                    el.preventDefault()
                     required.classList.add('is-invalid')
                     required.insertAdjacentHTML('afterend', `<small class="text-danger">Campo obrigarotio</small>`)
+                    alert('Tudo bem, cencela')
                     return false
                 }
             })
@@ -33,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }) */
 
             simpleRequestForm(link, 'post', data, function (response) {
-                console.log(response.data);
+                location.reload;
             })
         }
     })

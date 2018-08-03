@@ -8,19 +8,19 @@ Encore
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
     // uncomment to create hashed filenames (e.g. app.abc123.css)
-    .enableVersioning(Encore.isProduction())
-    //.enableVersioning()
+    //.enableVersioning(Encore.isProduction())
+    .enableVersioning()
     
     // uncomment to define the assets of the project
     .addEntry('app', './assets/js/app.js')
     .addStyleEntry('css/app', './assets/scss/app.scss')
-    .addStyleEntry('css/lapp', './assets/css/less/app.less')
+    //.addStyleEntry('css/lapp', './assets/css/less/app.less')
 
     // uncomment if you use Sass/SCSS files
     .enableSassLoader()
     
     // uncomment if you use LESS files
-    .enableLessLoader()
+    //.enableLessLoader()
 
     // uncomment for legacy applications that require $/jQuery as a global variable
     .autoProvidejQuery()

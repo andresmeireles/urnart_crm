@@ -4,7 +4,11 @@
 /var/
 /vendor/
 /.phpintel
+/laradock
 /src/Migrations/*
+!/src/Migrations/.keep
+/public/form/*
+!/public/form/.keep
 ###< symfony/framework-bundle ###
 
 ###> symfony/webpack-encore-pack ###

@@ -59,7 +59,7 @@ class PessoaFisica extends BaseEntity
     private $emails;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Address", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Address", mappedBy="pessoaFisicaId")
      */
     private $address;
 
@@ -68,6 +68,11 @@ class PessoaFisica extends BaseEntity
         parent::__construct();
         $this->phones = new ArrayCollection();
         $this->emails = new ArrayCollection();
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     /**
@@ -176,7 +181,7 @@ class PessoaFisica extends BaseEntity
     /**
      * Get the value of birthDate
      */ 
-    public function getBirthDate(): ?\DateTime
+    public function getBirthDate(): ?string
     {
         return $this->birthDate->format('d-m-Y');
     }

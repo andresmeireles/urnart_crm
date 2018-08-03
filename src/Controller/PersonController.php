@@ -60,7 +60,7 @@ class PersonController extends Controller
 
         try {
             $this->persistPerson($request->request->all());
-
+            //exit();
             $em->flush();
             $em->getConnection()->commit();
         } catch (\Exception $e) {

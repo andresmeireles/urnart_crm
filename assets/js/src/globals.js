@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.querySelectorAll('.sender').forEach( function (el) {
 		el.addEventListener('click', function (el) {
 			el.preventDefault();
+			var url = el.target.getAttribute('data-sender');
 			var formId = '#'+el.target.closest('form').id;
 			var form = document.querySelector(formId);
 			var formData = new FormData(form);			
@@ -21,16 +22,10 @@ document.addEventListener('DOMContentLoaded', function () {
 				
 				if (type == 'success') {
 					form.reset();	
-<<<<<<< HEAD
-					var name = '#'+el.target.closest('form').getAttribute('target')+'-reloader';
-					$(document).find(name).trigger('click');	
-					$.fancybox.close();
-=======
 					var name = el.target.closest('form').getAttribute('target');
 					$('#'+name+'-reload').trigger('click');
 					$.fancybox.close();
 
->>>>>>> origin/dev
 				}
 
 				setTimeout(function () {
