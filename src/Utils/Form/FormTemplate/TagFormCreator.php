@@ -41,9 +41,9 @@ class TagFormCreator implements CreateFormInterface
 		.i-tag div {margin: 0px 15px 0px 0px;}
 
 		.tag-img { max-width: 100%; max-height: 100%: }
-		.tag-box-1 { width: 3cm; height: 3cm; padding-top: 20px; overflow: hidden }
-		.tag-box-2 { width: 15cm; height: 3cm; overflow: hidden}
-		.tag-box-3 { width: 3cm; height: 3cm; overflow: hidden}
+		.tag-box-1 { width: 3cm; height: 4.5cm; padding-top: 20px; overflow: hidden }
+		.tag-box-2 { width: 17cm; height: 4.5cm; overflow: hidden}
+		.tag-box-3 { width: 3cm; height: 4.5cm; overflow: hidden}
 		.tag-box-4 { width: 14cm; overflow: hidden; }
 		.tag-box-5 { width: 3cm; overflow: hidden; }
 		.tag-box-6 { width: 3cm; overflow: hidden; }
@@ -56,12 +56,12 @@ class TagFormCreator implements CreateFormInterface
 
 		.t-right { padding: 0px 0px 0px 10px; } 
 
-		.t-font-sz0 { font: bold 30px Arial, Serif; padding-top: 2px; }
-		.t-font-sz1 { font: bold 60px Arial, Serif; }
-		.t-font-sz3 { font: bold 32px Arial, Serif; } 
-		.t-font-sz4 { font: bold 22px Arial, Serif; }
-		.t-font-sz5 { font: bold 35px Arial, Serif; padding: 7px 0px 0px 0px; }
-		.t-font-sz6 { font: bold 55px Arial, Serif; padding-top: 7px; }
+		.t-font-sz0 { font: 40px Arial, Serif; padding-top: 2px; }
+		.t-font-sz1 { font: bold 80px Arial, Serif; }
+		.t-font-sz3 { font: bold 40px Arial, Serif; padding-top: 10px } 
+		.t-font-sz4 { font: bold 30px Arial, Serif; padding-top: 10px }
+		.t-font-sz5 { font: 45px Arial, Serif; padding: 7px 0px 0px 0px; }
+		.t-font-sz6 { font: 65px Arial, Serif; padding-top: 7px; }
 
 		.t-border { border-bottom: 1px solid black}
 
@@ -76,7 +76,7 @@ class TagFormCreator implements CreateFormInterface
 				$count = $c;
 				$count++;
 
-				if ($pageCounter == 9) {
+				if ($pageCounter == 6) {
 					$body .= '</div><div id="tag-page1">';
 					$pageCounter = 0;
 				} 
@@ -92,8 +92,8 @@ class TagFormCreator implements CreateFormInterface
 				</div>
 				
 				<div class="tag-box-3 tag-float-left t-right">
-				<span class="t-font-sz1 tag-float-left t-w100">'. ( $param['check'] != 0 ? ceil($count/2) : $count ) .'</span>
-				<span class="t-font-sz4 tag-float-left t-w100">VOL. '. ( $param['check'] != 0 ? ceil($param['amount']/2) : $param['amount']) .'</span>
+				<span class="t-font-sz1 tag-float-left t-w100">'. ( ($param['check'] != 0) ? ceil($count/2) : $count ) .'</span>
+				<span class="t-font-sz4 tag-float-left t-w100">VOL. '. ( ($param['check'] != 0) ? ceil($param['amount']/2) : $param['amount']) .'</span>
 				</div> 
 				<div class="tag-clear"></div>
 				

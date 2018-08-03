@@ -21,9 +21,16 @@ document.addEventListener('DOMContentLoaded', function () {
 				
 				if (type == 'success') {
 					form.reset();	
+<<<<<<< HEAD
 					var name = '#'+el.target.closest('form').getAttribute('target')+'-reloader';
 					$(document).find(name).trigger('click');	
 					$.fancybox.close();
+=======
+					var name = el.target.closest('form').getAttribute('target');
+					$('#'+name+'-reload').trigger('click');
+					$.fancybox.close();
+
+>>>>>>> origin/dev
 				}
 
 				setTimeout(function () {

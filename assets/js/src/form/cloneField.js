@@ -54,7 +54,7 @@ $(function () {
      * Altera o valor de um campo com alteração de checkbox
      */
     document.addEventListener('click', function (el) {
-        if (el.target.id == 'check') {
+        if (el.target.id == 'checkbox') {
             if ( el.target.checked ) {
                 el.target.parentNode.querySelector('#check').value = 1;
                 return true;
@@ -72,7 +72,7 @@ $(function () {
 
 			/**
 			 * Busca em #cloneable fields marcados com required em branco
-			 * caso estaj aem branco bloqueia a criação de um novo campo
+			 * caso esta aem branco bloqueia a criação de um novo campo
 			 */
 			for (var c=0; c < document.querySelectorAll('#cloneableField [required]').length; c++) {
 				if (document.querySelectorAll('#cloneableField [required]')[c].value == '') {
@@ -95,14 +95,20 @@ $(function () {
             var node = el.target.closest('#cloneableField');
             var cloneEl = node.cloneNode(true);
 
+            //desmarca checkbox caso exista
+            if (cloneEl.querySelector('input[type="checkbox"]')) {
+                cloneEl.querySelector('input[type="checkbox"]').value = 0
+                cloneEl.querySelector('input[type="checkbox"]').checked = 0
+            }
+
             // reseta todos os campos escrevedo um nome unico
             var cloneElInputs = cloneEl.querySelectorAll('input'); 
            	for (var c=0; c < cloneElInputs.length; c++) {	
            		var inputName = 'cloneableField'+ iNumber +'['+ cloneElInputs[c].getAttribute('id') +']';
            		cloneElInputs[c].setAttribute('name', inputName); 
            		cloneElInputs[c].value = cloneElInputs[c].defaultValue;
-           	}
-
+            }
+            
 			cloneEl.querySelector('[input-number]').value = iNumber;          	
 
 			// cria o campo novo

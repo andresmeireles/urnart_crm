@@ -1,20 +1,21 @@
 {
+    "name": "Sysadmin - Administração da empresa Urnas Mart",
+    "description": "Um sistema para administração completa da empresa urnas mart",
     "type": "project",
     "license": "proprietary",
     "require": {
         "php": "^7.1.3",
         "ext-iconv": "*",
-        "dompdf/dompdf": "^0.8.2",
         "h4cc/wkhtmltopdf-amd64": "0.12.x",
         "jms/serializer": "^1.12",
         "knplabs/knp-snappy-bundle": "^1.5",
-        "mpdf/mpdf": "^7.1",
         "respect/validation": "^1.1",
         "symfony/asset": "^4.0",
         "symfony/console": "^4.0",
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^4.0",
         "symfony/lts": "^4@dev",
+        "symfony/monolog-bundle": "^3.3",
         "symfony/orm-pack": "^1.0",
         "symfony/twig-bundle": "^4.0",
         "symfony/webpack-encore-pack": "^1.0",
@@ -29,6 +30,9 @@
         "symfony/var-dumper": "^4.0"
     },
     "config": {
+        "platform": {
+            "php": "7.2"
+        },
         "preferred-install": {
             "*": "dist"
         },

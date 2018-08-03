@@ -4,6 +4,7 @@
 /var/
 /vendor/
 /.phpintel
+/src/Migrations/*
 ###< symfony/framework-bundle ###
 
 ###> symfony/webpack-encore-pack ###

@@ -1,0 +1,27 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Pessoas{% endblock %}
+
+{% block content %}
+<div class="bg-secondary">
+    <div class="sidebar-sticky p-1">
+        <ul class="list-unstyled">
+            <li class="px-3"><span class="px-3 mx-3">&nbsp;</span></li>
+            <li class="noline text">
+                <a href="/person/person">
+                    <div class="d-flex align-items-center">
+                        <span class="mx-1 my-2">&nbsp;&nbsp;Pessoa Fisica</span>
+                    </div>
+                </a>
+            </li>
+            <li class="noline">
+                <a href="/person/customer">
+                    <div class="d-flex align-items-center">
+                        <span class="mx-1 my-2">&nbsp;&nbsp;Pessoa Juridica</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

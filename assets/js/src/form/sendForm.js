@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-	document.querySelectorAll('#send-form').forEach( function (el) {
-		el.addEventListener('click', function (el) {
+	document.addEventListener('click', function (el) {
+		if (el.target.id == 'send-form') {
 			el.preventDefault();
 			
 			var newWindowPages = ['freight-letter', 'receipt'];
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				doc.insertAdjacentHTML('beforeend', data);
 				openModal('result');
 			});
-		});
+		}
 	});
 
 	var createFormModal = function (body) {

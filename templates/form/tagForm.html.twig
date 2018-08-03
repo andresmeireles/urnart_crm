@@ -3,14 +3,12 @@
 {% block tittle %}Etiqetas Manual{% endblock %}
 
 {% block content %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
-<div class="col">
+  <div class="px-4 w-100">
   {% for message in app.flashes('message') %}
   <div class="alert alert-warning text-center" id="alert-rmv">
     <b>{{ message }}</b>
   </div>
   {% endfor %}
-
   <div class="row">
     <div class="col-md-12">
       <h1 class="display-3">Etiquetas</h1>
@@ -43,8 +41,8 @@
                 <div class="input-group col-md-2 my-1 ">
                   <div class="input-group-prepend">
                     <span class="input-group-text">
+                      <input type="checkbox" id="checkbox">
                       <input type="hidden" value="0" id="check" name="cloneableField0[check]">
-                      <input type="checkbox" value="0" id="check" name="cloneableField0[check]">
                     </span>
                   </div>  
                     <input type="text" class="form-control" value="Casado?" disabled>
@@ -60,5 +58,6 @@
           </div>
         </div>
       </form>
+    </div>
     </div>
     {% endblock %}
