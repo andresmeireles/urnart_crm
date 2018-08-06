@@ -38,7 +38,8 @@ document.addEventListener('DOMContentLoaded', function () {
             el.preventDefault()
             var id = el.target.getAttribute('edit')
             simpleRequestForm(`/register/get?entity=pessoaJuridica&id=${id}`, 'GET', null, function (response) {
-                console.log(response.data)
+                var data = customerTemplate(response.data)
+                document.querySelector('body').insertAdjacentHTML('beforeend', data)
             });
         }
 

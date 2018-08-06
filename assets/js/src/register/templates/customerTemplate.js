@@ -1,7 +1,7 @@
 module.exports = function (data, type = 'view') {
     var pessoa = data.proprietarios[0].pessoa_fisica
     var endereco = pessoa.address
-    var emails = pessoa.emails
+    var email = pessoa.emails
     var phone = pessoa.phones
     var states = simpleRequest('/register/get/estado', 'post', null, function (respose) {
         return Response.data
@@ -9,8 +9,11 @@ module.exports = function (data, type = 'view') {
     var cities = simpleRequest('/register/get/municipio', 'post', null, function (respose) {
         return Response.data
     })
+
+    var birthDate = new Date(data.data_de_fundacao);
+    var personBirthDate = new Date(pessoa.birth_date)
     
-    var string = `<div id="dynamic-created-element" class="col-md-11 py-4 d-none">
+    var string = `<div id="dynamic-created-element" class="col-md-11 py-4 ">
     <div class="card">
     <div class="card-header text-center">
     <span style="font-size: 25px">${ (type == 'view') ? 'Visualizar' : 'Editar'} Cliente</span>
@@ -31,11 +34,15 @@ module.exports = function (data, type = 'view') {
     if (type == 'view') {
         string += `<div class="form-group col-md-6">
         <label for="razaoSocial" class="required">Razão Social</label>
+        <div class="form-control">
         ${data.razao_social}
+        </div>
         </div>
         <div class="form-group col-md-6">
         <label for="firstName">Nome Fantasia</label>
+        <div class="form-control">
         ${data.nome_fantasia}
+        </div>
         </div>
         </div>
         </div>`
@@ -61,23 +68,31 @@ module.exports = function (data, type = 'view') {
     if (type == 'view') {
         string += `<div class="form-group col-md-4">
         <label for="firstName">CNPJ</label>
+        <div class="form-control">
         ${data.cnpj}
+        </div>
         </div>
         <div class="form-inline">
         <label for="situcaoCadastral">Situação Cadastral</label>
-        ${data.situacao_cadastral}
+        <div class="form-control">
+        ${data.situacao_cadastral == 1 ? 'HABILITADO' : data.situacao_cadastral == 2 ? 'NÃO HABILITADO' : 'ISENTO' }
+        </div>
         </div>
         </div>
         <div class="row">
         <div class="form-group col-md-4">
         <label for="firstName">Inscrição Estadual</label>
-        ${inscricao_estadual}
+        <div class="form-control">
+        ${data.inscricao_estadual}
+        </div>
         </div>
         <div class="form-group col-md-2">
         <label for="birthData">
         <small>Data de Fundação</small>
         </label>
-        ${data_de_fundacao}
+        <div class="form-control">
+        ${birthDate.getDate() + 1}/${birthDate.getMonth()+1}/${birthDate.getFullYear()}
+        </div>
         </div>
         `
     } else {
@@ -144,32 +159,38 @@ module.exports = function (data, type = 'view') {
     
     if (type == 'view') {
         string += `<div class="form-group col-md-6">
-        <label for="firstName" class="required">Primeiro Nome</label>
-        ${pessoa.first_name}
+        <label for="firstName">Nome:</label>
+        <div class="form-control">
+        ${pessoa.first_name} ${pessoa.last_name}
         </div>
-        <div class="form-group col-md-6">
-        <label for="firstName">Ultimo Nome</label>
-        ${pessoa.last_name}
         </div>
         </div>
         <div class="row">
         <div class="form-group col-md-4">
         <label for="firstName">Cpf</label>
+        <div class="form-control">
         ${pessoa.cpf}
+        </div>
         </div>
         <div class="form-group col-md-4">
         <label for="firstName">RG (Registro Geral)</label>
+        <div class="form-control">
         ${pessoa.rg}
+        </div>
         </div>
         <div class="form-group col-md-2">
         <label for="birthData">
         <small>Data de Nascimento</small>
         </label>
-        ${pessoal.birth_date}
+        <div class="form-control">
+        ${personBirthDate.getDate() + 1}/${personBirthDate.getMonth()+1}/${personBirthDate.getFullYear()}
+        </div>
         </div>
         <div class="form-group col-md-2">
         <label for="firstName">Genero</label>
+        <div class="form-control">
         ${pessoa.genre == 'm' ? 'Masculno' : 'Feminino'}
+        </div>
         </div>` 
     } else {
         string += `<div class="form-group col-md-6">
@@ -218,28 +239,40 @@ module.exports = function (data, type = 'view') {
     if (type == 'view') {
         string += `<div class="form-group col-md-5">
         <label for="road">Rua</label>
+        <div class="form-control">
         ${endereco.road}
+        </div>
         </div>
         <div class="form-group col-md-4">
         <label for="road">Bairro</label>
+        <div class="form-control">
         ${endereco.neigborhood}
+        </div>
         </div>
         <div class="form-group col-md-3">
         <label for="road">Numero</label>
+        <div class="form-control">
         ${endereco.number}
+        </div>
         </div>
         </div>
         <div class="row">
         <div class="form-group col">
+        <div class="form-control">
         ${endereco.zipcode}
+        </div>
         </div>
         <div class="form-group col">
         <label for="estado">Estado</label>
+        <div class="form-control">
         ${endereco.estado.nome}
+        </div>
         </div>
         <div class="form-group col">
         <label>Municipio</label>
-        ${endereco.municipio.nome}
+        <div class="form-control">
+        ${endereco.municipio != null ? endereco.municipio.nome : ''}
+        </div>
         </div>
         </div>`
     } else {
@@ -290,24 +323,31 @@ module.exports = function (data, type = 'view') {
     
     if (type == 'view') {
         string += `<div class="form-inline my-1" cloneableField>
-        <div clone-area>
-        <div clone-field>
-        <input type="text" class="form-control col-md-8 mx-1 phone-with-ddd-br numbers-only" id="phone" name="phone[0]" placeholder="numero com ddd">
-        <button class="btn btn-primary fas fa-plus" add-btn></button>
-        <button class="btn btn-danger fas fa-minus" rmv-btn></button>
-        </div>
-        </div>
+        <div clone-area>`
+        
+        for (var phones of phone) {
+            string += `<div clone-field>
+            <div class="form-control">
+            ${convertPhone(phones.number)}
+            </div>
+            </div>`
+        }
+        
+        string += `</div>
         </div>
         <label for="numeber">Email</label>
         <div class="form-inline my-1" cloneableField>
-        <div clone-area>
-        <div clone-field>
-        <input type="hidden" input-number='true' value="1">
-        <input type="text" class="form-control col-md-8 mx-1" id="email" name="email[0]" placeholder="nome@dominio.com">
-        <button class="btn btn-primary fas fa-plus" add-btn></button>
-        <button class="btn btn-danger fas fa-minus" rmv-btn></button>
-        </div>
-        </div>
+        <div clone-area>`
+        
+        for (var emails of email) {
+            string += `<div clone-field>
+            <div class="form-control">
+            ${emails.email}
+            </div>
+            </div>`
+        }
+        
+        string += `</div>
         </div>`
     } else {
         string += `<div class="form-inline my-1" cloneableField>
@@ -319,6 +359,7 @@ module.exports = function (data, type = 'view') {
             <button class="btn btn-primary fas fa-plus" add-btn></button>
             <button class="btn btn-danger fas fa-minus" rmv-btn></button>
             </div>`
+            console.log(typeof phones)
         }
         
         string += `</div>
@@ -354,4 +395,5 @@ module.exports = function (data, type = 'view') {
     string += `</div>
     </div>
     `
+    return string
 }

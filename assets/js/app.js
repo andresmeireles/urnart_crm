@@ -5,6 +5,10 @@ require('jquery-mask-plugin')
 
 const $ = require('jquery')
 const fancybox = require('@fancyapps/fancybox')
+const moment = require('moment');
+require("moment/min/locales.min");
+moment.locale('pt-br');
+
 const vexjs = require('vex-js')
 vexjs.registerPlugin(require('vex-dialog'))
 vexjs.defaultOptions.className = 'vex-theme-default'
@@ -15,6 +19,7 @@ vexjs.dialog.buttons.NO.text = 'Cancelar'
 global.$ = global.jQuery = $
 global.axios = require('axios')
 global.vex = vexjs
+global.moment = moment
 
 // root folder
 global.messageSend = require('./src/messageDispatcher');
@@ -25,6 +30,7 @@ global.sendSimpleRequest = require('./src/sendSimpleRequest');
 // global folder
 global.simpleRequest = require('./src/global/simpleRequest');
 global.simpleRequestForm = require('./src/global/simpleRequestForm');
+global.convertPhone = require('./src/global/convertPhone')
 
 // forms folder
 global.openModal = require('./src/form/createFormModal.js');
@@ -33,6 +39,9 @@ global.printForm = require('./src/form/printForm');
 // dialogs folder
 global.defaultDialog = require('./src/dialog/defaultDialog');
 global.simpleDialog = require('./src/dialog/simpleDialog');
+
+//register templates
+global.customerTemplate = require('./src/register/templates/customerTemplate')
 
 import './src/sidebarAction.js'
 import './src/globals'
@@ -49,6 +58,7 @@ import './src/storage/feedstock';
 import './src/register/registerEvents';
 import './src/register/customer';
 import './src/register/cloneFieldCustomer';
+
 
 if (document.querySelector('.sortable')) {
 	$('.sortable').tablesorter({
