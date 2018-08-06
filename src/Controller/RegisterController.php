@@ -48,7 +48,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * @Route("/register/get/criteria/{entity}")
+     * @Route("/register/get/criteria/{entity}", methods="POST")
      */
     public function getRegisterWithSimpleCriteria(string $entity, Request $request, Crud $getter)
     {
@@ -56,6 +56,17 @@ class RegisterController extends Controller
         $result = $getter->getWithSimpleCriteriaJson($entity, $criteria);
         $var = json_encode($result);
         return new Response($result, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/register/get", methods="GET")
+     */
+    public function getSingleRegiterById(Request $request, Crud $getter)
+    {
+        $entity = $request->query->get('entity') ?? $request->request->get('entity');
+        $id = $request->query->get('id') ?? $request->request->get('id');
+        $result = $getter->getRegisterById($entity, $id);
+        return new Response($result);
     }
 
     /**

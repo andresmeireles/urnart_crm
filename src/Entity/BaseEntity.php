@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\SerializerBuilder;
 
 /**
  * @ORM\MappedSuperclass()
@@ -35,6 +36,13 @@ abstract class BaseEntity
 	protected function __toArray()
 	{
 		return get_object_vars($this);
+	}
+
+	public function __toString(): ?string
+	{
+		$serializer = SerializerBuilder::create()->build();
+		$result = $serializer->serialize($this, 'json');
+		return $result;
 	}
 
 	protected function getCreateDate(): ?\DateTime

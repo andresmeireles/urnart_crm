@@ -1,43 +1,47 @@
 document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (el) {
+
         if (el.target.getAttribute('send')) {
             el.preventDefault()
             var form = document.getElementById(el.target.getAttribute('target'))
             var fieldsRequired = form.querySelectorAll('.required')
-            
+            var response = true
+
             fieldsRequired.forEach(function (element) {
                 var name = element.getAttribute('for')
                 var required = document.getElementById(name)
                 var value = required.value
-                
+
                 if (value == '') {
                     el.preventDefault()
                     required.classList.add('is-invalid')
                     required.insertAdjacentHTML('afterend', `<small class="text-danger">Campo obrigarotio</small>`)
-                    alert('Tudo bem, cencela')
-                    return false
+                    response = false;
                 }
             })
+
+            if (!response) {
+                return false
+            }
             
             var link = el.target.getAttribute('send')
             var dataTarget = el.target.getAttribute('target')
             var form = document.getElementById(dataTarget)
             var data = new FormData(form)
-            
-            /**
-            axios({
-                method: 'post',
-                url: link,
-                data: data
-            })
-            .then(function (response) {
-                console.log(response.data);
-            }) */
 
             simpleRequestForm(link, 'post', data, function (response) {
                 location.reload;
             })
         }
+
+        if (el.target.getAttribute('edit')) {
+            el.preventDefault()
+            var id = el.target.getAttribute('edit')
+            simpleRequestForm(`/register/get?entity=pessoaJuridica&id=${id}`, 'GET', null, function (response) {
+                console.log(response.data)
+            });
+        }
+
     })
 
     document.addEventListener('change', function (el) {
@@ -67,4 +71,5 @@ document.addEventListener('DOMContentLoaded', function () {
         } 
                
     })
+
 });

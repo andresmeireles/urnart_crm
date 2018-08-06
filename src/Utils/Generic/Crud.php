@@ -61,6 +61,27 @@ class Crud extends GenericContainer
 		return $this->typeMessage;
 	}
 
+	public function getMessage() : string
+	{
+		return $this->userMessage;
+	}
+
+	public function getDevMessage() : string
+	{
+		return $this->devMessage;
+	}
+
+	public function get(string $entity, ? string $type = null) : ? array
+	{
+		if ($type == 'json') {
+			$this->getJsonData($entity);
+		}
+
+		$this->setEntity($entity);
+		$data = $this->em->getRepository($this->entity)->findAll();
+		return $data;
+	}
+
 	public function getJsonData(string $entity)
 	{
 		$this->setEntity($entity);
@@ -70,17 +91,6 @@ class Crud extends GenericContainer
 		$jsonResponse = $serializer->serialize($data, 'json');
 
 		return $jsonResponse;
-	}
-
-	public function get(string $entity, ?string $type = null): ?array
-	{
-		if ($type == 'json') {
-			$this->getJsonData($entity);
-		}
-
-		$this->setEntity($entity);
-		$data = $this->em->getRepository($this->entity)->findAll();
-		return $data;
 	}
 
 	public function getWithSimpleCriteria(string $entity, array $criteria): ?array
@@ -99,13 +109,11 @@ class Crud extends GenericContainer
 		return $response;
 	}
 
-	public function getMessage(): string
+	public function getRegisterById(string $entity, int $id): ?object
 	{
-		return $this->userMessage;
-	}
-
-	public function getDevMessage(): string
-	{
-		return $this->devMessage;
+		$this->setEntity($entity);
+		$repository = $this->em->getRepository($this->entity);
+		$result = $repository->find($id);
+		return $result;
 	}
 }

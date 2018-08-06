@@ -68,7 +68,7 @@ class PersonController extends Controller
             throw new \Exception($e->getMessage().'. Arquivo '. $e->getFile() .' linha '. $e->getLine());
         }
 
-        return new Response();
+        return new Response('sucesso!');
     }
 
     public function persistPerson(array $data): void

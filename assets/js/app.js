@@ -32,6 +32,7 @@ global.printForm = require('./src/form/printForm');
 
 // dialogs folder
 global.defaultDialog = require('./src/dialog/defaultDialog');
+global.simpleDialog = require('./src/dialog/simpleDialog');
 
 import './src/sidebarAction.js'
 import './src/globals'
