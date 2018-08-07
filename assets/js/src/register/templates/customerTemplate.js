@@ -13,7 +13,7 @@ module.exports = function (data, type = 'view') {
     var birthDate = new Date(data.data_de_fundacao);
     var personBirthDate = new Date(pessoa.birth_date)
     
-    var string = `<div id="dynamic-created-element" class="col-md-11 py-4 ">
+    var string = `<div id="dynamic-created-element" class="col-md-11 py-4 d-none">
     <div class="card">
     <div class="card-header text-center">
     <span style="font-size: 25px">${ (type == 'view') ? 'Visualizar' : 'Editar'} Cliente</span>
@@ -53,7 +53,7 @@ module.exports = function (data, type = 'view') {
         </div>
         <div class="form-group col-md-6">
         <label for="firstName">Nome Fantasia</label>
-        <input type="text" class="form-control" name="customer[nomeFantasia]" id="nomeFantasia" placeholder="Nome Fantasia" value="${data.nome+fantasia}">
+        <input type="text" class="form-control" name="customer[nomeFantasia]" id="nomeFantasia" placeholder="Nome Fantasia" value="${data.nome_fantasia}">
         </div>
         </div>
         </div>`
@@ -72,7 +72,7 @@ module.exports = function (data, type = 'view') {
         ${data.cnpj}
         </div>
         </div>
-        <div class="form-inline">
+        <div class="form-group">
         <label for="situcaoCadastral">Situação Cadastral</label>
         <div class="form-control">
         ${data.situacao_cadastral == 1 ? 'HABILITADO' : data.situacao_cadastral == 2 ? 'NÃO HABILITADO' : 'ISENTO' }
@@ -106,7 +106,7 @@ module.exports = function (data, type = 'view') {
         <div class="input-group-prepend">
         <div class="input-group-text">
         <input type="radio" class="form-check" name="customer[situacaoCadastral]" id="contribuente" value="1" required
-        ${data.situacao_cadastral == 1 ? 'selected' : ''}>
+        ${(data.situacao_cadastral == 1) ? 'checked' : ''}>
         </div>
         </div>
         <div type="text" class="form-control">contribuente</div>
@@ -114,7 +114,7 @@ module.exports = function (data, type = 'view') {
         <div class="input-group mx-1">
         <div class="input-group-prepend">
         <div class="input-group-text">
-        <input type="radio" class="form-check" name="customer[situacaoCadastral]" id="contribuente" value="2" required ${data.situacao_cadastral == 2 ? 'selected' : ''}>
+        <input type="radio" class="form-check" name="customer[situacaoCadastral]" id="contribuente" value="2" required ${data.situacao_cadastral == 2 ? 'checked' : ''}>
         </div>
         </div>
         <div type="text" class="form-control">não contribuente</div>
@@ -122,7 +122,7 @@ module.exports = function (data, type = 'view') {
         <div class="input-group mx-1">
         <div class="input-group-prepend">
         <div class="input-group-text">
-        <input type="radio" class="form-check" name="customer[situacaoCadastral]" id="contribuente" value="3" required ${data.situacao_cadastral == 3 ? 'selected' : ''}>
+        <input type="radio" class="form-check" name="customer[situacaoCadastral]" id="contribuente" value="3" required ${data.situacao_cadastral == 3 ? 'checked' : ''}>
         </div>
         </div>
         <div type="text" class="form-control">Isento</div>
@@ -132,13 +132,13 @@ module.exports = function (data, type = 'view') {
         <div class="row">
         <div class="form-group col-md-4">
         <label for="firstName">Inscrição Estadual</label>
-        <input type="text" class="form-control" name="customer[inscricaoEstadual]" id="inscricaoEstadual" placeholder="Inserir apenas numeros" value="${inscricao_estadual}">
+        <input type="text" class="form-control" name="customer[inscricaoEstadual]" id="inscricaoEstadual" placeholder="Inserir apenas numeros" value="${data.inscricao_estadual}">
         </div>
         <div class="form-group col-md-2">
         <label for="birthData">
         <small>Data de Fundação</small>
         </label>
-        <input type="text" class="form-control numbers-only date-mask" name="customer[fondationDate]" id="birthdate" placeholder="Data" value=${data_de_fundacao}>
+        <input type="text" class="form-control numbers-only date-mask" name="customer[fondationDate]" id="birthdate" placeholder="Data" value=${birthDate.getDate() + 1}/${birthDate.getMonth() + 1}/${birthDate.getFullYear()}>
         </div>
         `
     }
@@ -150,9 +150,6 @@ module.exports = function (data, type = 'view') {
     <fieldset class="p-1 my-1 border border-light">
     <legend class="bg-light">
     &nbsp;Informações de Proprietários
-    <span class="btn btn-primary btn-sm float-right m-1">
-    <i class="fas fa-fw fa-plus"></i>
-    </span>
     </legend>
     <div class="px-1">
     <div class="row">`
@@ -164,21 +161,21 @@ module.exports = function (data, type = 'view') {
         ${pessoa.first_name} ${pessoa.last_name}
         </div>
         </div>
-        </div>
-        <div class="row">
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-6">
         <label for="firstName">Cpf</label>
         <div class="form-control">
         ${pessoa.cpf}
         </div>
         </div>
-        <div class="form-group col-md-4">
+        </div>
+        <div class="row">
+        <div class="form-group col-md-6">
         <label for="firstName">RG (Registro Geral)</label>
         <div class="form-control">
         ${pessoa.rg}
         </div>
         </div>
-        <div class="form-group col-md-2">
+        <div class="form-group col-md-4">
         <label for="birthData">
         <small>Data de Nascimento</small>
         </label>
@@ -215,7 +212,7 @@ module.exports = function (data, type = 'view') {
         <label for="birthData">
         <small>Data de Nascimento</small>
         </label>
-        <input type="text" class="form-control date-mask numbers-only" name="person[birthDate]" id="birthdate" placeholder="Data" value=${pessoal.birth_date}>
+        <input type="text" class="form-control date-mask numbers-only" name="person[birthDate]" id="birthdate" placeholder="Data" value=${personBirthDate.getDate() + 1}/${personBirthDate.getMonth() + 1}/${personBirthDate.getFullYear()}>
         </div>
         <div class="form-group col-md-2">
         <label for="firstName">Genero</label>
@@ -246,7 +243,7 @@ module.exports = function (data, type = 'view') {
         <div class="form-group col-md-4">
         <label for="road">Bairro</label>
         <div class="form-control">
-        ${endereco.neigborhood}
+        ${endereco.neighborhood}
         </div>
         </div>
         <div class="form-group col-md-3">
@@ -283,7 +280,7 @@ module.exports = function (data, type = 'view') {
         </div>
         <div class="form-group col-md-4">
         <label for="road">Bairro</label>
-        <input type="text" class="form-control" name="address[neightborhood]" id="neightborhood" placeholder="Inserir aqui" value=${endereco.neigborhood}>
+        <input type="text" class="form-control" name="address[neightborhood]" id="neightborhood" placeholder="Inserir aqui" value=${endereco.neighborhood}>
         </div>
         <div class="form-group col-md-3">
         <label for="road">Numero</label>
@@ -328,8 +325,8 @@ module.exports = function (data, type = 'view') {
         
         for (var phones of phone) {
             string += `<div clone-field>
-            <div class="form-control">
-            ${convertPhone(phones.number)}
+            <div class="form-control phone-with-ddd-br">
+            ${phones.number}
             </div>
             </div>`
         }

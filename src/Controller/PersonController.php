@@ -60,7 +60,6 @@ class PersonController extends Controller
 
         try {
             $this->persistPerson($request->request->all());
-            //exit();
             $em->flush();
             $em->getConnection()->commit();
         } catch (\Exception $e) {
@@ -69,6 +68,25 @@ class PersonController extends Controller
         }
 
         return new Response('sucesso!');
+    }
+
+    /**
+     * @Route("/person/remove/{id}", methods="GET")
+     */
+    public function remove($id): void
+    {
+        $em = $this->getDoctrine()->getManager();
+        //Reposotories
+
+        //start transaction 
+        $em->getConnection()->beginTransaction();
+
+        try {
+
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+        }
+        
     }
 
     public function persistPerson(array $data): void
@@ -137,11 +155,5 @@ class PersonController extends Controller
         $em->persist($client);
         $em->persist($persona);
         $em->persist($addr);
-    }
-
-    public function showUsers()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository(PessoaFisica::class)->findAll();
     }
 }

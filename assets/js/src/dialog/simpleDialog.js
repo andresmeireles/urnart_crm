@@ -1,13 +1,15 @@
 // simpleDialog
-module.exports = function (message) {
+module.exports = function (message, responseFunction = null) {
     var parsedMessage = `${message}`;
 
     vex.dialog.confirm({
         unsafeMessage: parsedMessage,
         callback: function (value) {
             if (value) {
-                return true
-            } 
-        }
+                responseFunction()
+            } else {
+                return false
+            }
+        },
     });
 }

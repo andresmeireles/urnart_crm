@@ -1,17 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (el) {
-
+        
         if (el.target.getAttribute('send')) {
             el.preventDefault()
             var form = document.getElementById(el.target.getAttribute('target'))
             var fieldsRequired = form.querySelectorAll('.required')
             var response = true
-
+            
             fieldsRequired.forEach(function (element) {
                 var name = element.getAttribute('for')
                 var required = document.getElementById(name)
                 var value = required.value
-
+                
                 if (value == '') {
                     el.preventDefault()
                     required.classList.add('is-invalid')
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     response = false;
                 }
             })
-
+            
             if (!response) {
                 return false
             }
@@ -28,23 +28,36 @@ document.addEventListener('DOMContentLoaded', function () {
             var dataTarget = el.target.getAttribute('target')
             var form = document.getElementById(dataTarget)
             var data = new FormData(form)
-
+            
             simpleRequestForm(link, 'post', data, function (response) {
-                location.reload;
+                return true
             })
+
+            location.reload()
+        }
+        
+        if (el.target.getAttribute('view')) {
+            el.preventDefault()
+            drawForm(el, 'pessoaJuridica')
+            
         }
 
         if (el.target.getAttribute('edit')) {
             el.preventDefault()
-            var id = el.target.getAttribute('edit')
-            simpleRequestForm(`/register/get?entity=pessoaJuridica&id=${id}`, 'GET', null, function (response) {
-                var data = customerTemplate(response.data)
-                document.querySelector('body').insertAdjacentHTML('beforeend', data)
-            });
+
+            drawForm(el, 'pessoaJuridica', 'edit')
         }
 
+        if (el.target.getAttribute('remove')) {
+            el.preventDefault()
+            var id = el.target.getAttribute('remove')
+            simpleDialog('Tem certeza que deseja remover esse item? Essa ação não pode ser desfeita!', function () {
+                window.location = '/person/person'
+            })
+        }
+        
     })
-
+    
     document.addEventListener('change', function (el) {
         
         if (el.target.id == 'estado') {
@@ -52,14 +65,14 @@ document.addEventListener('DOMContentLoaded', function () {
             var entity = el.target.getAttribute('target')
             var url = `/register/get/criteria/${entity}`
             var select = document.querySelector('#' + entity)
-
+            
             select.innerHTML = ''
             var selected = document.createElement('option')
             selected.text = 'Selecione'
             selected.setAttribute('selected', '')
             selected.setAttribute('disabled', '')
             select.add(selected)
-
+            
             simpleRequest(url, 'POST', stateValue, function(response) {
                 var optData = response.data
                 for (var opt of optData) {
@@ -70,7 +83,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 } 
             }, 'idUf')
         } 
-               
+        
     })
 
+    function drawForm(element, entity, type = 'view') {
+        var id = element.target.getAttribute(type)
+        simpleRequestForm(`/register/get?entity=${entity}&id=${id}`, 'GET', null, function (response) {
+            var data = customerTemplate(response.data, type)
+            document.querySelector('body').insertAdjacentHTML('beforeend', data)
+
+            $.fancybox.open({
+                src: '#dynamic-created-element',
+                type: 'inline',
+                opts: {
+                    afterLoad: function () {
+                        var el = document.getElementById('dynamic-created-element')
+                        el.classList.remove('d-none')
+                    },
+                    afterClose: function () {
+                        var el = document.getElementById('dynamic-created-element')
+                        el.remove()
+                    }
+                }
+            })
+
+            checkMask(document)
+        })
+    }
+    
 });

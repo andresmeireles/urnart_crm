@@ -24,9 +24,9 @@ global.insert = require('./src/globals');
 global.sendSimpleRequest = require('./src/sendSimpleRequest');
 
 // global folder
-global.simpleRequest = require('./src/global/simpleRequest');
-global.simpleRequestForm = require('./src/global/simpleRequestForm');
-global.convertPhone = require('./src/global/convertPhone')
+global.simpleRequest = require('./src/global/simpleRequest')
+global.simpleRequestForm = require('./src/global/simpleRequestForm')
+global.checkMask = require('./src/global/checkMask')
 
 // forms folder
 global.openModal = require('./src/form/createFormModal.js');
@@ -62,13 +62,15 @@ if (document.querySelector('.sortable')) {
 	});
 }
 
-var dateMask = new IMask(
-	document.querySelector('.f-date'),
-	{
-		mask: Date,
-		lazy: false,
-	}
-);
+if (document.querySelector('.f-date')) {
+	var dateMask = new IMask(
+		document.querySelector('.f-date'),
+		{
+			mask: Date,
+			lazy: false,
+		}
+	);
+}
 
 var loadingDiv = document.getElementById('loading');
 

@@ -3,8 +3,6 @@ $(function () {
 
 	if (document.querySelectorAll('button [remove-btn]').length == 1) {
         document.querySelector('[remove-btn]').setAttribute('disabled', '');
-    } else {
-        document.querySelector('[remove-btn]').removeAttribute('disabled');
     }
 
     /**

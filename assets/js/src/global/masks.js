@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // cpf
     $('.cpf-mask').mask('000.000.000-00')
     // telefone celular com ddd
+
     $('.phone-with-ddd-br').mask('(00) 00000-0000')
     // cep
     $('.cep-mask').mask('00000-000')
-
 })

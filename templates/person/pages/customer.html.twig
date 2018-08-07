@@ -12,7 +12,7 @@
             <div class="col">
                 <div class="mx-2 row">
                     <button class="btn btn-primary btn-block w-25 mx-1" data-action="add-customer">
-                        <span style="font-size: 20px ">Adicionar</span></button>
+                        <span style="font-size: 20px" data-action="add-customer">Adicionar</span></button>
                     <div class="w-50">
                     <input type="text" class="form-control mx-5 my-1" placeholder="Pesquisar">
                     </div>
@@ -40,8 +40,9 @@
                                             <td><b>{{ p.getEstado }}</b></td>
                                             <td><b>{{ p.getMunicipio }}</b></td>
                                             <td class="text-center">
-                                                <a href="#" class="badge badge-primary">Editar</a>
-                                                <a href="#" class="badge badge-secondary" edit={{ p.getId }}>Visualizar</a>
+                                                <a href="#" class="badge badge-primary" edit={{ p.getId }}>Editar</a>
+                                                <a href="#" class="badge badge-secondary" view={{ p.getId }}>Visualizar</a>
+                                                <a href="#" class="badge badge-danger" remove={{ p.getId }}>Remover</a>
                                             </td>
                                         </tr>
                                         {% endfor %}
