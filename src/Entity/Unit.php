@@ -31,7 +31,7 @@ class Unit
         return get_object_vars($this);
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

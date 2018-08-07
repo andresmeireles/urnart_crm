@@ -5,9 +5,6 @@ require('jquery-mask-plugin')
 
 const $ = require('jquery')
 const fancybox = require('@fancyapps/fancybox')
-const moment = require('moment');
-require("moment/min/locales.min");
-moment.locale('pt-br');
 
 const vexjs = require('vex-js')
 vexjs.registerPlugin(require('vex-dialog'))
@@ -19,7 +16,6 @@ vexjs.dialog.buttons.NO.text = 'Cancelar'
 global.$ = global.jQuery = $
 global.axios = require('axios')
 global.vex = vexjs
-global.moment = moment
 
 // root folder
 global.messageSend = require('./src/messageDispatcher');

@@ -258,6 +258,7 @@ module.exports = function (data, type = 'view') {
         </div>
         <div class="row">
         <div class="form-group col">
+        <label for="zipCode">CEP</label>
         <div class="form-control">
         ${endereco.zipcode}
         </div>
@@ -359,7 +360,6 @@ module.exports = function (data, type = 'view') {
             <button class="btn btn-primary fas fa-plus" add-btn></button>
             <button class="btn btn-danger fas fa-minus" rmv-btn></button>
             </div>`
-            console.log(typeof phones)
         }
         
         string += `</div>

@@ -1,11 +1,13 @@
 module.exports = function (number) {
+
     if (number == null) {
         return false
     }
+    var phone = number
 
-    var ddd = number.substring(0, 2)
-    var number = number.substring(3)
+    var ddd = phone.substring(0, 2)
+    var phoneNumber = phone.substring(3)
 
-    return `(${ddd}) ${number}`
+    return `(${ddd}) ${phoneNumber}`
 
 }
