@@ -100,16 +100,16 @@ class PersonController extends Controller
         extract($data);
 
         $em = $this->getDoctrine()->getManager();
-        $persona = new PessoaFisica();
+        $PessoaFisica = new PessoaFisica();
 
-        $persona->setFirstName($person['firstName']);
-        $persona->setLastName($person['lastName']);
-        $persona->setCpf($person['cpf']);
-        $persona->setRg($person['rg']);
+        $PessoaFisica->setFirstName($person['firstName']);
+        $PessoaFisica->setLastName($person['lastName']);
+        $PessoaFisica->setCpf($person['cpf']);
+        $PessoaFisica->setRg($person['rg']);
         $g = $person['genre'] ?? null;
-        $persona->setGenre($g);
+        $PessoaFisica->setGenre($g);
         $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null;
-        $persona->setBirthDate($date);
+        $PessoaFisica->setBirthDate($date);
         
         foreach ($phone as $phones) {
             $telephone = new Phone();
@@ -117,7 +117,7 @@ class PersonController extends Controller
             
             $telephone->setNumber($phones);
             $em->persist($telephone);
-            $persona->addPhone($telephone);
+            $PessoaFisica->addPhone($telephone);
         }
 
         foreach ($email as $emails) {
@@ -125,11 +125,11 @@ class PersonController extends Controller
             $emails = str_replace('(', '', str_replace(')', '', str_replace('-', '', $emails)));
             $mail->setEmail($emails);
             $em->persist($mail);
-            $persona->addEmail($mail);
+            $PessoaFisica->addEmail($mail);
         }
 
         $proprietary = new Proprietario();
-        $proprietary->setPessoaFisica($persona);
+        $proprietary->setPessoaFisica($PessoaFisica);
 
         $client = new PessoaJuridica();
         $client->setRazaoSocial($customer['razaoSocial']);
@@ -147,7 +147,7 @@ class PersonController extends Controller
         $city = isset($address['municipio']) ?  $em->getRepository(Municipio::class)->find($address['municipio']) : null;
 
         $addr = new Address();
-        $addr->setPessoaFisicaId($persona);
+        $addr->setPessoaFisicaId($PessoaFisica);
         $addr->setMunicipio($city);
         $addr->setEstado($state);
         $addr->setRoad($address['road']);
@@ -155,11 +155,11 @@ class PersonController extends Controller
         $addr->setNumber($address['number']);
         $addr->setZipcode($address['cep']);
         
-        $persona->setAddress($addr);
+        $PessoaFisica->setAddress($addr);
 
         $em->persist($proprietary);
         $em->persist($client);
-        $em->persist($persona);
+        $em->persist($PessoaFisica);
         $em->persist($addr);
     }
 
@@ -186,5 +186,74 @@ class PersonController extends Controller
         $em->remove($pessoa);
         $em->remove($proprietary);
         $em->remove($pessoaFisica);
+    }
+
+    public function updateCustomerData(PessoaJuridica $pessoa, array $data) : void
+    {
+        if (!$data) {
+            throw $this->createNotFoundException('Parametros não encontrados');
+        }
+
+        if (!$pessoa) {
+            throw $this->createNotFoundException('Item não existe');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        extract($data);
+
+        $pessoaFisica = $pessoa->getProprietarios()->first()->getPessoaFisica();
+        $proprietary = $em->getRepository(Proprietario::class)->findOneBy(array('pessoaFisica' => $pessoaFisica->getId()));
+        $address = $pessoaFisica->getAddress();
+        $telephone = $pessoaFisica->getPhones();
+        $mail = $pessoaFisica->getEmails();
+
+        $PessoaFisica->setFirstName($person['firstName']);
+        $PessoaFisica->setLastName($person['lastName']);
+        $PessoaFisica->setCpf($person['cpf']);
+        $PessoaFisica->setRg($person['rg']);
+        $g = $person['genre'] ?? null;
+        $PessoaFisica->setGenre($g);
+        $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null;
+        $PessoaFisica->setBirthDate($date);
+
+        foreach ($phone as $phones) {
+            $phones = (int)str_replace(' ', '', str_replace('(', '', str_replace(')', '', str_replace('-', '', $phones))));
+
+            $telephone->setNumber($phones);
+            $PessoaFisica->addPhone($telephone);
+        }
+
+        foreach ($email as $emails) {
+            $emails = str_replace('(', '', str_replace(')', '', str_replace('-', '', $emails)));
+            
+            $mail->setEmail($emails);
+            $PessoaFisica->addEmail($mail);
+        }
+
+        $proprietary->setPessoaFisica($PessoaFisica);
+
+        $client->setRazaoSocial($customer['razaoSocial']);
+        $client->setNomeFantasia($customer['nomeFantasia']);
+        $client->setCnpj($customer['cnpj']);
+        $inscricaoEstadual = $customer['inscricaoEstadual'] == '' ? null : $customer['inscricaoEstadual'];
+        $client->setInscricaoEstadual($inscricaoEstadual);
+        $date = $customer['fondationDate'] != '' ? new \DateTime(str_replace('/', '.', $customer['fondationDate'])) : null;
+        $client->setDataDeFundacao($date);
+        $client->addProprietario($proprietary);
+        $situcaoCadastral = $customer['situacaoCadastral'] ?? 3;
+        $client->setSituacaoCadastral($situcaoCadastral);
+
+        $state = isset($address['estado']) ? $em->getRepository(Estado::class)->find($address['estado']) : null;
+        $city = isset($address['municipio']) ? $em->getRepository(Municipio::class)->find($address['municipio']) : null;
+
+        $addr->setPessoaFisicaId($PessoaFisica);
+        $addr->setMunicipio($city);
+        $addr->setEstado($state);
+        $addr->setRoad($address['road']);
+        $addr->setNeighborhood($address['neightborhood']);
+        $addr->setNumber($address['number']);
+        $addr->setZipcode($address['cep']);
+
+        $PessoaFisica->setAddress($addr);
     }
 }
