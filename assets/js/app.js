@@ -27,6 +27,7 @@ global.sendSimpleRequest = require('./src/sendSimpleRequest');
 global.simpleRequest = require('./src/global/simpleRequest')
 global.simpleRequestForm = require('./src/global/simpleRequestForm')
 global.checkMask = require('./src/global/checkMask')
+global.showDate = require('./src/global/showDate')
 
 // forms folder
 global.openModal = require('./src/form/createFormModal.js');

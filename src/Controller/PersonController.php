@@ -73,7 +73,7 @@ class PersonController extends Controller
     /**
      * @Route("/person/remove/{id}", methods="GET")
      */
-    public function remove($id): void
+    public function remove($id): Response
     {
         $em = $this->getDoctrine()->getManager();
         //Reposotories
@@ -82,10 +82,16 @@ class PersonController extends Controller
         $em->getConnection()->beginTransaction();
 
         try {
-
+            $customer = $em->getRepository(PessoaJuridica::class)->find($id);
+            $this->removeAllCustomerData($customer);
+            $em->flush();
+            $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
+            throw new \Exception($e->getMessage() . '. Arquivo ' . $e->getFile() . ' linha ' . $e->getLine());
         }
+
+        return new Response('pega paê');
         
     }
 
@@ -155,5 +161,30 @@ class PersonController extends Controller
         $em->persist($client);
         $em->persist($persona);
         $em->persist($addr);
+    }
+
+    public function removeAllCustomerData(PessoaJuridica $pessoa):void 
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        //dados do usuario
+        $pessoaFisica = $pessoa->getProprietarios()->first()->getPessoaFisica();
+        $proprietary = $em->getRepository(Proprietario::class)->findOneBy(array('pessoaFisica' => $pessoaFisica->getId()));
+        $address = $pessoaFisica->getAddress();
+        $phones = $pessoaFisica->getPhones();
+        $emails = $pessoaFisica->getEmails();
+
+        foreach ($phones as $phone) {
+            $em->remove($phone);
+        }
+
+        foreach ($emails as $email) {
+            $em->remove($email);
+        }
+
+        $em->remove($address);
+        $em->remove($pessoa);
+        $em->remove($proprietary);
+        $em->remove($pessoaFisica);
     }
 }

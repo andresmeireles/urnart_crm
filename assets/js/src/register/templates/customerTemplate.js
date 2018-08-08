@@ -91,7 +91,7 @@ module.exports = function (data, type = 'view') {
         <small>Data de Fundação</small>
         </label>
         <div class="form-control">
-        ${birthDate.getDate() + 1}/${birthDate.getMonth()+1}/${birthDate.getFullYear()}
+        ${showDate(birthDate)}
         </div>
         </div>
         `
@@ -180,13 +180,13 @@ module.exports = function (data, type = 'view') {
         <small>Data de Nascimento</small>
         </label>
         <div class="form-control">
-        ${personBirthDate.getDate() + 1}/${personBirthDate.getMonth()+1}/${personBirthDate.getFullYear()}
+        ${showDate(personBirthDate)}
         </div>
         </div>
         <div class="form-group col-md-2">
         <label for="firstName">Genero</label>
         <div class="form-control">
-        ${pessoa.genre == 'm' ? 'Masculno' : 'Feminino'}
+        ${pessoa.genre == 'm' ? 'Masculno' : pessoa.genre == 'f' ? 'Feminino': ''}
         </div>
         </div>` 
     } else {
@@ -263,7 +263,7 @@ module.exports = function (data, type = 'view') {
         <div class="form-group col">
         <label for="estado">Estado</label>
         <div class="form-control">
-        ${endereco.estado.nome}
+        ${endereco.estado != null ? endereco.estado.nome : ''}
         </div>
         </div>
         <div class="form-group col">

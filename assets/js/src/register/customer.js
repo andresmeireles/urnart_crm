@@ -30,21 +30,18 @@ document.addEventListener('DOMContentLoaded', function () {
             var data = new FormData(form)
             
             simpleRequestForm(link, 'post', data, function (response) {
+                location.reload()
                 return true
             })
-
-            location.reload()
         }
         
         if (el.target.getAttribute('view')) {
             el.preventDefault()
             drawForm(el, 'pessoaJuridica')
-            
         }
 
         if (el.target.getAttribute('edit')) {
             el.preventDefault()
-
             drawForm(el, 'pessoaJuridica', 'edit')
         }
 
@@ -52,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
             el.preventDefault()
             var id = el.target.getAttribute('remove')
             simpleDialog('Tem certeza que deseja remover esse item? Essa ação não pode ser desfeita!', function () {
-                window.location = '/person/person'
+                window.location = `/person/remove/${id}`
             })
         }
         
