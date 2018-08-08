@@ -71,7 +71,7 @@ class PersonController extends Controller
     }
 
     /**
-     * @Route("/person/remove/{id}", methods="GET")
+     * @Route("/person/action/{id}", methods="DELETE", defaults={"id"=""})
      */
     public function remove($id): Response
     {
@@ -91,8 +91,31 @@ class PersonController extends Controller
             throw new \Exception($e->getMessage() . '. Arquivo ' . $e->getFile() . ' linha ' . $e->getLine());
         }
 
-        return new Response('pega paê');
-        
+        return new Response('pega paê'); 
+    }
+
+    /**
+     * @Route("/person/action/{id}", methods="PUT", defaults={"id"=""})
+     */
+    public function update(): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        //Reposotories
+
+        //start transaction 
+        $em->getConnection()->beginTransaction();
+
+        try {
+            $customer = $em->getRepository(PessoaJuridica::class)->find($id);
+            $this->updateCustomerData($customer);
+            $em->flush();
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+            throw new \Exception($e->getMessage() . '. Arquivo ' . $e->getFile() . ' linha ' . $e->getLine());
+        }
+
+        return new Response('pega paê'); 
     }
 
     public function persistPerson(array $data): void

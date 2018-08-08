@@ -49,7 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
             el.preventDefault()
             var id = el.target.getAttribute('remove')
             simpleDialog('Tem certeza que deseja remover esse item? Essa ação não pode ser desfeita!', function () {
-                window.location = `/person/remove/${id}`
+                //create a delete request
+                window.location = `/person/action/${id}`
             })
         }
         
