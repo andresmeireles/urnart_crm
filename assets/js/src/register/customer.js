@@ -29,28 +29,77 @@ document.addEventListener('DOMContentLoaded', function () {
             var form = document.getElementById(dataTarget)
             var data = new FormData(form)
             
+            for (var o of data) {
+                conolse.log(o)
+            }
+            /**
             simpleRequestForm(link, 'post', data, function (response) {
                 location.reload()
+                return true
+            }) */
+        }
+        
+        if (el.target.getAttribute('send-update')) {
+            var doc = document.getElementById('dynamic-created-element')
+            var id = el.target.getAttribute('send-update')
+            
+            var form = doc.querySelector(`#${el.target.getAttribute('target')}`)
+            var fieldsRequired = form.querySelectorAll('.required')
+            var response = true
+            
+            fieldsRequired.forEach((element) => {
+                var name = element.getAttribute('for')
+                var required = doc.querySelector(`#${name}`)
+                var value = required.value
+                if (value == '') {
+                    el.preventDefault()
+                    required.classList.add('is-invalid')
+                    required.insertAdjacentHTML('afterend', `<small class="text-danger">Campo obrigarotio</small>`)
+                    response = false;
+                }
+            })
+            
+            if (!response) {
+                return false
+            }
+            
+            var link = `/person/action/${id}`
+            var data = new FormData(form)
+            var object = {}
+
+            for (var [key, value] of data.entries()) {
+                object[key] = value
+            }
+
+            var json = JSON.stringify(object)
+            
+            simpleRequestForm(link, 'PUT', json, function (response) {
+                //location.reload()
                 return true
             })
         }
         
         if (el.target.getAttribute('view')) {
-            el.preventDefault()
             drawForm(el, 'pessoaJuridica')
+            return false
         }
-
+        
         if (el.target.getAttribute('edit')) {
             el.preventDefault()
+            var id = el.target.getAttribute('edit')
             drawForm(el, 'pessoaJuridica', 'edit')
         }
-
+        
         if (el.target.getAttribute('remove')) {
             el.preventDefault()
             var id = el.target.getAttribute('remove')
             simpleDialog('Tem certeza que deseja remover esse item? Essa ação não pode ser desfeita!', function () {
                 //create a delete request
-                window.location = `/person/action/${id}`
+                var url = `/person/action/${id}`
+                
+                simpleRequestForm(url, 'DELETE', null, function () {
+                    window.location = `/person/customer`
+                })
             })
         }
         
@@ -83,13 +132,13 @@ document.addEventListener('DOMContentLoaded', function () {
         } 
         
     })
-
+    
     function drawForm(element, entity, type = 'view') {
         var id = element.target.getAttribute(type)
         simpleRequestForm(`/register/get?entity=${entity}&id=${id}`, 'GET', null, function (response) {
             var data = customerTemplate(response.data, type)
             document.querySelector('body').insertAdjacentHTML('beforeend', data)
-
+            
             $.fancybox.open({
                 src: '#dynamic-created-element',
                 type: 'inline',
@@ -104,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             })
-
+            
             checkMask(document)
         })
     }

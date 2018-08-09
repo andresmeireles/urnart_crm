@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			if (el.keyCode == 13) {
 				if (input.value == '') {
 					return false;
-					el.preventDefault();
 				}
+				
 				
 				var optValue = input.value;
 				var option = document.createElement('option');
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	document.addEventListener('change', function (el) {
 
-		if (el.target.id == periocid) {
+		if (el.target.id == 'periocid') {
 			if (el.target.value == 'Outro') {
 				var customInput = document.querySelector('#customPeriocid');
 				customInput.querySelector('input').setAttribute('name', 'periocid');

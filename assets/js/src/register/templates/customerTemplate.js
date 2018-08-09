@@ -20,8 +20,8 @@ module.exports = function (data, type = 'view') {
     </div>
     <div class="card-body">`
     
-    if (!type == 'view') {
-        string += `<form method="post" action="/person/edit/person" id="customer-form">`
+    if (type == 'edit') {
+        string += `<form method="post" action="/person/edit/person" id="customer-update-form">`
     }
     
     string += `<fieldset class="p-1 border border-light my-1">
@@ -382,9 +382,9 @@ module.exports = function (data, type = 'view') {
     </div>
     </div>`
     
-    if (!type == 'view') {
+    if (type == 'edit') {
         string += `<div class="card-footer text-muted text-center">
-        <input type="submit" class="btn btn-secondary w-50" send="/person/add/person" target="customer-form" value="Editar">
+        <input type="submit" class="btn btn-secondary w-50" send-update=${data.id} target="customer-update-form" value="Editar">
         </form>
         </div>`
     }

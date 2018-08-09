@@ -53,6 +53,9 @@ class PersonController extends Controller
      */
     public function persist(Request $request)
     {
+        dump($request->request->all());
+        die(); 
+
         $em = $this->getDoctrine()->getManager();
         
         //start transation 
@@ -64,26 +67,33 @@ class PersonController extends Controller
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
-            throw new \Exception($e->getMessage().'. Arquivo '. $e->getFile() .' linha '. $e->getLine());
+            throw new \Exception($e->getMessage().'. Arquivo - '. $e->getFile() .' Linha '. $e->getLine());
         }
 
         return new Response('sucesso!');
     }
 
     /**
-     * @Route("/person/action/{id}", methods="DELETE", defaults={"id"=""})
+     * @Route("/person/action/{id}", methods={"DELETE", "PUT"}, defaults={"id"=""})
      */
-    public function remove($id): Response
+    public function action($id, Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
-        //Reposotories
+//        dump($request->getContent());
+  //      die();
 
         //start transaction 
         $em->getConnection()->beginTransaction();
 
         try {
             $customer = $em->getRepository(PessoaJuridica::class)->find($id);
-            $this->removeAllCustomerData($customer);
+            if ($request->server->get('REQUEST_METHOD') == 'PUT') {
+                $this->updateCustomerData($customer);
+            } elseif ($request->server->get('REQUEST_METHOD') == 'DELETE') {
+                $this->removeAllCustomerData($customer);
+            } else {
+                return $this->createAccessDeniedException('Ação não pode ser concluida');
+            }
             $em->flush();
             $em->getConnection()->commit();
         } catch (\Exception $e) {
@@ -91,31 +101,7 @@ class PersonController extends Controller
             throw new \Exception($e->getMessage() . '. Arquivo ' . $e->getFile() . ' linha ' . $e->getLine());
         }
 
-        return new Response('pega paê'); 
-    }
-
-    /**
-     * @Route("/person/action/{id}", methods="PUT", defaults={"id"=""})
-     */
-    public function update(): Response
-    {
-        $em = $this->getDoctrine()->getManager();
-        //Reposotories
-
-        //start transaction 
-        $em->getConnection()->beginTransaction();
-
-        try {
-            $customer = $em->getRepository(PessoaJuridica::class)->find($id);
-            $this->updateCustomerData($customer);
-            $em->flush();
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-            throw new \Exception($e->getMessage() . '. Arquivo ' . $e->getFile() . ' linha ' . $e->getLine());
-        }
-
-        return new Response('pega paê'); 
+        return $this->redirectToRoute('customer'); 
     }
 
     public function persistPerson(array $data): void
