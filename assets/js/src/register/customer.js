@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+
     document.addEventListener('click', function (el) {
         
         if (el.target.getAttribute('send')) {
@@ -29,17 +30,13 @@ document.addEventListener('DOMContentLoaded', function () {
             var form = document.getElementById(dataTarget)
             var data = new FormData(form)
             
-            for (var o of data) {
-                conolse.log(o)
-            }
-            /**
-            simpleRequestForm(link, 'post', data, function (response) {
+            simpleRequestForm(link, 'post', data, function () {
                 location.reload()
-                return true
-            }) */
+            })
         }
         
         if (el.target.getAttribute('send-update')) {
+            el.preventDefault()
             var doc = document.getElementById('dynamic-created-element')
             var id = el.target.getAttribute('send-update')
             
@@ -65,17 +62,9 @@ document.addEventListener('DOMContentLoaded', function () {
             
             var link = `/person/action/${id}`
             var data = new FormData(form)
-            var object = {}
-
-            for (var [key, value] of data.entries()) {
-                object[key] = value
-            }
-
-            var json = JSON.stringify(object)
             
-            simpleRequestForm(link, 'PUT', json, function (response) {
-                //location.reload()
-                return true
+            simpleRequestForm(link, 'POST', data, function (response) {
+                window.location = `/person/customer`
             })
         }
         
@@ -94,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function () {
             el.preventDefault()
             var id = el.target.getAttribute('remove')
             simpleDialog('Tem certeza que deseja remover esse item? Essa ação não pode ser desfeita!', function () {
-                //create a delete request
                 var url = `/person/action/${id}`
                 
                 simpleRequestForm(url, 'DELETE', null, function () {
@@ -102,11 +90,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
             })
         }
-        
+
     })
     
     document.addEventListener('change', function (el) {
-        
         if (el.target.id == 'estado') {
             var stateValue = el.target.value
             var entity = el.target.getAttribute('target')
@@ -129,8 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     select.add(option)
                 } 
             }, 'idUf')
-        } 
-        
+        }       
     })
     
     function drawForm(element, entity, type = 'view') {

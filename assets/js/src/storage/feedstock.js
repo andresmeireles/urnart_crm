@@ -42,12 +42,10 @@ document.addEventListener('DOMContentLoaded', function () {
 			var input = document.querySelector('#inputOtherVendors input');
 			var select = document.querySelector('#otherVendors');
 			
-			
 			if (el.keyCode == 13) {
 				if (input.value == '') {
 					return false;
 				}
-				
 				
 				var optValue = input.value;
 				var option = document.createElement('option');
@@ -64,8 +62,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	})
 
 	document.addEventListener('blur', function (el) {
-		if (el.target == 'inputOtherVendors')
-		hideInputField()
+		if (el.target == 'inputOtherVendors') {
+			hideInputField()
+		}
 	})
 
 	document.addEventListener('change', function (el) {

@@ -83,7 +83,7 @@ module.exports = function (data, type = 'view') {
         <div class="form-group col-md-4">
         <label for="firstName">Inscrição Estadual</label>
         <div class="form-control">
-        ${data.inscricao_estadual}
+        ${typeof data.inscricao_estadual == 'undefined' ? '' : data.inscricao_estadual}
         </div>
         </div>
         <div class="form-group col-md-2">
@@ -132,7 +132,7 @@ module.exports = function (data, type = 'view') {
         <div class="row">
         <div class="form-group col-md-4">
         <label for="firstName">Inscrição Estadual</label>
-        <input type="text" class="form-control" name="customer[inscricaoEstadual]" id="inscricaoEstadual" placeholder="Inserir apenas numeros" value="${data.inscricao_estadual}">
+        <input type="text" class="form-control" name="customer[inscricaoEstadual]" id="inscricaoEstadual" placeholder="Inserir apenas numeros" value=${typeof data.inscricao_estadual == 'undefined' ? '' : data.inscricao_estadual}>
         </div>
         <div class="form-group col-md-2">
         <label for="birthData">

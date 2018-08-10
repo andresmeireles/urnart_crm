@@ -49,12 +49,12 @@ class PessoaFisica extends BaseEntity
     private $birthDate;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Phone", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="App\Entity\Phone", mappedBy="owner", cascade={"persist"})
      */
     private $phones;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Email", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="App\Entity\Email", mappedBy="owner", cascade={"persist"})
      */
     private $emails;
 
@@ -128,7 +128,7 @@ class PessoaFisica extends BaseEntity
      *
      * @return  self
      */ 
-    public function setCpf(string $cpf): ?self
+    public function setCpf(?string $cpf): ?self
     {
         $sanitizeString = str_replace('.', '', str_replace('-', '', $cpf));
 
