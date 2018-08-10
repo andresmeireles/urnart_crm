@@ -1,10 +1,10 @@
-<div id="unit" class="d-none">
+<div id="customer" class="d-none">
 	
 	<div class="card text-center my-2">
 		<div class="card-header">
 			<ul class="nav nav-pills card-header-pills">
 				<li class="nav-item">
-					<h4>Unidades</h4>
+					<h4>Clientes (visualização simples)</h4>
 				</li>
 				<li class="nav-item mx-5">
 					<button data-action="add-unit" class="btn btn-primary">Adicionar</button>
@@ -18,7 +18,7 @@
 			<table class="table table-hover tablesorter sortable" name="unidades">
 				<thead class="table-primary">
 					<tr>
-						<th colspan="3">Unidades</th>
+						<th colspan="3">Clientes</th>
 					</tr>
 				</thead>
 				<tbody id="unit-body">
@@ -27,21 +27,17 @@
 						<td class="d-none id-number">
 							{{ item.id }}
 						</td>
-						<td class="text-left" name="{{ item.name }}">
-							{{ item.name }}
+						<td class="text-left" name="{{ item.razaoSocial }}">
+							{{ item.razaoSocial }}
 						</td>
 						<td class="text-left" name="{{ item.cnpj }}">
-							{{ item.name }}
+							{{ item.cnpj }}
 						</td>
-						<td class="text-left" name="{{ item.city }}">
-							{{ item.name }}
+						<td class="text-left" name="{{ item.getMunicipio }}">
+							{{ item.getMunicipio }}
 						</td>
-						<td class="text-left" name="{{ item.state }}">
-							{{ item.name }}
-						</td>
-						<td class="text-right">
-                            <span class="badge badge-pill badge-secondary remover cursor-decoration">Remover</span>
-							<span class="badge badge-pill badge-danger remover cursor-decoration">Remover</span>
+						<td class="text-left" name="{{ item.getEstado }}">
+							{{ item.getEstado }}
 						</td>
 					</tr>
 					{% endfor %}

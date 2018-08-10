@@ -25,7 +25,7 @@
                             <h5 class="card-title"><i class="fas fa-fw fa-address-card"></i>&nbsp;Cliente</h5>
                             <p class="card-text">Cria e edita os atuais clientes do sistema.</p>
                             <a href="/person/customer" class="card-link text-primary">Criar</a>
-                            <a href="#" class="card-link text-primary">Visualizar</a>
+                            <a href="#" data-action="customer" class="card-link text-primary">Visualizar</a>
                         </div>
                     </div>
                 </div>
@@ -76,5 +76,6 @@
         {% include '/register/pages/unit.html.twig' with {'unit': unit} %}
         {% include '/register/pages/states.html.twig' with {'state': state} %}
         {% include '/register/pages/cities.html.twig' with {'city': city} %}
+        {% include '/register/pages/customer.html.twig' with {'customer': customer} %}
 
     {% endblock %}

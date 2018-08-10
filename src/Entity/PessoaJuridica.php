@@ -19,7 +19,7 @@ class PessoaJuridica extends BaseEntity
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $razaoSocial;
 
@@ -29,17 +29,17 @@ class PessoaJuridica extends BaseEntity
     private $nomeFantasia;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true, unique=true)
      */
     private $inscricaoEstadual;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true, unique=true)
      */
     private $inscricaoMunicipal;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
      */
     private $cnpj;
 

@@ -21,6 +21,11 @@ class Departament
      */
     private $name;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="departament")
+     */
+    private $product;
+
     public function __toArray()
     {
         return get_object_vars($this);
@@ -44,6 +49,18 @@ class Departament
     public function setName(string $name): self
     {
         $this->name = mb_strtolower($name);
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
 
         return $this;
     }

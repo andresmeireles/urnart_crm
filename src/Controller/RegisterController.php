@@ -22,6 +22,7 @@ class RegisterController extends Controller
             'unit' => $getter->get('unit'),
             'state' => $getter->get('estado'),
             'city' => $getter->get('municipio'),
+            'customer' => $getter->get('pessoaJuridica'),
         ]);
     }
 

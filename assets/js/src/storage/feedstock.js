@@ -6,9 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			var modalId = el.target.getAttribute('data-action');
 			modal(modalId);			
 		}
-	});
-	
-	document.addEventListener('click', function(el) {
+		
 		if (el.target.id == 'inputOtherVendors' || el.target.tagName == 'UL') {
 			var inputVendorDiv = document.querySelector('#inputOtherVendors');
 			var inputVendor = inputVendorDiv.querySelector('input');

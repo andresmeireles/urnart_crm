@@ -17,14 +17,19 @@ class Unit
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=2)
+     * @ORM\Column(type="string", length=2, unique=true)
      */
     protected $initials;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      */
     protected $name;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="unit")
+     */
+    private $product;
 
     public function __toArray(): array
     {
@@ -56,6 +61,18 @@ class Unit
     public function setName(string $name) : self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
 
         return $this;
     }
