@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,184 +19,72 @@ class Product
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nome;
+    private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=4, nullable=true)
      */
-    private $description;
+    private $series;
 
     /**
-     * @ORM\Column(type="simple_array", nullable=true)
+     * @ORM\Column(type="float")
      */
-    private $vendors;
+    private $price;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="array")
      */
-    private $maxStorage;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $minStorage;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $periocidy;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Unit", mappedBy="product")
-     */
-    private $unit;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\departament", mappedBy="product")
-     */
-    private $departament;
-
-    public function __construct()
-    {
-        $this->unit = new ArrayCollection();
-        $this->departament = new ArrayCollection();
-    }
+    private $color;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNome(): ?string
+    public function getName(): ?string
     {
-        return $this->nome;
+        return $this->name;
     }
 
-    public function setNome(string $nome): self
+    public function setName(string $name): self
     {
-        $this->nome = $nome;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getSeries(): ?string
     {
-        return $this->description;
+        return $this->series;
     }
 
-    public function setDescription(?string $description): self
+    public function setSeries(?string $series): self
     {
-        $this->description = $description;
+        $this->series = $series;
 
         return $this;
     }
 
-    public function getVendors(): ?array
+    public function getPrice(): ?float
     {
-        return $this->vendors;
+        return $this->price;
     }
 
-    public function setVendors(?array $vendors): self
+    public function setPrice(float $price): self
     {
-        $this->vendors = $vendors;
+        $this->price = $price;
 
         return $this;
     }
 
-    public function getMaxStorage(): ?int
+    public function getColor(): ?array
     {
-        return $this->maxStorage;
+        return $this->color;
     }
 
-    public function setMaxStorage(?int $maxStorage): self
+    public function setColor(array $color): self
     {
-        $this->maxStorage = $maxStorage;
-
-        return $this;
-    }
-
-    public function getMinStorage(): ?int
-    {
-        return $this->minStorage;
-    }
-
-    public function setMinStorage(?int $minStorage): self
-    {
-        $this->minStorage = $minStorage;
-
-        return $this;
-    }
-
-    public function getPeriocidy(): ?int
-    {
-        return $this->periocidy;
-    }
-
-    public function setPeriocidy(int $periocidy): self
-    {
-        $this->periocidy = $periocidy;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Unit[]
-     */
-    public function getUnit(): Collection
-    {
-        return $this->unit;
-    }
-
-    public function addUnit(Unit $unit): self
-    {
-        if (!$this->unit->contains($unit)) {
-            $this->unit[] = $unit;
-            $unit->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUnit(Unit $unit): self
-    {
-        if ($this->unit->contains($unit)) {
-            $this->unit->removeElement($unit);
-            // set the owning side to null (unless already changed)
-            if ($unit->getProduct() === $this) {
-                $unit->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|departament[]
-     */
-    public function getDepartament(): Collection
-    {
-        return $this->departament;
-    }
-
-    public function addDepartament(departament $departament): self
-    {
-        if (!$this->departament->contains($departament)) {
-            $this->departament[] = $departament;
-            $departament->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDepartament(departament $departament): self
-    {
-        if ($this->departament->contains($departament)) {
-            $this->departament->removeElement($departament);
-            // set the owning side to null (unless already changed)
-            if ($departament->getProduct() === $this) {
-                $departament->setProduct(null);
-            }
-        }
+        $this->color = $color;
 
         return $this;
     }

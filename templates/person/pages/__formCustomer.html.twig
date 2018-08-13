@@ -1,10 +1,10 @@
 <div id="add-customer" class="col-md-11 py-4 d-none">
+<form method="post" action="/person/add/person" id="customer-form">
     <div class="card">
         <div class="card-header text-center">
             <span style="font-size: 25px">Adicionar Cliente</span>
         </div>
         <div class="card-body">
-            <form method="post" action="/person/add/person" id="customer-form">
                 <fieldset class="p-1 border border-light my-1">
                     <legend class="bg-light">
                         &nbsp;Informações da Empresa
@@ -182,7 +182,7 @@
             </div>
             <div class="card-footer text-muted text-center">
                 <input type="submit" class="btn btn-secondary w-50" send="/person/add/person" target="customer-form" value="Adicionar">
-            </form>
         </div>
     </div>
+</form>
 </div>

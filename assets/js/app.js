@@ -28,6 +28,10 @@ global.simpleRequest = require('./src/global/simpleRequest')
 global.simpleRequestForm = require('./src/global/simpleRequestForm')
 global.checkMask = require('./src/global/checkMask')
 global.showDate = require('./src/global/showDate')
+global.genericSend = require('./src/global/genericSend')
+
+// validations
+global.checkRequired = require('./src/global/validation/checkRequired')
 
 // forms folder
 global.openModal = require('./src/form/createFormModal.js');
@@ -50,7 +54,8 @@ import './src/form/cloneField.js';
 import './src/form/remand.js';
 import './src/form/sendForm.js';
 
-import './src/storage/feedstock';
+import './src/storage/feedstock'
+import './src/storage/feedStockActions'
 
 import './src/register/registerEvents';
 import './src/register/customer';

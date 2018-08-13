@@ -27,7 +27,7 @@ class Unit
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="unit")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Feedstock", inversedBy="unit")
      */
     private $product;
 

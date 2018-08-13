@@ -29,6 +29,15 @@ document.addEventListener('DOMContentLoaded', function () {
 			document.querySelector('#otherVendors #'+ idOpt).remove();
 			liElement.remove();
 		}
+
+		if (el.target.hasAttribute('required')) {
+			var input = el.target.parentNode
+			if (input.querySelector('small.text-danger')) {
+				var remover = input.querySelector('small.text-danger')
+				remover.remove()
+			}
+		}
+	
 	});
 	
 	document.addEventListener('keypress', function (el) {
@@ -67,21 +76,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	document.addEventListener('change', function (el) {
 
-		if (el.target.id == 'periocid') {
-			if (el.target.value == 'Outro') {
-				var customInput = document.querySelector('#customPeriocid');
+		if (el.target.id == 'select') {
+			var form = el.target.closest('form')
+
+			if (el.target.value == 'other') {
+				var select = form.querySelector('#periocid')
+				select.querySelector('select').removeAttribute('name')
+				select.querySelector('select').removeAttribute('required')
+				select.querySelector('label').classList.remove('required')
+
+				var customInput = form.querySelector('#customPeriocid')
+				customInput.querySelector('label').classList.add('required')
 				customInput.querySelector('input').setAttribute('name', 'periocid');
 				customInput.querySelector('input').setAttribute('required', '');
-				customInput.classList.remove('d-none');
+				customInput.classList.remove('d-none')
 			}
 
-			if (el.target.value != 'Outro') {
-				var customInput = document.querySelector('#customPeriocid');
+			if (el.target.value != 'other') {
+				var customInput = form.querySelector('#customPeriocid');
 				if (!customInput.classList.contains('d-none')) {
 					customInput.classList.add('d-none');
+					customInput.querySelector('label').classList.remove('required')
 					customInput.querySelector('input').removeAttribute('name');
 					customInput.querySelector('input').removeAttribute('required');
 					customInput.querySelector('input').value = '';
+
+					var select = form.querySelector('#periocid')
+					select.querySelector('select').setAttribute('name', 'periocid')
+					select.querySelector('select').setAttribute('required', '')
+					select.querySelector('label').classList.add('required')
 				}
 			}
 		}

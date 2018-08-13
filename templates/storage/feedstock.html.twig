@@ -126,16 +126,15 @@
 	</div>
 
 	<div class="py-4 col-md-11 d-none" id="add">
+		<form id="form-add">
 		<div class="card">
 			<div class="card-header">Adicionar Produto</div>
 			<div class="card-body fitable">
 				<div class="card-text fix-height">
-					<form id="form-add">
+					
 						<div class="row">
-
 							<div class="col-md-8">
 								<fieldset class="border border-light">
-
 									<legend class="bg-light px-1">Informações Básicas</legend>
 									<div class="col-md-12 py-2">
 										<div class="form-group">
@@ -182,7 +181,7 @@
 										<div class="form-group">
 											<label for="unit" class="required">Tipo de unidade</label>
 											<select class="form-control" required>
-												<option selected disabled>Selecione</option>
+												<option value="" selected disabled>Selecione</option>
 												<option>Fazer buscador de opções aqui</option>
 											</select>
 										</div>
@@ -199,36 +198,35 @@
 
 										<div class="form-group">
 											<label for="maxStock" class="required">Estoque Mínimo</label>
-											<input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Min" required>
+											<input type="text" name="minStock" class="form-control numbers-float-only" placeholder="Min" required>
 										</div>
 
-										<div class="form-group">
-											<label for="unit" class="required">Periocidade de Reabastecimento</label>
-											<select class="form-control" id="periocid" name="periocid" required>
-												<option selected disabled>Selecione</option>
+										<div class="form-group" id="periocid">
+											<label for="periocid" class="required">Periocidade de Reabastecimento</label>
+											<select class="form-control" id="select" name="periocid" required>
+												<option value="" selected disabled>Selecione</option>
 												<option value="15">15 dias</option>
 												<option value="30">30 dias</option>
 												<option value="45">45 dias</option>
-												<option id="other">Outro</option>
+												<option value="other" id="other">Outro</option>
 											</select>
 										</div>
 
 										<div class="form-group d-none" id="customPeriocid">
-											<label for="otherPeriocid" class="required">Informe a periocidade</label>
+											<label for="otherPeriocid" class="">Informe a periocidade</label>
 											<input type="text" class="form-control numbers-only" placeholder="Periodicidade em dias">
 										</div>
 
 									</div>
 								</fieldset>
 							</div>
-
 						</div>
-					</form>
 				</div>
 			</div>
 			<div class="card-footer text-muted"> 
 				<button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>
-				<button class="btn btn-primary">Adicionar</button>
+				<button class="btn btn-primary" sendvt="/storage/feedstock">Adicionar</button>
 			</div>
+			</form>
 		</div>
 	{% endblock %}

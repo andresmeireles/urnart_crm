@@ -22,7 +22,7 @@ class Departament
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="departament")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Feedstock", inversedBy="departament")
      */
     private $product;
 
