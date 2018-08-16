@@ -28,10 +28,10 @@
 						<td class="d-none id-number">
 							{{ item.id }}
 						</td>
-						<td class="text-left" name="{{ item.initials }}">
+						<td class="text-left" name="{{ item.initials | capitalize }}">
 							{{ item.initials }}
 						</td>
-						<td class="text-left" name="{{ item.name }}">
+						<td class="text-left" name="{{ item.name | capitalize  }}">
 							{{ item.name }}
 						</td>
 						<td class="text-right">

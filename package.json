@@ -23,6 +23,7 @@
         "jquery-mask-plugin": "^1.14.15",
         "moment": "^2.22.2",
         "npm": "^6.1.0",
+        "rot": "^0.1.0",
         "tablesorter": "^2.30.7",
         "vex-js": "^4.1.0"
     }

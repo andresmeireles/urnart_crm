@@ -15,11 +15,11 @@ $( function () {
     document.addEventListener('keypress', function (el) {
         /**
          * Disable ENTER key on page
-         */
+         *
         if (el.keyCode == 13) {
             el.preventDefault();
             return false;
-        }
+        }*/
 
         /**
          * Enable only numbers on amount input

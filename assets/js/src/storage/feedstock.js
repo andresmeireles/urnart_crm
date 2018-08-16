@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	
 	});
 	
-	document.addEventListener('keypress', function (el) {
+	document.addEventListener('keyup', function (el) {
 		if (el.target.id == 'inputOtherVendors') {
 			if (el.which === 27) {
 				hideInputField();

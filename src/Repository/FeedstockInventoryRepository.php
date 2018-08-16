@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\FeedstockInvetory;
+use App\Entity\FeedstockInventory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method FeedstockInvetory|null find($id, $lockMode = null, $lockVersion = null)
- * @method FeedstockInvetory|null findOneBy(array $criteria, array $orderBy = null)
- * @method FeedstockInvetory[]    findAll()
- * @method FeedstockInvetory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method FeedstockInventory|null find($id, $lockMode = null, $lockVersion = null)
+ * @method FeedstockInventory|null findOneBy(array $criteria, array $orderBy = null)
+ * @method FeedstockInventory[]    findAll()
+ * @method FeedstockInventory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FeedstockInvetoryRepository extends ServiceEntityRepository
+class FeedstockInventoryRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, FeedstockInvetory::class);
+        parent::__construct($registry, FeedstockInventory::class);
     }
 
 //    /**
-//     * @return FeedstockInvetory[] Returns an array of FeedstockInvetory objects
+//     * @return FeedstockInventory[] Returns an array of FeedstockInventory objects
 //     */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class FeedstockInvetoryRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?FeedstockInvetory
+    public function findOneBySomeField($value): ?FeedstockInventory
     {
         return $this->createQueryBuilder('f')
             ->andWhere('f.exampleField = :val')

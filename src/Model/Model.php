@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 namespace App\Model;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Service Container for models
@@ -15,7 +15,7 @@ abstract class Model
      */
     protected $em;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
     }

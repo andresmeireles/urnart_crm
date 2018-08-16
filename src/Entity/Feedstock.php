@@ -1,15 +1,17 @@
-<?php
+<?php 
+declare (strict_types = 1);
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\FeedstockRepository")
  */
-class Feedstock
+class Feedstock extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -19,12 +21,14 @@ class Feedstock
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", unique=true, length=255)
      */
     private $nome;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * 
+     * @var string
      */
     private $description;
 
@@ -36,135 +40,125 @@ class Feedstock
     /**
      * @ORM\Column(type="integer")
      */
-    private $periocidy;
+    private $periodicity;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Unit", mappedBy="product")
+     * @ORM\OneToOne(targetEntity="App\Entity\FeedstockInventory", mappedBy="feedstock_id", cascade={"persist", "remove"})
+     */
+    private $feedstockInventory;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Unit", inversedBy="departament")
      */
     private $unit;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Departament", mappedBy="product")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Departament", inversedBy="feedstocks")
      */
     private $departament;
 
-    public function __construct()
-    {
-        $this->unit = new ArrayCollection();
-        $this->departament = new ArrayCollection();
-    }
-
-    public function getId(): ?int
+    public function getId() : ? int
     {
         return $this->id;
     }
 
-    public function getNome(): ?string
+    public function getNome() : ? string
     {
         return $this->nome;
     }
 
-    public function setNome(string $nome): self
+    public function setNome(string $nome) : self
     {
         $this->nome = $nome;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription() : ? string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(? string $description) : self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getVendors(): ?array
+    public function getVendors() : ? array
     {
         return $this->vendors;
     }
 
-    public function setVendors(?array $vendors): self
+    /**
+     * Return the first item of array
+     *
+     * @return string|null
+     */
+    public function getMainVendor() : ?string
+    {
+        $mainVendor = $this->vendors[0]; 
+        return $mainVendor;
+    }
+
+    public function setVendors(? array $vendors) : self
     {
         $this->vendors = $vendors;
 
         return $this;
     }
 
-    public function getPeriocidy(): ?int
+    public function getperiodicity() : ? int
     {
-        return $this->periocidy;
+        return $this->periodicity;
     }
 
-    public function setPeriocidy(int $periocidy): self
+    public function setperiodicity(int $periodicity) : self
     {
-        $this->periocidy = $periocidy;
+        $this->periodicity = $periodicity;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Unit[]
-     */
-    public function getUnit(): Collection
+    public function getFeedstockInventory() : ? FeedstockInventory
+    {
+        return $this->feedstockInventory;
+    }
+
+    public function setFeedstockInventory(? FeedstockInventory $feedstockInventory) : self
+    {
+        $this->feedstockInventory = $feedstockInventory;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newFeedstock_id = $feedstockInventory === null ? null : $this;
+        if ($newFeedstock_id !== $feedstockInventory->getFeedstockId()) {
+            $feedstockInventory->setFeedstockId($newFeedstock_id);
+        }
+
+        return $this;
+    }
+
+    public function getUnit() : ? Unit
     {
         return $this->unit;
     }
 
-    public function addUnit(Unit $unit): self
+    public function setUnit(? Unit $unit) : self
     {
-        if (!$this->unit->contains($unit)) {
-            $this->unit[] = $unit;
-            $unit->setProduct($this);
-        }
+        $this->unit = $unit;
 
         return $this;
     }
 
-    public function removeUnit(Unit $unit): self
-    {
-        if ($this->unit->contains($unit)) {
-            $this->unit->removeElement($unit);
-            // set the owning side to null (unless already changed)
-            if ($unit->getProduct() === $this) {
-                $unit->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|departament[]
-     */
-    public function getDepartament(): Collection
+    public function getDepartament() : ? Departament
     {
         return $this->departament;
     }
 
-    public function addDepartament(departament $departament): self
+    public function setDepartament(? Departament $departament) : self
     {
-        if (!$this->departament->contains($departament)) {
-            $this->departament[] = $departament;
-            $departament->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDepartament(departament $departament): self
-    {
-        if ($this->departament->contains($departament)) {
-            $this->departament->removeElement($departament);
-            // set the owning side to null (unless already changed)
-            if ($departament->getProduct() === $this) {
-                $departament->setProduct(null);
-            }
-        }
+        $this->departament = $departament;
 
         return $this;
     }

@@ -53,29 +53,31 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<th scope="row"><b>1</b></th>
-												<td><b>Babado</b></td>
-												<td><b>800</b></td>
-												<td><b>UN</b></td>
-												<td>300</td>
-												<td>1000</td>
-												<td>Produção</td>
-												<td>Baidu Corp</td>
-												<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
-											</tr>
-											<tr class="bg-danger">
-												<th scope="row"><b>1</b></th>
-												<td><b>AAn</b></td>
-												<td><b>Otto</b></td>
-												<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
-											</tr>
-											<tr class="bg-warning">
-												<th scope="row"><b>1</b></th>
-												<td><b>Mark</b></td>
-												<td><b>Otto</b></td>
-												<td class="text-center"><a href="#" class="badge badge-secondary">Visualizar</a></td>
-											</tr>
+											{% if feedstock %}
+												{% for f in feedstock %}
+													<tr>
+														<td {{ f.getStock < f.getMinStock ? 'class="bg-danger"' : '' }}>
+														{{ f.getFeedstockId.getId }}</td>
+														<td {{ f.getStock < f.getMinStock ? 'class="bg-danger"' : '' }}>
+														{{ f.getFeedstockId.getNome }}</td>
+														<td {{ f.getStock < f.getMinStock ? 'class="bg-danger"' : '' }}>
+														{{ f.getStock }}</td>
+														<td>{{ f.getFeedstockId.getUnit.getName | capitalize }}</td>
+														<td>{{ f.getMinStock }}</td>
+														<td>{{ f.getMaxStock }}</td>
+														<td>{{ f.getFeedstockId.getDepartament.getName | capitalize }}</td>
+														<td>{{ f.getFeedstockId.getMainVendor }}</td>
+														<td class="text-center">
+														<a href="#" class="badge badge-secondary">Visualizar</a>
+														<a href="#" class="badge badge-danger" del={{ '/storage/feedstock/' | rot13 }}{{ f.getFeedstockId.getId }}>Remover</a>
+														</td>
+													</tr>
+												{% endfor %}
+											{% else %}
+												<tr>
+													<th colspan=9 class="text-center">Nenhum produto</th>
+												</tr>
+											{% endif %}
 										</tbody>
 									</table>
 								</div>
@@ -143,7 +145,7 @@
 										</div>
 										<div class="form-group">
 											<label for="description">Descrição</label>
-											<textarea class="form-control" placeholder="Descrição opcional"></textarea>
+											<textarea class="form-control" name="description" placeholder="Descrição opcional"></textarea>
 										</div>
 										<div class="form-group">
 											<label for="usedIn">Usado nos modelos</label>
@@ -162,10 +164,10 @@
 												<div class="input-group my-2">
 													<ul class="form-control py-1" id="vendorsList"></ul>
 													<div class="input-group-append">
-														<span class="input-group-text cursor-decoration" id="removeAll">x</span>
+														<span class="input-group-text" id="removeAll">x</span>
 													</div>
 												</div>
-												<input type="text" class="d-none form-control" placeholder="Insira o nome e aprte ENTER">
+												<input type="text" class="d-none form-control" id="inputOtherVendors" placeholder="Insira o nome e aprte ENTER">
 											</div>
 										</div>
 									</div>
@@ -180,15 +182,26 @@
 
 										<div class="form-group">
 											<label for="unit" class="required">Tipo de unidade</label>
-											<select class="form-control" required>
+											<select name="unit" class="form-control" required>
 												<option value="" selected disabled>Selecione</option>
-												<option>Fazer buscador de opções aqui</option>
+												{% if unit %}
+													{% for u in unit %}
+														<option value={{ u.getId }}>{{ u.name | capitalize }}</option>
+													{% endfor %}
+												{% endif %}
 											</select>
 										</div>
 
 										<div class="form-group">
 											<label for="departament" class="required">Departamento</label>
-											<input type="text" name="departament" class="form-control" placeholder="Departamento" required>
+											<select name="departament" name="departament" class="form-control" required>
+												<option value="" selected disabled>Selecione</option>
+												{% if departament %}
+													{% for d in departament %}
+														<option value={{ d.getId }}>{{ d.name | capitalize  }}</option>
+													{% endfor %}
+												{% endif %}
+											</select>
 										</div>
 
 										<div class="form-group">

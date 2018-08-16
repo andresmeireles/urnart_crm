@@ -16,6 +16,7 @@ vexjs.dialog.buttons.NO.text = 'Cancelar'
 global.$ = global.jQuery = $
 global.axios = require('axios')
 global.vex = vexjs
+global.rot = require('rot')
 
 // root folder
 global.messageSend = require('./src/messageDispatcher');

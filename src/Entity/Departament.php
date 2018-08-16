@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,9 +24,14 @@ class Departament
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Feedstock", inversedBy="departament")
+     * @ORM\OneToMany(targetEntity="App\Entity\Feedstock", mappedBy="departament")
      */
-    private $product;
+    private $feedstocks;
+
+    public function __construct()
+    {
+        $this->feedstocks = new ArrayCollection();
+    }
 
     public function __toArray()
     {
@@ -61,6 +68,37 @@ class Departament
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Feedstock[]
+     */
+    public function getFeedstocks(): Collection
+    {
+        return $this->feedstocks;
+    }
+
+    public function addFeedstock(Feedstock $feedstock): self
+    {
+        if (!$this->feedstocks->contains($feedstock)) {
+            $this->feedstocks[] = $feedstock;
+            $feedstock->setDepartament($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedstock(Feedstock $feedstock): self
+    {
+        if ($this->feedstocks->contains($feedstock)) {
+            $this->feedstocks->removeElement($feedstock);
+            // set the owning side to null (unless already changed)
+            if ($feedstock->getDepartament() === $this) {
+                $feedstock->setDepartament(null);
+            }
+        }
 
         return $this;
     }
