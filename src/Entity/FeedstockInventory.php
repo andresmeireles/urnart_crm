@@ -36,6 +36,11 @@ class FeedstockInventory
      */
     private $minStock = '0';
 
+    public function __toArray()
+    {
+        return (array) $this->stock;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

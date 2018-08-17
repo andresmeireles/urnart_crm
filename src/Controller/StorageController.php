@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\FeedstockInventory;
+use App\Form\FeedstockForm;
 
 class StorageController extends Controller
 {
@@ -37,15 +38,15 @@ class StorageController extends Controller
     }
 
     /**
-     * @Route("/storage/feedstock/{id}", name="feedstockAction", methods={"POST", "DELETE", "PUT"}, defaults={"id"=""})
+     * @Route("/storage/feedstockz/{id}", name="feedstockAction", methods={"POST", "DELETE", "PUT", "GET"}, defaults={"id"=""})
      */
     public function feedstockAction(Request $request)
     {
         $method = $request->server->get('REQUEST_METHOD');
-        
+        $model = new FeedstockModel($this->getDoctrine()->getManager());
+
         if ($method == 'POST') {
             $parameters = $request->request->all();
-            $model = new FeedstockModel($this->getDoctrine()->getManager());
             $model->persist($parameters);
 
             return new Response('Sucesso');
@@ -55,10 +56,15 @@ class StorageController extends Controller
             die('CHEGOU AQUI AMIGINHO');
         } 
         
-        if ($method == 'PUT') {
-            $parameters = $request->getContent();
-            dump(gettype($parameters));
-            die();
+        if ($method == 'GET') {
+            //$parameters = (array) json_decode($request->getContent());
+            //$model->update($parameters);
+            //dump($parameters);
+            //$update = $this->getDoctrine()->getManager()->getRepository(Feedstock::class)->find(2);
+            $form = $this->createForm(FeedstockForm::class);
+            return $this->render('/forms/formTlp.html.twig', [
+                'form' => $form->createView(),
+             ]);
         } else {
             return $this->createNotFoundException();
         }

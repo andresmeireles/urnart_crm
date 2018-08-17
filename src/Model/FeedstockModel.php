@@ -11,8 +11,14 @@ use App\Entity\FeedstockInventory;
 
 class FeedstockModel extends Model
 {
-    public function persist(array $data): void
+    public function persist(array $data, $type = 'insert'): void
     {
+        $type = strtolower($type);
+
+        if ($type == 'insert' || $type == 'update') {
+            throw new \Exception('Tipos suportados INSERT, UPDATE tipo '.$type.' não suportado');
+        }
+
         if (is_null($data['name']) || 
             is_null($data['mainVendor']) || 
             is_null($data['unit']) || 
@@ -58,9 +64,9 @@ class FeedstockModel extends Model
         } 
     }
 
-    public function update()
+    public function update(array $data): void
     {
-
+        $this->persist($data, 'update');
     }
 
     public function remove()

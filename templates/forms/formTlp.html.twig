@@ -1,0 +1,6 @@
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{% for f in form.feed %}
+{{ form_row(f.minStock)}}
+{% endfor %}
+{{ form_end(form) }}

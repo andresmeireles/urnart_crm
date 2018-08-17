@@ -43,6 +43,11 @@ class Unit
         return get_object_vars($this);
     }
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

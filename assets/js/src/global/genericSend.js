@@ -7,8 +7,7 @@ module.exports = function (element, domEl, httpMethod = 'POST', func = null) {
     
     var formData = new FormData(form)
     
-    /**
     simpleRequestForm(url, httpMethod, formData, (response) => {
         func(response)
-    }) */
+    })
 }
