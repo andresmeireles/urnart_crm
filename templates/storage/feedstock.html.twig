@@ -68,7 +68,7 @@
 														<td>{{ f.getFeedstockId.getDepartament.getName | capitalize }}</td>
 														<td>{{ f.getFeedstockId.getMainVendor }}</td>
 														<td class="text-center">
-														<a href="/storage/feedstockz" class="badge badge-secondary">Visualizar</a>
+														<a href="/storage/feedstockAction/{{ f.getFeedstockId.getId }}" class="badge badge-secondary">Visualizar</a>
 														<a href="#" class="badge badge-danger" del={{ '/storage/feedstockAction/' | rot13 }}{{ f.getFeedstockId.getId }}>Remover</a>
 														</td>
 													</tr>
@@ -239,6 +239,7 @@
 			<div class="card-footer text-muted"> 
 				<button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>
 				<button class="btn btn-primary" sendvt="/storage/feedstockAction">Adicionar</button>
+			</div>
 			</div>
 			</form>
 		</div>

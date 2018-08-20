@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener('click', function (el) {
         if (el.target.getAttribute('sendvt')) {
-            //el.target.setAttribute('disabled', '')
+            el.target.setAttribute('disabled', '')
             el.preventDefault()
 
             var form = el.target.closest('form')
@@ -13,16 +13,16 @@ document.addEventListener('DOMContentLoaded', function () {
             } 
 
             genericSend(el, 'sendvt', 'POST', function (response) {
-                //location.reload()
+                location.reload()
             })
         }
 
-        if (el.target.getAttribute('del')) {
+        if (el.target.hasAttribute('del')) {
             el.preventDefault()
             var link = rot(el.target.getAttribute('del'))
             simpleDialog('Tem certeza que deseja remover esse item?', () => {
-                simpleRequest(link, 'DELETE', null, null, function () {
-                    console.log('apafou pâe')
+                simpleRequest(link, 'DELETE', null, function () {
+                    location.reload()
                 })
             })
         }

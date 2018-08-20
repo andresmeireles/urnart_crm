@@ -39,11 +39,11 @@ class StorageController extends Controller
     }
 
     /**
-     * @Route("/storage/feedstockAction/{id}", name="feedstockAction", methods={"POST", "DELETE", "GET"}, defaults={"id"=""})
+     * @Route("/storage/feedstockAction/{id}", name="feedstockAction", methods={"POST", "DELETE", "GET"}, defaults={"id"=null})
      */
     public function feedstockAction(Request $request, ?int $id)
     {
-        $id = $id == '' ? '' : (int) $id;
+        $id = $id == null ? '' : (int) $id;
         $method = $request->server->get('REQUEST_METHOD');
         $model = new FeedstockModel($this->getDoctrine()->getManager());
         $em = $this->getDoctrine()->getManager();
@@ -57,7 +57,7 @@ class StorageController extends Controller
         
         if($method == 'DELETE') {
             if (!is_int($id)) {
-                throw new \Exception('Não é um numero');
+                throw new \Exception('Não é um número');
             }
             
             $item = $em->getRepository(Feedstock::class)->find($id);
@@ -72,21 +72,20 @@ class StorageController extends Controller
             return new Response(200, Response::HTTP_OK);
         } 
         
-        if ($method == 'PUT') {
-            $update = $this->getDoctrine()->getManager()->getRepository(Feedstock::class)->find(1);
+        if ($method == 'GET') {
+            $update = $this->getDoctrine()->getManager()->getRepository(Feedstock::class)->find($id);
+            $inventoryUpdate = $update->getFeedstockInventory();
             
-            $form = $this->createForm(FeedstockForm::class, $update);
-            $inventory = $this->createForm(FeedstockInventoryForm::class);
-            $x = $form->createView();
+            $feedForm = $this->createForm(FeedstockForm::class, $update);
+            $invForm = $this->createForm(FeedstockInventoryForm::class, $inventoryUpdate);
 
-            return $this->render('/forms/formTlp.html.twig', [
-                'form' => $form->createView()
+            return $this->render('storage/forms/feedstockForm.html.twig', [
+                'feedForm' => $feedForm->createView(),
+                'invForm' => $invForm->createView()
              ]);
         } else {
             return $this->createNotFoundException();
         }
-
-        return $this->redirectToRoute('feedstock');
     }
 
     /**

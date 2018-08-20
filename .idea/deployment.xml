@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="sysadmin">
+  <component name="PublishConfigData" serverName="sysadmin-dev">
     <serverData>
-      <paths name="sysadmin">
+      <paths name="sysadmin-dev">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="public" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
