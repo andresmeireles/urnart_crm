@@ -139,6 +139,16 @@ class Feedstock extends BaseEntity
         return $this;
     }
 
+    public function getMaxStock(): ?string
+    {
+        return $this->feedstockInventory->getMaxStock();
+    }
+
+    public function getMinStock() : ?string
+    {
+        return $this->feedstockInventory->getMinStock();
+    }
+
     public function getUnit() : ? Unit
     {
         return $this->unit;

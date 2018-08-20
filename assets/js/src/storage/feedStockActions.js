@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return false
             } 
 
-            genericSend(el, 'sendvt', 'PUT', function (response) {
+            genericSend(el, 'sendvt', 'POST', function (response) {
                 //location.reload()
             })
         }

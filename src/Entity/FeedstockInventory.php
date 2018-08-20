@@ -41,6 +41,11 @@ class FeedstockInventory
         return (array) $this->stock;
     }
 
+    public function __toString(): ?string
+    {
+        return $this->stock;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

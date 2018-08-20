@@ -3,15 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Feedstock;
+use App\Form\FeedstockForm;
 use App\Utils\Generic\Crud;
 use App\Model\FeedstockModel;
+use App\Entity\FeedstockInventory;
+use App\Form\FeedstockInventoryForm;
 use App\Repository\FeedstockRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
-use App\Entity\FeedstockInventory;
-use App\Form\FeedstockForm;
 
 class StorageController extends Controller
 {
@@ -38,12 +39,14 @@ class StorageController extends Controller
     }
 
     /**
-     * @Route("/storage/feedstockz/{id}", name="feedstockAction", methods={"POST", "DELETE", "PUT", "GET"}, defaults={"id"=""})
+     * @Route("/storage/feedstockAction/{id}", name="feedstockAction", methods={"POST", "DELETE", "GET"}, defaults={"id"=""})
      */
-    public function feedstockAction(Request $request)
+    public function feedstockAction(Request $request, ?int $id)
     {
+        $id = $id == '' ? '' : (int) $id;
         $method = $request->server->get('REQUEST_METHOD');
         $model = new FeedstockModel($this->getDoctrine()->getManager());
+        $em = $this->getDoctrine()->getManager();
 
         if ($method == 'POST') {
             $parameters = $request->request->all();
@@ -53,17 +56,31 @@ class StorageController extends Controller
         } 
         
         if($method == 'DELETE') {
-            die('CHEGOU AQUI AMIGINHO');
+            if (!is_int($id)) {
+                throw new \Exception('Não é um numero');
+            }
+            
+            $item = $em->getRepository(Feedstock::class)->find($id);
+
+            try {
+                $em->remove($item);
+                $em->flush();
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
+
+            return new Response(200, Response::HTTP_OK);
         } 
         
-        if ($method == 'GET') {
-            //$parameters = (array) json_decode($request->getContent());
-            //$model->update($parameters);
-            //dump($parameters);
-            //$update = $this->getDoctrine()->getManager()->getRepository(Feedstock::class)->find(2);
-            $form = $this->createForm(FeedstockForm::class);
+        if ($method == 'PUT') {
+            $update = $this->getDoctrine()->getManager()->getRepository(Feedstock::class)->find(1);
+            
+            $form = $this->createForm(FeedstockForm::class, $update);
+            $inventory = $this->createForm(FeedstockInventoryForm::class);
+            $x = $form->createView();
+
             return $this->render('/forms/formTlp.html.twig', [
-                'form' => $form->createView(),
+                'form' => $form->createView()
              ]);
         } else {
             return $this->createNotFoundException();

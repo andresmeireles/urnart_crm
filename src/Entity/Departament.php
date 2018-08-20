@@ -40,7 +40,7 @@ class Departament
 
     public function __toString()
     {
-        return get_object_vars($this);
+        return $this->name;
     }
 
     public function getId()

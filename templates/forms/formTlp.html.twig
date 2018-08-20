@@ -1,6 +1,5 @@
+olá
 {{ form_start(form) }}
 {{ form_widget(form) }}
-{% for f in form.feed %}
-{{ form_row(f.minStock)}}
-{% endfor %}
+{{ form_row(form.nome) }}
 {{ form_end(form) }}

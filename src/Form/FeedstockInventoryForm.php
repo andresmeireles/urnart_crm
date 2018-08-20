@@ -1,5 +1,4 @@
 <?php
-declare(strict_types = 1);
 
 namespace App\Form;
 
@@ -7,13 +6,14 @@ use App\Entity\FeedstockInventory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 class FeedstockInventoryForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $data)
     {
-        $form
+        $builder
             ->add('stock')
             ->add('minStock')
             ->add('maxStock');
