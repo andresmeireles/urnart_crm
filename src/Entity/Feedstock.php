@@ -86,11 +86,6 @@ class Feedstock extends BaseEntity
         return $this;
     }
 
-    public function getVendors() : ? array
-    {
-        return $this->vendors;
-    }
-
     /**
      * Return the first item of array
      *
@@ -102,6 +97,24 @@ class Feedstock extends BaseEntity
         return $mainVendor;
     }
 
+    /**
+     * Return other vendors in an array
+     *
+     * @return array|null
+     */
+    public function getOtherVendors(): ?array
+    {
+        if (count($this->vendors) > 1) {
+            return array_shift($this->vendors);
+        }
+        return array();
+    }
+
+    public function getVendors() : ? array
+    {
+        return $this->vendors;
+    }
+
     public function setVendors(? array $vendors) : self
     {
         $this->vendors = $vendors;
@@ -109,12 +122,12 @@ class Feedstock extends BaseEntity
         return $this;
     }
 
-    public function getperiodicity() : ? int
+    public function getPeriodicity() : ? int
     {
         return $this->periodicity;
     }
 
-    public function setperiodicity(int $periodicity) : self
+    public function setPeriodicity(int $periodicity) : self
     {
         $this->periodicity = $periodicity;
 
@@ -144,9 +157,22 @@ class Feedstock extends BaseEntity
         return $this->feedstockInventory->getMaxStock();
     }
 
+    public function setMaxStock(?int $stock): self
+    {
+        $this->feedstockInventory->setMaxStock($stock);
+        return $this;
+    }
+
     public function getMinStock() : ?string
     {
         return $this->feedstockInventory->getMinStock();
+    }
+
+    public function setMinStock(?int $stock): self
+    {
+        $this->feedstockInventory->setMinStock($stock);
+
+        return $this;
     }
 
     public function getUnit() : ? Unit
@@ -171,5 +197,10 @@ class Feedstock extends BaseEntity
         $this->departament = $departament;
 
         return $this;
+    }
+
+    public function getLastUpdate(): ?string
+    {
+        return $this->lastUpdate->format('d/m/Y');    
     }
 }

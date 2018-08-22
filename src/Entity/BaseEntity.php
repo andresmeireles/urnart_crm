@@ -25,7 +25,7 @@ abstract class BaseEntity
 	/**
 	 * @ORM\Column(type="datetimetz")
 	 */
-	private $lastUpdate;
+	protected $lastUpdate;
 
 	public function __construct()
 	{
@@ -45,24 +45,24 @@ abstract class BaseEntity
 		return $result;
 	}
 
-	protected function getCreateDate(): ?\DateTime
+	public function getCreateDate(): ?\DateTime
 	{
 		return $this->createDate->format('d-m-Y');
 	}
 
-	protected function getLastUpdate(): ?\DateTime
+	public function getLastUpdate(): ?string
 	{
 		return $this->lastUpdate->format('d-m-Y');
 	}
 
-	protected function setLastUpdate(\DateTimeInterface $update): self 
+	public function setLastUpdate(): self 
 	{
-		$this->lastUpdate = $update;
+		$this->lastUpdate = new \DateTime('now', new \DateTimeZone('America/Sao_Paulo'));;
 
 		return $this;
 	}
 
-	protected function getActive(): bool
+	public function getActive(): bool
 	{
 		return $this->active;
 	}

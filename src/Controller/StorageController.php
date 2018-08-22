@@ -75,21 +75,28 @@ class StorageController extends Controller
         
         if ($method == 'GET') {
             $update = $this->getDoctrine()->getManager()->getRepository(Feedstock::class)->find($id);
-            $inventoryUpdate = $update->getFeedstockInventory();
             
             $feedForm = $this->createForm(FeedstockForm::class, $update);
-            $invForm = $this->createForm(FeedstockInventoryForm::class, $inventoryUpdate);
 
             return $this->render('storage/forms/feedstockForm.html.twig', [
                 'feedForm' => $feedForm->createView(),
-                'invForm' => $invForm->createView(),
                 'product' => $getter->getRegisterById('feedstock', $id),
                 'unit' => $getter->get('unit'),
-                'departamento' => $getter->get('departament'),
+                'departament' => $getter->get('departament'),
              ]);
         } else {
             return $this->createNotFoundException();
         }
+    }
+
+    /**
+     * @Route("/storage/feedstockAction/update/{id}", methods="POST")
+     */
+    public function updateFeedStock(FeedstockModel $model, Request $request, int $id)
+    {
+        $data = $request->request->all();
+        $model->update($data, $id);
+        return $this->redirectToRoute('feedstock');
     }
 
     /**

@@ -20,9 +20,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (el.target.hasAttribute('del')) {
             el.preventDefault()
             var link = rot(el.target.getAttribute('del'))
+            alert(link)
             simpleDialog('Tem certeza que deseja remover esse item?', () => {
                 simpleRequest(link, 'DELETE', null, function () {
-                    location.reload()
+                    window.location = '/storage/feedstock'
                 })
             })
         }

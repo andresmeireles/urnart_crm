@@ -3,15 +3,13 @@
 namespace App\Model;
 
 use App\Entity\Unit;
-use App\Model\Model;
 use App\Entity\Feedstock;
-use App\Entity\FeedstockInvetory;
-use App\Entity\Departament;
 use App\Entity\FeedstockInventory;
+use App\Entity\Departament;
 
 class FeedstockModel extends Model
 {
-    public function persist(array $data, $type = 'insert'): void
+    public function persist(array $data, $type = 'insert', $id = null): void
     {
         $type = strtolower($type);
 
@@ -31,7 +29,16 @@ class FeedstockModel extends Model
 
         $this->em->getConnection()->beginTransaction();
         try {
-            $feedstock = new Feedstock();
+            if ($type == 'update') {
+                $feedstock = $this->em->getRepository(Feedstock::class)->find($id);
+                $inventory = $this->em->getRepository(FeedstockInventory::class)->findOneBy(array(
+                    'feedstock_id' => $id
+                ));
+            } else {
+                $feedstock = new Feedstock();
+                $inventory = new FeedstockInventory();
+            }
+
             $feedstock->setNome($data['name']);
             $feedstock->setDescription($data['description']);
             $feedstock->setPeriodicity((int)$data['periocid']);
@@ -47,11 +54,11 @@ class FeedstockModel extends Model
             $departament = $this->em->getRepository(Departament::class)->find($data['departament']);
             $feedstock->setDepartament($departament);
 
-            $inventory = new FeedstockInventory();
             $inventory->setFeedstockId($feedstock);
-            $inventory->setStock('0');
             $inventory->setMaxStock($data['maxStock']);
             $inventory->setMinStock($data['minStock']);
+
+            $feedstock->setLastUpdate();
 
             $this->em->persist($feedstock);
             $this->em->persist($inventory);
@@ -64,9 +71,9 @@ class FeedstockModel extends Model
         }
     }
 
-    public function update(array $data): void
+    public function update(array $data, int $id): void
     {
-        $this->persist($data, 'update');
+        $this->persist($data, 'update', $id);
     }
 
     public function remove()
