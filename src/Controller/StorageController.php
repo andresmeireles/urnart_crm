@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -41,7 +42,7 @@ class StorageController extends Controller
     /**
      * @Route("/storage/feedstockAction/{id}", name="feedstockAction", methods={"POST", "DELETE", "GET"}, defaults={"id"=null})
      */
-    public function feedstockAction(Request $request, ?int $id)
+    public function feedstockAction(Request $request, ?int $id, Crud $getter)
     {
         $id = $id == null ? '' : (int) $id;
         $method = $request->server->get('REQUEST_METHOD');
@@ -81,7 +82,10 @@ class StorageController extends Controller
 
             return $this->render('storage/forms/feedstockForm.html.twig', [
                 'feedForm' => $feedForm->createView(),
-                'invForm' => $invForm->createView()
+                'invForm' => $invForm->createView(),
+                'product' => $getter->getRegisterById('feedstock', $id),
+                'unit' => $getter->get('unit'),
+                'departamento' => $getter->get('departament'),
              ]);
         } else {
             return $this->createNotFoundException();

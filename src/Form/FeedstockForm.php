@@ -19,10 +19,18 @@ class FeedstockForm extends AbstractType
         $builder
             ->add('nome', TextType::class, array(
                 'label' => 'Nome',
-                'required' => true
+                'required' => true,
+                'attr' => array('class' => 'form-control')
             ))
-            ->add('description')
-            ->add('vendors', CollectionType::class)
+            ->add('description', TextType::class, array(
+                'attr' => array('class' => 'form-control')
+            ))
+            ->add('mainVendor', TextType::class, array(
+                'attr' => array('class' => 'form-control')
+            ))
+            ->add('vendors', CollectionType::class, array(
+                'attr' => array('class' => 'form-control')
+            ))
             ->add('feedstockInventory')
             ->add('periodicity')
             ->add('maxStock', NumberType::class, array(
@@ -36,6 +44,7 @@ class FeedstockForm extends AbstractType
             ->add('unit')
             ->add('departament')
             ->add('save', SubmitType::class, array(
+                'label' => 'Atualizar',
                 'attr' => array('class' => 'btn btn-success'),
             ));
     }

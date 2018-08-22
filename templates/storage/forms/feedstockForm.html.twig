@@ -1,12 +1,10 @@
 {% extends 'index.html.twig' %}
 
 {% block content %}
-    <div class="py-4 col-md-11 d-none" id="add">
-        <form id="form-add">
+    <div class="py-4 col-md-12" id="add">
             <div class="card">
-                <div class="card-header">Detalhes do Produto {{  }}</div>
+                <div class="card-header">Detalhes do Produto <h4><b>{{ product.nome }}</b></h4></div>
                 <div class="card-body fitable">
-                    <div class="card-text fix-height">
 
                         <div class="row">
                             <div class="col-md-8">
@@ -15,19 +13,21 @@
                                     <div class="col-md-12 py-2">
                                         <div class="form-group">
                                             <label for="productName" class="required">Nome do produto</label>
-                                            <input type="text" class="form-control" name="name" placeholder="Insira o nome aqui" required>
+                                            {{ form_widget(feedForm.nome) }}
                                         </div>
                                         <div class="form-group">
                                             <label for="description">Descrição</label>
-                                            <textarea class="form-control" name="description" placeholder="Descrição opcional"></textarea>
+                                            {{ form_widget(feedForm.description) }}
                                         </div>
+                                        <!--
                                         <div class="form-group">
                                             <label for="usedIn">Usado nos modelos</label>
-                                            <input type="text" name="type" class="form-control" value="criar um selecionador de varios modelos básicos">
+
                                         </div>
+                                        -->
                                         <div class="form-group">
                                             <label for="mainVendor" class="required">Fornecedor Principal</label>
-                                            <input type="text" class="form-control" name="mainVendor" placeholder="Fornecedor principal" required>
+                                            {{ form_widget(feedForm.vendors) }}
                                         </div>
                                         <div class="form-group">
                                             <label for="otherVendors">Outros Fornecedores</label>
@@ -58,11 +58,7 @@
                                             <label for="unit" class="required">Tipo de unidade</label>
                                             <select name="unit" class="form-control" required>
                                                 <option value="" selected disabled>Selecione</option>
-                                                {% if unit %}
-                                                    {% for u in unit %}
-                                                        <option value={{ u.getId }}>{{ u.name | capitalize }}</option>
-                                                    {% endfor %}
-                                                {% endif %}
+
                                             </select>
                                         </div>
 
@@ -70,22 +66,18 @@
                                             <label for="departament" class="required">Departamento</label>
                                             <select name="departament" name="departament" class="form-control" required>
                                                 <option value="" selected disabled>Selecione</option>
-                                                {% if departament %}
-                                                    {% for d in departament %}
-                                                        <option value={{ d.getId }}>{{ d.name | capitalize  }}</option>
-                                                    {% endfor %}
-                                                {% endif %}
+
                                             </select>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="maxStock" class="required">Estoque Maximo</label>
-                                            <input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Max" required>
+                                            {{ form_widget(feedForm.maxStock) }}
                                         </div>
 
                                         <div class="form-group">
                                             <label for="maxStock" class="required">Estoque Mínimo</label>
-                                            <input type="text" name="minStock" class="form-control numbers-float-only" placeholder="Min" required>
+                                            {{ form_widget(feedForm.minStock) }}
                                         </div>
 
                                         <div class="form-group" id="periocid">
@@ -108,17 +100,12 @@
                                 </fieldset>
                             </div>
                         </div>
-                    </div>
                 </div>
                 <div class="card-footer text-muted">
                     <button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>
-                    <button class="btn btn-primary" sendvt="/storage/feedstockAction">Adicionar</button>
+                    {{ form_widget(feedForm.save) }}
                 </div>
             </div>
         </form>
-    </div>
-    <div class="p-3">
-            {{ form_widget(feedform.save) }}
-    Nome {{ form_widget(feedform.nome) }}
     </div>
 {% endblock %}
