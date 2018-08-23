@@ -30,6 +30,7 @@ global.simpleRequestForm = require('./src/global/simpleRequestForm')
 global.checkMask = require('./src/global/checkMask')
 global.showDate = require('./src/global/showDate')
 global.genericSend = require('./src/global/genericSend')
+global.cloneFieldForm = require('./src/global/cloneFieldForm')
 
 // validations
 global.checkRequired = require('./src/global/validation/checkRequired')

@@ -33,6 +33,7 @@ class StorageController extends Controller
     public function feedstock(Crud $getter)
     {
         return $this->render('storage/feedstock.html.twig', [
+            'product' => $getter->get('feedstock'),
             'feedstock' => $getter->get('feedstockInventory'),
             'unit' => $getter->get('unit'),
             'departament' => $getter->get('departament'),

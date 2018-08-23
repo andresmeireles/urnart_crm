@@ -12,8 +12,8 @@
 			<div class="col">
 				<div class="action-buttons">
 					<a href="/feedstock/add" data-action="add" class="btn btn-primary">Adicionar Produto</a>
-					<a href="/feedstock/inStock" class="btn btn-primary">Chegada</a>
-					<a href="/feedstock/outStock" class="btn btn-primary">Saida</a>
+					<a data-action="in" class="btn btn-primary text-light">Chegada</a>
+					<a data-action="out" class="btn btn-primary">Saida</a>
 				</div>
 				<div class="mx-0 my-3">
 					<div class="col">
@@ -243,4 +243,7 @@
 			</div>
 			</form>
 		</div>
+
+		{% include '/storage/pages/in.html.twig' with {'prods': product} only %}
+
 	{% endblock %}
