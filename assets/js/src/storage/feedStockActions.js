@@ -17,6 +17,13 @@ document.addEventListener('DOMContentLoaded', function () {
             })
         }
 
+        if (el.target.hasAttribute('send-in')) {
+            el.preventDefault()
+            genericSend(el, 'send-in', 'POST', function (response) {
+                console.log('sucesso')
+            })
+        }
+
         if (el.target.hasAttribute('target-attr')) {
             var target = el.target.getAttribute('target-attr')
             var input = document.querySelector(`[target="${target}"]`)

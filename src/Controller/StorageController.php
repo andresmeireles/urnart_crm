@@ -101,6 +101,15 @@ class StorageController extends Controller
     }
 
     /**
+     * @Route("/storage/feedstock/in", methods="POST")
+     */
+    public function feedIn(FeedstockModel $model, Request $request)
+    {
+        $data = $request->request->all();
+        $model->feedIn($data);
+    }
+
+    /**
      * @Route("/storage/prodStock", name="showProd")
      */
     public function prodStock()

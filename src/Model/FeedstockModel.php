@@ -76,6 +76,17 @@ class FeedstockModel extends Model
         $this->persist($data, 'update', $id);
     }
 
+    public function feedIn(array $data): void
+    {
+        $day = $data['date'];
+        unset($data['date']);
+
+        $values = array_values($data);
+
+        dump($values);
+        die();
+    }
+
     public function remove()
     {
 

@@ -43,7 +43,7 @@ class TravelFormCreator implements CreateFormInterface
 		<style>
 			#doc {}
 
-		.first-page { margin: 0px 0px 0px 0px; width: 100%; height: 100%; border: 1px solid black; position: relative; background: url("") center no-repeat; -webkit-print-color-adjust: exact;}
+		.first-page { margin: 0px 0px 0px 0px; width: 100%; height: 100%; position: relative; background: url("") center no-repeat; -webkit-print-color-adjust: exact;}
 		.page { margin: 80px 0px 0px 0px; width: 100%; height: 100%; border: 1px solid black; position: relative; background: url("") center no-repeat; -webkit-print-color-adjust: exact;}
 		.content { padding: 15px; }
 
