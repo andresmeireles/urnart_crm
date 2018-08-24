@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener('change', function (el) {
         if (el.target.id == 'produto') {
-            const amount = el.target.parentNode
+            const amount = el.target.parentNode.parentNode
             const input = amount.querySelector('#amount')
-            input.removeAttribute('disabled')
+            //input.removeAttribute('disabled')
             input.focus()
         }
     })

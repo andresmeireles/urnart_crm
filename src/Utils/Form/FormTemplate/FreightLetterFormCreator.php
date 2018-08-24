@@ -54,7 +54,7 @@ class FreightLetterFormCreator implements CreateFormInterface
 
 		$body = '
 		<style>
-		.r-page { width: 100%; height: 95%; border: 1px solid red }
+		.r-page { width: 100%; height: 95%;}
 		.r-h-page { width: 100%; height: 50%; }
 		.r-head { margin: 5px 15px 0px 20px; font-size: 1.2em; font-weight: bold; height: 15%; }
 		.r-body { margin: 10px 30px 0px 40px; height: 45% }

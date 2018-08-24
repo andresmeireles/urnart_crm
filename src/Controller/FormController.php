@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,8 +24,8 @@ class FormController extends Controller
      */
     public function createReport(Request $req, string $formName)
     {
-        $session = new Session;
-        $session->start();
+        //$session = new Session;
+        //$session->start();
         
         $dir = opendir(__DIR__.'/../../templates/form/');
         while ((readdir($dir)) !== false) {
@@ -49,6 +48,7 @@ class FormController extends Controller
                     $form->show($body);
                 }
 
+                /**
                 if ($session->get('error')) {
                     foreach ($session->get('error') as $message) {
                         $this->addFlash(
@@ -58,7 +58,7 @@ class FormController extends Controller
                     }
                     $session->remove('error');
                 }
-
+                */
                 return $this->render('form/'.$formName.'Form.html.twig', [
                     'formName' => $formName
                 ]);

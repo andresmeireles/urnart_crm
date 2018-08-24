@@ -9,7 +9,6 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Knp\Snappy\Pdf;
-use Dompdf\Dompdf;
 
 class Form 
 {

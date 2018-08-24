@@ -7,6 +7,9 @@ module.exports = function(id) {
 			afterLoad: function () {
 				var modalWindow = document.querySelector('#'+id).classList.remove('d-none');	
 			},
+			afterClose: function () {
+				var modalWindow = document.querySelector('#' + id).classList.add('d-none')				
+			}
 		}
 	});	
 };
