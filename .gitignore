@@ -4,7 +4,6 @@
 /var/
 /vendor/
 /.phpintel
-/laradock
 /.vscode
 /src/Migrations/*
 !/src/Migrations/.keep

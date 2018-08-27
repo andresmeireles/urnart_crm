@@ -103,10 +103,27 @@ class StorageController extends Controller
     /**
      * @Route("/storage/feedstock/in", methods="POST")
      */
-    public function feedIn(FeedstockModel $model, Request $request)
+    public function feedIn(FeedstockModel $model, Request $request): Response
     {
         $data = $request->request->all();
         $model->feedIn($data);
+        
+        return new Response('Sucesso! :)', Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/storage/feedstock/out", methods="POST")
+     *
+     * @param FeedstockModel $model
+     * @param Request $request
+     * @return Response
+     */
+    public function feedOut(FeedstockModel $model, Request $request): Response
+    {
+        $data = $request->request->all();
+        $model->feedOut($data);
+
+        return new Response('Sucesso !:)', Response::HTTP_OK);
     }
 
     /**

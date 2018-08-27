@@ -13,7 +13,7 @@
 				<div class="action-buttons">
 					<a href="/feedstock/add" data-action="add" class="btn btn-primary">Adicionar Produto</a>
 					<a data-action="in" class="btn btn-primary text-light">Chegada</a>
-					<a data-action="out" class="btn btn-primary">Saida</a>
+					<a data-action="out" class="btn btn-primary text-light">Saida</a>
 				</div>
 				<div class="mx-0 my-3">
 					<div class="col">
@@ -245,5 +245,6 @@
 		</div>
 
 		{% include '/storage/pages/in.html.twig' with {'prods': product} only %}
+		{% include '/storage/pages/out.html.twig' with {'prods': product} only %}
 
 	{% endblock %}

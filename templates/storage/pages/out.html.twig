@@ -1,0 +1,52 @@
+<div class="d-none" id="out">
+
+    <form>
+        <div>
+            <div class="row">
+                <h2>Saida de produtos</h2>
+            </div>
+            <div class="clearfix row">
+                <div class="float-left col-md-3">
+                    <h4>Produtos</h4>
+                </div>
+                <div class="float-right col-md-9 form-inline">
+                    <h4>
+                        <div class="input-group">
+                            <span class="mx-2">Data</span>
+                            <input type="text" target="date" name="date" class="form-control date-mask" value="{{"now"|date( "d/m/Y")}}">
+                        </div>
+                    </h4>
+                </div>
+            </div>
+            <div class="my-2">
+                <input type="submit" send-in="/storage/feedstock/out" class="btn btn-block btn-success" value="Enviar">
+            </div>
+        </div>
+        <div class="form-inline my-1" clonefield="prod">
+            <div class="col-md-12" clone-area="clone-area">
+                <div class="my-2 row" clone-field="clone-field">
+                    <input type="hidden" class="d-none" input-number='true' value="0">
+                    <div class="col-md-3">
+                        <select name="prod[name]" class="form-control w-100" id="produto-out">
+                            <option value="" selected="selected" disabled="disabled">Nome do Produto</option>
+                            {% for prod in prods %}
+                                <option value="{{ prod.getId }}">{{ prod.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 w-100 text=center">
+                        <p class="d-none" actual-amount></p>
+                        <h4><span class="mx-2">Estoque disponivel</span><input type="text" class="form-control disabled" actual-amount visiable disabled value=""></h4>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control w-100 numbers-only" id="amount" name="prod[amount]" required="required">
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary fas fa-plus" mk-clone="mk-clone"></button>
+                        <button class="btn btn-danger fas fa-minus" rm-clone="rm-clone"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

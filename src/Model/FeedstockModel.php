@@ -9,6 +9,14 @@ use App\Entity\Departament;
 
 class FeedstockModel extends Model
 {
+    /**
+     * Função que persiste e atualiza produtos do inventário
+     *
+     * @param array $data = Array associativo com dados a serem incluidos ou atualizados.
+     * @param string $type = Tipo de operação. INSERT inseri no banco de dados. UPDATE atualiza o produto no banco de dados.
+     * @param [type] $id = Caso a TYPE [$type] for UPDATE, ID do produto. 
+     * @return void
+     */
     public function persist(array $data, $type = 'insert', $id = null): void
     {
         $type = strtolower($type);
@@ -71,6 +79,13 @@ class FeedstockModel extends Model
         }
     }
 
+    /**
+     * Um wrapper para função PERSIST com atributos predefinidos
+     *
+     * @param array $data
+     * @param integer $id
+     * @return void
+     */
     public function update(array $data, int $id): void
     {
         $this->persist($data, 'update', $id);
@@ -80,15 +95,36 @@ class FeedstockModel extends Model
     {
         $day = $data['date'];
         unset($data['date']);
-
         $values = array_values($data);
 
-        dump($values);
-        die();
+        $this->em->getConnection()->beginTransaction();
+        try {
+            
+            foreach ($values as $inv) {
+                $feedstock = $this->em->getRepository(FeedStockInventory::class)->findOneBy(array(
+                    'feedstock_id' => $inv['name'],
+                ));
+
+                $actualStock = $feedstock->getStock();
+                $newStock = $actualStock + $inv['amount']; 
+
+                $feedstock->setStock((string) $newStock);
+
+                $this->em->merge($feedstock);
+                $this->em->flush();
+            }
+            
+            $this->em->getConnection()->commit();
+
+        } catch (\Exception $e) {
+            $this->em->getConnection()->rollback();
+            throw new \Exception($e->getMessage());
+        }
     }
 
-    public function remove()
+    public function feedOut(array $data): void
     {
-
+        dump($data);
+        die();
     }
 }

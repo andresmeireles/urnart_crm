@@ -1,5 +1,5 @@
 <div class="d-none" id="in">
-    <div class="col">
+  
         <form>
         <div>
         <div class="row">
@@ -28,7 +28,7 @@
                     <select name="prod[name]" class="form-control w-100" id="produto">
                         <option value="" selected disabled>Nome do Produto</option>
                         {% for prod in prods %}
-                            <option value="{{ prod.getId }}">{{ prod.nome }}</option>
+                            <option hash="{{ random(999) }}" value="{{ prod.getId }}">{{ prod.nome }}</option>
                         {% endfor %}
                     </select>
                     </div>
@@ -43,5 +43,4 @@
             </div>
         </div>
         </form>
-    </div>
 </div>
