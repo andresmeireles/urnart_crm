@@ -19,8 +19,10 @@ class StorageController extends Controller
 {
     /**
      * @Route("/storage", name="storage")
+     * 
+     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         return $this->render('storage/index.html.twig', [
             'controller_name' => 'StorageController',
@@ -29,8 +31,11 @@ class StorageController extends Controller
 
     /**
      * @Route("/storage/feedstock", name="feedstock", methods="GET")
+     * 
+     * @param Crud $getter
+     * @return Response
      */
-    public function feedstock(Crud $getter)
+    public function feedstock(Crud $getter): Response
     {
         return $this->render('storage/feedstock.html.twig', [
             'product' => $getter->get('feedstock'),
@@ -42,8 +47,13 @@ class StorageController extends Controller
 
     /**
      * @Route("/storage/feedstockAction/{id}", name="feedstockAction", methods={"POST", "DELETE", "GET"}, defaults={"id"=null})
+     * 
+     * @param Request $reques
+     * @param int|null $id
+     * @param Crud $getter
+     * @return Response
      */
-    public function feedstockAction(Request $request, ?int $id, Crud $getter)
+    public function feedstockAction(Request $request, ?int $id, Crud $getter): Response
     {
         $id = $id == null ? '' : (int) $id;
         $method = $request->server->get('REQUEST_METHOD');
@@ -92,8 +102,12 @@ class StorageController extends Controller
 
     /**
      * @Route("/storage/feedstockAction/update/{id}", methods="POST")
+     * 
+     * @param Feedstock $model
+     * @param Request $request
+     * @return Response
      */
-    public function updateFeedStock(FeedstockModel $model, Request $request, int $id)
+    public function updateFeedStock(FeedstockModel $model, Request $request, int $id): Response
     {
         $data = $request->request->all();
         $model->update($data, $id);
@@ -102,6 +116,10 @@ class StorageController extends Controller
 
     /**
      * @Route("/storage/feedstock/in", methods="POST")
+     * 
+     * @param Feedstock $model 
+     * @param Request $request
+     * @return Response 
      */
     public function feedIn(FeedstockModel $model, Request $request): Response
     {
@@ -121,9 +139,9 @@ class StorageController extends Controller
     public function feedOut(FeedstockModel $model, Request $request): Response
     {
         $data = $request->request->all();
-        $model->feedOut($data);
+        $result = $model->feedOut($data);
 
-        return new Response('Sucesso !:)', Response::HTTP_OK);
+        return new Response($result['message'], $result['http_code']);
     }
 
     /**

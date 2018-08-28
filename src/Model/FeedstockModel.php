@@ -3,9 +3,9 @@
 namespace App\Model;
 
 use App\Entity\Unit;
+use App\Entity\Departament;
 use App\Entity\Feedstock;
 use App\Entity\FeedstockInventory;
-use App\Entity\Departament;
 
 class FeedstockModel extends Model
 {
@@ -14,10 +14,10 @@ class FeedstockModel extends Model
      *
      * @param array $data = Array associativo com dados a serem incluidos ou atualizados.
      * @param string $type = Tipo de operação. INSERT inseri no banco de dados. UPDATE atualiza o produto no banco de dados.
-     * @param [type] $id = Caso a TYPE [$type] for UPDATE, ID do produto. 
+     * @param string $id = Caso a TYPE [$type] for UPDATE, ID do produto. 
      * @return void
      */
-    public function persist(array $data, $type = 'insert', $id = null): void
+    public function persist(array $data, string $type = 'insert', ?int $id = null): void
     {
         $type = strtolower($type);
 
@@ -122,9 +122,53 @@ class FeedstockModel extends Model
         }
     }
 
-    public function feedOut(array $data): void
+    /**
+     * Retira produto do estoque.
+     *
+     * @param array $data
+     * @return array => retorna 203 quando há erro
+     */
+    public function feedOut(array $data): array
     {
-        dump($data);
-        die();
+        $day = $data['date'];
+        unset($data['date']);
+
+        $values = array_values($data);
+        
+        $this->em->getConnection()->beginTransaction();
+        try {
+            
+            foreach ($values as $inv) {
+                $feedstock = $this->em->getRepository(FeedStockInventory::class)->findOneBy(array(
+                    'feedstock_id' => $inv['name'],
+                ));
+
+                $actualStock = $feedstock->getStock();
+                
+                if ($actualStock < $inv['amount']) {
+                    return array(
+                        'http_code' => 203,
+                        'message' => 'Retirada maior que estoque'
+                    );
+                }
+
+                $newStock = $actualStock - $inv['amount'];
+                 
+                $feedstock->setStock((string) $newStock);
+                $this->em->merge($feedstock);
+                $this->em->flush();
+            }
+            
+            $this->em->getConnection()->commit();
+
+            return array(
+                'http_code' => 200,
+                'message' => 'Sucesso!'
+            );
+
+        } catch (\Exception $e) {
+            $this->em->getConnection()->rollback();
+            throw new \Exception($e->getMessage());
+        }
     }
 }

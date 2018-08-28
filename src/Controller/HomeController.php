@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -16,5 +17,15 @@ class HomeController extends Controller
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
+    }
+
+    /**
+     * @Route("/activiment")
+     *
+     * @return Response
+     */
+    public function activiment(): Response
+    {
+        return $this->render('home/activiments.html.twig');
     }
 }

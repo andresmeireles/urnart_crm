@@ -1,8 +1,8 @@
-<div class="d-none" id="out">
+<div class="d-none col-md-11" id="out">
 
     <form>
         <div>
-            <div class="row">
+            <div class="row mx-1">
                 <h2>Saida de produtos</h2>
             </div>
             <div class="clearfix row">
@@ -13,7 +13,7 @@
                     <h4>
                         <div class="input-group">
                             <span class="mx-2">Data</span>
-                            <input type="text" target="date" name="date" class="form-control date-mask" value="{{"now"|date( "d/m/Y")}}">
+                            <input type="text" target="date" name="date" class="form-control date-mask" value="{{"now"|date("d/m/Y")}}">
                         </div>
                     </h4>
                 </div>
@@ -35,11 +35,12 @@
                         </select>
                     </div>
                     <div class="col-md-4 w-100 text=center">
-                        <p class="d-none" actual-amount></p>
-                        <h4><span class="mx-2">Estoque disponivel</span><input type="text" class="form-control disabled" actual-amount visiable disabled value=""></h4>
+                        <p class="d-none" value="8" actual-amount></p>
+                        <h5><span class="mx-2">Estoque disponivel</span><input type="text" name="actual-stock" id="actual-stock" class="form-control w-50 disabled" actual-amount visiable disabled value=""></h5>
                     </div>
                     <div class="col-md-3">
                         <input type="text" class="form-control w-100 numbers-only" id="amount" name="prod[amount]" required="required">
+                        <small class="d-none text-danger">Valor maior do que o estoque</small>
                     </div>
                     <div class="col">
                         <button class="btn btn-primary fas fa-plus" mk-clone="mk-clone"></button>

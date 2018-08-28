@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+
     const previous = []
     let now = ''
 
@@ -31,13 +31,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             simpleRequest(`/register/get?entity=feedstock&id=${el.target.value}`, 'GET', null, function (response) {
+                
                 let element = el.target.closest('[clone-area]').querySelectorAll('[actual-amount]')
                 
-                for (var e of element) {
-                    e.innerHTML = response.data.feedstock_inventory.stock
+                for (let e of element) {
                     e.value = response.data.feedstock_inventory.stock
+                    e.innerHTML = response.data.feedstock_inventory.stock
                 }
-                console.log(response)
+
             })
 
             const amount = el.target.parentNode.parentNode
@@ -46,6 +47,36 @@ document.addEventListener('DOMContentLoaded', function () {
             input.focus()
         }
     })
+
+    document.addEventListener('blur', function (el) {
+        if (el.target.id == 'amount') {
+            let val = Number(el.target.value)
+            let input = el.target.closest('[clone-area]').querySelector('#actual-stock')
+            let inputValue = Number(el.target.closest('[clone-area]').querySelector('.d-none[actual-amount]').value)
+
+            if (val == 0) {
+                el.target.value = ''
+                return false
+            }
+
+            if (val > inputValue) {
+                el.target.classList.add('is-invalid')
+                var small = el.target.parentNode.querySelector('small')
+                small.classList.remove('d-none')
+                el.target.value = ''
+                alert('Valor muito grande')
+                return false
+            } 
+
+            if (el.target.classList.contains('is-invalid')) {
+                el.target.classList.remove('is-invalid')
+                var small = el.target.parentNode.querySelector('small')
+                small.classList.add('d-none')
+
+                input.value = (inputValue - val)
+            }
+        }
+    }, true)
 
     document.addEventListener('click', function (el) {
 
@@ -75,8 +106,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (el.target.hasAttribute('send-in')) {
             el.preventDefault()
             genericSend(el, 'send-in', 'POST', function (response) {
+                
+                if (response.status == 203) {
+                    alert(response.data)
+                    return false
+                }
+                
                 window.location.reload()
-                console.log('sucesso')
             })
         }
 
@@ -101,5 +137,3 @@ document.addEventListener('DOMContentLoaded', function () {
             })
         }
     })
-
-})
