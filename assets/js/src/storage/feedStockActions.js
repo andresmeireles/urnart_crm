@@ -88,7 +88,7 @@
         }
 
         if (el.target.getAttribute('sendvt')) {
-            el.target.setAttribute('disabled', '')
+            //el.target.setAttribute('disabled', '')
             el.preventDefault()
 
             var form = el.target.closest('form')
@@ -99,7 +99,8 @@
             } 
 
             genericSend(el, 'sendvt', 'POST', function (response) {
-                location.reload()
+                console.log(response)
+                //location.reload()
             })
         }
 

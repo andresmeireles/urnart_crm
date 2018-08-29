@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-header">Cadastrar</div>
             <div class="card-body fitable">
-                <div class="card-text fix-height">
+                <div class="card-text">
 
                     <div class="row">
                         <div class="col-md-8">
@@ -35,13 +35,13 @@
                                 <legend for="unitAndAmount" class="bg-light">OUTRAS INFO.</legend>
 
                                     <div class="form-group">
-                                        <label for="usedIn">Preço</label>
-                                        <input type="text" name="price" id="price" class="form-control numbers-only" value="Apenas numeros">
+                                        <label for="price" class="required">Preço</label>
+                                        <input type="text" name="price" id="price" class="form-control numbers-only" placeholder="Apenas numeros" required>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="colors">Cores</label>
-                                        <select name="colors[]" class="d-none" id="colorsList" multiple="multiple" required></select>
+                                        <select name="colors[]" class="d-none" name="colors" id="colorsList" multiple="multiple" required></select>
                                         <div id="inputOtherVendors">
                                             <small>Aperte abaixo para incluir cores</small><br>
                                             <div class="input-group">
@@ -72,7 +72,7 @@
             </div>
             <div class="card-footer text-muted">
                 <button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>
-                <button class="btn btn-primary" sendvt="/storage/feedstockAction">Adicionar</button>
+                <button class="btn btn-primary" sendvt="/storage/productAction">Adicionar</button>
             </div>
         </div>
     </form>

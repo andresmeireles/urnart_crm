@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Utils\Generic\Crud;
+use App\Model\ProductModel;
 use App\Model\FeedstockModel;
 use App\Entity\Feedstock;
 use App\Entity\FeedstockInventory;
@@ -159,5 +160,20 @@ class StorageController extends Controller
         return $this->render('/storage/product.html.twig', [
             'product' => $getter->get('product')
         ]);
+    }
+
+    /**
+     * @Route("/storage/productAction", methods="POST")
+     *
+     * @param ProductModel $model
+     * @param array $data
+     * @param Request $require
+     * @return Response
+     */
+    public function productAction(ProductModel $model, Request $request): Response
+    {
+        $data = $request->request->all();
+        $response = $model->insert($data);
+        return new Response($response['message'], $response['http_code']);
     }
 }

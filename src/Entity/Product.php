@@ -111,4 +111,19 @@ class Product
 
         return $this;
     }
+
+    public function getStock(): ?string
+    {
+        return $this->productInventory->getStock();
+    }
+
+    public function getMaxStock(): ?string
+    {
+        return $this->productInventory->getMaxStock();
+    }
+
+    public function getMinStock(): ?string
+    {
+        return $this->productInventory->getMinStock();
+    }
 }

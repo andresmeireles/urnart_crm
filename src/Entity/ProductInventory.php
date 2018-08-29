@@ -29,7 +29,7 @@ class ProductInventory
     /**
      * @ORM\Column(type="float")
      */
-    private $stock;
+    private $stock = 0;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Product", inversedBy="productInventory", cascade={"persist", "remove"})
