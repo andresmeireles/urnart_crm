@@ -36,6 +36,11 @@ class Product
      */
     private $color;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ProductInventory", mappedBy="product", cascade={"persist", "remove"})
+     */
+    private $productInventory;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +90,24 @@ class Product
     public function setColor(array $color): self
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    public function getProductInventory(): ?ProductInventory
+    {
+        return $this->productInventory;
+    }
+
+    public function setProductInventory(?ProductInventory $productInventory): self
+    {
+        $this->productInventory = $productInventory;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newProduct = $productInventory === null ? null : $this;
+        if ($newProduct !== $productInventory->getProduct()) {
+            $productInventory->setProduct($newProduct);
+        }
 
         return $this;
     }

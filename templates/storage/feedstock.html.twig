@@ -68,8 +68,9 @@
 														<td>{{ f.getFeedstockId.getDepartament.getName | capitalize }}</td>
 														<td>{{ f.getFeedstockId.getMainVendor }}</td>
 														<td class="text-center">
-														<a href="/storage/feedstockAction/{{ f.getFeedstockId.getId }}" class="badge badge-secondary">Visualizar</a>
-														<a href="#" class="badge badge-danger" del={{ '/storage/feedstockAction/' | rot13 }}{{ f.getFeedstockId.getId }}>Remover</a>
+														<a data-action="view{{ f.getFeedstockId.getId }}" class="badge badge-secondary text-light cursor-decoration">Visualizar</a>
+														<a href="/storage/feedstockAction/{{ f.getFeedstockId.getId }}" class="badge badge-success text-light">Editar</a>
+														<a href="#" class="badge badge-danger text-light" del={{ '/storage/feedstockAction/' | rot13 }}{{ f.getFeedstockId.getId }}>Remover</a>
 														</td>
 													</tr>
 												{% endfor %}
@@ -157,17 +158,17 @@
 										</div>
 										<div class="form-group">
 											<label for="otherVendors">Outros Fornecedores</label>
-											<select name="otherVendors[]" class="d-none" id="otherVendors" multiple>
+											<select name="otherVendors[]" class="d-none" id="inputOtherList" multiple>
 											</select>
 											<div id="inputOtherVendors" class="p-1">
 												<small>Aperte abaixo para incluir outros fornecedores</small><br>
 												<div class="input-group my-2">
-													<ul class="form-control py-1" id="vendorsList"></ul>
+													<ul class="form-control py-1" target="inputOther" id="vendorsGrid"></ul>
 													<div class="input-group-append">
 														<span class="input-group-text" id="removeAll">x</span>
 													</div>
 												</div>
-												<input type="text" class="d-none form-control" id="inputOtherVendors" placeholder="Insira o nome e aprte ENTER">
+												<input type="text" class="d-none form-control" id="inputOther" placeholder="Insira o nome e aprte ENTER">
 											</div>
 										</div>
 									</div>
@@ -246,5 +247,9 @@
 
 		{% include '/storage/pages/in.html.twig' with {'prods': product} only %}
 		{% include '/storage/pages/out.html.twig' with {'prods': product} only %}
+
+		{% for p in feedstock %}
+			{% include '/storage/pages/view.html.twig' with { product : p.getFeedstockId } %}
+		{% endfor %}
 
 	{% endblock %}

@@ -3,11 +3,11 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
-use App\Entity\Feedstock;
-use App\Form\FeedstockForm;
 use App\Utils\Generic\Crud;
 use App\Model\FeedstockModel;
+use App\Entity\Feedstock;
 use App\Entity\FeedstockInventory;
+use App\Form\FeedstockForm;
 use App\Form\FeedstockInventoryForm;
 use App\Repository\FeedstockRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,12 +20,15 @@ class StorageController extends Controller
     /**
      * @Route("/storage", name="storage")
      * 
+     * @param Crud $getter
+     * 
      * @return Response
      */
-    public function index(): Response
+    public function index(Crud $getter): Response
     {
         return $this->render('storage/index.html.twig', [
-            'controller_name' => 'StorageController',
+            'feed' => $getter->get('feedstock'),
+            'prod' => $getter->get('product')
         ]);
     }
 
@@ -145,10 +148,16 @@ class StorageController extends Controller
     }
 
     /**
-     * @Route("/storage/prodStock", name="showProd")
+     * @Route("/storage/product", name="showProd")
+     * 
+     * @param Crud $getter
+     * 
+     * @return Response
      */
-    public function prodStock()
+    public function prodStock(Crud $getter): Response
     {
-
+        return $this->render('/storage/product.html.twig', [
+            'product' => $getter->get('product')
+        ]);
     }
 }

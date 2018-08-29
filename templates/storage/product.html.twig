@@ -1,0 +1,159 @@
+{% extends '/index.html.twig' %}
+
+{% block title %}
+    Produtos
+{% endblock %}
+
+{% block content %}
+    <div class="col p-3">
+        <h1>Estoques</h1>
+        <hr>
+        <div class="row px-2">
+            <div class="col">
+
+                <div class="action-buttons">
+                    <a data-action="add-prod" class="btn btn-primary text-light">Adicionar Produto</a>
+                    <a data-action="in-prod" class="btn btn-primary text-light">Adicionar Produção</a>
+                </div>
+
+                <div class="mx-0 my-3">
+                    <div class="col">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark active" id="feedstock-tab" data-toggle="tab" href="#feedstock" role="tab" aria-controls="home" aria-selected="true">
+                                    <b>Resumo</b>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="product-tab" data-toggle="tab" href="#products" role="tab" aria-controls="profile" aria-selected="false">
+                                    <b>Estatisticas</b>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="product-tab" data-toggle="tab" href="#products" role="tab" aria-controls="profile" aria-selected="false">
+                                    <b>Relatórios</b>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="product-tab" data-toggle="tab" href="#products" role="tab" aria-controls="profile" aria-selected="false">
+                                    <b>Listas</b>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="feedstock" role="tabpanel" aria-labelledby="feedstock-tab">
+                                <div class="m-0">
+                                    <div class="row my-2 mx-0">
+                                        <div class="mx-2">
+                                            <i class="badge badge-warning">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                            - Produto precisa de atenção</div>
+                                        <div class="mx-2">
+                                            <i class="badge badge-danger">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                            - Produto em quantidade mínima</div>
+                                    </div>
+                                    <table class="table table-hover tablesorter sortable">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th >#</th>
+                                                <th width="18%" data-sort-default="data-sort-default">Nome</th>
+                                                <th>Cores<th>
+                                                <th>Qnt</th>
+                                                <th>UN</th>
+                                                <th>Min.</th>
+                                                <th>Max.</th>
+                                                <th >&nbsp;</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if product %}
+                                                {% for p in product %}
+                                                    <tr>
+                                                    
+                                                    </tr>
+                                                {% endfor %}
+                                            {% else %}
+                                                <tr>
+                                                    <th colspan="9" class="text-center">Nenhum produto</th>
+                                                </tr>
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
+                                <div class="m-2">
+                                    <div class="row my-2 mx-0">
+                                        <div class="mx-2">
+                                            <i class="badge badge-warning">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                            - Produto precisa de atenção</div>
+                                        <div class="mx-2">
+                                            <i class="badge badge-danger">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                                            - Produto em quantidade mínima</div>
+                                    </div>
+                                    <table class="table table-hover">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th style="width: 10%">#</th>
+                                                <th style="width: 50%">Nome</th>
+                                                <th style="width: 30%">Quantidade</th>
+                                                <th style="width: 10%">Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">
+                                                    <b>1</b>
+                                                </th>
+                                                <td>
+                                                    <b>Mark</b>
+                                                </td>
+                                                <td>
+                                                    <b>Otto</b>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="#" class="badge badge-secondary">Visualizar</a>
+                                                </td>
+                                            </tr>
+                                            <tr class="bg-danger">
+                                                <th scope="row">
+                                                    <b>1</b>
+                                                </th>
+                                                <td>
+                                                    <b>Mark</b>
+                                                </td>
+                                                <td>
+                                                    <b>Otto</b>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="#" class="badge badge-secondary">Visualizar</a>
+                                                </td>
+                                            </tr>
+                                            <tr class="bg-warning">
+                                                <th scope="row">
+                                                    <b>1</b>
+                                                </th>
+                                                <td>
+                                                    <b>Mark</b>
+                                                </td>
+                                                <td>
+                                                    <b>Otto</b>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="#" class="badge badge-secondary">Visualizar</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include '/storage/pages/prod-in.html.twig' with { 'prods' : product } only %}
+
+{% endblock %}

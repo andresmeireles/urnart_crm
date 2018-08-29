@@ -46,7 +46,11 @@
                                             <div id="inputOtherVendors" class="p-1">
                                                 <small>Aperte abaixo para incluir outros fornecedores</small><br>
                                                 <div class="input-group my-2">
-                                                    <ul class="form-control py-1" id="vendorsList"></ul>
+                                                    <ul class="form-control py-1" id="vendorsList">
+                                                        {% for ov in product.getOtherVendors %}
+                                                            <li class="badge badge-pill badge-light"><span class="mx-1">{{ ov }}</span><span class="text-danger cursor-decoration" id="removeItem">x</span></li>
+                                                        {% endfor %}
+                                                    </ul>
                                                     <div class="input-group-append">
                                                         <span class="input-group-text" id="removeAll">x</span>
                                                     </div>

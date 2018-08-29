@@ -86,6 +86,18 @@ class Feedstock extends BaseEntity
         return $this;
     }
 
+    public function getVendors() : ? array
+    {
+        return $this->vendors;
+    }
+
+    public function setVendors(? array $vendors) : self
+    {
+        $this->vendors = $vendors;
+
+        return $this;
+    }
+    
     /**
      * Return the first item of array
      *
@@ -105,21 +117,11 @@ class Feedstock extends BaseEntity
     public function getOtherVendors(): ?array
     {
         if (count($this->vendors) > 1) {
-            return array_shift($this->vendors);
+            $otherVendors = $this->getVendors();
+            array_shift($otherVendors);
+            return $otherVendors;
         }
         return array();
-    }
-
-    public function getVendors() : ? array
-    {
-        return $this->vendors;
-    }
-
-    public function setVendors(? array $vendors) : self
-    {
-        $this->vendors = $vendors;
-
-        return $this;
     }
 
     public function getPeriodicity() : ? int
@@ -150,6 +152,11 @@ class Feedstock extends BaseEntity
         }
 
         return $this;
+    }
+
+    public function getStock(): ?string
+    {
+        return $this->feedstockInventory->getStock();
     }
 
     public function getMaxStock(): ?string
