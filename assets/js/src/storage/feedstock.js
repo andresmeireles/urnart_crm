@@ -7,7 +7,7 @@ document.addEventListener('click', function(el) {
 	
 	if (el.target.id == 'inputOtherVendors' ||  el.target.tagName == 'UL') {
 		//var inputVendorDiv = document.querySelector('#inputOtherVendors');
-		var inputDiv = el.target.getAttribute('target');
+		var inputDiv = el.target.getAttribute('data-target');
 		var input = document.querySelector(`#${inputDiv}`);
 		//inputDiv.classList.add('bg-light');
 		input.classList.remove('d-none');
@@ -22,12 +22,12 @@ document.addEventListener('click', function(el) {
 	}
 	
 	if (el.target.id == 'removeItem') {
-		var target = el.target.getAttribute('target')
+		var target = el.target.getAttribute('data-target')
 		var liElement = el.target.parentNode
-		var removeIdOption = liElement.querySelector('span').innerText.toLowerCase();
-		var idOpt = removeIdOption.replace(/\s/g, '-');
-		document.querySelector('#otherVendors #'+ idOpt).remove();
-		liElement.remove();
+		let liName = liElement.getAttribute('name')
+		var option = document.querySelector(`select#${target}List`).querySelector(`#${liName}`)
+		option.remove()
+		liElement.remove()
 	}
 	
 	if (el.target.hasAttribute('required')) {
@@ -113,7 +113,7 @@ document.addEventListener('change', function (el) {
 
 var addOnUl = function (value, id) {
 	var ul = document.querySelector(`#${id}Grid`);
-	var addStr = `<li class="badge badge-pill badge-light"><span class="mx-1">${value}</span><span class="text-danger cursor-decoration" target="${id}" id="removeItem">x</span></li>`;
+	var addStr = `<li class="badge badge-pill badge-light" name="${value.toLowerCase()}"><span class="mx-1">${value}</span><span class="text-danger cursor-decoration" data-target="${id}" id="removeItem">x</span></li>`;
 	ul.innerHTML += addStr;
 	return true;
 }
