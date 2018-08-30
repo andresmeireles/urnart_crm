@@ -15,6 +15,7 @@ vexjs.dialog.buttons.NO.text = 'Cancelar'
 //globals
 global.$ = global.jQuery = $
 global.axios = require('axios')
+global.tablesorter = require('tablesorter')
 global.vex = vexjs
 global.rot = require('rot')
 
@@ -49,8 +50,6 @@ global.customerTemplate = require('./src/register/templates/customerTemplate')
 import './src/sidebarAction.js'
 import './src/globals'
 
-import './src/global/masks'
-
 import './src/form/createFormModal.js';
 import './src/form/cloneField.js';
 import './src/form/remand.js';
@@ -63,12 +62,14 @@ import './src/register/registerEvents';
 import './src/register/customer';
 import './src/register/cloneFieldCustomer';
 
+import './src/global/masks'
+import './src/global/tools/sorter'
 
-if (document.querySelector('.sortable')) {
-	$('.sortable').tablesorter({
-		sortList: [[1,0], [2,0]]
-	});
-}
+//if (document.querySelector('.sortable')) {
+//	$('.sortable').tablesorter({
+//		sortList: [[1, 0], [2, 0]]
+//	});
+//}
 
 if (document.querySelector('.f-date')) {
 	var dateMask = new IMask(

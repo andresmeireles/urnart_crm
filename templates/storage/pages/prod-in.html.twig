@@ -1,78 +1,47 @@
-<div class="py-4 col-md-11 d-none" id="add-prod">
-    <form id="form-add">
-        <div class="card">
-            <div class="card-header">Cadastrar</div>
-            <div class="card-body fitable">
-                <div class="card-text">
+<div class="d-none" id="in">
 
-                    <div class="row">
-                        <div class="col-md-8">
-                            <fieldset class="border border-light">
-                                <legend class="bg-light px-1">Informações Básicas</legend>
-                                <div class="col-md-12 py-2">
-                                    <div class="form-group">
-                                        <label for="productName" class="required">Nome do produto</label>
-                                        <input type="text" class="form-control" name="name" placeholder="Insira o nome aqui" required="required">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="usedIn">Modelo</label>
-                                        <input type="text" name="model" id="model" class="form-control" value="" placeholder="modelo">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="description">Descrição</label>
-                                        <textarea class="form-control" name="description" placeholder="Descrição opcional"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="usedIn">Composição</label>
-                                        <input type="text" name="type" class="form-control" value="criar um selecionador de varios modelos básicos">
-                                    </div>
-
-                            </fieldset>
+    <form>
+        <div>
+            <div class="row">
+                <h2>Entrada de produtos</h2>
+            </div>
+            <div class="clearfix row">
+                <div class="float-left col-md-3">
+                    <h4>Produtos</h4>
+                </div>
+                <div class="float-right col-md-9 form-inline">
+                    <h4>
+                        <div class="input-group">
+                            <span class="mx-2">Data</span>
+                            <input type="text" target="date" name="date" class="form-control date-mask" value="{{" now"|date( "="now"|date( "" d/m/y")}}"="d/m/Y")}}"">
                         </div>
-
-                        <div class="col-md-4">
-                            <fieldset class="border border-light px-1">
-                                <legend for="unitAndAmount" class="bg-light">OUTRAS INFO.</legend>
-
-                                    <div class="form-group">
-                                        <label for="price" class="required">Preço</label>
-                                        <input type="text" name="price" id="price" class="form-control numbers-only" placeholder="Apenas numeros" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="colors">Cores</label>
-                                        <select name="colors[]" class="d-none" name="colors" id="colorsList" multiple="multiple" required></select>
-                                        <div id="inputOtherVendors">
-                                            <small>Aperte abaixo para incluir cores</small><br>
-                                            <div class="input-group">
-                                                <ul class="form-control py-1" data-target="colors" id="colorsGrid"></ul>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text" data-target="colors" id="removeAll">x</span>
-                                                </div>
-                                            </div>
-                                            <input type="text" class="d-none form-control my-1" id="colors" placeholder="Insira o nome e aprte ENTER">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="maxStock" class="required">Estoque Maximo</label>
-                                        <input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Max" required="required">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="maxStock" class="required">Estoque Mínimo</label>
-                                        <input type="text" name="minStock" class="form-control numbers-float-only" placeholder="Min" required="required">
-                                    </div>
-
-                                </div>
-                            </fieldset>
-                        </div>
-                    </div>
+                    </h4>
                 </div>
             </div>
-            <div class="card-footer text-muted">
-                <button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>
-                <button class="btn btn-primary" sendvt="/storage/productAction">Adicionar</button>
+            <div class="my-2">
+                <input type="submit" send-in="/storage/feedstock/in" class="btn btn-block btn-success" value="Enviar">
+            </div>
+        </div>
+        <div class="form-inline my-1" clonefield="prod">
+            <div class="col-md-12" clone-area="clone-area">
+                <div class="my-2 row" clone-field="clone-field">
+                    <input type="hidden" class="d-none" input-number='true' value="0">
+                    <div class="col-md-5">
+                        <select name="prod[name]" class="form-control w-100" id="produto">
+                            <option value="" selected="selected" disabled="disabled">Nome do Produto</option>
+                            {% for prod in prods %}
+                                <option hash="{{ random(999) }}" value="{{ prod.getId }}">{{ prod.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control w-100 numbers-only" id="amount" name="prod[amount]" required="required">
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary fas fa-plus" mk-clone="mk-clone"></button>
+                        <button class="btn btn-danger fas fa-minus" rm-clone="rm-clone"></button>
+                    </div>
+                </div>
             </div>
         </div>
     </form>

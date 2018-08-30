@@ -1,0 +1,143 @@
+{% extends 'index.html.twig' %}
+
+{% block content %}
+    <div class="py-4 col-md-12" id="add">
+        <form method="POST" action="/storage/feedstockAction/update/{{ product.getId }}" id="form-add">
+            <div class="card">
+                <div class="card-header">
+                    <div class="float-left">
+                        Atualizar Produto
+                        <h4>
+                            <b>{{ product.nome }}</b>
+                        </h4>
+                    </div>
+                    <div class="float-right">
+                        <h4>Atualizado por:
+                        </h4>
+                        <h4>Em
+                            {{ product.lastUpdate }}</h4>
+                    </div>
+                </div>
+                <div class="card-body fitable">
+                    <div class="card-text">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <fieldset class="border border-light">
+                                    <legend class="bg-light px-1">Informações Básicas</legend>
+                                    <div class="col-md-12 py-2">
+                                        <div class="form-group">
+                                            <label for="productName" class="required">Nome do produto</label>
+                                            <input type="text" class="form-control" name="name" placeholder="Insira o nome aqui" value="{{ product.nome }}" required="required">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Descrição</label>
+                                            <textarea class="form-control" name="description" placeholder="Descrição opcional">{{ product.description }}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="usedIn">Usado nos modelos</label>
+                                            <input type="text" name="type" class="form-control" value="criar um selecionador de varios modelos básicos">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mainVendor" class="required">Fornecedor Principal</label>
+                                            <input type="text" class="form-control" name="mainVendor" placeholder="Fornecedor principal" value="{{ product.mainVendor }}" required="required">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="otherVendors">Outros Fornecedores</label>
+                                            <select name="otherVendors[]" class="d-none" id="otherVendors" multiple="multiple">
+                                                {% for ov in product.getOtherVendors %}
+                                                    <option value="{{ ov }}">{{ ov }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <div id="inputOtherVendors" class="p-1">
+                                                <small>Aperte abaixo para incluir outros fornecedores</small><br>
+                                                <div class="input-group my-2">
+                                                    <ul class="form-control py-1" id="vendorsList">
+                                                        {% for ov in product.getOtherVendors %}
+                                                            <li class="badge badge-pill badge-light">
+                                                                <span class="mx-1">{{ ov }}</span><span class="text-danger cursor-decoration" id="removeItem">x</span></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text" id="removeAll">x</span>
+                                                    </div>
+                                                </div>
+                                                <input type="text" class="d-none form-control" id="inputOtherVendors" placeholder="Insira o nome e aprte ENTER">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                            </div>
+
+                            <div class="col-md-4">
+                                <fieldset class="border border-light">
+                                    <legend for="unitAndAmount" class="bg-light">UND e QNT</legend>
+                                    <div class="col-md-12 px-2">
+
+                                        <div class="form-group">
+                                            <label for="unit" class="required">Tipo de unidade</label>
+                                            <select name="unit" class="form-control" required="required">
+                                                {% for u in unit %}
+                                                    {% if u.name == product.getUnit %}
+                                                        <option value="{{ u.getId }}" selected="selected">{{ u.name | capitalize }}</option>
+                                                    {% endif %}
+                                                    <option value="{{ u.getId }}">{{ u.name | capitalize }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="departament" class="required">Departamento</label>
+                                            <select name="departament" class="form-control" required="required">
+                                                <option value="" selected="selected" disabled="disabled">Selecione</option>
+                                                {% for d in departament %}
+                                                    {% if d.name == product.departament %}
+                                                        <option value="{{ d.getId }}" selected="selected">{{ d.name | capitalize  }}</option>
+                                                    {% endif %}
+                                                    <option value="{{ d.getId }}">{{ d.name | capitalize  }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="maxStock" class="required">Estoque Maximo</label>
+                                            <input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Max" value="{{ product.maxStock }}" required="required">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="maxStock" class="required">Estoque Mínimo</label>
+                                            <input type="text" name="minStock" class="form-control numbers-float-only" placeholder="Min" value="{{ product.minStock }}" required="required">
+                                        </div>
+
+                                        <div class="form-group" id="periocid">
+                                            <label for="periocid" class="required">Periocidade de Reabastecimento</label>
+                                            <select class="form-control" id="select" name="periocid" required="required">
+                                                <option value="" selected="selected" disabled="disabled">Selecione</option>
+                                                <option value="15" {{ product.periodicity == 15 ? 'selected' : '' }}>15 dias</option>
+                                                <option value="30" {{ product.periodicity == 30 ? 'selected' : '' }}>30 dias</option>
+                                                <option value="45" {{ product.periodicity == 45 ? 'selected' : '' }}>45 dias</option>
+                                                <option value="other" id="other">Outro</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group d-none" id="customPeriocid">
+                                            <label for="otherPeriocid" class="">Informe a periocidade</label>
+                                            <input type="text" class="form-control numbers-only" placeholder="Periodicidade em dias" {% if product.periodicity != 15 or product.periodicity != 30 or product.periodicity != 45 %} value="{{ product.periodicity }}" {% endif %}>
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <a href="/storage/feedstock" class="btn btn-light">Voltar</a>
+                    <a href="#" class="btn btn-danger" del="{{ '/storage/feedstockAction/' | rot13 }}{{ product.getid }}{{ product.getId }}">Remover</a>
+                    <input type="submit" class="btn btn-primary" value="Atualizar">
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

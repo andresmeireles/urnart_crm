@@ -55,26 +55,43 @@
                                     <table class="table table-hover tablesorter sortable">
                                         <thead class="table-primary">
                                             <tr>
-                                                <th >#</th>
-                                                <th width="18%" data-sort-default="data-sort-default">Nome</th>
-                                                <th>Cores<th>
+                                                <th>#</th>
+                                                <th width="18%" data-sort-default>Nome</th>
+                                                <th>Cores</th>
                                                 <th>Qnt</th>
-                                                <th>UN</th>
                                                 <th>Min.</th>
                                                 <th>Max.</th>
-                                                <th >&nbsp;</th>
+                                                <th>&nbsp;</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {% if product %}
                                                 {% for p in product %}
                                                     <tr>
-                                                    
+                                                        <td>{{ p.getId }}</td>
+                                                        <td>{{ p.name }}</td>
+                                                        <td>
+                                                            {% if p.color != [] %}
+                                                                {% for color in p.color %}
+                                                                    1 - {{ color }}
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                Não tem cores :(
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>{{ p.getStock }}</td>
+                                                        <td>{{ p.getMinStock }}</td>
+                                                        <td>{{ p.getMaxStock }}</td>
+                                                        <td>
+                                                            <a data-action="view{{ p.getProductInventory.getId }}" class="badge badge-secondary text-light cursor-decoration">Visualizar</a>
+                                                            <a href="/storage/feedstockAction/{{p.getProductInventory.getId}}" class="badge badge-success text-light">Editar</a>
+                                                            <a href="#" class="badge badge-danger text-light" del="{{ '/storage/feedstockAction/' | rot13 }}{{ p.getProductInventory.getid }}">Remover</a>
+                                                        </td>
                                                     </tr>
                                                 {% endfor %}
                                             {% else %}
                                                 <tr>
-                                                    <th colspan="9" class="text-center">Nenhum produto</th>
+                                                    <th colspan="7" class="text-center">Nenhum produto</th>
                                                 </tr>
                                             {% endif %}
                                         </tbody>
@@ -154,6 +171,6 @@
         </div>
     </div>
 
-    {% include '/storage/pages/prod-in.html.twig' with { 'prods' : product } only %}
+    {% include '/storage/pages/prod-add.html.twig' with { 'prods' : product } only %}
 
 {% endblock %}

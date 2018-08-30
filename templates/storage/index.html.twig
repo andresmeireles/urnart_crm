@@ -42,7 +42,7 @@
                 <div class="tab-pane fade show active" id="feedstock" role="tabpanel" aria-labelledby="feedstock-tab">
                     <div class="m-2">
                         <div class="row my-2 mx-0">
-                            <div class="mx-2"><i class="badge badge-warning">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto precisa de atenção</div><div class="mx-2"><i class="badge badge-danger">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto em quantidade mínima</div>
+                            <!--<div class="mx-2"><i class="badge badge-warning">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto precisa de atenção</div>--><div class="mx-2"><i class="badge badge-danger">&nbsp;&nbsp;&nbsp;&nbsp;</i> - Produto em quantidade mínima</div>
                         </div>
                         <table class="table table-hover">
                             <thead class="table-primary">
@@ -55,7 +55,7 @@
                             </thead>
                             <tbody>
                                 {% for f in feed %}
-                                    <tr>
+                                    <tr {{ f.getStock < f.getMinStock ? 'class="bg-danger"' : '' }}>
                                         <td>{{ f.getId }}</td>
                                         <td>{{ f.nome }}</td>
                                         <td>{{ f.getStock }}</td>
