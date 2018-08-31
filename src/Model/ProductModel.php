@@ -122,4 +122,14 @@ class ProductModel extends Model
             $this->em->getConnection()->rollback();
         }
     }
+
+    public function productIn(array $data): array
+    {
+        dump($data['data']);
+        die();
+
+        return array(
+
+        );
+    }
 }

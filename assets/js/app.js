@@ -32,6 +32,8 @@ global.checkMask = require('./src/global/checkMask')
 global.showDate = require('./src/global/showDate')
 global.genericSend = require('./src/global/genericSend')
 global.cloneFieldForm = require('./src/global/cloneFieldForm')
+global.getOptionText = require('./src/global/tools/getOptionText')
+global.sendFl = require('./src/global/tools/sendDataFormless')
 
 // validations
 global.checkRequired = require('./src/global/validation/checkRequired')

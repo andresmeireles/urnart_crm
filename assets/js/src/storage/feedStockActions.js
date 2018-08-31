@@ -6,10 +6,11 @@
         if (el.target.id == 'produto') {
             
             now = el.target.value
-            
+            const text = getOptionText(el.target)
+
             //criar função que compare valores
             if (previous.indexOf(now) != -1) {
-                alert(`Produto ${now} ja foi incluido`)
+                alert(`Produto ${text} ja foi incluido`)
                 el.target.value = ''
                 return false
             }
@@ -115,6 +116,19 @@
                 
                 window.location.reload()
             })
+        }
+
+        if (el.target.hasAttribute('send-fl')) {
+            el.preventDefault()
+
+            let data = sendFl(el.target)
+            let send = el.target
+
+            simpleRequest(send.getAttribute('send-fl'), 'PUT', data, function (response) {
+                
+                console.log(response)
+
+            }, 'data')
         }
 
         if (el.target.hasAttribute('target-attr')) {

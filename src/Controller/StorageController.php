@@ -176,4 +176,17 @@ class StorageController extends Controller
         $response = $model->insert($data);
         return new Response($response['message'], $response['http_code']);
     }
+
+    /**
+     * @Route("/storage/product/in", methods="PUT")
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function productIn(ProductModel $model, Request $request)
+    {
+        $data = (array) json_decode($request->getContent());
+        $model->productIn($data);
+        die();
+    }
 }
