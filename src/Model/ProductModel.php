@@ -33,6 +33,19 @@ class ProductModel extends Model
         return $result;
     }
 
+    public function remove(int $id): array
+    {
+        $product = $this->em->getRepository(Product::class)->find($id);
+
+        $this->em->remove($product);
+        $this->em->flush();
+
+        return array(
+            'http_code' => 200,
+            'message' => "Produto {$product->getName()} removido com sucesso!"
+        );
+    }
+
     /**
      * Executa a ação no modelo
      *
@@ -83,7 +96,7 @@ class ProductModel extends Model
             $price = (float) $data['price'];
             $product->setPrice($price);
 
-            $color = $data['color'] ?? array();
+            $color = $data['colors'] ?? array();
 
             $product->setColor($color);
             $product->setSeries($data['model']);
@@ -104,7 +117,6 @@ class ProductModel extends Model
             } 
 
             if ($type == 'update') {
-                $productInventory->setStock($data['stock']);
                 $this->em->merge($product);
                 $this->em->merge($productInventory);
             }
@@ -123,13 +135,44 @@ class ProductModel extends Model
         }
     }
 
-    public function productIn(array $data): array
+    public function productIn(object $data): array
     {
-        dump($data['data']);
-        die();
+        $date = $data->date;
+        unset($data->date);
 
-        return array(
+        $this->em->getConnection()->beginTransaction();
+        
+        try {
+            foreach($data as $info) {
+                $productInventory = $this->em->getRepository(ProductInventory::class)->findOneBy(array(
+                    'product' => $info->product
+                ));
 
-        );
+                $oldStock = $productInventory->getStock();
+
+                $stock = (float) $info->amount;
+
+                $newStock = $stock + $oldStock;
+
+                $productInventory->setStock($newStock);
+
+                $this->em->merge($productInventory);
+            }
+
+            $this->em->flush();
+            $this->em->getConnection()->commit();
+
+            return array(
+                'http_code' => 200,
+                'message' => 'Sucesso!'
+            );
+        } catch (\Exception $e) {
+            $this->em->getConnection()->rollback();
+
+            return array(
+                'http_code' => 203,
+                'message' => $e->getMessage()
+            );
+        }
     }
 }

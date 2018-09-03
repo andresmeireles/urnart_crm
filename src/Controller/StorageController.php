@@ -3,12 +3,13 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
-use App\Utils\Generic\Crud;
+use App\Form\FeedstockForm;
 use App\Model\ProductModel;
+use App\Utils\Generic\Crud;
 use App\Model\FeedstockModel;
+use App\Entity\Product;
 use App\Entity\Feedstock;
 use App\Entity\FeedstockInventory;
-use App\Form\FeedstockForm;
 use App\Form\FeedstockInventoryForm;
 use App\Repository\FeedstockRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -85,7 +86,9 @@ class StorageController extends Controller
                 throw new \Exception($e->getMessage());
             }
 
-            return new Response(200, Response::HTTP_OK);
+            return new Response(200, Response::HTTP_OK, array(
+            'redirect-route' => '/storage/product' 
+            ));
         } 
         
         if ($method == 'GET') {
@@ -170,7 +173,7 @@ class StorageController extends Controller
      * @param Request $require
      * @return Response
      */
-    public function productAction(ProductModel $model, Request $request): Response
+    public function addProduct(ProductModel $model, Request $request): Response
     {
         $data = $request->request->all();
         $response = $model->insert($data);
@@ -178,15 +181,76 @@ class StorageController extends Controller
     }
 
     /**
+     * Redirect to update page.
+     * 
+     * @Route("/storage/productAction/{id<\d+?>}", methods="GET")
+     *
+     * @param string $id
+     * @return Response
+     */
+    public function redirectToUpdate($id): Response
+    {
+        return $this->render('/storage/forms/productForm.html.twig', [
+                'product' => $this->getDoctrine()->getManager()->getRepository(Product::class)->find($id)
+        ]);
+    }
+    
+    /**
+     * Update page. Accepts only numbers as id
+     * 
+     * @Route("/storage/product/update/{id}", methods="POST", requirements={"page"="\d+"})
+     *
+     * @param ProductModel $model
+     * @param [type] $id
+     * @return Response
+     */
+    public function updateProduct(ProductModel $model, Request $request, $id): Response
+    {
+        $id = (int) $id;
+        $data = $request->request->all();
+        $result = $model->update($data, $id);
+
+        if ($result['http_code'] == 203) {
+            return $this->render('/storage/forms/productForm.html.twig', [
+                'product' => $data,
+                'flash' => 'Algo deu errado...'
+            ]);
+        }
+
+        return $this->redirectToRoute('showProd', array(), 301);
+    }
+    
+    /**
+     * Remove page. Accepts only numbers as id
+     * 
+     * @Route("/storage/productAction/{id}", methods="DELETE", requirements={"page"="\d+"})
+     *
+     * @param ProductModel $model
+     * @param [type] $id
+     * @return Response
+     */
+    public function removeProduct(ProductModel $model, $id): Response
+    {
+        $id = (int) $id;
+        $result = $model->remove($id);
+
+        return new Response($result['message'], $result['http_code'], array(
+            'redirect-route' => '/storage/product' 
+        ));
+    }
+
+    /**
      * @Route("/storage/product/in", methods="PUT")
      *
      * @param Request $request
-     * @return void
+     * @return Response
      */
-    public function productIn(ProductModel $model, Request $request)
+    public function productIn(ProductModel $model, Request $request): Response
     {
-        $data = (array) json_decode($request->getContent());
-        $model->productIn($data);
-        die();
+        $data = json_decode($request->getContent());
+        $data = $data->data;
+        $result = $model->productIn($data);
+
+        return new Response($result['message'], $result['http_code']);
     }
 }

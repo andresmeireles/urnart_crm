@@ -17,7 +17,7 @@
 
             const amount = el.target.parentNode.parentNode
             const input = amount.querySelector('#amount')
-            //input.removeAttribute('disabled')
+            input.removeAttribute('disabled')
             input.focus()
         }
 
@@ -44,7 +44,7 @@
 
             const amount = el.target.parentNode.parentNode
             const input = amount.querySelector('#amount')
-            //input.removeAttribute('disabled')
+            input.removeAttribute('disabled')
             input.focus()
         }
     })
@@ -89,7 +89,7 @@
         }
 
         if (el.target.getAttribute('sendvt')) {
-            //el.target.setAttribute('disabled', '')
+            el.target.setAttribute('disabled', '')
             el.preventDefault()
 
             var form = el.target.closest('form')
@@ -101,7 +101,7 @@
 
             genericSend(el, 'sendvt', 'POST', function (response) {
                 console.log(response)
-                //location.reload()
+                location.reload()
             })
         }
 
@@ -144,10 +144,12 @@
 
         if (el.target.hasAttribute('del')) {
             el.preventDefault()
+
             var link = rot(el.target.getAttribute('del'))
             simpleDialog('Tem certeza que deseja remover esse item?', () => {
-                simpleRequest(link, 'DELETE', null, function () {
-                    window.location = '/storage/feedstock'
+                simpleRequest(link, 'DELETE', null, function (response) {
+                    console.log(response.headers['redirect-route'])
+                    window.location = response.headers['redirect-route']
                 })
             })
         }

@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "6184ed58e7cf09ba28c3426763fc8115",
@@ -2052,16 +2052,16 @@
         },
         {
             "name": "respect/validation",
-            "version": "1.1.23",
+            "version": "1.1.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Respect/Validation.git",
-                "reference": "add542ea48be874ca8ab82208367430488a01e77"
+                "reference": "5a067faec79d0cd74aa189fc535a644fa29e0c70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Respect/Validation/zipball/add542ea48be874ca8ab82208367430488a01e77",
-                "reference": "add542ea48be874ca8ab82208367430488a01e77",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/5a067faec79d0cd74aa189fc535a644fa29e0c70",
+                "reference": "5a067faec79d0cd74aa189fc535a644fa29e0c70",
                 "shasum": ""
             },
             "require": {
@@ -2111,7 +2111,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2018-08-18T13:10:37+00:00"
+            "time": "2018-08-29T20:30:50+00:00"
         },
         {
             "name": "symfony/asset",
@@ -2740,16 +2740,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "d6f5fed47ddad2eb25d5cc19316692203a2898eb"
+                "reference": "9fb60f232af0764d58002e7872acb43a74506d25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/d6f5fed47ddad2eb25d5cc19316692203a2898eb",
-                "reference": "d6f5fed47ddad2eb25d5cc19316692203a2898eb",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/9fb60f232af0764d58002e7872acb43a74506d25",
+                "reference": "9fb60f232af0764d58002e7872acb43a74506d25",
                 "shasum": ""
             },
             "require": {
@@ -2783,7 +2783,7 @@
                 }
             ],
             "description": "Composer plugin for Symfony",
-            "time": "2018-08-21T07:51:18+00:00"
+            "time": "2018-09-03T08:17:12+00:00"
         },
         {
             "name": "symfony/form",
@@ -4930,16 +4930,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.6.0",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "a1b0d9ff35219ec36c44fcc6213056cc339a1cf8"
+                "reference": "22a9bf33868f0fed6cab013fe5231e8485d15e20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/a1b0d9ff35219ec36c44fcc6213056cc339a1cf8",
-                "reference": "a1b0d9ff35219ec36c44fcc6213056cc339a1cf8",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/22a9bf33868f0fed6cab013fe5231e8485d15e20",
+                "reference": "22a9bf33868f0fed6cab013fe5231e8485d15e20",
                 "shasum": ""
             },
             "require": {
@@ -4960,7 +4960,8 @@
                 "doctrine/orm": "^2.3",
                 "friendsofphp/php-cs-fixer": "^2.8",
                 "symfony/phpunit-bridge": "^3.4|^4.0",
-                "symfony/process": "^3.4|^4.0"
+                "symfony/process": "^3.4|^4.0",
+                "symfony/yaml": "^3.4|^4.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -4991,7 +4992,7 @@
                 "scaffold",
                 "scaffolding"
             ],
-            "time": "2018-08-07T16:05:09+00:00"
+            "time": "2018-08-30T01:08:06+00:00"
         },
         {
             "name": "symfony/polyfill-php72",

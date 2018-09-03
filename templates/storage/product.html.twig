@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="col p-3">
-        <h1>Estoques</h1>
+        <h1>Estoques de Produtos</h1>
         <hr>
         <div class="row px-2">
             <div class="col">
@@ -73,7 +73,7 @@
                                                         <td>
                                                             {% if p.color != [] %}
                                                                 {% for color in p.color %}
-                                                                    1 - {{ color }}
+                                                                    <span class="badge badge-light">{{ color }}</span>
                                                                 {% endfor %}
                                                             {% else %}
                                                                 Não tem cores :(
@@ -83,9 +83,9 @@
                                                         <td>{{ p.getMinStock }}</td>
                                                         <td>{{ p.getMaxStock }}</td>
                                                         <td>
-                                                            <a data-action="view{{ p.getProductInventory.getId }}" class="badge badge-secondary text-light cursor-decoration">Visualizar</a>
-                                                            <a href="/storage/feedstockAction/{{p.getProductInventory.getId}}" class="badge badge-success text-light">Editar</a>
-                                                            <a href="#" class="badge badge-danger text-light" del="{{ '/storage/feedstockAction/' | rot13 }}{{ p.getProductInventory.getid }}">Remover</a>
+                                                            <a data-action="view{{ p.getId }}" class="badge badge-secondary text-light cursor-decoration">Visualizar</a>
+                                                            <a href="/storage/productAction/{{p.getId}}" class="badge badge-success text-light">Editar</a>
+                                                            <a class="badge badge-danger text-light" del="{{ '/storage/productAction/' | rot13 }}{{ p.getid }}">Remover</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
@@ -173,5 +173,8 @@
 
     {% include '/storage/pages/prod-add.html.twig' with { 'prods' : product } only %}
     {% include '/storage/pages/prod-in.html.twig' with { 'prods' : product } only %}
+    {% for prod in product %}
+        {% include '/storage/pages/prod-view.html.twig' with { 'product' : prod } only %}
+    {% endfor %}
 
 {% endblock %}

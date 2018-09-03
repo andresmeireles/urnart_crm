@@ -24,9 +24,6 @@ class FormController extends Controller
      */
     public function createReport(Request $req, string $formName)
     {
-        //$session = new Session;
-        //$session->start();
-        
         $dir = opendir(__DIR__.'/../../templates/form/');
         while ((readdir($dir)) !== false) {
             if (file_exists(__DIR__.'/../../templates/form/'.$formName.'Form.html.twig')) {
@@ -39,10 +36,6 @@ class FormController extends Controller
                     if ($form->fail()) {
                         $response =  json_encode($form->getMessage());
                         return new Response($response, 200);
-                        /**
-                        $session->set('error', $form->getMessage());
-                        return $this->redirect('/form/'.$formName);
-                        */
                     }
                     
                     $form->show($body);

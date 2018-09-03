@@ -1,22 +1,33 @@
-<div class="py-4 col-md-11 d-none" id="add-prod">
-    <form id="form-add">
+<div class="py-4 col-md-10 d-none" id="view{{product.getId}}">
         <div class="card">
-            <div class="card-header">Cadastrar</div>
-            <div class="card-body fitable">
+            <div class="card-header">
+                <div class="float-left">
+                    Atualizar Produto
+                    <h4>
+                        <b>{{ product.name }}</b>
+                    </h4>
+                </div>
+                <div class="float-right">
+                    <h4>Atualizado por:
+                    </h4>
+                    <h4>Em
+                        {{ product.lastUpdate }}</h4>
+                </div>
+            </div>
+            <div class="card-body">
                 <div class="card-text">
-    
-                    <div class="row">
+                        <div class="row">
                         <div class="col-md-8">
                             <fieldset class="border border-light">
                                 <legend class="bg-light px-1">Informações Básicas</legend>
                                 <div class="col-md-12 py-2">
                                     <div class="form-group">
                                         <label for="productName" class="required">Nome do produto</label>
-                                        <input type="text" class="form-control" name="name" placeholder="Insira o nome aqui" required="required">
+                                        <p><strong>{{ product.name }}</strong></p>
                                     </div>
                                     <div class="form-group">
                                         <label for="usedIn">Modelo</label>
-                                        <input type="text" name="model" id="model" class="form-control" value="" placeholder="modelo">
+                                        <p><strong>{{ product.series }}</strong></p>
                                     </div>
                                     <div class="form-group">
                                         <label for="description">Descrição</label>
@@ -36,7 +47,7 @@
 
                                     <div class="form-group">
                                         <label for="price" class="required">Preço</label>
-                                        <input type="text" name="price" id="price" class="form-control numbers-only" placeholder="Apenas numeros" required>
+                                        <p><strong>{{ product.price }}</strong></p>
                                     </div>
 
                                     <div class="form-group">
@@ -45,35 +56,33 @@
                                         <div id="inputOtherVendors">
                                             <small>Aperte abaixo para incluir cores</small><br>
                                             <div class="input-group">
-                                                <ul class="form-control py-1" data-target="colors" id="colorsGrid"></ul>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text" data-target="colors" id="removeAll">x</span>
-                                                </div>
+                                                <ul class="form-control py-1" data-target="colors" id="colorsGrid">
+                                                    {% if product.color != [] %}
+                                                        {% for color in product.color %}
+                                                            <li class="badge badge-pill badge-light"><span class="mx-1">{{ color }}</span></li>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        Não ha cores cadastradas :(
+                                                    {% endif %}
+                                                </ul>
                                             </div>
-                                            <input type="text" class="d-none form-control my-1" id="colors" placeholder="Insira o nome e aprte ENTER">
                                         </div>
                                     </div>
                                     
                                     <div class="form-group">
                                         <label for="maxStock" class="required">Estoque Maximo</label>
-                                        <input type="text" name="maxStock" class="form-control numbers-float-only" placeholder="Max" required="required">
+                                        <p><strong>{{ product.getMaxStock }}</strong></p>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="maxStock" class="required">Estoque Mínimo</label>
-                                        <input type="text" name="minStock" class="form-control numbers-float-only" placeholder="Min" required="required">
+                                        <p><strong>{{ product.getMinStock }}</strong></p>
                                     </div>
 
                                 </div>
                             </fieldset>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="card-footer text-muted">
-                <button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>
-                <button class="btn btn-primary" sendvt="/storage/productAction">Adicionar</button>
             </div>
         </div>
-    </form>
 </div>
