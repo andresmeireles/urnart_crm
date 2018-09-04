@@ -2,6 +2,7 @@ require('bootstrap')
 require('imask')
 require('tablesorter')
 require('jquery-mask-plugin')
+require('devbridge-autocomplete')
 
 const $ = require('jquery')
 const fancybox = require('@fancyapps/fancybox')
@@ -43,8 +44,8 @@ global.openModal = require('./src/form/createFormModal.js');
 global.printForm = require('./src/form/printForm');
 
 // dialogs folder
-global.defaultDialog = require('./src/dialog/defaultDialog');
-global.simpleDialog = require('./src/dialog/simpleDialog');
+global.defaultDialog = require('./src/dialog/defaultDialog')
+global.simpleDialog = require('./src/dialog/simpleDialog')
 
 //register templates
 global.customerTemplate = require('./src/register/templates/customerTemplate')
@@ -66,6 +67,9 @@ import './src/register/cloneFieldCustomer';
 
 import './src/global/masks'
 import './src/global/tools/sorter'
+
+// order import
+import './src/order/orderAction'
 
 //if (document.querySelector('.sortable')) {
 //	$('.sortable').tablesorter({

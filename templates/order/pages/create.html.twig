@@ -1,0 +1,164 @@
+{% extends 'index.html.twig' %} 
+
+{% block tittle %}
+    Pedido
+{% endblock %} 
+
+{% block content %}
+<script>
+    var product = [
+        {% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}', amount: '{{ product.getStock }}' },{% endfor %}
+    ]
+    var customers = [
+        {% for customer in customers %}
+            { value: '{{ customer.razaoSocial }}', cod: '{{ customer.getId }}' }
+        {% endfor %}
+    ]
+</script>
+
+
+<div class="col-12">
+    <h1 class="">Criar Pedido</h1>
+    <hr>
+    <form method="POST" target="_blank">
+        <div class="row">
+            <div class="col-md-12 my-1">
+                <input type="submit" class="btn btn-primary active btn-block btn-lg" id="send-form" value="Criar pedido">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <small>Refatorar essa parte</small>
+                <fieldset class="border border-light my-1">
+                    <legend class="px-1 bg-light">Cliente</legend>
+                    <div class="row m-1">
+                        <div class="form-group col">
+                            <label> Nome do cliente </label>
+                            <input type="text" placeholder="Nome do cliente" class="form-control" name="clientName"> </div>
+                        <div class="form-group col-md-3">
+                            <label> Data do Pedido </label>
+                            <input type="text" class="form-control date-mask" name="clientCity" value="{{"now"|date("d/m/Y")}}"> 
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <small>Refatorar essa parte</small>
+                <fieldset class="border border-light">
+                    <legend class="px-1 bg-light">Produtos</legend>
+                    <div class="row m-1">
+                        <div class="col-md-12" id="tag">
+                            <div class="input-group my-1 w-100" id="cloneableField">
+                                <div class="col-4">
+                                    <input type="hidden" input-number='true' value="1">
+                                    <input type="text" class="form-control" name="cloneableField0[model]" id="model" placeholder="Urna" required="required"></div>
+                                <div class="col">
+                                    <input type="number" class="form-control" name="cloneableField0[price]" id="price" placeholder="Preço" required="required">
+                                </div>
+                                <div class="col">
+                                    <input type="number" class="form-control" name="cloneableField0[amount]" id="amount" placeholder="Qnt" required="required"></div>
+                                <div class="col-2">
+                                    <input type='text' class="form-control" id="totalPrice" disabled></div>
+                                <button type="submit" class="btn btn-success" add-btn="true">
+                                    <span class="fas fa-fw fa-plus" add-btn="true"></span>
+                                </button>
+                                <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
+                                    <i class="fas fa-fw fa-times" remove-btn="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="my-1 border border-light">
+                    <legend class="px-1 bg-light">Valor total</legend>
+                    <div class="row m-1">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <h3>Total Produtos&nbsp;</h3>
+                                    <h3>R$&nbsp;&nbsp;</h3>
+                                    <h3><span id="allProductsPrice">0</span>,00</h3>
+                                </div>
+                                <div class="input-group">
+                                    <h3>Valor Final &nbsp;</h3>
+                                    <h3>R$&nbsp;&nbsp;</h3>
+                                    <h3><span id="finalPrice">0</span>,00</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-4">
+                <fieldset class="border border-light">
+                    <legend class="px-1 bg-light">Forma de Pagamento e Frete</legend>
+                    <div class="row m-1">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Seleciona a forma de pagamento</label>
+                                <input type="text" class="form-control" name="formPg" required="required">
+                                <small>Caso a opção seja putra seleciona outro</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Valor do frete</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">R$</div>
+                                    </div>
+                                    <input type="number" class="form-control" name="freight" id="freight"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Desconto</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <input type="checkbox" id="discountCheck"></div>
+                                    </div>
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">R$</div>
+                                    </div>
+                                    <input type="hidden" name="discount" id="noDiscount" value="0">
+                                    <input type="number" class="form-control" disabled="disabled" name="discount" id="discount">
+                                </div>
+                                <small class="form-text text-muted">Caso exista algum desconto marque a opção</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Barco & Transportadora</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="transporter">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Porto</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <input type="checkbox" id="portCheck"></div>
+                                    </div>
+                                    <input type="hidden" name="port" id="noPort" value="">
+                                    <input type="text" class="form-control" disabled="disabled" name="port" id="port">
+                                </div>
+                                <small class="form-text text-muted">Caso exista porto marque a opção</small>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <fieldset class="border border-light my-1">
+                    <legend class="px-1 bg-light">Observações</legend>
+                    <div class="row m-1">
+                        <div class="form-group col">
+                            <textarea class="form-control" value="escreve aqui" name="observation"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

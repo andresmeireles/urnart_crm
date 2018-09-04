@@ -1,20 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends 'index.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
-
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/OrderController.php'|file_link(0) }}">src/Controller/OrderController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/order/index.html.twig'|file_link(0) }}">templates/order/index.html.twig</a></code></li>
-    </ul>
-</div>
+{% block content %}
+    <div class="bg-secondary">
+        <div class="sidebar-sticky p-1">
+            <ul class="list-unstyled">
+                <li class="px-3"><span class="px-3 mx-3">&nbsp;</span></li>
+                <li class="noline text">
+                    <a href="/order/create">
+                        <div class="d-flex align-items-center">
+                            <span class="mx-1 my-2">&nbsp;&nbsp;Fazer Pedido</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="noline">
+                    <a> <!-- href="/person/customer" -->
+                        <div class="d-flex align-items-center">
+                            <span class="mx-1 my-2 disabled">&nbsp;&nbsp;Lista de pedidos</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
