@@ -125,6 +125,9 @@
     "respect/validation": {
         "version": "1.1.16"
     },
+    "setasign/fpdi": {
+        "version": "v2.0.3"
+    },
     "symfony/asset": {
         "version": "v4.1.1"
     },

@@ -22,6 +22,11 @@ class Order
     private $cart;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Transporter", inversedBy="orderNumber", cascade={"persist", "remove"})
+     */
+    private $transporter;
+
+    /**
      * @ORM\Column(type="float")
      */
     private $totalPrice;
@@ -59,6 +64,18 @@ class Order
     public function setCart(?ProductCart $cart): self
     {
         $this->cart = $cart;
+
+        return $this;
+    }
+
+    public function getTransporter(): ?Transporter
+    {
+        return $this->transporter;
+    }
+
+    public function setTransporter(?Transporter $transporter): self
+    {
+        $this->transporter = $transporter;
 
         return $this;
     }
