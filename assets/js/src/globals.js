@@ -1,7 +1,7 @@
 module.exports = function (formAdd) {
 	var requiredFormInputs = document.querySelectorAll('#'+formAdd+' [required]');
 	for (var input of requiredFormInputs) {
-		console.log(input);
+		//console.log(input);
 	}
 }
 

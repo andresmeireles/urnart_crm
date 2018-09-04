@@ -1,5 +1,14 @@
-if (document.getElementById('order_products')) {
-    let createInput = document.getElementById('order_products')
+document.addEventListener('DOMContentLoaded', function () {
 
-    createInput.insertAdjacentHTML('afterend', `<div class="input-group"></div>`)
-}
+    document.addEventListener('blur', function (el) {
+        console.log(el)
+    }, true)
+
+    document.addEventListener('focus', function (el) {
+        if (el.target.hasAttribute('autocp')) {
+            $(el.target).autocomplete({
+                lookup: eval(el.target.getAttribute('autocp')),
+            })
+        }
+    }, true)
+})

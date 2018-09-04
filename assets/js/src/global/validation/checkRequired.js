@@ -13,7 +13,6 @@ module.exports = function (form) {
         var input = inputs.parentNode
         field = input.querySelector('.form-control')
         if (field.value == '') {
-            console.log(field)
             input.insertAdjacentHTML('beforeend', `<small class="text-danger">Campo obrigatorio</small>`)
             result = false
             break

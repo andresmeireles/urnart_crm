@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
             //verficactions
             clone.querySelectorAll('[name]').forEach( function (el) {
                 if (el.tagName == 'INPUT') {
-                    clone.querySelector(`#${el.getAttribute('id')}`).value = ''
+                    //clone.querySelector(`#${el.getAttribute('id')}`).value = ''
+                    clone.querySelector(`[name="${el.getAttribute('name')}"]`).value = ''
                 }
 
                 var name = el.getAttribute('name')

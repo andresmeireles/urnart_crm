@@ -41,7 +41,6 @@ document.addEventListener('click', function(el) {
 });
 
 document.addEventListener('keyup', function (el) {
-	console.log(el.target.id)
 	if (el.target.id == 'inputOther' || el.target.id == 'colors') {
 		if (el.which === 27) {
 			hideInputField(el.target.id);
@@ -119,7 +118,6 @@ var addOnUl = function (value, id) {
 }
 
 var hideInputField = function (id) {
-	console.log(id)
 	var inputVendorDiv = document.querySelector(`#${id}`);
 	inputVendorDiv.classList.remove('bg-light')
 	inputVendorDiv.classList.add('d-none')

@@ -1,4 +1,3 @@
-
     const previous = []
     let now = ''
 
@@ -100,7 +99,7 @@
             } 
 
             genericSend(el, 'sendvt', 'POST', function (response) {
-                console.log(response)
+                //console.log(response)
                 location.reload()
             })
         }
@@ -126,7 +125,7 @@
 
             simpleRequest(send.getAttribute('send-fl'), 'PUT', data, function (response) {
                 
-                console.log(response)
+                return true
 
             }, 'data')
         }
@@ -148,7 +147,6 @@
             var link = rot(el.target.getAttribute('del'))
             simpleDialog('Tem certeza que deseja remover esse item?', () => {
                 simpleRequest(link, 'DELETE', null, function (response) {
-                    console.log(response.headers['redirect-route'])
                     window.location = response.headers['redirect-route']
                 })
             })
