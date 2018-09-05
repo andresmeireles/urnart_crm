@@ -1,5 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    if (document.querySelector('#automatic')) {
+        let disabledInputs = document.querySelectorAll('[autocp]')
+
+        for (let enabledInputs of disabledInputs) {
+            enabledInputs.removeAttribute('disbaled')
+        }
+    }
+
     document.addEventListener('blur', function (el) {
         console.log(el)
     }, true)

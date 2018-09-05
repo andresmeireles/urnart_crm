@@ -17,7 +17,7 @@
 </script>
 
 
-<div class="col-12 p-3">
+<div class="col-12 p-3" id="automatic">
     <h1 class="">Criar Pedido</h1>
     <hr>
     <form method="POST" target="_blank">
@@ -33,7 +33,7 @@
                     <div class="row m-1">
                         <div class="form-group col">
                             <label> Nome do cliente </label>
-                            <input type="text" placeholder="Nome do cliente" class="form-control" name="clientName" autocp="customers"></div>
+                            <input type="text" placeholder="Nome do cliente" class="form-control" name="clientName" autocp="customers" disabled="disabled"></div>
                         <div class="form-group col-md-3">
                             <label> Data do Pedido </label>
                             <input type="text" class="form-control date-mask" name="clientCity" value="{{"now"|date("d/m/Y")}}"> 
@@ -51,7 +51,7 @@
                         <div class="col" cloneField>
                             <div class="input-group my-1" clone-area>
                                 <div class="input-group col-md-4">
-                                    <input type="text" class="form-control" name="product" placeholder="Inserir valor" autocp="product">
+                                    <input type="text" class="form-control" name="product" placeholder="Inserir valor" autocp="product" disabled="disabled">
                                 </div>
                                 <div class="input-group col-md-3">
                                     <input type="text" class="form-control number-float-only" name="price" disabled>
