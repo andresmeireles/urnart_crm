@@ -7,7 +7,7 @@
 {% block content %}
 <script>
     var product = [
-        {% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}', amount: '{{ product.getStock }}' },{% endfor %}
+        {% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}', amount: '{{ product.getStock }}', selected: false },{% endfor %}
     ]
     var customers = [
         {% for customer in customers %}
@@ -51,7 +51,7 @@
                         <div class="col" cloneField>
                             <div class="input-group my-1" clone-area>
                                 <div class="input-group col-md-4">
-                                    <input type="text" class="form-control" name="product" placeholder="Inserir valor" autocp="product" disabled="disabled">
+                                    <input type="text" removeFrom="product" class="form-control" name="product" placeholder="Inserir valor" autocp="product" disabled="disabled">
                                 </div>
                                 <div class="input-group col-md-3">
                                     <input type="text" class="form-control number-float-only" name="price" disabled>
@@ -66,28 +66,7 @@
                                     <i class="fas fa-fw fa-times" rm-clone></i>
                                 </button>
                             </div>
-                        </div>
-
-<!--
-                            <div class="input-group my-1 w-100" id="cloneableField">
-                                <div class="col-4">
-                                    <input type="hidden" input-number='true' value="1">
-                                    <input type="text" class="form-control" name="cloneableField0[model]" id="model" placeholder="Urna" required="required"></div>
-                                <div class="col">
-                                    <input type="number" class="form-control" name="cloneableField0[price]" id="price" placeholder="Preço" required="required">
-                                </div>
-                                <div class="col">
-                                    <input type="number" class="form-control" name="cloneableField0[amount]" id="amount" placeholder="Qnt" required="required"></div>
-                                <div class="col-2">
-                                    <input type='text' class="form-control" id="totalPrice" disabled></div>
-                                <button type="submit" class="btn btn-success" add-btn="true">
-                                    <span class="fas fa-fw fa-plus" add-btn="true"></span>
-                                </button>
-                                <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
-                                    <i class="fas fa-fw fa-times" remove-btn="true"></i>
-                                </button>
-                            </div> -->
-                        
+                        </div>                        
                     </div>
                 </fieldset>
                 <fieldset class="my-1 border border-light">
