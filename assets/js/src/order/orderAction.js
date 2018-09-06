@@ -11,11 +11,29 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('blur', function (el) {
 
         if (el.target.hasAttribute('removeFrom')) {
-            checkAvailable(el.target)
+            let inputValue = el.target.value
+            let variable = eval(el.target.getAttribute('removeFrom'))
+            var response = false
+
+            for (let v of variable) {
+                if (v.value == inputValue) {
+                    response = true
+                }
+            }
+
+            if (!response && el.target.value !== '') {
+                el.stopImmediatePropagation()
+                el.preventDefault()
+                el.target.value = ''
+                el.target.focus()
+                alert(`Produto ${el.target.value} não é um produto valido`)
+                return false
+            }
+            
         }
 
     }, true)
-
+/
     document.addEventListener('focus', function (el) {
 
         if (el.target.hasAttribute('removeFrom')) {
@@ -25,6 +43,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (el.target.hasAttribute('autocp')) {
             $(el.target).autocomplete({
                 lookup: eval(el.target.getAttribute('autocp')),
+                triggerSelectOnValidInput: false,
+                onSelect: function (sugestion) {
+                    if (sugestion.selected == true) {
+                        alert('não faz isso não meu amigo')
+                    }
+                }
             })
         }
     }, true)

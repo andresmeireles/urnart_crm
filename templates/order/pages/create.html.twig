@@ -7,7 +7,7 @@
 {% block content %}
 <script>
     var product = [
-        {% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}', amount: '{{ product.getStock }}', selected: false },{% endfor %}
+        {% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}', amount: '{{ product.getStock }}' },{% endfor %}
     ]
     var customers = [
         {% for customer in customers %}
