@@ -1,76 +1,127 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    if (document.querySelector('#automatic')) {
+    if (document.querySelector('#automaticOrder')) {
         let disabledInputs = document.querySelectorAll('[autocp]')
 
         for (let enabledInputs of disabledInputs) {
             enabledInputs.removeAttribute('disabled')
         }
-    }
 
-    document.addEventListener('blur', function (el) {
-
-        if (el.target.hasAttribute('removeFrom')) {
-            let inputValue = el.target.value
-            let variable = eval(el.target.getAttribute('removeFrom'))
-            var response = false
-
-            for (let v of variable) {
-                if (v.value == inputValue) {
-                    response = true
-                }
+        document.addEventListener('click', function (el) {
+            if (el.target.hasAttribute('rm-clone')) {
+                setTimeout(() => {
+                   contabilize() 
+                }, 100);
             }
+        }, true)
 
-            if (!response && el.target.value !== '') {
-                el.stopImmediatePropagation()
-                el.preventDefault()
-                el.target.value = ''
-                el.target.focus()
-                alert(`Produto ${el.target.value} não é um produto valido`)
-                return false
-            }
-            
-        }
+        document.addEventListener('focus', function (el) {
+            if (el.target.hasAttribute('autocp')) {
 
-    }, true)
-/
-    document.addEventListener('focus', function (el) {
-
-        if (el.target.hasAttribute('removeFrom')) {
-            checkAvailable(el.target)
-        }
-
-        if (el.target.hasAttribute('autocp')) {
-            $(el.target).autocomplete({
-                lookup: eval(el.target.getAttribute('autocp')),
-                triggerSelectOnValidInput: false,
-                onSelect: function (sugestion) {
-                    if (sugestion.selected == true) {
-                        alert('não faz isso não meu amigo')
+                if (el.target.closest('[clone-area]')) {
+                    let disabledInputs = el.target.closest('[clone-area]').querySelectorAll('[disabled]')
+                    
+                    for (let di of disabledInputs) {
+                        if (di.id === 'total') {
+                            continue
+                        }
+                        di.removeAttribute('disabled')
                     }
                 }
-            })
-        }
-    }, true)
 
+                $(el.target).autocomplete({
+                    lookup: eval(el.target.getAttribute('autocp')),
+                    triggerSelectOnValidInput: false,
+                    onSelect: function (option) {
+                        if (el.target.closest('[clone-area]')) {
+                            let field = el.target.closest('[clone-area]')
+                            field.querySelector('#cod').value = option.cod
+                            field.querySelector('#prod-price').value = option.price
+                            field.querySelector('#prod-qnt').value = 1
+                            field.querySelector('#total').value = (1 * option.price)
+                            contabilize()
+                        } else {
+                            let idClient = document.querySelector('#idClientName')
+                            idClient.value = option.cod
+                        }
+                    }
+                })
+            }
+        }, true)
 
-    const checkAvailable = (target) => {
-        let variable = eval(target.getAttribute('removeFrom'))
-        let inputs = document.querySelectorAll('[cloneField] input[removeFrom]')
-        let listOfValues = []
+        document.addEventListener('blur', function (el) {
 
-        for (i of inputs) {
-            listOfValues.push(i.value)
-        }
+            if (el.target.hasAttribute('autocp') && el.target.closest('[clone-area]')) {
+                let disabledInputs = el.target.closest('[clone-area]').querySelectorAll('[input="text"]')
 
-        for (let v of variable) {
+                for (let di of disabledInputs) {
+                    if (di.id === 'total') {
+                        continue
+                    }
 
-            if (listOfValues.indexOf(v.value) !== -1) {
-                v.selected = true
-                continue
+                    if (di.value === '') {
+                        di.setAttribute('disabled', 'disabled')   
+                    }
+                }
+
+                setTimeout(() => {
+                    let value = el.target.value
+                    let result = false
+
+                    for (prod of product) {
+                        if (prod.value == value) {
+                            result = true
+                            continue
+                        }
+                    }
+
+                    if (!result) {
+                        alert(`Produto ${value} não é um produto valido`)
+                        el.stopImmediatePropagation()
+                        el.preventDefault()
+                        el.target.value = ''
+                        return false
+                    }
+
+                }, 200)
             }
 
-            v.selected = false
+            if (el.target.id == 'prod-qnt' ) {
+                let field = el.target.closest('[clone-area]')
+                let price = field.querySelector('#prod-price').value
+                field.querySelector('#total').value = (el.target.value * price)
+                contabilize()
+            }
+
+            if (el.target.id == 'prod-price') {
+                let field = el.target.closest('[clone-area]')
+                let qnt = field.querySelector('#prod-qnt').value
+                field.querySelector('#total').value = (el.target.value * qnt)
+                contabilize()
+            }
+
+            if (el.target.id === 'freight' || el.target.id === 'discount') {
+                contabilize()
+            }
+
+        }, true)
+    }
+
+    const contabilize = () => {
+        let allProductsPrice = document.querySelector('#allProductsPrice')
+        let allPrices = 0
+        let prices = document.querySelectorAll('#total')
+
+        let totalPrice = document.querySelector('#finalPrice')
+        let freight = (document.querySelector('#freight').value === '') ? 0 : Number(document.querySelector('#freight').value)
+        let discount = (document.querySelector('#discount').value === '') ? 0 : Number(document.querySelector('#discount').value)
+
+        for (let p of prices) {
+            p = Number(p.value)
+            allPrices += p
         }
+
+        allProductsPrice.innerHTML = allPrices
+        totalPrice.innerHTML = (allPrices + freight) - discount
     }
 })

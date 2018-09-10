@@ -1,3 +1,10 @@
+/**
+ * Enviar informações para o backend.
+ * 
+ * sendFl - Link do para enviar requisição dentro do elemento target dentro de elemento
+ * 
+ * @param string sendFl 
+ */
 module.exports = function (sendFl) {
     //let link = sendFl.getAttribute('send-fl')
     const areaId = sendFl.getAttribute('target')

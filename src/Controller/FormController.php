@@ -41,17 +41,6 @@ class FormController extends Controller
                     $form->show($body);
                 }
 
-                /**
-                if ($session->get('error')) {
-                    foreach ($session->get('error') as $message) {
-                        $this->addFlash(
-                            'error',
-                            $message
-                        );
-                    }
-                    $session->remove('error');
-                }
-                */
                 return $this->render('form/'.$formName.'Form.html.twig', [
                     'formName' => $formName
                 ]);

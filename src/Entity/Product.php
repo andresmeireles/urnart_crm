@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,22 @@ class Product extends BaseEntity
      * @ORM\OneToOne(targetEntity="App\Entity\ProductInventory", mappedBy="product", cascade={"persist", "remove"})
      */
     private $productInventory;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProductCart", inversedBy="product")
+     */
+    private $productCart;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ProductCart", mappedBy="product")
+     */
+    private $productCarts;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->productCarts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -125,5 +143,33 @@ class Product extends BaseEntity
     public function getMinStock(): ?string
     {
         return $this->productInventory->getMinStock();
+    }
+
+    /**
+     * @return Collection|ProductCart[]
+     */
+    public function getProductCarts(): Collection
+    {
+        return $this->productCarts;
+    }
+
+    public function addProductCart(ProductCart $productCart): self
+    {
+        if (!$this->productCarts->contains($productCart)) {
+            $this->productCarts[] = $productCart;
+            $productCart->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductCart(ProductCart $productCart): self
+    {
+        if ($this->productCarts->contains($productCart)) {
+            $this->productCarts->removeElement($productCart);
+            $productCart->removeProduct($this);
+        }
+
+        return $this;
     }
 }

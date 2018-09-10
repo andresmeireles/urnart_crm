@@ -58,10 +58,16 @@ class PessoaJuridica extends BaseEntity
      */
     private $proprietarios;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="customer")
+     */
+    private $orderNumber;
+
     public function __construct()
     {
         parent::__construct();
         $this->proprietarios = new ArrayCollection();
+        $this->orderNumber = new ArrayCollection();
     }
 
     public function getId()
@@ -241,5 +247,36 @@ class PessoaJuridica extends BaseEntity
         $municipio = $this->getProprietarios()->first()->getPessoaFisica()->getAddress()->getMunicipio();
         $municipio = $municipio == null ? '' : $municipio->getNome();
         return $municipio;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrderNumber(): Collection
+    {
+        return $this->orderNumber;
+    }
+
+    public function addOrderNumber(Order $orderNumber): self
+    {
+        if (!$this->orderNumber->contains($orderNumber)) {
+            $this->orderNumber[] = $orderNumber;
+            $orderNumber->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderNumber(Order $orderNumber): self
+    {
+        if ($this->orderNumber->contains($orderNumber)) {
+            $this->orderNumber->removeElement($orderNumber);
+            // set the owning side to null (unless already changed)
+            if ($orderNumber->getCustomer() === $this) {
+                $orderNumber->setCustomer(null);
+            }
+        }
+
+        return $this;
     }
 }

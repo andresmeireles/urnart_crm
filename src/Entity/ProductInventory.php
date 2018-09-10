@@ -36,6 +36,16 @@ class ProductInventory
      */
     private $product;
 
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $reserved;
+
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $nonReservedStock;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +95,30 @@ class ProductInventory
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getReserved(): ?int
+    {
+        return $this->reserved;
+    }
+
+    public function setReserved(int $reserved): self
+    {
+        $this->reserved = $reserved;
+
+        return $this;
+    }
+
+    public function getNonReservedStock(): ?int
+    {
+        return $this->nonReservedStock;
+    }
+
+    public function setNonReservedStock(?int $nonReservedStock): self
+    {
+        $this->nonReservedStock = $nonReservedStock;
 
         return $this;
     }

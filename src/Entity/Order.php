@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,11 +17,6 @@ class Order
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ProductCart", inversedBy="orderNumber", cascade={"persist", "remove"})
-     */
-    private $cart;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Transporter", inversedBy="orderNumber", cascade={"persist", "remove"})
@@ -37,6 +34,11 @@ class Order
     private $discount;
 
     /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $freight;
+
+    /**
      * @ORM\Column(type="smallint")
      */
     private $paymentType;
@@ -51,21 +53,19 @@ class Order
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\PessoaJuridica", inversedBy="orderNumber")
+     */
+    private $customer;
+
+    public function __construct()
+    {
+        $this->customer = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCart(): ?ProductCart
-    {
-        return $this->cart;
-    }
-
-    public function setCart(?ProductCart $cart): self
-    {
-        $this->cart = $cart;
-
-        return $this;
     }
 
     public function getTransporter(): ?Transporter
@@ -104,6 +104,18 @@ class Order
         return $this;
     }
 
+    public function getFreight(): ?float
+    {
+        return $this->freight;
+    }
+
+    public function setFreight(?float $freight): self
+    {
+        $this->freight = $freight;
+
+        return $this;
+    }
+
     public function getPaymentType(): ?int
     {
         return $this->paymentType;
@@ -136,6 +148,18 @@ class Order
     public function setComments(?string $comments): self
     {
         $this->comments = $comments;
+
+        return $this;
+    }
+
+    public function getCustomer(): ?PessoaJuridica
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?PessoaJuridica $customer): self
+    {
+        $this->customer = $customer;
 
         return $this;
     }
