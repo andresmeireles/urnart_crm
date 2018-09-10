@@ -34,6 +34,11 @@ class ProductCart
      */
     private $product;
 
+    /**
+     * @ORM\Column(targetEntity="App\Entity\Product", inversedBy="productCarts")
+     */
+    private $customPrice;
+
     public function __construct()
     {
         $this->product = new ArrayCollection();

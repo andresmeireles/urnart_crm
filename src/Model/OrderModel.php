@@ -21,6 +21,8 @@ class OrderModel extends Model
 
         foreach ($products as $product) {
             $product = $this->em->getRespository(Product::class)->find($product['id']);
+            $cart->addProduct($product);
+            $cart->setAmount($product)
         }
 
         $customer = $this->em->getRepository(PessoaJuridica::class)->find($information['clientName']);
