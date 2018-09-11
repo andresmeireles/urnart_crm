@@ -19,12 +19,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $message = $request->query->get('mesg') ?? '';
-
-        return $this->render('order/index.html.twig', [
-            'controller_name' => 'OrderController',
-            'msg' => $message
-        ]);
+        return $this->render('order/index.html.twig');
     }
 
     /**
@@ -53,12 +48,15 @@ class OrderController extends Controller
                 die('deu errado mano');
             }
 
-            return $this->redirectToRoute('order', array('msg' => $result['message']));
-        }
-        //<input type="text" id="order_products_0" name="order[products][0]" required="required" class="form-control" value="andre" />
+            $this->addFlash(
+                'success',
+                $result['message']
+            );
 
+            return $this->redirectToRoute('order');
+        }
+        
         return $this->render('/order/pages/create.html.twig', [
-            //'form' => $form->createView(),
             'products' => $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll(),
             'customers' => $this->getDoctrine()->getManager()->getRepository(PessoaJuridica::class)->findAll()
         ]);
