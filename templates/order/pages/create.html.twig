@@ -11,7 +11,7 @@
     ]
     var customers = [
         {% for customer in customers %}
-            { value: '{{ customer.razaoSocial }}', cod: '{{ customer.getId }}' }
+            { value: '{{ customer.razaoSocial }}', cod: '{{ customer.getId }}' },
         {% endfor %}
     ]
 </script>
