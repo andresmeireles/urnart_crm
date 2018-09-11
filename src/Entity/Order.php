@@ -19,7 +19,7 @@ class Order
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Transporter", inversedBy="orderNumber", cascade={"persist", "remove"})
+     * @ORM\Column(type="string", nullable=true)
      */
     private $transporter;
 

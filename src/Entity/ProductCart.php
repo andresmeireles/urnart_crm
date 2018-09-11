@@ -19,25 +19,24 @@ class ProductCart
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Order")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
-     */
-    private $orderNumber;
-
-    /**
      * @ORM\Column(type="bigint")
      */
     private $amount;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Product", inversedBy="productCarts")
+     * @ORM\Column(type="bigint")
+     */
+    private $customPrice;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="productCart")
      */
     private $product;
 
     /**
-     * @ORM\Column(targetEntity="App\Entity\Product", inversedBy="productCarts")
+     * @ORM\OneToOne(targetEntity="App\Entity\Order", cascade={"persist", "remove"})
      */
-    private $customPrice;
+    private $orderNumber;
 
     public function __construct()
     {
@@ -49,24 +48,6 @@ class ProductCart
         return $this->id;
     }
 
-    public function getorderNumber(): ?Order
-    {
-        return $this->orderNumber;
-    }
-
-    public function setorderNumber(?Order $orderNumber): self
-    {
-        $this->orderNumber = $orderNumber;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newCart = $orderNumber === null ? null : $this;
-        if ($newCart !== $orderNumber->getCart()) {
-            $orderNumber->setCart($newCart);
-        }
-
-        return $this;
-    }
-
     public function getAmount(): ?int
     {
         return $this->amount;
@@ -75,6 +56,18 @@ class ProductCart
     public function setAmount(int $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getCustomPrice(): ?int
+    {
+        return $this->customPrice;
+    }
+
+    public function setCustomPrice(int $customPrice): self
+    {
+        $this->customPrice = $customPrice;
 
         return $this;
     }
@@ -91,6 +84,7 @@ class ProductCart
     {
         if (!$this->product->contains($product)) {
             $this->product[] = $product;
+            $product->setProductCart($this);
         }
 
         return $this;
@@ -100,7 +94,23 @@ class ProductCart
     {
         if ($this->product->contains($product)) {
             $this->product->removeElement($product);
+            // set the owning side to null (unless already changed)
+            if ($product->getProductCart() === $this) {
+                $product->setProductCart(null);
+            }
         }
+
+        return $this;
+    }
+
+    public function getOrderNumber(): ?Order
+    {
+        return $this->orderNumber;
+    }
+
+    public function setOrderNumber(?Order $orderNumber): self
+    {
+        $this->orderNumber = $orderNumber;
 
         return $this;
     }
