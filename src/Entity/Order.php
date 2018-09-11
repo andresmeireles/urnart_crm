@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
+ * @ORM\Table(name="`order`")
  */
 class Order
 {
@@ -58,9 +59,15 @@ class Order
      */
     private $customer;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductCart", mappedBy="orderNumber")
+     */
+    private $productCarts;
+
     public function __construct()
     {
         $this->customer = new ArrayCollection();
+        $this->productCarts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -160,6 +167,37 @@ class Order
     public function setCustomer(?PessoaJuridica $customer): self
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductCart[]
+     */
+    public function getProductCarts(): Collection
+    {
+        return $this->productCarts;
+    }
+
+    public function addProductCart(ProductCart $productCart): self
+    {
+        if (!$this->productCarts->contains($productCart)) {
+            $this->productCarts[] = $productCart;
+            $productCart->setOrderNumber($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductCart(ProductCart $productCart): self
+    {
+        if ($this->productCarts->contains($productCart)) {
+            $this->productCarts->removeElement($productCart);
+            // set the owning side to null (unless already changed)
+            if ($productCart->getOrderNumber() === $this) {
+                $productCart->setOrderNumber(null);
+            }
+        }
 
         return $this;
     }

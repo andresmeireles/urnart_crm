@@ -24,23 +24,26 @@ class ProductCart
     private $amount;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $customPrice;
 
+    //@ORM\OneToOne(targetEntity="App\Entity\Order", cascade={"persist", "remove"})
+
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="productCart")
+     * @ORM\Column(type="integer")
      */
     private $product;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Order", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="productCarts")
      */
     private $orderNumber;
 
     public function __construct()
     {
         $this->product = new ArrayCollection();
+        $this->orderNumber = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -60,45 +63,26 @@ class ProductCart
         return $this;
     }
 
-    public function getCustomPrice(): ?int
+    public function getCustomPrice(): ?float
     {
         return $this->customPrice;
     }
 
-    public function setCustomPrice(int $customPrice): self
+    public function setCustomPrice(float $customPrice): self
     {
         $this->customPrice = $customPrice;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProduct(): Collection
+    public function getProduct(): ?int
     {
         return $this->product;
     }
 
-    public function addProduct(Product $product): self
+    public function setProduct(Product $product): self
     {
-        if (!$this->product->contains($product)) {
-            $this->product[] = $product;
-            $product->setProductCart($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->product->contains($product)) {
-            $this->product->removeElement($product);
-            // set the owning side to null (unless already changed)
-            if ($product->getProductCart() === $this) {
-                $product->setProductCart(null);
-            }
-        }
+        $this->product = $product->getId();
 
         return $this;
     }

@@ -1,6 +1,11 @@
 {% extends 'index.html.twig' %}
 
 {% block content %}
+    {% if msg == '' %}
+    <div class="bg-success">
+        {{ msg }} tem uma mensagem
+    </div>    
+    {% endif %}
     <div class="bg-secondary">
         <div class="sidebar-sticky p-1">
             <ul class="list-unstyled">

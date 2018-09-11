@@ -5,22 +5,20 @@ namespace App\Model;
 
 use App\Entity\Order;
 use App\Entity\Product;
-use App\Entity\ProductCart;
+use App\Entity\ProductCart as Cart;
 use App\Entity\ProductInventory;
 use App\Entity\PessoaJuridica;
 
 class OrderModel extends Model
 {
-    public function createOrder(array $information, array $products)
+    public function createOrder(array $information, array $products): array
     {
-        dump($information, $products);
         $em = $this->em;
 
         $em->getConnection()->beginTransaction();
 
         try {
             $order = new Order();
-            $cart = new ProductCart();
             $totalPrice = 0;
 
             $customer = $this->em->getRepository(PessoaJuridica::class)->find($information['clientName']);
@@ -40,23 +38,24 @@ class OrderModel extends Model
             $order->setTransporter(null);
 
             foreach ($products as $product) {
-                
+                $cart = new Cart();
+
                 $cart->setOrderNumber($order);
                 
                 $existentProduct = $this->em->getRepository(Product::class)->find($product['cod']);
-                $cart->addProduct($existentProduct);
+                $cart->setProduct($existentProduct);
 
                 $amount = (int) $product['qnt'];
                 $cart->setAmount($amount);
                 
                 $price = $product['price'] === '' ? $existentProduct->getPrice() : (float) $product['price'];
                 if ($existentProduct->getPrice() !== $price) {
-                    $cart->setCustomPrice($product['price']);
+                    $cart->setCustomPrice($price);
                 }
                 
                 $em->persist($cart);
-
-                $totalPrice += ($price * $amount);
+                //$this->createCart($order, $products);
+                $totalPrice += ( (float) $product['price'] * (float) $product['qnt']); 
             }
 
             $order->setTotalPrice($totalPrice);
@@ -67,11 +66,44 @@ class OrderModel extends Model
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
-            dump($order, $cart);
-            throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+            return array(
+                'http_code' => 401,
+                'message' => "{$e->getMessage()}"
+            );
         }
 
-        echo 'foi :)';
-        die('deu certo meu amiginho');
+        return array(
+            'http_code' => 301,
+            'message' => "Pedido {$order->getId()} criado com sucesso"
+        );
+    }
+
+    public function createCart(Order $order, array $products): void
+    {
+        $em = $this->em;
+
+        foreach($products as $product) {
+            try {
+                $cart = new Cart();
+
+                $cart->setOrderNumber($order);
+                
+                $existentProduct = $this->em->getRepository(Product::class)->find($product['cod']);
+                $cart->setProduct($existentProduct);
+
+                $amount = (int) $product['qnt'];
+                $cart->setAmount($amount);
+                
+                $price = $product['price'] === '' ? $existentProduct->getPrice() : (float) $product['price'];
+                if ($existentProduct->getPrice() !== $price) {
+                    $cart->setCustomPrice($product['price']);
+                }
+                
+                $em->persist($cart);
+                $em->flush();
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage().'. Arquivo -> '.$e->getFile().'. Linha ->'.$e->getLine());
+            }
+        }
     }
 }

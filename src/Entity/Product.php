@@ -43,11 +43,6 @@ class Product extends BaseEntity
      */
     private $productInventory;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProductCart", inversedBy="product")
-     */
-    private $productCart;
-
     public function __construct()
     {
         parent::__construct();
@@ -137,17 +132,5 @@ class Product extends BaseEntity
     public function getMinStock(): ?string
     {
         return $this->productInventory->getMinStock();
-    }
-
-    public function getProductCart(): ?ProductCart
-    {
-        return $this->productCart;
-    }
-
-    public function setProductCart(?ProductCart $productCart): self
-    {
-        $this->productCart = $productCart;
-
-        return $this;
     }
 }

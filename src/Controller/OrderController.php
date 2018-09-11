@@ -17,10 +17,13 @@ class OrderController extends Controller
     /**
      * @Route("/order", name="order")
      */
-    public function index()
+    public function index(Request $request)
     {
+        $message = $request->query->get('mesg') ?? '';
+
         return $this->render('order/index.html.twig', [
             'controller_name' => 'OrderController',
+            'msg' => $message
         ]);
     }
 
@@ -44,9 +47,13 @@ class OrderController extends Controller
                 }
             }
 
-            $model->createOrder($data, $arrData);
-            dump($request->request->all(), $arrData);
-            die();
+            $result = $model->createOrder($data, $arrData);
+
+            if ($result['http_code'] === '400') {
+                die('deu errado mano');
+            }
+
+            return $this->redirectToRoute('order', array('msg' => $result['message']));
         }
         //<input type="text" id="order_products_0" name="order[products][0]" required="required" class="form-control" value="andre" />
 
