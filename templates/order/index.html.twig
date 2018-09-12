@@ -23,11 +23,59 @@
         </div>
     </div>
     {% for message in app.flashes('success') %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>{{ message }}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+        <script>
+            setTimeout( () => {
+                var notify = new noty({
+                    text: "{{ message }}",
+                    layout: 'topCenter',
+                    type: 'success',
+                    theme: 'bootstrap-v4',
+                    animation: {
+                        open: 'animated fadeInUp', // Animate.css class names
+                        close: 'animated fadeOutDown' // Animate.css class names
+                    }
+                }).show()
+                notify.setTimeout(3500)
+            }, 1000)
+        </script>
     {% endfor %}
+
+    <div class="col p-3">
+    {% if orders == [] %}
+        Não ha pedidos cadastrados no momento :(
+    {% else %}
+
+        <table class="table">
+            <thead>
+                <th scope="col">Numero do Pedido</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Data Do Pedido</th>
+                <th scope="col">&nbsp;</th>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <td class="text-center">
+                        {{ order.getId }}
+                    </td>
+                    <td class="text-center">
+                        {{ order.getCustomer }}
+                    </td>
+                    <td class="text-center">
+                        {{ order.getCreateDate }}
+                    </td>
+                    <td>
+                        <span data-action="view{{order.getId}}" class="badge badge-pill badge-secondary cursor-decoration">Visualizar</span>
+                        <a href="/order/view/{{order.getId}}" class="badge badge-pill badge-primary text-light cursor-decoration">Editar</a>
+                    </td>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
+    </div>
+
+    {% for order in orders %}
+        {# {% include '/order/pages/viewOrder.html.twig' with {'order' : order } %} #}
+    {% endfor %}
+
 {% endblock %}

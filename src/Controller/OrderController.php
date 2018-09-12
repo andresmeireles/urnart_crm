@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
-use App\Form\OrderType;
 use App\Model\OrderModel;
-use App\Form\Types\OrderForm;
+use App\Entity\Order;
+use App\Entity\Product;
 use App\Entity\PessoaJuridica;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,13 +18,30 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->render('order/index.html.twig');
+        $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
+
+        return $this->render('order/index.html.twig', [
+            'orders' => $orders,
+        ]);
     }
 
     /**
-     * Redirect to order
-     * 
-     * @Route("/order/create", name="createOrder", methods={"GET", "POST"})
+     * @Route("/order/create", name="createOrder", methods="GET")
+     *
+     * @param OrderModel $model
+     * @param Request $request
+     * @return Response
+     */
+    public function viewCreateOrder(): Response
+    {
+        return $this->render('/order/pages/create.html.twig', [
+            'products' => $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll(),
+            'customers' => $this->getDoctrine()->getManager()->getRepository(PessoaJuridica::class)->findAll()
+        ]);
+    }
+
+    /**
+     * @Route("/order/create", methods="POST")
      *
      * @param OrderModel $model
      * @param Request $request
@@ -33,32 +49,30 @@ class OrderController extends Controller
      */
     public function createOrder(OrderModel $model, Request $request): Response
     {
-        if ($request->server->get('REQUEST_METHOD') == 'POST') {
-            $data = $request->request->all();
-            foreach($data as $key => $value) {
-                if (is_array($value)) {
-                    unset($data[$key]);
-                    $arrData[] = $value;
-                }
+        $data = $request->request->all();
+        foreach($data as $key => $value) {
+            if (is_array($value)) {
+                unset($data[$key]);
+                $arrData[] = $value;
             }
+        }
 
-            $result = $model->createOrder($data, $arrData);
+        $result = $model->createOrder($data, $arrData);
 
-            if ($result['http_code'] === '400') {
-                die('deu errado mano');
-            }
-
+        if ($result['http_code'] === '400') {
             $this->addFlash(
-                'success',
+                'error',
                 $result['message']
             );
 
-            return $this->redirectToRoute('order');
+            return $this->redirectToRoute('createOrder');
         }
-        
-        return $this->render('/order/pages/create.html.twig', [
-            'products' => $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll(),
-            'customers' => $this->getDoctrine()->getManager()->getRepository(PessoaJuridica::class)->findAll()
-        ]);
+
+        $this->addFlash(
+            'success',
+            $result['message']
+        );
+
+        return $this->redirectToRoute('order');
     }
 }

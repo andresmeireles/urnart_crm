@@ -16,6 +16,23 @@
     ]
 </script>
 
+{% for message in app.flashes('error') %}
+    <script>
+        setTimeout(() => {
+            var notify = new noty({
+                text: "{{ message }}",
+                layout: 'topCenter',
+                type: 'alert',
+                theme: 'bootstrap-v4',
+                animation: {
+                    open: 'animated fadeInUp',
+                    close: 'animated fadeOutDown'
+                }
+            }).show()
+            notify.setTimeout(3500)
+        }, 1000)
+    </script>
+{% endfor %}
 
 <div class="col-12 p-3" id="automaticOrder">
     <h1 class="">Criar Pedido</h1>

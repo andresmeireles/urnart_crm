@@ -45,9 +45,10 @@ abstract class BaseEntity
 		return $result;
 	}
 
-	public function getCreateDate(): ?\DateTime
+	public function getCreateDate(): ?string
 	{
-		return $this->createDate->format('d-m-Y');
+		$date = ($this->createDate instanceof \DateTime) ? $this->createDate->format('d-m-Y') : null;
+		return $date;
 	}
 
 	public function getLastUpdate(): ?string

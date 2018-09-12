@@ -6,6 +6,7 @@ require('devbridge-autocomplete')
 
 const $ = require('jquery')
 const fancybox = require('@fancyapps/fancybox')
+const noty = require('noty')
 
 const vexjs = require('vex-js')
 vexjs.registerPlugin(require('vex-dialog'))
@@ -17,8 +18,9 @@ vexjs.dialog.buttons.NO.text = 'Cancelar'
 global.$ = global.jQuery = $
 global.axios = require('axios')
 global.tablesorter = require('tablesorter')
-global.vex = vexjs
 global.rot = require('rot')
+global.noty = noty
+global.vex = vexjs
 
 // root folder
 global.messageSend = require('./src/messageDispatcher');

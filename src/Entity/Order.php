@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
  * @ORM\Table(name="`order`")
  */
-class Order
+class Order extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -159,9 +159,9 @@ class Order
         return $this;
     }
 
-    public function getCustomer(): ?PessoaJuridica
+    public function getCustomer(): ?string
     {
-        return $this->customer;
+        return $this->customer->getRazaoSocial();
     }
 
     public function setCustomer(?PessoaJuridica $customer): self

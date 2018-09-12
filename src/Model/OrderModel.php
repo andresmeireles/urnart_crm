@@ -11,7 +11,15 @@ use App\Entity\PessoaJuridica;
 
 class OrderModel extends Model
 {
-    public function createOrder(array $information, array $products): array
+    /**
+     * Execute ação de criacao ou atualização de ordem de serviço e carrinho.
+     *
+     * @param array $information
+     * @param array $products
+     * @param string $type
+     * @return array
+     */
+    public function executeActionOnOrder(array $information, array $products, string $type = 'insert'): array
     {
         $em = $this->em;
 
@@ -33,16 +41,20 @@ class OrderModel extends Model
             
             $order->setPaymentType(21);
             $order->setInstallment(1);
-            //$order->setComments($information['observation']);
-            $order->setComments(null);
-            $order->setTransporter(null);
-
+            
+            $comments = trim(ltrim(filter_var($information['observation'], FILTER_SANITIZE_STRING)));
+            $order->setComments($comments);
+            
             foreach ($products as $product) {
                 $cart = new Cart();
 
-                $cart->setOrderNumber($order);
-                
                 $existentProduct = $this->em->getRepository(Product::class)->find($product['cod']);
+                if (is_null($existentProduct)) {
+                    return array(
+                        'http_code' => 400,
+                        'message' => 'Erro. Produto '. $product['product'] .' não existe ou de produto não identificado'
+                    );    
+                }
                 $cart->setProduct($existentProduct);
 
                 $amount = (int) $product['qnt'];
@@ -52,13 +64,15 @@ class OrderModel extends Model
                 if ($existentProduct->getPrice() !== $price) {
                     $cart->setCustomPrice($price);
                 }
+
+                $cart->setOrderNumber($order);
                 
                 $em->persist($cart);
-                //$this->createCart($order, $products);
                 $totalPrice += ( (float) $product['price'] * (float) $product['qnt']); 
             }
 
             $order->setTotalPrice($totalPrice);
+            $order->setActive(true);
 
             $em->persist($order);
             $em->flush();
@@ -78,32 +92,27 @@ class OrderModel extends Model
         );
     }
 
-    public function createCart(Order $order, array $products): void
+    /**
+     * Chama função executeActionOnOrder com ação update
+     *
+     * @param array $information
+     * @param array $products
+     * @return void
+     */
+    public function updateOrder(array $information, array $products): void
     {
-        $em = $this->em;
+        $this->executeActionOnOrder($information, $products, 'update');
+    }
 
-        foreach($products as $product) {
-            try {
-                $cart = new Cart();
-
-                $cart->setOrderNumber($order);
-                
-                $existentProduct = $this->em->getRepository(Product::class)->find($product['cod']);
-                $cart->setProduct($existentProduct);
-
-                $amount = (int) $product['qnt'];
-                $cart->setAmount($amount);
-                
-                $price = $product['price'] === '' ? $existentProduct->getPrice() : (float) $product['price'];
-                if ($existentProduct->getPrice() !== $price) {
-                    $cart->setCustomPrice($product['price']);
-                }
-                
-                $em->persist($cart);
-                $em->flush();
-            } catch (\Exception $e) {
-                throw new \Exception($e->getMessage().'. Arquivo -> '.$e->getFile().'. Linha ->'.$e->getLine());
-            }
-        }
+    /**
+     * Chama função executeActionOnOrder com ação insert
+     *
+     * @param array $information
+     * @param array $products
+     * @return void
+     */
+    public function createOrder(array $information, array $products): void
+    {
+        $this->executeActionOnOrder($information, $products, 'insert');
     }
 }
