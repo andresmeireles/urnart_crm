@@ -68,7 +68,7 @@ abstract class BaseEntity
 		return $this->active;
 	}
 
-	protected function setActive(bool $active): self 
+	public function setActive(bool $active): self 
 	{
 		$this->active = $active;
 

@@ -31,18 +31,17 @@ class ProductCart
     //@ORM\OneToOne(targetEntity="App\Entity\Order", cascade={"persist", "remove"})
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $product;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="productCarts")
      */
     private $orderNumber;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="productCarts")
+     */
+    private $product;
+
     public function __construct()
     {
-        $this->product = new ArrayCollection();
         $this->orderNumber = new ArrayCollection();
     }
 
@@ -75,18 +74,6 @@ class ProductCart
         return $this;
     }
 
-    public function getProduct(): ?int
-    {
-        return $this->product;
-    }
-
-    public function setProduct(Product $product): self
-    {
-        $this->product = $product->getId();
-
-        return $this;
-    }
-
     public function getOrderNumber(): ?Order
     {
         return $this->orderNumber;
@@ -95,6 +82,18 @@ class ProductCart
     public function setOrderNumber(?Order $orderNumber): self
     {
         $this->orderNumber = $orderNumber;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
 
         return $this;
     }

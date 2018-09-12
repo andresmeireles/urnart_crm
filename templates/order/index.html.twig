@@ -35,7 +35,7 @@
                         close: 'animated fadeOutDown' // Animate.css class names
                     }
                 }).show()
-                notify.setTimeout(3500)
+                notify.setTimeout(2500)
             }, 1000)
         </script>
     {% endfor %}
@@ -47,9 +47,9 @@
 
         <table class="table">
             <thead>
-                <th scope="col">Numero do Pedido</th>
-                <th scope="col">Cliente</th>
-                <th scope="col">Data Do Pedido</th>
+                <th scope="col" class="text-center">Numero do Pedido</th>
+                <th scope="col" class="text-center">Cliente</th>
+                <th scope="col" class="text-center">Data Do Pedido</th>
                 <th scope="col">&nbsp;</th>
             </thead>
             <tbody>
@@ -61,7 +61,7 @@
                         {{ order.getCustomer }}
                     </td>
                     <td class="text-center">
-                        {{ order.getCreateDate }}
+                        {{ order.getCreateDate | date('d/m/Y') }}
                     </td>
                     <td>
                         <span data-action="view{{order.getId}}" class="badge badge-pill badge-secondary cursor-decoration">Visualizar</span>
@@ -75,7 +75,7 @@
     </div>
 
     {% for order in orders %}
-        {# {% include '/order/pages/viewOrder.html.twig' with {'order' : order } %} #}
+        {% include '/order/pages/viewOrder.html.twig' with {'order' : order } %}
     {% endfor %}
 
 {% endblock %}

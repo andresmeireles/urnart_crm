@@ -59,6 +59,7 @@ class OrderModel extends Model
 
                 $amount = (int) $product['qnt'];
                 $cart->setAmount($amount);
+                $existentProduct->getProductInventory()->setReserved($amount);
                 
                 $price = $product['price'] === '' ? $existentProduct->getPrice() : (float) $product['price'];
                 if ($existentProduct->getPrice() !== $price) {
@@ -79,10 +80,11 @@ class OrderModel extends Model
             
             $em->getConnection()->commit();
         } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
             $em->getConnection()->rollback();
             return array(
                 'http_code' => 401,
-                'message' => "{$e->getMessage()}"
+                'message' => $e->getMessage()
             );
         }
 
@@ -99,9 +101,9 @@ class OrderModel extends Model
      * @param array $products
      * @return void
      */
-    public function updateOrder(array $information, array $products): void
+    public function updateOrder(array $information, array $products): array
     {
-        $this->executeActionOnOrder($information, $products, 'update');
+        return $this->executeActionOnOrder($information, $products, 'update');
     }
 
     /**
@@ -111,8 +113,8 @@ class OrderModel extends Model
      * @param array $products
      * @return void
      */
-    public function createOrder(array $information, array $products): void
+    public function createOrder(array $information, array $products): array
     {
-        $this->executeActionOnOrder($information, $products, 'insert');
+        return $this->executeActionOnOrder($information, $products, 'insert');
     }
 }

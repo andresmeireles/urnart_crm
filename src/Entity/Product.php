@@ -43,9 +43,15 @@ class Product extends BaseEntity
      */
     private $productInventory;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ProductCart", mappedBy="product")
+     */
+    private $productCarts;
+
     public function __construct()
     {
         parent::__construct();
+        $this->productCarts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -132,5 +138,36 @@ class Product extends BaseEntity
     public function getMinStock(): ?string
     {
         return $this->productInventory->getMinStock();
+    }
+
+    /**
+     * @return Collection|ProductCart[]
+     */
+    public function getProductCarts(): Collection
+    {
+        return $this->productCarts;
+    }
+
+    public function addProductCart(ProductCart $productCart): self
+    {
+        if (!$this->productCarts->contains($productCart)) {
+            $this->productCarts[] = $productCart;
+            $productCart->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductCart(ProductCart $productCart): self
+    {
+        if ($this->productCarts->contains($productCart)) {
+            $this->productCarts->removeElement($productCart);
+            // set the owning side to null (unless already changed)
+            if ($productCart->getProduct() === $this) {
+                $productCart->setProduct(null);
+            }
+        }
+
+        return $this;
     }
 }

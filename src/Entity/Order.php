@@ -68,6 +68,7 @@ class Order extends BaseEntity
     {
         $this->customer = new ArrayCollection();
         $this->productCarts = new ArrayCollection();
+        parent::__construct();
     }
 
     public function getId(): ?int

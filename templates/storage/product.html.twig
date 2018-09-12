@@ -58,7 +58,8 @@
                                                 <th>#</th>
                                                 <th width="18%" data-sort-default>Nome</th>
                                                 <th>Cores</th>
-                                                <th>Qnt</th>
+                                                <th>Disponivel</th>
+                                                <th>Reservado</th>
                                                 <th>Min.</th>
                                                 <th>Max.</th>
                                                 <th>&nbsp;</th>
@@ -79,7 +80,8 @@
                                                                 Não tem cores :(
                                                             {% endif %}
                                                         </td>
-                                                        <td>{{ p.getStock }}</td>
+                                                        <td>{{ p.getProductInventory.getNonReservedStock }}</td>
+                                                        <td>{{ p.getProductInventory.getReserved }}</td>
                                                         <td>{{ p.getMinStock }}</td>
                                                         <td>{{ p.getMaxStock }}</td>
                                                         <td>
@@ -91,7 +93,7 @@
                                                 {% endfor %}
                                             {% else %}
                                                 <tr>
-                                                    <th colspan="7" class="text-center">Nenhum produto</th>
+                                                    <th colspan="7" class="text-center">Nenhum produto :(</th>
                                                 </tr>
                                             {% endif %}
                                         </tbody>

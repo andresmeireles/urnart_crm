@@ -107,19 +107,12 @@ class ProductInventory
     public function setReserved(int $reserved): self
     {
         $this->reserved = $reserved;
-
+        $this->nonReserved = $this->stock - $reserved;
         return $this;
     }
 
     public function getNonReservedStock(): ?int
     {
         return $this->nonReservedStock;
-    }
-
-    public function setNonReservedStock(?int $nonReservedStock): self
-    {
-        $this->nonReservedStock = $nonReservedStock;
-
-        return $this;
     }
 }
