@@ -1,0 +1,59 @@
+<div id="paymentType" class="d-none">
+
+    <div class="card text-center my-2">
+        <div class="card-header" data-name="paymentType">
+            <ul class="nav nav-pills card-header-pills">
+                <li class="nav-item">
+                    <h4>Formas de Pagamento</h4>
+                </li>
+                <li class="nav-item mx-5">
+                    <button data-action="add-paymentType" class="btn btn-primary">Adicionar</button>
+                </li>
+                <li class="nav-item mx-2">
+                    <button id="paymentType-reload" class="btn reload">
+                        <i class="fas fa-sync reload"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body" data-name="paymentType">
+            <table class="table table-hover tablesorter sortable" name="pagamentos">
+                <thead class="table-primary">
+                    <tr>
+                        <th colspan="2">Forma de Pagamento</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentType-body">
+                    {% for type in types %}
+                        <tr>
+                            <td class="d-none id-number">
+                                {{ type.id }}
+                            </td>
+                            <td class="text-left" name="{{ type.name }}">
+                                {{ type.name | capitalize }}
+                            </td>
+                            <td class="text-right">
+                                <span class="badge badge-pill badge-danger remover cursor-decoration">Remover</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div id="add-paymentType" class="d-none">
+
+    <div class="card text-center my-2">
+        <div class="card-header">
+            <form method="post" action="register/add/paymentType" id="add-payment-form" target="paymentType">
+                <div class="form-group">
+                    <input type="text" name="name" class="form-control" placeholder="Forma de Pagamento">
+                </div>
+                <button class="btn btn-primary sender" data-sender="register/add/paymentType">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</div>

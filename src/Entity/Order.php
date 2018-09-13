@@ -25,6 +25,11 @@ class Order extends BaseEntity
     private $transporter;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $port;
+
+    /**
      * @ORM\Column(type="float")
      */
     private $totalPrice;
@@ -84,6 +89,18 @@ class Order extends BaseEntity
     public function setTransporter(?Transporter $transporter): self
     {
         $this->transporter = $transporter;
+
+        return $this;
+    }
+
+    public function getPort(): ?string
+    {
+        return $this->port;
+    }
+
+    public function setPort(?string $port): self
+    {
+        $this->port = $port;
 
         return $this;
     }

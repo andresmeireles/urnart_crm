@@ -79,13 +79,13 @@
                                 <h3>Total Produtos&nbsp;</h3>
                                 <h3>R$&nbsp;&nbsp;</h3>
                                 <h3>
-                                    <span id="allProductsPrice">0</span>,00</h3>
+                                    <span id="allProductsPrice">{{ order.totalPrice | number_format(2, ',', '.') }}</span></h3>
                             </div>
                             <div class="input-group">
                                 <h3>Valor Final &nbsp;</h3>
                                 <h3>R$&nbsp;&nbsp;</h3>
                                 <h3>
-                                    <span id="finalPrice">0</span>,00</h3>
+                                    <span id="finalPrice">{{ (order.totalPrice + order.freight + order.discount) | number_format(2, ',', '.') }}</span></h3>
                             </div>
                         </div>
                     </div>
@@ -99,37 +99,30 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Seleciona a forma de pagamento</label>
-                            <input type="text" class="form-control" name="formPg" required="required">
-                            <small>Caso a opção seja putra seleciona outro</small>
+                            <div class="form-control">{{ order.paymentType }}</div>
                         </div>
                         <div class="form-group">
                             <label>Valor do frete</label>
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">R$</div>
-                                </div>
-                                <input type="number" class="form-control" name="freight" id="freight"></div>
+                                <div class="form-control">R$ {{ order.freight | number_format(2, ',', '.') }}</div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Desconto</label>
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">R$</div>
-                                </div>
-                                <input type="hidden" name="discount" id="noDiscount" value="0">
-                                <input type="number" class="form-control" name="discount" id="discount">
+                                <div class="form-control">R$ {{ order.discount | number_format(2, ',', '.') }}</div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Barco & Transportadora</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="transporter">
+                                <div class="form-control">{{ (order.transporter == '') ? 'NÃO CADASTRADO' : order.transporter }}</div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Porto</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="port" id="port">
+                                <div class="form-control">{{ (order.port == '') ? 'NÃO CADASTRADO' : order.port }}</div>
                             </div>
                         </div>
                     </div>
@@ -143,7 +136,7 @@
                 <legend class="px-1 bg-light">Observações</legend>
                 <div class="row m-1">
                     <div class="form-group col">
-                        <textarea class="form-control" value="escreve aqui" name="observation"></textarea>
+                        {{ order.comments }}
                     </div>
                 </div>
             </fieldset>

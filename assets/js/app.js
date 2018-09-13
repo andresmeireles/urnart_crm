@@ -7,6 +7,28 @@ require('devbridge-autocomplete')
 const $ = require('jquery')
 const fancybox = require('@fancyapps/fancybox')
 const noty = require('noty')
+const numeral = require('numeral')
+
+numeral.register('locale', 'br', {
+    delimiters: {
+        thousands: '.',
+        decimal: ','
+    },
+    abbreviations: {
+        thousand: 'k',
+        million: 'm',
+        billion: 'b',
+        trillion: 't'
+    },
+    ordinal : function (number) {
+        return number === 1 ? 'er' : 'ème';
+    },
+    currency: {
+        symbol: 'R$'
+    }
+});
+
+numeral.locale('br');
 
 const vexjs = require('vex-js')
 vexjs.registerPlugin(require('vex-dialog'))
@@ -20,6 +42,7 @@ global.axios = require('axios')
 global.tablesorter = require('tablesorter')
 global.rot = require('rot')
 global.noty = noty
+global.numeral = numeral
 global.vex = vexjs
 
 // root folder

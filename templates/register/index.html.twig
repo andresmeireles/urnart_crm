@@ -42,6 +42,16 @@
                 <div class="m-1">
                     <div class="card" style="width: 14rem;">
                         <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-fw fa-boxes"></i>&nbsp;Formas de Pagamento</h5>
+                            <p class="card-text">Listar formas de pagamento.</p>
+                            <a href="#" data-action="add-paymentType" class="card-link text-primary">Criar</a>
+                            <a href="#" data-action="paymentType" data-table="paymentType" class="card-link text-primary">Visualizar e Editar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-1">
+                    <div class="card" style="width: 14rem;">
+                        <div class="card-body">
                             <h5 class="card-title"><i class="fas fa-fw fa-ruler"></i>&nbsp;Medidas</h5>
                             <p class="card-text">Cadastra unidades metricas.</p>
                             <a href="#" data-action="add-unit" class="card-link text-primary">Criar</a>
@@ -77,5 +87,6 @@
         {% include '/register/pages/states.html.twig' with {'state': state} %}
         {% include '/register/pages/cities.html.twig' with {'city': city} %}
         {% include '/register/pages/customer.html.twig' with {'customer': customer} %}
+        {% include '/register/pages/paymentType.html.twig' with {'types': payType} %}
 
     {% endblock %}

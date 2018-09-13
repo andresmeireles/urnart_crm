@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     if (document.querySelector('#automaticOrder')) {
-        let disabledInputs = document.querySelectorAll('[autocp]')
+        let disabledInputs = document.querySelectorAll('[autocp], [formCp]')
 
         for (let enabledInputs of disabledInputs) {
             enabledInputs.removeAttribute('disabled')
@@ -16,6 +16,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }, true)
 
         document.addEventListener('focus', function (el) {
+
+            if (el.target.id === 'formPg') {
+                $(el.target).autocomplete({
+                    lookup: eval(el.target.getAttribute('formCp')),
+                    triggerSelectOnValidInput: false,
+                    onSelect: function (option) {
+                        let cod = Number(option.cod)
+                        if (Number.isInteger(cod)) {
+                            let paymentType = document.querySelector('#formPgNumber')
+                            paymentType.value = option.cod
+                            let installment = document.querySelector('#inst')
+                            installment.removeAttribute('disabled')
+                            installment.focus()
+                            return true
+                        }
+                    }
+                })
+            }
+
             if (el.target.hasAttribute('autocp')) {
 
                 if (el.target.closest('[clone-area]')) {
@@ -36,9 +55,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (el.target.closest('[clone-area]')) {
                             let field = el.target.closest('[clone-area]')
                             field.querySelector('#cod').value = option.cod
-                            field.querySelector('#prod-price').value = option.price
+                            field.querySelector('#prod-price').value = numeral(option.price).format('0.00')
                             field.querySelector('#prod-qnt').value = 1
-                            field.querySelector('#total').value = (1 * option.price)
+                            field.querySelector('#total').value = numeral((1 * option.price)).format('0.00')
                             contabilize()
                         } else {
                             let idClient = document.querySelector('#idClientName')
@@ -52,6 +71,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.addEventListener('blur', function (el) {
 
             if (el.target.hasAttribute('autocp') && el.target.closest('[clone-area]')) {
+                let items = eval(el.target.getAttribute('autocp'))
+                isValid(el, items, 200)
+
                 let disabledInputs = el.target.closest('[clone-area]').querySelectorAll('[input="text"]')
 
                 for (let di of disabledInputs) {
@@ -63,45 +85,45 @@ document.addEventListener('DOMContentLoaded', function () {
                         di.setAttribute('disabled', 'disabled')   
                     }
                 }
-
-                setTimeout(() => {
-                    let value = el.target.value
-                    let result = false
-
-                    for (prod of product) {
-                        if (prod.value == value) {
-                            result = true
-                            continue
-                        }
-                    }
-
-                    if (!result) {
-                        alert(`Produto ${value} não é um produto valido`)
-                        el.stopImmediatePropagation()
-                        el.preventDefault()
-                        el.target.value = ''
-                        return false
-                    }
-
-                }, 200)
             }
 
             if (el.target.id == 'prod-qnt' ) {
                 let field = el.target.closest('[clone-area]')
-                let price = field.querySelector('#prod-price').value
-                field.querySelector('#total').value = (el.target.value * price)
+                let value = field.querySelector('#prod-price').value
+                value = Number(value.replace(',','.'))
+                let qnt = Number(el.target.value)
+                
+                field.querySelector('#total').value = numeral((value * qnt)).format('0.00')
                 contabilize()
+                contabilizeInstallmentValue()
             }
 
             if (el.target.id == 'prod-price') {
                 let field = el.target.closest('[clone-area]')
-                let qnt = field.querySelector('#prod-qnt').value
-                field.querySelector('#total').value = (el.target.value * qnt)
+                let qnt = Number(field.querySelector('#prod-qnt').value)
+                let value = el.target.value
+                    value = Number(value.replace(',','.'))
+
+                field.querySelector('#prod-price').value = numeral(value).format('0.00')
+                field.querySelector('#total').value = numeral((value * qnt)).format('0.00')
                 contabilize()
+                contabilizeInstallmentValue()
             }
 
-            if (el.target.id === 'freight' || el.target.id === 'discount') {
+            if (el.target.id === 'freight' || el.target.id == 'inst' || el.target.id === 'discount') {
                 contabilize()
+                contabilizeInstallmentValue()
+            }
+
+            if (el.target.id === 'formPg') {
+                let items = eval(el.target.getAttribute('formCp'))
+                isValid(el, items, 200)
+                let paymentType = document.querySelector('#formPgNumber')
+                paymentType.value = ''
+                let installment = document.querySelector('#inst')
+                installment.value = ''
+                installment.setAttribute('disabled', '')
+                return false
             }
 
         }, true)
@@ -123,5 +145,47 @@ document.addEventListener('DOMContentLoaded', function () {
 
         allProductsPrice.innerHTML = allPrices
         totalPrice.innerHTML = (allPrices + freight) - discount
+    }
+
+    const isValid = (el, items, seconds) => {
+        setTimeout(() => {
+            let value = el.target.value
+            let result = false
+
+            for (item of items) {
+                if (item.value == value) {
+                    result = true
+                    continue
+                }
+            }
+
+            if (!result) {
+                alert(`Produto ${value} não é um produto valido`)
+                el.stopImmediatePropagation()
+                el.preventDefault()
+                el.target.value = ''
+                return false
+            }
+
+        }, seconds)        
+    }
+
+    const contabilizeInstallmentValue = () => {
+        setTimeout(() => {
+            type = document.querySelector('#formPg').value
+
+            if (type == 'A vista' || type == '') {
+                document.querySelector('#installmentPrice').innerHTML = numeral(value).format('0.00')
+                return true         
+            }
+
+            let totalPrice = (document.querySelector('#allProductsPrice').innerHTML == 0 && document.querySelector('#allProductsPrice').innerHTML == '') ? 0 : Number(document.querySelector('#allProductsPrice').innerHTML)
+            let discount = (document.querySelector('#discount').value == 0 && document.querySelector('#discount').value == '') ? 0 : Number(document.querySelector('#discount').value) 
+            let installment = (document.querySelector('#inst').value == '' ? 1 : Number(document.querySelector('#inst').value))
+            
+            let value = (totalPrice - discount) / installment
+            
+            document.querySelector('#installmentPrice').innerHTML = numeral(value).format('0.00')
+        }, 200);
     }
 })
