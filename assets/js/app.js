@@ -7,9 +7,9 @@ require('devbridge-autocomplete')
 const $ = require('jquery')
 const fancybox = require('@fancyapps/fancybox')
 const noty = require('noty')
-const numeral = require('numeral')
 
-numeral.register('locale', 'br', {
+const numeralJs = require('numeral')
+numeralJs.register('locale', 'br', {
     delimiters: {
         thousands: '.',
         decimal: ','
@@ -27,8 +27,7 @@ numeral.register('locale', 'br', {
         symbol: 'R$'
     }
 });
-
-numeral.locale('br');
+numeralJs.locale('br');
 
 const vexjs = require('vex-js')
 vexjs.registerPlugin(require('vex-dialog'))
@@ -42,7 +41,7 @@ global.axios = require('axios')
 global.tablesorter = require('tablesorter')
 global.rot = require('rot')
 global.noty = noty
-global.numeral = numeral
+global.numeral = numeralJs
 global.vex = vexjs
 
 // root folder
@@ -96,12 +95,6 @@ import './src/global/tools/sorter'
 
 // order import
 import './src/order/orderAction'
-
-//if (document.querySelector('.sortable')) {
-//	$('.sortable').tablesorter({
-//		sortList: [[1, 0], [2, 0]]
-//	});
-//}
 
 if (document.querySelector('.f-date')) {
 	var dateMask = new IMask(

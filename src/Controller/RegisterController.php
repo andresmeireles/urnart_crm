@@ -24,6 +24,7 @@ class RegisterController extends Controller
             'city' => $getter->get('municipio'),
             'customer' => $getter->get('pessoaJuridica'),
             'payType' => $getter->get('paymentType'),
+            'transporters' => $getter->get('transporter'),
         ]);
     }
 

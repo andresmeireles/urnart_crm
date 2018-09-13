@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 let value = field.querySelector('#prod-price').value
                 value = Number(value.replace(',','.'))
                 let qnt = Number(el.target.value)
-                
+
                 field.querySelector('#total').value = numeral((value * qnt)).format('0.00')
                 contabilize()
                 contabilizeInstallmentValue()
@@ -139,12 +139,14 @@ document.addEventListener('DOMContentLoaded', function () {
         let discount = (document.querySelector('#discount').value === '') ? 0 : Number(document.querySelector('#discount').value)
 
         for (let p of prices) {
-            p = Number(p.value)
-            allPrices += p
+            let price = p.value
+            price = price.replace('.','')
+            price = price.replace(',','.')
+            allPrices += Number(price)
         }
 
-        allProductsPrice.innerHTML = allPrices
-        totalPrice.innerHTML = (allPrices + freight) - discount
+        allProductsPrice.innerHTML = numeral(allPrices).format('0.00')
+        totalPrice.innerHTML = numeral((allPrices + freight) - discount).format('0.00')
     }
 
     const isValid = (el, items, seconds) => {

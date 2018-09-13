@@ -1,0 +1,69 @@
+<div id="transporter" class="d-none">
+
+    <div class="card text-center my-2">
+        <div class="card-header" data-name="transporter">
+            <ul class="nav nav-pills card-header-pills">
+                <li class="nav-item">
+                    <h4>Transportadoras</h4>
+                </li>
+                <li class="nav-item mx-5">
+                    <button data-action="add-transporter" class="btn btn-primary">Adicionar</button>
+                </li>
+                <li class="nav-item mx-2">
+                    <button id="transporter-reload" class="btn reload">
+                        <i class="fas fa-sync reload"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body" data-name="transporter">
+            <table class="table table-hover tablesorter sortable" name="unidades">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Nome da Transportadora</th>
+                        <th colspan="2">Porto</th>
+                    </tr>
+                </thead>
+                <tbody id="unit-body">
+                    {% for transporter in transporters %}
+                        <tr>
+                            <td class="d-none id-transporter">
+                                {{ transporter.id }}
+                            </td>
+                            <td class="text-left" name="{{ transporter.name | capitalize }}">
+                                {{ transporter.name }}
+                            </td>
+                            <td class="text-left" name="{{ transporter.port | capitalize  }}">
+                                {{ transporter.port }}
+                            </td>
+                            <td class="text-right">
+                                <span class="badge badge-pill badge-danger remover cursor-decoration">Remover</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div id="add-transporter" class="d-none">
+
+    <div class="card text-center my-2">
+        <div class="card-header">
+            Adicionar Unidade
+        </div>
+        <div class="card-body">
+            <form method="post" id="add-transporter-form" target="transporter">
+                <div class="form-group">
+                    <input type="text" name="name" class="form-control" placeholder="Nome da Transportadora">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="port" class="form-control" placeholder="Nome do Porto">
+                </div>
+                <button class="btn btn-primary sender" data-sender="register/add/transporter">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</div>

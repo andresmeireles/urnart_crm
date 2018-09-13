@@ -22,12 +22,7 @@ class Order extends BaseEntity
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $transporter;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $port;
+    private $customPort;
 
     /**
      * @ORM\Column(type="float")
@@ -69,6 +64,11 @@ class Order extends BaseEntity
      */
     private $productCarts;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Transporter", inversedBy="orderNumber")
+     */
+    private $transporter;
+
     public function __construct()
     {
         $this->customer = new ArrayCollection();
@@ -81,26 +81,14 @@ class Order extends BaseEntity
         return $this->id;
     }
 
-    public function getTransporter(): ?Transporter
+    public function getCustomPort(): ?string
     {
-        return $this->transporter;
+        return $this->customPort;
     }
 
-    public function setTransporter(?Transporter $transporter): self
+    public function setCustomPort(?string $customport): self
     {
-        $this->transporter = $transporter;
-
-        return $this;
-    }
-
-    public function getPort(): ?string
-    {
-        return $this->port;
-    }
-
-    public function setPort(?string $port): self
-    {
-        $this->port = $port;
+        $this->customPort = $customport;
 
         return $this;
     }
@@ -216,6 +204,18 @@ class Order extends BaseEntity
                 $productCart->setOrderNumber(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTransporter(): ?Transporter
+    {
+        return $this->transporter;
+    }
+
+    public function setTransporter(?Transporter $transporter): self
+    {
+        $this->transporter = $transporter;
 
         return $this;
     }
