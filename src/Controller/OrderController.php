@@ -79,4 +79,26 @@ class OrderController extends Controller
 
         return $this->redirectToRoute('order');
     }
+
+    /**
+     * @Route("/order/action/remove/{id}", methods="DELETE")
+     *
+     * @param OrderModel $model
+     * @param $id
+     * @return Response
+     */
+    public function removeOrder(OrderModel $model, $id): Response
+    {
+        $id = $id;
+        $result = $model->removeOrder($id);
+
+        $this->addFlash(
+            $result['type'],
+            $result['message']
+        );
+
+        return new Response($result['message'], $result['http_code'], array(
+            'redirect-route' => '/order' 
+        ));
+    }
 }

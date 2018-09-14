@@ -132,4 +132,40 @@ class OrderModel extends Model
     {
         return $this->executeActionOnOrder($information, $products, 'insert');
     }
+
+    public function removeOrder($id): array
+    {
+        $removeOrder = $this->em->getRepository(Order::class)->find($id);
+        $orderId = $removeOrder->getId();
+        if (is_null($removeOrder)) {
+            return array(
+                'type' => 'error',
+                'message' => 'Erro interno'
+            );
+        }
+
+        $cartsToRemove = $removeOrder->getProductCarts();
+        $this->em->getConnection()->beginTransaction();
+
+        try {
+            
+            foreach ($cartsToRemove as $cart) {
+                $this->em->remove($cart);
+            }    
+
+            $this->em->remove($removeOrder);
+            $this->em->flush();
+            $this->em->getConnection()->commit();
+            return array(
+                'http' => '200',
+                'message' => "Pedido {$orderId} removido com sucesso!",
+            );
+        } catch (\Exception $e) {
+            $this->em->getConnection()->rollback();
+            return array(
+                'type' => 'danger',
+                'message' => "Erro ao remove pedido {$order->getId()}."
+            );
+        }
+    }
 }
