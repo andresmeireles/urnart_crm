@@ -5,9 +5,11 @@ namespace App\Model;
 
 use App\Entity\Order;
 use App\Entity\Product;
-use App\Entity\ProductCart as Cart;
-use App\Entity\ProductInventory;
+use App\Entity\PaymentType;
+use App\Entity\Transporter;
 use App\Entity\PessoaJuridica;
+use App\Entity\ProductInventory;
+use App\Entity\ProductCart as Cart;
 
 class OrderModel extends Model
 {
@@ -38,9 +40,22 @@ class OrderModel extends Model
 
             $discount = $information['discount'] === '' ? null : (float) $information['discount'];
             $order->setDiscount($discount);
+
+            $transporter = $this->em->getRepository(Transporter::class)->find($information['transporter']);
+            $transporter = $transporter ?? null;
+            $order->setTransporter($transporter);
             
-            $order->setPaymentType(21);
-            $order->setInstallment(1);
+            $customPort = $information['port'] == '' ? null : $information['port'];
+            if (!is_null($transporter)) {
+                $customPort = (ltrim(trim($information['port'])) === $transporter->getPort()) ? null : ltrim(trim($information['port']));
+            }
+            $order->setCustomPort($customPort);
+
+            $paymentType = $this->em->getRepository(PaymentType::class)->find($information['formPg']);            
+            $order->setPaymentType($paymentType);
+
+            $installments = is_int($information['installments']);
+            $order->setInstallment((int) $installments);
             
             $comments = trim(ltrim(filter_var($information['observation'], FILTER_SANITIZE_STRING)));
             $order->setComments($comments);

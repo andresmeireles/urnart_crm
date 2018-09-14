@@ -40,11 +40,6 @@ class Order extends BaseEntity
     private $freight;
 
     /**
-     * @ORM\Column(type="smallint")
-     */
-    private $paymentType;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $installment;
@@ -68,6 +63,11 @@ class Order extends BaseEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Transporter", inversedBy="orderNumber")
      */
     private $transporter;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\PaymentType", cascade={"persist", "remove"})
+     */
+    private $paymentType;
 
     public function __construct()
     {
@@ -125,18 +125,6 @@ class Order extends BaseEntity
     public function setFreight(?float $freight): self
     {
         $this->freight = $freight;
-
-        return $this;
-    }
-
-    public function getPaymentType(): ?int
-    {
-        return $this->paymentType;
-    }
-
-    public function setPaymentType(int $paymentType): self
-    {
-        $this->paymentType = $paymentType;
 
         return $this;
     }
@@ -217,6 +205,18 @@ class Order extends BaseEntity
     {
         $this->transporter = $transporter;
 
+        return $this;
+    }
+
+    public function getPaymentType(): ?PaymentType
+    {
+        return $this->paymentType;
+    }
+
+    public function setPaymentType(?PaymentType $paymentType): self
+    {
+        $this->paymentType = $paymentType;
+        
         return $this;
     }
 }

@@ -17,6 +17,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.addEventListener('focus', function (el) {
 
+            if (el.target.hasAttribute('transcp')) {
+                $(el.target).autocomplete({
+                    lookup: eval(el.target.getAttribute('transcp')),
+                    triggerSelectOnValidInput: false,
+                    onSelect: function (option) {
+                        let cod = Number(option.cod)
+                        if (Number.isInteger(cod)) {
+                            document.querySelector('#transp').value = option.cod
+                            document.querySelector('#port').value = option.port
+                            return true
+                        }
+                    }
+                })
+            }
+
             if (el.target.id === 'formPg') {
                 $(el.target).autocomplete({
                     lookup: eval(el.target.getAttribute('formCp')),
@@ -69,6 +84,26 @@ document.addEventListener('DOMContentLoaded', function () {
         }, true)
 
         document.addEventListener('blur', function (el) {
+
+            if (el.target.hasAttribute('transcp')) {
+                setTimeout(() => {
+                    let value = el.target.value
+                    let result = false
+                    let items = eval(el.target.getAttribute('transcp'))
+
+                    for (item of items) {
+                        if (item.value == value) {
+                            result = true
+                            continue
+                        }
+                    }
+
+                    if (!result) {
+                        document.querySelector('#transp').value = ''
+                    }
+
+                }, 200)
+            }
 
             if (el.target.hasAttribute('autocp') && el.target.closest('[clone-area]')) {
                 let items = eval(el.target.getAttribute('autocp'))

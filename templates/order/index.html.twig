@@ -54,6 +54,7 @@
             </thead>
             <tbody>
                 {% for order in orders %}
+                <tr>
                     <td class="text-center">
                         {{ order.getId }}
                     </td>
@@ -67,6 +68,7 @@
                         <span data-action="view{{order.getId}}" class="badge badge-pill badge-secondary cursor-decoration">Visualizar</span>
                         <a href="/order/view/{{order.getId}}" class="badge badge-pill badge-primary text-light cursor-decoration">Editar</a>
                     </td>
+                </tr>    
                 {% endfor %}
             </tbody>
         </table>
@@ -74,6 +76,7 @@
     {% endif %}
     </div>
 
+    
     {% for order in orders %}
         {% include '/order/pages/viewOrder.html.twig' with {'order' : order } %}
     {% endfor %}

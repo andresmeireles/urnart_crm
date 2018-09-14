@@ -7,8 +7,8 @@
 {% block content %}
 <script>
     var product = [{% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}', amount: '{{ product.getStock }}' },{% endfor %}]
-    var customers = [{% for customer in customers %}{ value: '{{ customer.razaoSocial }}', cod: '{{ customer.getId }}' },{% endfor %}
-]
+    var customers = [{% for customer in customers %}{ value: '{{ customer.razaoSocial }}', cod: '{{ customer.getId }}' },{% endfor %}]
+    var transporter = [{% for transporter in transporters %}{ value: '{{ transporter.name }}', port: '{{ transporter.port }}', cod: '{{ transporter.getId }}'},{% endfor %}]
     var payment = [{% for payment in payments %}{ value: '{{ payment.name }}', cod: '{{ payment.getId }}'},{% endfor %}]
 </script>
 
@@ -158,7 +158,8 @@
                             <div class="form-group">
                                 <label>Barco & Transportadora</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="transporter">
+                                    <input type="hidden" id="transp" class="form-control" name="transporter">
+                                    <input type="text" transcp="transporter" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">

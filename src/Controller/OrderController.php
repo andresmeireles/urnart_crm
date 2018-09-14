@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
-use App\Model\OrderModel;
 use App\Entity\Order;
 use App\Entity\Product;
+use App\Model\OrderModel;
 use App\Entity\PaymentType;
+use App\Entity\Transporter;
 use App\Entity\PessoaJuridica;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +39,8 @@ class OrderController extends Controller
         return $this->render('/order/pages/create.html.twig', [
             'products' => $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll(),
             'customers' => $this->getDoctrine()->getManager()->getRepository(PessoaJuridica::class)->findAll(),
-            'payments' => $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll()
+            'payments' => $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll(),
+            'transporters' => $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll()
         ]);
     }
 

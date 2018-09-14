@@ -21,6 +21,11 @@ class PaymentType
      */
     private $name;
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     public function __toArray()
 	{
 		return get_object_vars($this);
