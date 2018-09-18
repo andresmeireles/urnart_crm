@@ -81,6 +81,21 @@ class OrderController extends Controller
     }
 
     /**
+     * @Route("/order/action/edit/{id}", methods="GET")
+     * 
+     * @param $id
+     * @return Response
+     */
+    public function redirectOrderActions($id): Response 
+    {
+        $orderNumber = $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id);
+
+        return $this->render('/order/pages/editOrder.html.twig', array(
+            'order' => $orderNumber
+        ));
+    }
+
+    /**
      * @Route("/order/action/remove/{id}", methods="DELETE")
      *
      * @param OrderModel $model

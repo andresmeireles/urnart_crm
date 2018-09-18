@@ -1,0 +1,205 @@
+{% extends 'index.html.twig' %} 
+
+{% block tittle %}
+    Editar Pedido {{ order.getId }}
+{% endblock %} 
+
+{% block content %}
+
+
+{% for message in app.flashes('error') %}
+    <script>
+        setTimeout(() => {
+            var notify = new noty({
+                text: "{{ message }}",
+                layout: 'topCenter',
+                type: 'alert',
+                theme: 'bootstrap-v4',
+                animation: {
+                    open: 'animated fadeInUp',
+                    close: 'animated fadeOutDown'
+                }
+            }).show()
+            notify.setTimeout(3500)
+        }, 1000)
+    </script>
+{% endfor %}
+
+<div class="col-12 p-3" id="automaticOrder">
+    <div class="clearfix">
+        <div class="float-left">
+            <h1 class="">Atualizar Pedido {{ order.getId }}</h1>
+        </div>
+        <div class="float-right">
+            <h5>Atualizado por: Alguém muito legal</h5>
+            <h5>Ultima Atualização: {{ order.getLastUpdate | date('d/m/Y') }}</h5>
+        </div>
+    </div>
+        <form method="POST">
+        <div class="row">
+            <div class="col-md-12 my-1">
+                <input type="submit" class="btn btn-primary active btn-block btn-lg" value="Atualizar pedido">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <fieldset class="border border-light my-1">
+                    <legend class="px-1 bg-light">Cliente</legend>
+                    <div class="row m-1">
+                        <div class="form-group col">
+                            <label> Nome do cliente </label>
+                            <input type="text" placeholder="Nome do cliente" class="form-control" autocp="customers" disabled="disabled" value="{{ order.getCustomer}}">
+                            <input type="hidden" placeholder="Nome do cliente" id="idClientName" name="clientName" value="{{ order.getCustomerId }}"></div>
+                        <div class="form-group col-md-3">
+                            <label> Data do Pedido </label>
+                            <input type="text" class="form-control date-mask" name="clientCity" value="{{ order.getCreateDate | date('d/m/Y') }}"> 
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <fieldset class="border border-light">
+                    <legend class="px-1 bg-light">Produtos</legend>
+                    <div class="row m-1">
+                        <div class="col" cloneField>
+                        {% for product in order.getProductCarts %}
+                            <div class="input-group my-1" clone-area>
+                                    <input type="hidden" name="p[cod]" id="cod" value={{ product.getId }}>
+                                <div class="input-group col-md-3">
+                                    <input type="text" removeFrom="product" class="form-control" name="p[product]" placeholder="Inserir valor" autocp="product" value="{{ product.getProduct.name }}" disabled="disabled">
+                                </div>
+                                <div class="input-group col-md-3">
+                                    <input type="text" class="form-control numbers-float-only" name="p[price]" id="prod-price" value="{{ product.getProduct.price | number_format(2, ',', '.') }}" disabled>
+                                </div>
+                                <div class="input-group col-md-2">
+                                    <input type="text" class="form-control numbers-only" name="p[qnt]" id="prod-qnt" placeholder="Quantidade" value="{{ product.getAmount }}" disabled>
+                                </div>
+                                <div class="input-group col-md-2">
+                                    <input type="text" class="form-control numbers-only" name="total" id="total" placeholder="Total" value="{{ (product.getProduct.price * product.amount) | number_format(2, ',', '.') }}" disabled>
+                                </div>
+                                <button type="submit" class="btn btn-success" mk-clone>
+                                    <span class="fas fa-fw fa-plus" mk-clone></span>
+                                </button>
+                                <button type="submit" class="btn mx-1 btn-danger" rm-clone>
+                                    <i class="fas fa-fw fa-times" rm-clone></i>
+                                </button>
+                            </div>                            
+                        {% endfor %}
+                        </div>                        
+                    </div>
+                </fieldset>
+                <fieldset class="my-1 border border-light">
+                    <legend class="px-1 bg-light">Valor total</legend>
+                    <div class="row m-1">
+                        <div class="col-8">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <h3>Total Produtos&nbsp;</h3>
+                                    <h3>R$&nbsp;&nbsp;</h3>
+                                    <h3><span id="allProductsPrice">{{ order.totalPrice | number_format(2, ',', '.') }}</span></h3>
+                                </div>
+                                <div class="input-group">
+                                    <h3>Valor Final &nbsp;</h3>
+                                    <h3>R$&nbsp;&nbsp;</h3>
+                                    <h3><span id="finalPrice">{{ (order.totalPrice + order.freight - order.discount ) | number_format(2, ',', '.') }}</span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <h3>Valor da(s) Parcela(s)</h3>
+                                    <h3>R$&nbsp;&nbsp;</h3>
+                                    <h3><span id="installmentPrice">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-4">
+                <fieldset class="border border-light">
+                    <legend class="px-1 bg-light">Forma de Pagamento</legend>
+                    <div class="row m-1">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Seleciona a forma de pagamento</label>
+                                <input type="text" class="form-control" id="formPg" formCp="payment" required="required" value="{{ order.getPaymentType.getName }}" disabled>
+                                <input type="hidden" name="formPg" id="formPgNumber">
+                                <small>Caso a opção seja putra seleciona outro</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Numero de Parcelas</label>
+                                <input type="text" class="form-control" id="inst" name="installments" required="required" value="{{ order.getInstallment }}" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Desconto</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">R$</div>
+                                    </div>
+                                    <input type="hidden" name="discount" id="noDiscount" value="0">
+                                    <input type="number" class="form-control money-mask" name="discount" id="discount" value="{{ order.getDiscount | number_format(2, ',', '.')    }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="border border-light my-1">
+                    <legend class="px-1 bg-light">Frete</legend>
+                        <div class="row m-1">
+                            <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Valor do frete</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">R$</div>
+                                    </div>
+                                    <input type="number" class="form-control money-mask" name="freight" id="freight" value="{{ order.getFreight | number_format(2,'.', '.') }}"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Barco & Transportadora</label>
+                                <div class="input-group">
+                                    {% if order.transporter is null %}
+                                        <input type="hidden" id="transp" class="form-control" name="transporter">
+                                        <input type="text" transcp="transporter" class="form-control">
+                                    {% else %}
+                                        <input type="hidden" id="transp" class="form-control" name="transporter" value="{{ order.transporter.getId }}">
+                                        <input type="text" transcp="transporter" class="form-control" value="{{ order.transporter.getName }}">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Porto</label>
+                                <div class="input-group">
+                                    {% if order.customPort is not null %}
+                                        <input type="text" class="form-control" name="port" id="port" value="{{ order.customPOrt }}">
+                                    {% elseif order.transporter is null %}
+                                        NÃO CADASTRADO
+                                    {% else %}
+                                        <input type="text" class="form-control" name="port" id="port" value="{{ order.transporter.getPort }}">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <fieldset class="border border-light my-1">
+                    <legend class="px-1 bg-light">Observações</legend>
+                    <div class="row m-1">
+                        <div class="form-group col">
+                            <textarea class="form-control" value="escreve aqui" name="observation">{{ order.getComments }}</textarea>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

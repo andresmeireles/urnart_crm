@@ -153,6 +153,11 @@ class Order extends BaseEntity
         return $this;
     }
 
+    public function getCustomerId(): ?string
+    {
+        return $this->customer->getId();
+    }
+
     public function getCustomer(): ?string
     {
         return $this->customer->getRazaoSocial();
