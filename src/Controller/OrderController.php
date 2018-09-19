@@ -88,11 +88,50 @@ class OrderController extends Controller
      */
     public function redirectOrderActions($id): Response 
     {
-        $orderNumber = $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id);
-
         return $this->render('/order/pages/editOrder.html.twig', array(
-            'order' => $orderNumber
+            'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id),
+            'products' => $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll(),
+            'customers' => $this->getDoctrine()->getManager()->getRepository(PessoaJuridica::class)->findAll(),
+            'payments' => $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll(),
+            'transporters' => $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll()
         ));
+    }
+
+    /**
+     * @Route("/order/action/edit/{id}", methods="POST")
+     *
+     * @param $id
+     * @return Response
+     */
+    public function updateOrder(OrderModel $model, Request $request, $id): Response
+    {
+        $data = $request->request->all();
+        $data['id'] = $id; 
+
+        foreach($data as $key => $value) {
+            if (is_array($value)) {
+                unset($data[$key]);
+                $arrData[] = $value;
+            }
+        }
+
+        $result = $model->updateOrder($data, $arrData);
+
+        if ($result['http_code'] === '400') {
+            $this->addFlash(
+                'error',
+                $result['message']
+            );
+
+            return $this->redirectToRoute('createOrder');
+        }
+
+        $this->addFlash(
+            'success',
+            "Pedido {$data['id']} atualizado com sucesso"
+        );
+
+        return $this->redirectToRoute('order');
     }
 
     /**

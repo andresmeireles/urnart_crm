@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     triggerSelectOnValidInput: false,
                     onSelect: function (option) {
                         let cod = Number(option.cod)
-                        if (Number.isInteger(cod)) {
+                        if (Number.isInteger(cod) && option.plot) {
                             let paymentType = document.querySelector('#formPgNumber')
                             paymentType.value = option.cod
                             let installment = document.querySelector('#inst')
@@ -46,6 +46,11 @@ document.addEventListener('DOMContentLoaded', function () {
                             installment.focus()
                             return true
                         }
+                        let installment = document.querySelector('#inst')
+                        installment.setAttribute('disabled', '')
+                        contabilize()
+                        contabilizeInstallmentValue()
+                        return true
                     }
                 })
             }
@@ -216,12 +221,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 return true         
             }
 
-            let totalPrice = (document.querySelector('#allProductsPrice').innerHTML == 0 && document.querySelector('#allProductsPrice').innerHTML == '') ? 0 : Number(document.querySelector('#allProductsPrice').innerHTML)
+            let totalPrice = (document.querySelector('#allProductsPrice').innerHTML == '0,00' && document.querySelector('#allProductsPrice').innerHTML == '') ? 0 : document.querySelector('#allProductsPrice').innerHTML
+            totalPrice = totalPrice.replace('.', '')
+            totalPrice = totalPrice.replace(',', '.')
+            totalPrice = Number(totalPrice)
+
             let discount = (document.querySelector('#discount').value == 0 && document.querySelector('#discount').value == '') ? 0 : Number(document.querySelector('#discount').value) 
             let installment = (document.querySelector('#inst').value == '' ? 1 : Number(document.querySelector('#inst').value))
             
             let value = (totalPrice - discount) / installment
-            
             document.querySelector('#installmentPrice').innerHTML = numeral(value).format('0.00')
         }, 200);
     }

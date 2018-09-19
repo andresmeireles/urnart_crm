@@ -28,11 +28,17 @@ class OrderModel extends Model
         $em->getConnection()->beginTransaction();
 
         try {
-            $order = new Order();
+
+            if ($type == 'update') {
+                $id = $information['id'];
+                $order = $em->getRepository(Order::class)->find($id);
+            } else {
+                $order = new Order();
+            }
+
             $totalPrice = 0;
 
             $customer = $this->em->getRepository(PessoaJuridica::class)->find($information['clientName']);
-
             $order->setCustomer($customer);
 
             $freight = $information['freight'] === '' ? null : (float) $information['freight'];
@@ -51,17 +57,23 @@ class OrderModel extends Model
             }
             $order->setCustomPort($customPort);
 
-            $paymentType = $this->em->getRepository(PaymentType::class)->find($information['formPg']);            
+            $paymentType = $this->em->getRepository(PaymentType::class)->find($information['formPg']);       
             $order->setPaymentType($paymentType);
 
-            $installments = is_int($information['installments']);
-            $order->setInstallment((int) $installments);
+            $installments = array_key_exists('installments', $information) ? (int) $information['installments'] : null;
+            
+            $order->setInstallment($installments);
             
             $comments = trim(ltrim(filter_var($information['observation'], FILTER_SANITIZE_STRING)));
             $order->setComments($comments);
             
+            
+            if ($type == 'update') {
+                $query = $em->createQuery("DELETE App\Entity\ProductCart c WHERE c.orderNumber = {$id}");    
+            };
+
             foreach ($products as $product) {
-                $cart = new Cart();
+                $cart = new Cart;
 
                 $existentProduct = $this->em->getRepository(Product::class)->find($product['cod']);
                 if (is_null($existentProduct)) {
@@ -74,23 +86,31 @@ class OrderModel extends Model
 
                 $amount = (int) $product['qnt'];
                 $cart->setAmount($amount);
-                $existentProduct->getProductInventory()->setReserved($amount);
+                //$existentProduct->getProductInventory()->setReserved($amount);
                 
                 $price = $product['price'] === '' ? $existentProduct->getPrice() : (float) $product['price'];
                 if ($existentProduct->getPrice() !== $price) {
                     $cart->setCustomPrice($price);
                 }
 
-                $cart->setOrderNumber($order);
-                
+                $cart->setOrderNumber($order);                
                 $em->persist($cart);
+
                 $totalPrice += ( (float) $product['price'] * (float) $product['qnt']); 
             }
 
+            dump($order);
+            die();
+            
             $order->setTotalPrice($totalPrice);
-            $order->setActive(true);
 
-            $em->persist($order);
+            if ($type == 'update') {
+                $em->merge($order);
+            } else {
+                $order->setActive(true);
+                $em->persist($order);
+            }
+
             $em->flush();
             
             $em->getConnection()->commit();

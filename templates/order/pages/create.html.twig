@@ -9,7 +9,7 @@
     var product = [{% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}', amount: '{{ product.getStock }}' },{% endfor %}]
     var customers = [{% for customer in customers %}{ value: '{{ customer.razaoSocial }}', cod: '{{ customer.getId }}' },{% endfor %}]
     var transporter = [{% for transporter in transporters %}{ value: '{{ transporter.name }}', port: '{{ transporter.port }}', cod: '{{ transporter.getId }}'},{% endfor %}]
-    var payment = [{% for payment in payments %}{ value: '{{ payment.name }}', cod: '{{ payment.getId }}'},{% endfor %}]
+    var payment = [{% for payment in payments %}{ value: '{{ payment.name }}', cod: '{{ payment.getId }}', plot: '{{ payment.isPlot }}' },{% endfor %}]
 </script>
 
 {% for message in app.flashes('error') %}

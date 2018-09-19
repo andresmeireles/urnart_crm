@@ -21,6 +21,11 @@ class PaymentType
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $plot = false;
+
     public function __toString()
     {
         return $this->name;
@@ -46,5 +51,19 @@ class PaymentType
         $this->name = $name;
 
         return $this;
+    }
+
+    public function setPlot(?bool $plot): self
+    {
+        $plot = (bool) $plot;
+
+        $this->plot = $plot;
+
+        return $this;
+    }
+
+    public function isPlot(): bool
+    {
+        return (bool) $this->plot;
     }
 }
