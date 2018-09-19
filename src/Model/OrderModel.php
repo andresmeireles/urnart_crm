@@ -50,27 +50,31 @@ class OrderModel extends Model
             $transporter = $this->em->getRepository(Transporter::class)->find($information['transporter']);
             $transporter = $transporter ?? null;
             $order->setTransporter($transporter);
-            
-            $customPort = $information['port'] == '' ? null : $information['port'];
-            if (!is_null($transporter)) {
+
+            $customPort = array_key_exists('port', $information) ? $information['port'] : null;
+            if (!is_null($transporter) && !is_null($customPort)) {
                 $customPort = (ltrim(trim($information['port'])) === $transporter->getPort()) ? null : ltrim(trim($information['port']));
             }
             $order->setCustomPort($customPort);
 
-            $paymentType = $this->em->getRepository(PaymentType::class)->find($information['formPg']);       
+            $paymentType = $this->em->getRepository(PaymentType::class)->find($information['formPg']);
             $order->setPaymentType($paymentType);
 
             $installments = array_key_exists('installments', $information) ? (int) $information['installments'] : null;
-            
+
             $order->setInstallment($installments);
-            
+
             $comments = trim(ltrim(filter_var($information['observation'], FILTER_SANITIZE_STRING)));
             $order->setComments($comments);
-            
-            
+
             if ($type == 'update') {
-                $query = $em->createQuery("DELETE App\Entity\ProductCart c WHERE c.orderNumber = {$id}");    
-            };
+              $productCart = $em->getRepository(Cart::class)->findBy(array(
+                'orderNumber' => $id
+              ));
+              foreach ($productCart as $p) {
+                $em->remove($p);
+              }
+            }
 
             foreach ($products as $product) {
                 $cart = new Cart;
@@ -80,28 +84,25 @@ class OrderModel extends Model
                     return array(
                         'http_code' => 400,
                         'message' => 'Erro. Produto '. $product['product'] .' não existe ou de produto não identificado'
-                    );    
+                    );
                 }
                 $cart->setProduct($existentProduct);
 
                 $amount = (int) $product['qnt'];
                 $cart->setAmount($amount);
                 //$existentProduct->getProductInventory()->setReserved($amount);
-                
-                $price = $product['price'] === '' ? $existentProduct->getPrice() : (float) $product['price'];
+
+                $price = array_key_exists('price', $product) ? (float) $product['price'] : $existentProduct->getPrice();
                 if ($existentProduct->getPrice() !== $price) {
                     $cart->setCustomPrice($price);
                 }
 
-                $cart->setOrderNumber($order);                
+                $cart->setOrderNumber($order);
                 $em->persist($cart);
 
-                $totalPrice += ( (float) $product['price'] * (float) $product['qnt']); 
+                $totalPrice += ( $price * (float) $product['qnt']);
             }
 
-            dump($order);
-            die();
-            
             $order->setTotalPrice($totalPrice);
 
             if ($type == 'update') {
@@ -112,10 +113,10 @@ class OrderModel extends Model
             }
 
             $em->flush();
-            
+
             $em->getConnection()->commit();
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
             $em->getConnection()->rollback();
             return array(
                 'http_code' => 401,
@@ -168,16 +169,17 @@ class OrderModel extends Model
         $this->em->getConnection()->beginTransaction();
 
         try {
-            
+
             foreach ($cartsToRemove as $cart) {
                 $this->em->remove($cart);
-            }    
+            }
 
             $this->em->remove($removeOrder);
             $this->em->flush();
             $this->em->getConnection()->commit();
             return array(
-                'http' => '200',
+                'http_code' => '200',
+                'type' => 'warning',
                 'message' => "Pedido {$orderId} removido com sucesso!",
             );
         } catch (\Exception $e) {

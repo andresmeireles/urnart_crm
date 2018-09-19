@@ -10,8 +10,19 @@ document.addEventListener('DOMContentLoaded', function () {
         document.addEventListener('click', function (el) {
             if (el.target.hasAttribute('rm-clone')) {
                 setTimeout(() => {
-                   contabilize() 
+                   contabilize()
                 }, 100);
+            }
+
+            if (el.target.hasAttribute('del')) {
+              el.preventDefault()
+
+              var link = rot(el.target.getAttribute('del'))
+              simpleDialog('Tem certeza que deseja remover esse item?', () => {
+                  simpleRequest(link, 'DELETE', null, function (response) {
+                      window.location = response.headers['redirect-route']
+                  })
+              })
             }
         }, true)
 
@@ -38,14 +49,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     triggerSelectOnValidInput: false,
                     onSelect: function (option) {
                         let cod = Number(option.cod)
-                        if (Number.isInteger(cod) && option.plot) {
+                        if (Number.isInteger(cod)) {
                             let paymentType = document.querySelector('#formPgNumber')
                             paymentType.value = option.cod
+
+                        }
+
+                        if (option.plot == '1') {
                             let installment = document.querySelector('#inst')
                             installment.removeAttribute('disabled')
                             installment.focus()
                             return true
                         }
+
                         let installment = document.querySelector('#inst')
                         installment.setAttribute('disabled', '')
                         contabilize()
@@ -59,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (el.target.closest('[clone-area]')) {
                     let disabledInputs = el.target.closest('[clone-area]').querySelectorAll('[disabled]')
-                    
+
                     for (let di of disabledInputs) {
                         if (di.id === 'total') {
                             continue
@@ -122,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
 
                     if (di.value === '') {
-                        di.setAttribute('disabled', 'disabled')   
+                        di.setAttribute('disabled', 'disabled')
                     }
                 }
             }
@@ -209,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return false
             }
 
-        }, seconds)        
+        }, seconds)
     }
 
     const contabilizeInstallmentValue = () => {
@@ -218,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (type == 'A vista' || type == '') {
                 document.querySelector('#installmentPrice').innerHTML = numeral(value).format('0.00')
-                return true         
+                return true
             }
 
             let totalPrice = (document.querySelector('#allProductsPrice').innerHTML == '0,00' && document.querySelector('#allProductsPrice').innerHTML == '') ? 0 : document.querySelector('#allProductsPrice').innerHTML
@@ -226,9 +242,9 @@ document.addEventListener('DOMContentLoaded', function () {
             totalPrice = totalPrice.replace(',', '.')
             totalPrice = Number(totalPrice)
 
-            let discount = (document.querySelector('#discount').value == 0 && document.querySelector('#discount').value == '') ? 0 : Number(document.querySelector('#discount').value) 
+            let discount = (document.querySelector('#discount').value == 0 && document.querySelector('#discount').value == '') ? 0 : Number(document.querySelector('#discount').value)
             let installment = (document.querySelector('#inst').value == '' ? 1 : Number(document.querySelector('#inst').value))
-            
+
             let value = (totalPrice - discount) / installment
             document.querySelector('#installmentPrice').innerHTML = numeral(value).format('0.00')
         }, 200);

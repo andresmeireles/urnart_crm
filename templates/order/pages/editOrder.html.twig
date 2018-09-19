@@ -1,8 +1,8 @@
-{% extends 'index.html.twig' %} 
+{% extends 'index.html.twig' %}
 
 {% block tittle %}
     Editar Pedido {{ order.getId }}
-{% endblock %} 
+{% endblock %}
 
 {% block content %}
 
@@ -34,7 +34,7 @@
 <div class="col-12 p-3" id="automaticOrder">
     <div class="clearfix">
         <div class="float-left">
-            <h1 class="">Atualizar Pedido {{ order.getId }}</h1>
+            <h1 class="float-left">Pedido {{ order.id }}<span del="{{ '/order/action/remove/' | rot13 }}{{ order.getid }}" class="btn btn-danger btn-sm text-light"><i class="fas fa-trash"></i> remover</span></h1>
         </div>
         <div class="float-right">
             <h5>Atualizado por: Alguém muito legal</h5>
@@ -58,7 +58,7 @@
                             <input type="hidden" placeholder="Nome do cliente" id="idClientName" name="clientName" value="{{ order.getCustomerId }}"></div>
                         <div class="form-group col-md-3">
                             <label> Data do Pedido </label>
-                            <input type="text" class="form-control date-mask" name="clientCity" value="{{ order.getCreateDate | date('d/m/Y') }}"> 
+                            <input type="text" class="form-control date-mask" name="clientCity" value="{{ order.getCreateDate | date('d/m/Y') }}">
                         </div>
                     </div>
                 </fieldset>
@@ -72,7 +72,7 @@
                         <div class="col" cloneField>
                         {% for product in order.getProductCarts %}
                             <div class="input-group my-1" clone-area>
-                                    <input type="hidden" name="p[cod]" id="cod" value={{ product.getId }}>
+                                    <input type="hidden" name="p[cod]" id="cod" value="{{ product.getProduct.getId }}">
                                 <div class="input-group col-md-3">
                                     <input type="text" removeFrom="product" class="form-control" name="p[product]" placeholder="Inserir valor" autocp="product" value="{{ product.getProduct.name }}" disabled="disabled">
                                 </div>
@@ -80,7 +80,7 @@
                                     <input type="text" class="form-control numbers-float-only" name="p[price]" id="prod-price" value="{{ product.getProduct.price | number_format(2, ',', '.') }}" disabled>
                                 </div>
                                 <div class="input-group col-md-2">
-                                    <input type="text" class="form-control numbers-only" name="p[qnt]" id="prod-qnt" placeholder="Quantidade" value="{{ product.getAmount }}" disabled>
+                                    <input type="text" class="form-control numbers-only" name="p[qnt]" id="prod-qnt" placeholder="Quantidade" value="{{ product.getAmount }}">
                                 </div>
                                 <div class="input-group col-md-2">
                                     <input type="text" class="form-control numbers-only" name="total" id="total" placeholder="Total" value="{{ (product.getProduct.price * product.amount) | number_format(2, ',', '.') }}" disabled>
@@ -91,9 +91,9 @@
                                 <button type="submit" class="btn mx-1 btn-danger" rm-clone>
                                     <i class="fas fa-fw fa-times" rm-clone></i>
                                 </button>
-                            </div>                            
+                            </div>
                         {% endfor %}
-                        </div>                        
+                        </div>
                     </div>
                 </fieldset>
                 <fieldset class="my-1 border border-light">
@@ -132,7 +132,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Seleciona a forma de pagamento</label>
-                                <input type="text" class="form-control" id="formPg" formCp="payment" required="required" value="{{ order.getPaymentType.getName }}" disabled>
+                                <input type="text" class="form-control" id="formPg" formCp="payment" required="required" value="{{ order.getPaymentType }}" disabled>
                                 <input type="hidden" name="formPg" id="formPgNumber">
                                 <small>Caso a opção seja putra seleciona outro</small>
                             </div>

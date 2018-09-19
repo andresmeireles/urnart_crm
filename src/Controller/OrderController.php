@@ -82,11 +82,11 @@ class OrderController extends Controller
 
     /**
      * @Route("/order/action/edit/{id}", methods="GET")
-     * 
+     *
      * @param $id
      * @return Response
      */
-    public function redirectOrderActions($id): Response 
+    public function redirectOrderActions($id): Response
     {
         return $this->render('/order/pages/editOrder.html.twig', array(
             'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id),
@@ -106,7 +106,7 @@ class OrderController extends Controller
     public function updateOrder(OrderModel $model, Request $request, $id): Response
     {
         $data = $request->request->all();
-        $data['id'] = $id; 
+        $data['id'] = $id;
 
         foreach($data as $key => $value) {
             if (is_array($value)) {
@@ -126,10 +126,12 @@ class OrderController extends Controller
             return $this->redirectToRoute('createOrder');
         }
 
-        $this->addFlash(
-            'success',
-            "Pedido {$data['id']} atualizado com sucesso"
-        );
+        if ($result['http_code'] == '301') {
+            $this->addFlash(
+                'success',
+                "Pedido {$data['id']} atualizado com sucesso"
+            );
+        }
 
         return $this->redirectToRoute('order');
     }
@@ -152,7 +154,7 @@ class OrderController extends Controller
         );
 
         return new Response($result['message'], $result['http_code'], array(
-            'redirect-route' => '/order' 
+            'redirect-route' => '/order'
         ));
     }
 }

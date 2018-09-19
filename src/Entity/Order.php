@@ -65,7 +65,7 @@ class Order extends BaseEntity
     private $transporter;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\PaymentType", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\PaymentType", cascade={"persist"})
      */
     private $paymentType;
 
@@ -221,7 +221,7 @@ class Order extends BaseEntity
     public function setPaymentType(?PaymentType $paymentType): self
     {
         $this->paymentType = $paymentType;
-        
+
         return $this;
     }
 }
