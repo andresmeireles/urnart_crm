@@ -10,6 +10,7 @@ use App\Entity\Transporter;
 use App\Entity\PessoaJuridica;
 use App\Entity\ProductInventory;
 use App\Entity\ProductCart as Cart;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class OrderModel extends Model
 {
@@ -151,6 +152,63 @@ class OrderModel extends Model
     public function createOrder(array $information, array $products): array
     {
         return $this->executeActionOnOrder($information, $products, 'insert');
+    }
+
+    /**
+     * Reserve products in cart or irder number.
+     *
+     * @param  int   $id [description]
+     * @return array     [description]
+     */
+    public function reserve(int $id): array
+    {
+        $em = $this->em;
+        $em->getConnection()->beginTransaction();
+
+        $order = $em->getRepository(Order::class)->find($id);
+        dump($order->getProductCarts(), $order->getProductCarts() instanceof Collection);
+        die();
+        if ($order->isReserved()) {
+          return array(
+            'http_code' => 400,
+            'type' => 'error',
+            'message' => "Pedido {$order->getId()} já tem os produtos reservados"
+          );
+        }
+
+        try {
+          $productCarts = $order->getProductCarts();
+          $order->reserve();
+
+          foreach ($productCarts as $cart) {
+            $product = $cart->getProduct();
+            if ($product->getStock() < $cart->getAmount()) {
+              $em->getConnection()->rollback();
+              return array(
+                'http_code' => 400,
+                'message' => "Produto {$product->getName()} não tem estoque suficiente para reservar."
+              );
+            }
+
+            $reserved = $product->getProductInventory()->getReserved();
+            $amountReserved = ($reserved + $cart->getAmount());
+            $product->setReserved($amountReserved);
+            $em->merge($product);
+          }
+
+          $em->merge($order);
+          $em->flush();
+          $em->getConnection()->commit();
+        } catch (\Exception $e) {
+          $em->getConnection()->rollback();
+          throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+        }
+
+        return array(
+          'http_code' => 301,
+          'type' => 'success',
+          'message' => "Produtos do pedido {$id} foram reservados com sucesso"
+        );
     }
 
     public function removeOrder($id): array

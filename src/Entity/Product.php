@@ -125,6 +125,13 @@ class Product extends BaseEntity
         return $this;
     }
 
+    public function setReserved(int $stock): self
+    {
+        $this->productInventory->setReserved($stock);
+
+        return $this;
+    }
+
     public function getStock(): ?string
     {
         return $this->productInventory->getStock();

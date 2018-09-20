@@ -69,6 +69,11 @@ class Order extends BaseEntity
      */
     private $paymentType;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $reserved = false;
+
     public function __construct()
     {
         $this->customer = new ArrayCollection();
@@ -223,5 +228,17 @@ class Order extends BaseEntity
         $this->paymentType = $paymentType;
 
         return $this;
+    }
+
+    public function reserve(int $amount, Product $product): self
+    {
+        $this->reserved = true;
+        
+        return $this;
+    }
+
+    public function isReserved(): bool
+    {
+        return $this->reserved;
     }
 }

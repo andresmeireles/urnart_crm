@@ -141,11 +141,10 @@ class OrderController extends Controller
      *
      * @return Response [description]
      */
-    public function reserveOrder(Request $request): Response
+    public function reserveOrder(OrderModel $model, Request $request): Response
     {
         $hash = $request->query->get('h') ?? null;
         $id = $request->query->get('i') ?? null;
-
         if (is_null($hash) || is_null($id)) {
             $this->addFlash(
               'error',
@@ -156,18 +155,33 @@ class OrderController extends Controller
         }
 
         $trueHash = hash('ripemd160', 'valido');
-
         if ($hash !== $trueHash) {
           $this->addFlash(
             'error',
             "Erro ao fazer reserva, falta o hash ou ele está errado."
           );
+          return $this->redirectToRoute('order');
+        }
+
+        $result = $model->reserve($id);
+
+        if ($result['http_code'] == 301) {
+          $this->addFlash(
+            'success',
+            $result['message']
+          );
 
           return $this->redirectToRoute('order');
         }
 
-        dump($hash, $id, $trueHash !== $hash);
-        die();
+        $this->addFlash(
+          $result['type'],
+          $result['message']
+        );
+
+        return $this->redirectToRoute('order');
+
+
     }
 
     /**
