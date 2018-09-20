@@ -137,6 +137,40 @@ class OrderController extends Controller
     }
 
     /**
+     * @Route("/order/action/reserve", methods="GET")
+     *
+     * @return Response [description]
+     */
+    public function reserveOrder(Request $request): Response
+    {
+        $hash = $request->query->get('h') ?? null;
+        $id = $request->query->get('i') ?? null;
+
+        if (is_null($hash) || is_null($id)) {
+            $this->addFlash(
+              'error',
+              'Erro ao criar reserva'
+            );
+
+            return $this->redirectToRoute('order');
+        }
+
+        $trueHash = hash('ripemd160', 'valido');
+
+        if ($hash !== $trueHash) {
+          $this->addFlash(
+            'error',
+            "Erro ao fazer reserva, falta o hash ou ele está errado."
+          );
+
+          return $this->redirectToRoute('order');
+        }
+
+        dump($hash, $id, $trueHash !== $hash);
+        die();
+    }
+
+    /**
      * @Route("/order/action/remove/{id}", methods="DELETE")
      *
      * @param OrderModel $model

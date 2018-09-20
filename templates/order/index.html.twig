@@ -22,13 +22,14 @@
             </ul>
         </div>
     </div>
-    {% for message in app.flashes('success') %}
+    {% for label, messages in app.flashes %}
         <script>
+            {% for message in messages %}
             setTimeout( () => {
                 var notify = new noty({
                     text: "{{ message }}",
                     layout: 'topCenter',
-                    type: 'success',
+                    type: "{{ label }}",
                     theme: 'bootstrap-v4',
                     animation: {
                         open: 'animated fadeInUp', // Animate.css class names
@@ -37,6 +38,7 @@
                 }).show()
                 notify.setTimeout(2500)
             }, 1000)
+            {% endfor %}
         </script>
     {% endfor %}
 
@@ -66,7 +68,7 @@
                     </td>
                     <td>
                         <span data-action="view{{order.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
-                        <span reserve="h={{'valido' | makeHash }}/i={{ order.id }}" class="badge badge-pill badge-secondary cursor-decoration">Reservar</span>
+                        <span reserve="h={{'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-secondary cursor-decoration">Reservar</span>
                         <a href="/order/action/edit/{{order.getId}}" class="badge badge-pill badge-success text-light cursor-decoration">Editar</a>
                     </td>
                 </tr>

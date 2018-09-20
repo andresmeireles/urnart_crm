@@ -22,9 +22,9 @@ class AppExtension extends AbstractExtension
         return $rot13String;
     }
 
-    public function makeHash(string $hasheableValue, string $hashType = 'ripemd160'): string
+    public function makeHash(string $hashableValue): string
     {
-        $hasedString = hash($hashType, $hasheableValue);
+        $hasedString = hash('ripemd160', $hashableValue);
         return $hasedString;
     }
 }

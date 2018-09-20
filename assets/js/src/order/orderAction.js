@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (el.target.hasAttribute('reserve')) {
-              alert(el.target.getAttribute('reserve'))
+              let queryLink = el.target.getAttribute('reserve')
+              window.location = `/order/action/reserve?${queryLink}`
             }
 
             if (el.target.hasAttribute('del')) {
