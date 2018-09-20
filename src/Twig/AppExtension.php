@@ -11,6 +11,7 @@ class AppExtension extends AbstractExtension
     {
         return array(
             new TwigFilter('rot13', array($this, 'rot13Filter')),
+            new TwigFilter('makeHash', array($this, 'makeHash')),
         );
     }
 
@@ -19,5 +20,11 @@ class AppExtension extends AbstractExtension
         $rot13String = str_rot13($string);
 
         return $rot13String;
+    }
+
+    public function makeHash(string $hasheableValue, string $hashType = 'ripemd160'): string
+    {
+        $hasedString = hash($hashType, $hasheableValue);
+        return $hasedString;
     }
 }

@@ -90,7 +90,6 @@ class OrderModel extends Model
 
                 $amount = (int) $product['qnt'];
                 $cart->setAmount($amount);
-                //$existentProduct->getProductInventory()->setReserved($amount);
 
                 $price = array_key_exists('price', $product) ? (float) $product['price'] : $existentProduct->getPrice();
                 if ($existentProduct->getPrice() !== $price) {

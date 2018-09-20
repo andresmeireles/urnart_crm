@@ -25,7 +25,7 @@
 {% endfor %}
 
 <script>
-    var product = [{% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}', amount: '{{ product.getStock }}' },{% endfor %}]
+    var product = [{% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}', amount: '{{ product.stock }}' },{% endfor %}]
     var customers = [{% for customer in customers %}{ value: '{{ customer.razaoSocial }}', cod: '{{ customer.getId }}' },{% endfor %}]
     var transporter = [{% for transporter in transporters %}{ value: '{{ transporter.name }}', port: '{{ transporter.port }}', cod: '{{ transporter.getId }}'},{% endfor %}]
     var payment = [{% for payment in payments %}{ value: '{{ payment.name }}', cod: '{{ payment.getId }}', plot: '{{ payment.isPlot }}' },{% endfor %}]
@@ -34,7 +34,7 @@
 <div class="col-12 p-3" id="automaticOrder">
     <div class="clearfix">
         <div class="float-left">
-            <h1 class="float-left">Pedido {{ order.id }}<span del="{{ '/order/action/remove/' | rot13 }}{{ order.getid }}" class="btn btn-danger btn-sm text-light"><i class="fas fa-trash"></i> remover</span></h1>
+            <h1 class="float-left">Pedido {{ order.id }}<span del="{{ '/order/action/remove/' | rot13 }}{{ order.getid }}" class="btn btn-danger btn-sm text-light mx-2"><i class="fas fa-trash"></i> remover</span></h1>
         </div>
         <div class="float-right">
             <h5>Atualizado por: Alguém muito legal</h5>
@@ -56,10 +56,6 @@
                             <label> Nome do cliente </label>
                             <input type="text" placeholder="Nome do cliente" class="form-control" autocp="customers" disabled="disabled" value="{{ order.getCustomer}}">
                             <input type="hidden" placeholder="Nome do cliente" id="idClientName" name="clientName" value="{{ order.getCustomerId }}"></div>
-                        <div class="form-group col-md-3">
-                            <label> Data do Pedido </label>
-                            <input type="text" class="form-control date-mask" name="clientCity" value="{{ order.getCreateDate | date('d/m/Y') }}">
-                        </div>
                     </div>
                 </fieldset>
             </div>
@@ -77,7 +73,11 @@
                                     <input type="text" removeFrom="product" class="form-control" name="p[product]" placeholder="Inserir valor" autocp="product" value="{{ product.getProduct.name }}" disabled="disabled">
                                 </div>
                                 <div class="input-group col-md-3">
-                                    <input type="text" class="form-control numbers-float-only" name="p[price]" id="prod-price" value="{{ product.getProduct.price | number_format(2, ',', '.') }}" disabled>
+                                    {% if product.customPrice is not null %}
+                                        <input type="text" class="form-control numbers-float-only" name="p[price]" id="prod-price" value="{{ product.customPrice | number_format(2, ',', '.') }}">
+                                    {% else %}
+                                        <input type="text" class="form-control numbers-float-only" name="p[price]" id="prod-price" value="{{ product.getProduct.price | number_format(2, ',', '.') }}">
+                                    {% endif %}
                                 </div>
                                 <div class="input-group col-md-2">
                                     <input type="text" class="form-control numbers-only" name="p[qnt]" id="prod-qnt" placeholder="Quantidade" value="{{ product.getAmount }}">

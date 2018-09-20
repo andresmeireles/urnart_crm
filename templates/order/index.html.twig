@@ -52,7 +52,7 @@
                 <th scope="col" class="text-center">Data Do Pedido</th>
                 <th scope="col">&nbsp;</th>
             </thead>
-            <tbody>
+            <tbody id="orders">
                 {% for order in orders %}
                 <tr>
                     <td class="text-center">
@@ -65,10 +65,11 @@
                         {{ order.getCreateDate | date('d/m/Y') }}
                     </td>
                     <td>
-                        <span data-action="view{{order.getId}}" class="badge badge-pill badge-secondary cursor-decoration">Visualizar</span>
-                        <a href="/order/action/edit/{{order.getId}}" class="badge badge-pill badge-primary text-light cursor-decoration">Editar</a>
+                        <span data-action="view{{order.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
+                        <span reserve="h={{'valido' | makeHash }}/i={{ order.id }}" class="badge badge-pill badge-secondary cursor-decoration">Reservar</span>
+                        <a href="/order/action/edit/{{order.getId}}" class="badge badge-pill badge-success text-light cursor-decoration">Editar</a>
                     </td>
-                </tr>    
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -76,7 +77,7 @@
     {% endif %}
     </div>
 
-    
+
     {% for order in orders %}
         {% include '/order/pages/viewOrder.html.twig' with {'order' : order } %}
     {% endfor %}

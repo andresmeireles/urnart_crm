@@ -20,7 +20,9 @@
             <table class="table table-hover tablesorter sortable" name="pagamentos">
                 <thead class="table-primary">
                     <tr>
-                        <th colspan="2">Forma de Pagamento</th>
+                        <th>Forma de Pagamento</th>
+                        <th>Permite parcelamento</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody id="paymentType-body">
@@ -31,6 +33,13 @@
                             </td>
                             <td class="text-left" name="{{ type.name }}">
                                 {{ type.name | capitalize }}
+                            </td>
+                            <td class="text-center" name="{{ type.plot }}">
+                                {% if type.plot is same as(true) %}
+                                    Sim
+                                {% else %}
+                                    Não
+                                {% endif %}
                             </td>
                             <td class="text-right">
                                 <span class="badge badge-pill badge-danger remover cursor-decoration">Remover</span>
