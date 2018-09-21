@@ -9,6 +9,7 @@
         "h4cc/wkhtmltopdf-amd64": "0.12.x",
         "jms/serializer": "^1.12",
         "knplabs/knp-snappy-bundle": "^1.5",
+        "mpdf/mpdf": "dev-master",
         "respect/validation": "^1.1",
         "setasign/fpdi": "^2.0",
         "symfony/asset": "^4.0",

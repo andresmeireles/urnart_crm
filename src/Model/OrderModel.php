@@ -165,12 +165,13 @@ class OrderModel extends Model
         $em = $this->em;
         $em->getConnection()->beginTransaction();
         $order = $em->getRepository(Order::class)->find($id);
-        if ($order->isReserved()) {
-          return array(
-            'http_code' => 400,
-            'type' => 'error',
-            'message' => "Pedido {$order->getId()} já tem os produtos reservados"
-          );
+        if (!$order->isOpen()) {
+            $message = $order->isReserved() ? "Pedido {$order->getId()} já tem os produtos reservados" : "Pedido {$order->getId()} já foi fechado e não pode ser modificado";          
+            return array(
+                'http_code' => 400,
+                'type' => 'error',
+                'message' => $message
+            );
         }
         try {
           $productCarts = $order->getProductCarts();
@@ -181,6 +182,7 @@ class OrderModel extends Model
               $em->getConnection()->rollback();
               return array(
                 'http_code' => 400,
+                'type' => 'error',
                 'message' => "Produto {$product->getName()} não tem estoque suficiente para reservar."
               );
             }
@@ -201,6 +203,75 @@ class OrderModel extends Model
           'type' => 'success',
           'message' => "Produtos do pedido {$id} foram reservados com sucesso"
         );
+    }
+
+    public function runUnreserveTypeAction(?int $id, string $hash, string $type = 'open'): array
+    {
+        $em = $this->em;
+        if (!$this->validate($hash) || is_null($id)) {
+            return array(
+                'http_code' => 400,
+                'type' => 'error',
+                'message' => 'erro, operação não autorizada...'
+            );
+        }
+        $em->getConnection()->beginTransaction();
+        $order = $em->getRepository(Order::class)->find($id);
+        if ($type == 'open' && $order->isOpen()) {
+            return array(
+                'http_code' => 400,
+                'type' => 'error',
+                'message' => "Pedido {$id} já está aberto..."
+            );
+        }
+        if ($type == 'close' && $order->isClosed()) {
+            return array(
+                'http_code' => 400,
+                'type' => 'error',
+                'message' => "Pedido {$id} já está fechado..."
+            );
+            $order->setAtive(false);
+        }
+        try {
+            $productCarts = $order->getProductCarts();
+            $actualStatus = $order->getReserved();
+            $order->reOpen();
+            if ($type == 'close') {
+                $order->close();
+            }
+            foreach ($productCarts as $cart) {
+                $product = $cart->getProduct();
+                $reserved = $product->getProductInventory()->getReserved();
+                if ($actualStatus !== 1) {
+                    continue;
+                }
+                $amountReserved = ($reserved - $cart->getAmount());
+                $product->setReserved($amountReserved);
+                $em->merge($product);
+            }
+            $em->merge($order);
+            $em->flush();
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+            throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+        }
+        $message = $order->isClosed() ? "Pedido {$id} fechado com sucesso" : "Produtos do pedido {$id} foi aberto novamento";
+        return array(
+            'http_code' => 301,
+            'type' => 'success',
+            'message' => $message
+        );
+    }
+
+    public function radiateOrder(int $id, string $hash): array
+    {
+        return $this->runUnreserveTypeAction($id, $hash, 'open');
+    }
+
+    public function closeOrder(int $id, string $hash): array
+    {
+        return $this->runUnreserveTypeAction($id, $hash, 'close');
     }
 
     public function removeOrder($id): array
@@ -238,5 +309,14 @@ class OrderModel extends Model
                 'message' => "Erro ao remove pedido {$order->getId()}."
             );
         }
+    }
+
+    public function validate(?string $hash, string $message = 'valido'): bool
+    {
+        $trueHash = hash('ripemd160', $message);
+        if (is_null($hash) || $hash !== $trueHash) {
+            return false;
+        }
+        return true;
     }
 }

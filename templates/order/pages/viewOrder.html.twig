@@ -1,9 +1,27 @@
-    <div class="col-md-8 px-3 py-4 d-none" id="view{{order.id}}">
+    <div class="col-md-10 px-3 py-4 d-none" id="view{{order.id}}">
         <div class="clearfix">
-            <h1 class="float-left">Pedido {{ order.id }} <span reserve="h-{{'valido' | makeHash }}&i={{ order.id }}" class="btn btn-secondary btn-sm text-light mx-2"><i class="fas fa-box-open"></i> reservar</span><a href="/order/action/edit/{{ order.id }}" class="btn btn-primary btn-sm text-light"><i class="fas fa-edit"></i> editar</a><span del="{{ '/order/action/remove/' | rot13 }}{{ order.getid }}" class="btn btn-danger btn-sm text-light mx-2"><i class="fas fa-trash"></i> remover</span></h1>
+            <h1 class="float-left">Pedido {{ order.id }} 
+            
+            {% if order.isOpen %}
+                <span reserve="h-{{'valido' | makeHash }}&i={{ order.id }}" class="btn btn-secondary btn-sm text-light"><i class="fas fa-box-open"></i> reservar</span><span close="h={{ 'valido' | makeHash }}&id={{ order.getid }}" class="btn btn-warning btn-sm mx-2"><i class="fas fa-trash"></i> fechar</span><a href="/order/action/edit/{{ order.id }}" class="btn btn-primary btn-sm text-light mx-1"><i class="fas fa-edit"></i> editar</a>
+            {% elseif order.isClosed %}
+            {% else %}
+                <span reopen="h={{'valido' | makeHash }}&i={{ order.id }}" class="btn btn-secondary btn-sm mx-2"><i class="fas fa-box-open"></i> irradirar</span><span close="h={{ 'valido' | makeHash }}&i={{ order.getid }}" class="btn btn-warning btn-sm mx-2"><i class="fas fa-trash"></i> fechar</span>
+            {% endif %}
+                <span del="{{ '/order/action/remove/' | rot13 }}{{ order.getid }}" class="btn btn-danger btn-sm text-light"><i class="fas fa-trash"></i> remover</span>
+                <a class="btn btn-light btn-sm"><i class="fas fa-trash"></i> Imprimir</a>            
+            </h1>
             <div class="float-right">
+                {% if order.getReserved == 1 %}
+                    {% set status = 'Reservado' %}
+                {% elseif order.getReserved == 2 %}
+                    {% set status = 'Fechado' %}
+                {% else %}
+                    {% set status = 'Aberto' %}
+                {% endif %}
                 <h5>Atualizado por: Alguém muito legal</h5>
                 <h5>Ultima Atualização: {{ order.getLastUpdate | date('d/m/Y') }}</h5>
+                <h5>Status: {{ status }}</h5>
             </div>
         </div>
             <div class="row">

@@ -19,6 +19,18 @@ document.addEventListener('DOMContentLoaded', function () {
               window.location = `/order/action/reserve?${queryLink}`
             }
 
+            if (el.target.hasAttribute('reopen')) {
+                let queryLink = el.target.getAttribute('reopen')
+                window.location = `/order/action/order/radiate?${queryLink}`
+            }
+
+            if (el.target.hasAttribute('close')) {
+                let queryLink = el.target.getAttribute('close')
+                simpleDialog("Tem certeza que deseja fechar esse pedido?<br><i class='text-danger'>(essa ação não poderá ser desfeita)</i>", () => {
+                    window.location = `/order/action/order/close?${queryLink}`
+                })
+            }
+
             if (el.target.hasAttribute('del')) {
               el.preventDefault()
 

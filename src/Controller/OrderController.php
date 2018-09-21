@@ -139,9 +139,9 @@ class OrderController extends Controller
     /**
      * @Route("/order/action/reserve", methods="GET")
      *
-     * @return Response [description]
+     * @return Response
      */
-    public function reserveOrder(OrderModel $model, Request $request): Response
+    public function reserveOrderProducts(OrderModel $model, Request $request): Response
     {
         $hash = $request->query->get('h') ?? null;
         $id = $request->query->get('i') ?? null;
@@ -150,38 +150,57 @@ class OrderController extends Controller
               'error',
               'Erro ao criar reserva'
             );
-
             return $this->redirectToRoute('order');
         }
-
         $trueHash = hash('ripemd160', 'valido');
         if ($hash !== $trueHash) {
           $this->addFlash(
             'error',
-            "Erro ao fazer reserva, falta o hash ou ele está errado."
+            "Erro... falta o hash ou ele está errado."
           );
           return $this->redirectToRoute('order');
         }
-
         $result = $model->reserve($id);
-
         if ($result['http_code'] == 301) {
           $this->addFlash(
             'success',
             $result['message']
           );
-
           return $this->redirectToRoute('order');
         }
-
         $this->addFlash(
           $result['type'],
           $result['message']
         );
-
         return $this->redirectToRoute('order');
+    }
 
-
+    /**
+     * @Route("/order/action/order/{type}", methods="GET")
+     *
+     * @param OrderModel $model
+     * @param string $type
+     * @param Request $request
+     * @return Response
+     */
+    public function runTypeUnReserveAction(OrderModel $model, string $type, Request $request): Response
+    {
+        $id = $request->query->get('i') ?? null;
+        $hash = $request->query->get('h') ?? null;
+        $function = $type.'Order';
+        $result = $model->$function($id, $hash);
+        if ($result['http_code'] == 301) {
+            $this->addFlash(
+                $result['type'],
+                $result['message']
+            );
+            return $this->redirectToRoute('order');
+        }
+        $this->addFlash(
+            $result['type'],
+            $result['message']
+        );
+        return $this->redirectToRoute('order');
     }
 
     /**

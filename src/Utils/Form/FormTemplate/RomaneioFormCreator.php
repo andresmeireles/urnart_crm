@@ -56,7 +56,7 @@ class RomaneioFormCreator implements CreateFormInterface
 
 		$body = '
 		<style >
-		#page_1 { width: 100%; height: 100%; border: 1px solid black }
+		#page_1 { width: 100%; height: 100%; }
 
 		.t0{width: 100% ;margin-top: 6px;font: 17px "Calibri"; border: 1px solid black}
 

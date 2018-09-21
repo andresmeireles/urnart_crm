@@ -43,7 +43,7 @@ class WithdrawalFormCreator implements CreateFormInterface
 
         $body = '
         <style>
-        #page { height: 29.7cm;  width: 21cm; border: 1px solid black; font: 18px "Arial" }
+        #page { height: 29.7cm;  width: 21cm; font: 18px "Arial" }
         #half-page { width: 21cm; height: 14cm; }
         .center { text-align: center }
         

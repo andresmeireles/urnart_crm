@@ -93,11 +93,6 @@ class Form
         $pdf->setOption('encoding', 'UTF-8');
         $pdf->setOption('page-height', '297.0');
         $pdf->setOption('page-width', '210.0');
-        /**
-        $pdf->setOption('margin-bottom', '0mm');
-        $pdf->setOption('margin-top', '0mm');
-        $pdf->setOption('margin-right', '0mm');
-        $pdf->setOption('margin-left', '0mm'); */
         if (file_exists(__DIR__.'/../../../public/form/bill.pdf')) {
         	//chmod(__DIR__.'/../../../public/form/bill.pdf', 777);
             unlink(__DIR__.'/../../../public/form/bill.pdf');

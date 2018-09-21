@@ -51,11 +51,19 @@
             <thead>
                 <th scope="col" class="text-center">Numero do Pedido</th>
                 <th scope="col" class="text-center">Cliente</th>
+                <th scope="col" class="text-center">Status do Pedido</th>
                 <th scope="col" class="text-center">Data Do Pedido</th>
                 <th scope="col">&nbsp;</th>
             </thead>
             <tbody id="orders">
                 {% for order in orders %}
+                {% if order.getReserved == 1 %}
+                    {% set status = 'Reservado' %}
+                {% elseif order.getReserved == 2 %}
+                    {% set status = 'Fechado' %}
+                {% else %}
+                    {% set status = 'Aberto' %}
+                {% endif %}
                 <tr>
                     <td class="text-center">
                         {{ order.getId }}
@@ -64,12 +72,21 @@
                         {{ order.getCustomer }}
                     </td>
                     <td class="text-center">
+                        {{ status }}
+                    </td>
+                    <td class="text-center">
                         {{ order.getCreateDate | date('d/m/Y') }}
                     </td>
-                    <td>
+                    <td class="text-center">
                         <span data-action="view{{order.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
-                        <span reserve="h={{'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-secondary cursor-decoration">Reservar</span>
+                        {% if order.isOpen %}
+                            <span reserve="h={{'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Reservar</span><span close="h={{ 'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
+                        {% elseif order.isClosed %}
+                        {% else %}
+                            <span reopen="h={{'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Irradiar</span><span close="h={{ 'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
+                        {% endif %}
                         <a href="/order/action/edit/{{order.getId}}" class="badge badge-pill badge-success text-light cursor-decoration">Editar</a>
+                        <a href="#" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -78,7 +95,6 @@
 
     {% endif %}
     </div>
-
 
     {% for order in orders %}
         {% include '/order/pages/viewOrder.html.twig' with {'order' : order } %}

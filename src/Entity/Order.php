@@ -235,6 +235,11 @@ class Order extends BaseEntity
         return $this;
     }
 
+    public function getReserved(): int
+    {
+        return $this->reserved;
+    }
+
     public function reserve(): self
     {
         if ($this->reserved == 1 && $this->reserved == 2) {
@@ -283,7 +288,7 @@ class Order extends BaseEntity
         return false;
     }
 
-    public function isClosed(): bool
+    public function isClosed(): int
     {
         if ($this->reserved == 2) {
             return true;
