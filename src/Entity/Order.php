@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Node\Expr\Cast\Bool_;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
@@ -70,7 +71,11 @@ class Order extends BaseEntity
     private $paymentType;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="smallint")
+     * 
+     * 0 - open
+     * 1 - reserved
+     * 2 - closed
      */
     private $reserved = false;
 
@@ -230,15 +235,59 @@ class Order extends BaseEntity
         return $this;
     }
 
-    public function reserve(int $amount, Product $product): self
+    public function reserve(): self
     {
-        $this->reserved = true;
-        
+        if ($this->reserved == 1 && $this->reserved == 2) {
+            return $this;
+        }
+
+        $this->reserved = 1;
+        return $this;
+    }
+
+    public function reOpen(): self
+    {
+        if ($this->reserved == 0 && $this->reserved == 2) {
+            return $this;
+        }
+
+        $this->reserved = 0;
+
+        return $this;
+    }
+
+    public function close(): self
+    {
+        if ($this->reserved == 2) {
+            return $this;
+        }
+
+        $this->reserved = 2;
+
         return $this;
     }
 
     public function isReserved(): bool
     {
-        return $this->reserved;
+        if ($this->reserved == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public function isOpen(): bool 
+    {
+        if ($this->reserved == 0) {
+            return true;
+        } 
+        return false;
+    }
+
+    public function isClosed(): bool
+    {
+        if ($this->reserved == 2) {
+            return true;
+        }
+        return false;
     }
 }

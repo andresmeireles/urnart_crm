@@ -164,10 +164,7 @@ class OrderModel extends Model
     {
         $em = $this->em;
         $em->getConnection()->beginTransaction();
-
         $order = $em->getRepository(Order::class)->find($id);
-        dump($order->getProductCarts(), $order->getProductCarts() instanceof Collection);
-        die();
         if ($order->isReserved()) {
           return array(
             'http_code' => 400,
@@ -175,11 +172,9 @@ class OrderModel extends Model
             'message' => "Pedido {$order->getId()} já tem os produtos reservados"
           );
         }
-
         try {
           $productCarts = $order->getProductCarts();
           $order->reserve();
-
           foreach ($productCarts as $cart) {
             $product = $cart->getProduct();
             if ($product->getStock() < $cart->getAmount()) {
@@ -189,13 +184,11 @@ class OrderModel extends Model
                 'message' => "Produto {$product->getName()} não tem estoque suficiente para reservar."
               );
             }
-
             $reserved = $product->getProductInventory()->getReserved();
             $amountReserved = ($reserved + $cart->getAmount());
             $product->setReserved($amountReserved);
             $em->merge($product);
           }
-
           $em->merge($order);
           $em->flush();
           $em->getConnection()->commit();
@@ -203,7 +196,6 @@ class OrderModel extends Model
           $em->getConnection()->rollback();
           throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
         }
-
         return array(
           'http_code' => 301,
           'type' => 'success',
