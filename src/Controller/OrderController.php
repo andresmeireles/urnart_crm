@@ -234,13 +234,22 @@ class OrderController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function printOrder(OrderModel $model, Request $request): Response
+    public function showOrderToOrder(Request $request): Response
     {
         $hash = $request->query->get('h');
-        $id = $request->query->get('id');
+        $id = $request->query->get('i');
 
-        //$result = $model->printOrderById($id);
+        if (empty($hash) || empty($id)) {
+            $this->addFlash(
+                'error',
+                'Alguma informação incosistente...'
+            );
+
+            $this->redirectToRoute('order');
+        }
         
-        return $this->render('order/printOrder/print.html.twig');
+        return $this->render('order/printOrder/print.html.twig', [
+            'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id)
+        ]);
     }
 }

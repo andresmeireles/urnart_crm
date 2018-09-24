@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (el.target.hasAttribute('print')) {
                 el.preventDefault()
 
-                let value = el.taget.getAttribute('print')
+                let value = el.target.getAttribute('print')
                 let link = el.target.href
                 if (value == '') {
                     return false
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             let field = el.target.closest('[clone-area]')
                             field.querySelector('#cod').value = option.cod
                             field.querySelector('#prod-price').value = numeral(option.price).format('0.00')
-                            field.querySelector('#stock').value = option.amount
+                            //field.querySelector('#stock').value = option.amount
                             field.querySelector('#prod-qnt').value = 1
                             field.querySelector('#total').value = numeral((1 * option.price)).format('0.00')
                             contabilize()
@@ -176,12 +176,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (el.target.id == 'prod-qnt' ) {
               let field = el.target.closest('[clone-area]')
-              let stock = field.querySelector('#stock').value
+              //let stock = field.querySelector('#stock').value
               let value = field.querySelector('#prod-price').value
               value = Number(value.replace(',','.'))
               let qnt = Number(el.target.value)
 
-              field.querySelector('#total').value = numeral((value * qnt)).format('0.00')
+              field.querySelector('#total').innerHTML = numeral((value * qnt)).format('0.00')
               contabilize()
               contabilizeInstallmentValue()
             }
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let discount = (document.querySelector('#discount').value === '') ? 0 : Number(document.querySelector('#discount').value)
 
         for (let p of prices) {
-            let price = p.value
+            let price = p.innerHTML
             price = price.replace('.','')
             price = price.replace(',','.')
             allPrices += Number(price)

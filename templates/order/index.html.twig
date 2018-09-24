@@ -12,6 +12,13 @@
                         </div>
                     </a>
                 </li>
+                <li class="noline text">
+                    <a href="/forms/order">
+                        <div class="d-flex align-items-center">
+                            <span class="mx-1 my-2">&nbsp;&nbsp;Pedido Manual</span>
+                        </div>
+                    </a>
+                </li>
                 <li class="noline">
                     <a> <!-- href="/person/customer" -->
                         <div class="d-flex align-items-center">
@@ -86,7 +93,7 @@
                             <span reopen="h={{'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Irradiar</span><span close="h={{ 'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
                         {% endif %}
                         <a href="/order/action/edit/{{order.getId}}" class="badge badge-pill badge-success text-light cursor-decoration">Editar</a>
-                        <a print="h={{ 'valido' | makeHash }}&id={{ order.getId }}" href="/order/action/print" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
+                        <a print="h={{ 'valido' | makeHash }}&i={{ order.getId }}" href="/order/action/print" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
                     </td>
                 </tr>
                 {% endfor %}

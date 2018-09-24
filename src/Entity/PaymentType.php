@@ -26,6 +26,16 @@ class PaymentType
      */
     private $plot = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="customer")
+     */
+    private $orderNumber;
+
+    public function __construct()
+    {
+        $this->orderNumber = new ArrayCollection();
+    }
+
     public function __toString()
     {
         return $this->name;
@@ -65,5 +75,28 @@ class PaymentType
     public function isPlot(): bool
     {
         return (bool) $this->plot;
+    }
+
+    public function addOrderNumber(Order $orderNumber) : self
+    {
+        if (!$this->orderNumber->contains($orderNumber)) {
+            $this->orderNumber[] = $orderNumber;
+            $orderNumber->setPaymentType()($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderNumber(Order $orderNumber) : self
+    {
+        if ($this->orderNumber->contains($orderNumber)) {
+            $this->orderNumber->removeElement($orderNumber);
+            // set the owning side to null (unless already changed)
+            if ($orderNumber->getPaysetPaymentType()() === $this) {
+                $orderNumber->setPaymentType()(null);
+            }
+        }
+
+        return $this;
     }
 }

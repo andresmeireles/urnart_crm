@@ -235,6 +235,13 @@ class PessoaJuridica extends BaseEntity
         return $this;
     }
 
+    public function getState(): ?Estado
+    {
+        $estado = $this->getProprietarios()->first()->getPessoaFisica()->getAddress()->getEstado();
+        $estado = $estado ?? null;
+        return $estado;
+    }
+
     public function getEstado(): ?string
     { 
         $estado = $this->getProprietarios()->first()->getPessoaFisica()->getAddress()->getEstado();

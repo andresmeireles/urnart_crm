@@ -66,7 +66,7 @@ class Order extends BaseEntity
     private $transporter;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\PaymentType", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\PaymentType", inversedBy="orderNumber")
      */
     private $paymentType;
 
@@ -161,6 +161,11 @@ class Order extends BaseEntity
         $this->comments = $comments;
 
         return $this;
+    }
+
+    public function getAllCustomerData() : ?PessoaJuridica
+    {
+        return $this->customer;
     }
 
     public function getCustomerId(): ?string

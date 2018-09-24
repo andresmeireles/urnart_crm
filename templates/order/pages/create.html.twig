@@ -6,7 +6,7 @@
 
 {% block content %}
 <script>
-    var product = [{% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}', amount: '{{ product.stock }}' },{% endfor %}]
+    var product = [{% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}' },{% endfor %}]
     var customers = [{% for customer in customers %}{ value: '{{ customer.razaoSocial }}', cod: '{{ customer.getId }}' },{% endfor %}]
     var transporter = [{% for transporter in transporters %}{ value: '{{ transporter.name }}', port: '{{ transporter.port }}', cod: '{{ transporter.getId }}'},{% endfor %}]
     var payment = [{% for payment in payments %}{ value: '{{ payment.name }}', cod: '{{ payment.getId }}', plot: '{{ payment.isPlot }}' },{% endfor %}]
@@ -31,8 +31,9 @@
 {% endfor %}
 
 <div class="col-12 p-3" id="automaticOrder">
-    <h1 class="">Criar Pedido</h1>
-
+    <div class="clearfix">
+        <h1 class="float-left">Criar Pedido</h1><a href="/forms/order" class="btn btn-white btn-lg float-left"><i class="fas fa-arrow-right"></i> Ir para pedido Manual</a>
+    </div>
     <form method="POST">
         <div class="row">
             <div class="col-md-12 my-1">
