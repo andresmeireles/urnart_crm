@@ -41,6 +41,19 @@ document.addEventListener('DOMContentLoaded', function () {
                   })
               })
             }
+
+            if (el.target.hasAttribute('print')) {
+                el.preventDefault()
+
+                let value = el.taget.getAttribute('print')
+                let link = el.target.href
+                if (value == '') {
+                    return false
+                }
+                
+                window.open(`${link}?${value}`)
+            }
+
         }, true)
 
         document.addEventListener('focus', function (el) {

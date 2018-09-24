@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Knp\Snappy\Pdf;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 
 class OrderController extends Controller
 {
@@ -21,7 +23,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
-
+        
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
         ]);
@@ -223,5 +225,22 @@ class OrderController extends Controller
         return new Response($result['message'], $result['http_code'], array(
             'redirect-route' => '/order'
         ));
+    }
+
+    /**
+     * @Route("/order/action/print", methods="GET")
+     *
+     * @param OrderModel $model
+     * @param Request $request
+     * @return Response
+     */
+    public function printOrder(OrderModel $model, Request $request): Response
+    {
+        $hash = $request->query->get('h');
+        $id = $request->query->get('id');
+
+        //$result = $model->printOrderById($id);
+        
+        return $this->render('order/printOrder/print.html.twig');
     }
 }
