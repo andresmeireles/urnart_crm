@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Knp\Snappy\Pdf;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Symfony\Component\Yaml\Yaml;
 
 class OrderController extends Controller
 {
@@ -23,9 +24,24 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
-        
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
+        ]);
+    }
+
+    /**
+     * @Route("/order/list", defaults={"type"="last"})
+     *
+     * @param  string $type [type of list showed]
+     * @param  Request $request
+     * @return Response
+     */
+    public function list(Request $request, ListModel $model, string $type = 'last'): Response
+    {
+        $type = $request->query->get('type') == '' ? 'last' : $request->query->get('type');
+        return $this->render('/order/lists/list.html.twig', [
+            'listType' => $type,
+            'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll(),
         ]);
     }
 
@@ -62,9 +78,7 @@ class OrderController extends Controller
                 $arrData[] = $value;
             }
         }
-
         $result = $model->createOrder($data, $arrData);
-
         if ($result['http_code'] === '400') {
             $this->addFlash(
                 'error',
@@ -73,12 +87,10 @@ class OrderController extends Controller
 
             return $this->redirectToRoute('createOrder');
         }
-
         $this->addFlash(
             'success',
             $result['message']
         );
-
         return $this->redirectToRoute('order');
     }
 
@@ -109,32 +121,26 @@ class OrderController extends Controller
     {
         $data = $request->request->all();
         $data['id'] = $id;
-
         foreach($data as $key => $value) {
             if (is_array($value)) {
                 unset($data[$key]);
                 $arrData[] = $value;
             }
         }
-
         $result = $model->updateOrder($data, $arrData);
-
         if ($result['http_code'] === '400') {
             $this->addFlash(
                 'error',
                 $result['message']
             );
-
             return $this->redirectToRoute('createOrder');
         }
-
         if ($result['http_code'] == '301') {
             $this->addFlash(
                 'success',
                 "Pedido {$data['id']} atualizado com sucesso"
             );
         }
-
         return $this->redirectToRoute('order');
     }
 
@@ -216,12 +222,10 @@ class OrderController extends Controller
     {
         $id = $id;
         $result = $model->removeOrder($id);
-
         $this->addFlash(
             $result['type'],
             $result['message']
         );
-
         return new Response($result['message'], $result['http_code'], array(
             'redirect-route' => '/order'
         ));
@@ -238,16 +242,13 @@ class OrderController extends Controller
     {
         $hash = $request->query->get('h');
         $id = $request->query->get('i');
-
         if (empty($hash) || empty($id)) {
             $this->addFlash(
                 'error',
                 'Alguma informação incosistente...'
             );
-
             $this->redirectToRoute('order');
-        }
-        
+        }        
         return $this->render('order/printOrder/print.html.twig', [
             'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id)
         ]);

@@ -1,0 +1,30 @@
+{% extends 'index.html.twig' %}
+
+{% block content %}
+{% include '/components/notification.html.twig' %}
+<div class="px-4 py-3 col-md-12">
+	<div class="clearfix">
+		<h1>Configurações</h1>
+	</div>
+	<form method="post" action="/register/configuration">
+	<div class="row" id='conf'>
+		<div class="bg-light col-md-12">
+			<fieldset>
+				<legend>Maque ou desmarque as opções</legend>
+			</fieldset>
+		</div>
+		<div class="p-2 col-md-12">
+			<div class="form-check">
+				<input type="checkbox" class="form-check-input" name="allow_negative_stock" {{ config.allow_negative_stock ? 'checked' : '' }}>
+				<label for="allowNegativeStock">
+					Permitir estoque negativo <span class="mx-1 badge badge-pill badge-warning" data-balloon="Permite o fazer reserva de produtos mesmo sem estoque sufuciente, disponivel." data-balloon-pos="up"><i class="fas fa-question"></i></span>
+				</label>
+			</div>
+		</div>	
+		<div class="p-2 col-md-12">
+			<button type="submit" class="btn btn-success" id="save">Salvar</button>
+		</div>
+	</div>
+	</form>
+</div>
+{% endblock %}

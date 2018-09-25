@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Yaml\Yaml;
 
 class RegisterController extends Controller
 {
@@ -86,5 +87,48 @@ class RegisterController extends Controller
             Response::HTTP_OK,
             array('type-message' => $crud->getTypeMessage())
         );
+    }
+
+    /**
+     * @Route("/register/configuration", methods="GET", name="config")
+     * 
+     * @return Response
+     */
+    public function configuration(): Response
+    {
+        $config = Yaml::parse(file_get_contents(__DIR__.'/../Config/system-config.yaml'));
+        return $this->render('/register/configuration/index.html.twig', [
+            'config' => $config
+        ]);
+    }
+
+    /**
+     * @Route("/register/configuration", methods="POST")
+     *
+     * @param Request
+     * @return Response : write new config
+     */
+    public function writeConfiguration(Request $request): Response
+    { 
+        $config = Yaml::parse(file_get_contents(__DIR__.'/../Config/system-config.yaml'));
+        $configSendData = $request->request->all();
+        
+        foreach ($config as $key => $value) {
+            if (array_key_exists($key, $configSendData)) {
+                $config[$key] = ($configSendData[$key] == 'on' ? true : false);
+                continue;
+            }
+            $config[$key] = false;
+        }
+
+        $yaml = Yaml::dump($config);
+        file_put_contents(__DIR__.'/../Config/system-config.yaml', $yaml);
+
+        $this->addFlash(
+            'success',
+            'configuração salva com sucesso'
+        );
+
+        return $this->redirectToRoute('config');
     }
 }

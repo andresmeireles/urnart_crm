@@ -1,0 +1,19 @@
+{% for label, messages in app.flashes %}
+    <script>
+        {% for message in messages %}
+            setTimeout( () => {
+                var notify = new noty({
+                    text: "{{ message }}",
+                    layout: 'topCenter',
+                    type: "{{ label }}",
+                    theme: 'bootstrap-v4',
+                    animation: {
+                        open: 'animated fadeInUp', // Animate.css class names
+                        close: 'animated fadeOutDown' // Animate.css class names
+                    }
+                }).show()
+                notify.setTimeout(2500)
+            }, 1000)
+        {% endfor %}
+     </script>
+{% endfor %}
