@@ -25,9 +25,7 @@ class OrderModel extends Model
     public function executeActionOnOrder(array $information, array $products, string $type = 'insert'): array
     {
         $em = $this->em;
-
         $em->getConnection()->beginTransaction();
-
         try {
 
             if ($type == 'update') {

@@ -19,6 +19,35 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
+    public function findByClientGroup()
+    {
+        return $this->createQueryBuilder('o')
+            ->orderBy('o.customer', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByLastOrder()
+    {
+        return $this->createQueryBuilder('o')
+            ->orderBy('o.createDate', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByStatusOrders(int $type = 0)
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.reserved = :val')
+            ->setParameter('val', $type)
+            ->orderBy('o.createDate', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();   
+    }
+
 //    /**
 //     * @return Order[] Returns an array of Order objects
 //     */

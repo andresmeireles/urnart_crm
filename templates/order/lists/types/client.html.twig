@@ -1,61 +1,112 @@
 <div class="col px-4 py-3">
     {% if orders == [] %}
-        Não ha pedidos cadastrados no momento :(
+        <div class="py-3">
+            <h3>Não há pedidos cadastrados</h3>
+        </div>
     {% else %}
-    <script>
-        var orders =  [
-            {% for order in orders %}
-            { 
-                '{{order.getCustomer}}': {
-                    orderNumber: '{{order.getId}}',
-                    status: '{{order.getReserved}}',
-                    date: '{{order.getCreateDate}}', 
-                }
-            },
-            {% endfor %}
-            ]
-    </script>
         <div class="py-3">
             <h3>Pedidos por cliente</h3>
         </div>
-        <table class="table">
-            <caption>Client - </caption>
-            <thead>
-                <th scope="col" class="text-center">Data Do Pedido</th>
-                <th scope="col" class="text-center">Numero do Pedido</th>
-                <th scope="col" class="text-center">Status do Pedido</th>
-                <th scope="col">&nbsp;</th>
-            </thead>
-            <tbody id="orders">
-            {#
+        {% set customerName = null %}
+            {% for customerNameOrder in orders %}
+            {% if customerNameOrder.getReserved == 1 %}
+            {% set status = 'Reservado' %}
+            {% elseif customerNameOrder.getReserved == 2 %}
+            {% set status = 'Fechado' %}
+            {% else %}
+            {% set status = 'Aberto' %}
+            {% endif %}
+            {% if customerName is null %}
+            <h4>Cliente - {{ customerNameOrder.getCustomer }}</h4>
+            <table class="table">
+                <thead>
+                    <th scope="col" class="text-center">Data Do Pedido</th>
+                    <th scope="col" class="text-center">Numero do Pedido</th>
+                    <th scope="col" class="text-center">Status do Pedido</th>
+                    <th scope="col">&nbsp;</th>
+                </thead>
+                <tbody id="orders">
                     <tr>
                         <td class="text-center">
-                            <strong>{{ order.getCreateDate | date('d/m/Y') }}</strong>
+                            <strong>{{ customerNameOrder.getCreateDate | date('d/m/Y') }}</strong>
                         </td>
                         <td class="text-center">
-                            {{ order.getId }}
-                        </td>
-                        <td class="text-center">
-                            {{ order.getCustomer }}
+                            {{ customerNameOrder.getId }}
                         </td>
                         <td class="text-center">
                             {{ status }}
                         </td>
                         <td class="text-center">
-                            <span data-action="view{{order.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
-                            {% if order.isOpen %}
-                                <span reserve="h={{'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Reservar</span><span close="h={{ 'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
-                            {% elseif order.isClosed %}
+                            <span data-action="view{{customerNameOrder.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
+                            {% if customerNameOrder.isOpen %}
+                                <span reserve="h={{'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Reservar</span><span close="h={{ 'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
+                            {% elseif customerNameOrder.isClosed %}
                             {% else %}
-                                <span reopen="h={{'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Irradiar</span><span close="h={{ 'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
+                                <span reopen="h={{'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Irradiar</span><span close="h={{ 'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
                             {% endif %}
-                            <a href="/order/action/edit/{{order.getId}}" class="badge badge-pill badge-success text-light cursor-decoration">Editar</a>
-                            <a print="h={{ 'valido' | makeHash }}&i={{ order.getId }}" href="/order/action/print" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
+                            <a href="/order/action/edit/{{customerNameOrder.getId}}" class="badge badge-pill badge-success text-light cursor-decoration">Editar</a>
+                            <a print="h={{ 'valido' | makeHash }}&i={{ customerNameOrder.getId }}" href="/order/action/print" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
+                        </td>
+                    </tr>    
+            {% elseif customerName is not null and customerName != customerNameOrder.customer %}
+            </tbody>
+            </table>
+            <table class="table">
+                <h4>Cliente - {{ customerNameOrder.getCustomer }}</h4>
+                <thead>
+                    <th scope="col" class="text-center">Data Do Pedido</th>
+                    <th scope="col" class="text-center">Numero do Pedido</th>
+                    <th scope="col" class="text-center">Status do Pedido</th>
+                    <th scope="col">&nbsp;</th>
+                </thead>
+                <tbody id="orders">
+                    <tr>
+                        <td class="text-center">
+                            <strong>{{ customerNameOrder.getCreateDate | date('d/m/Y') }}</strong>
+                        </td>
+                        <td class="text-center">
+                            {{ customerNameOrder.getId }}
+                        </td>
+                        <td class="text-center">
+                            {{ status }}
+                        </td>
+                        <td class="text-center">
+                            <span data-action="view{{customerNameOrder.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
+                            {% if customerNameOrder.isOpen %}
+                                <span reserve="h={{'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Reservar</span><span close="h={{ 'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
+                            {% elseif customerNameOrder.isClosed %}
+                            {% else %}
+                                <span reopen="h={{'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Irradiar</span><span close="h={{ 'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
+                            {% endif %}
+                            <a href="/order/action/edit/{{customerNameOrder.getId}}" class="badge badge-pill badge-success text-light cursor-decoration">Editar</a>
+                            <a print="h={{ 'valido' | makeHash }}&i={{ customerNameOrder.getId }}" href="/order/action/print" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
                         </td>
                     </tr>
-                    #}
-            </tbody>
-        </table>
-
+            {% else %}
+                    <tr>
+                        <td class="text-center">
+                            <strong>{{ customerNameOrder.getCreateDate | date('d/m/Y') }}</strong>
+                        </td>
+                        <td class="text-center">
+                            {{ customerNameOrder.getId }}
+                        </td>
+                        <td class="text-center">
+                            {{ status }}
+                        </td>
+                        <td class="text-center">
+                            <span data-action="view{{customerNameOrder.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
+                            {% if customerNameOrder.isOpen %}
+                                <span reserve="h={{'valido' | makeHash }}&i={{ customerNameOrder.getId }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Reservar</span><span close="h={{ 'valido' | makeHash }}&i={{ customerNameOrder.getId }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
+                            {% elseif customerNameOrder.isClosed %}
+                            {% else %}
+                                <span reopen="h={{'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Irradiar</span><span close="h={{ 'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
+                            {% endif %}
+                            <a href="/order/action/edit/{{customerNameOrder.getId}}" class="badge badge-pill badge-success text-light cursor-decoration">Editar</a>
+                            <a print="h={{ 'valido' | makeHash }}&i={{ customerNameOrder.getId }}" href="/order/action/print" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
+                        </td>
+                    </tr>
+            {% endif %}
+            {% set customerName = customerNameOrder.customer %}
+            {% endfor %}
     {% endif %}
 </div>

@@ -4,10 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Entity\Product;
-use App\Model\OrderModel;
 use App\Entity\PaymentType;
 use App\Entity\Transporter;
 use App\Entity\PessoaJuridica;
+use App\Model\OrderModel;
+use App\Model\ListModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,9 +40,10 @@ class OrderController extends Controller
     public function list(Request $request, ListModel $model, string $type = 'last'): Response
     {
         $type = $request->query->get('type') == '' ? 'last' : $request->query->get('type');
+        $order = $model->select($type);
         return $this->render('/order/lists/list.html.twig', [
             'listType' => $type,
-            'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll(),
+            'order' => $order,
         ]);
     }
 
