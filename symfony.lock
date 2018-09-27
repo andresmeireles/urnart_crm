@@ -95,6 +95,12 @@
     "monolog/monolog": {
         "version": "1.23.0"
     },
+    "mpdf/mpdf": {
+        "version": "dev-master"
+    },
+    "myclabs/deep-copy": {
+        "version": "1.8.1"
+    },
     "nikic/php-parser": {
         "version": "v4.0.1"
     },
@@ -103,6 +109,9 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.2.0"
+    },
+    "paragonie/random_compat": {
+        "version": "v9.99.99"
     },
     "phpcollection/phpcollection": {
         "version": "0.5.0"
@@ -340,12 +349,6 @@
     },
     "twig/twig": {
         "version": "v2.4.8"
-    },
-    "wemersonjanuario/wkhtmltopdf-windows": {
-        "version": "0.12.2.3"
-    },
-    "wgenial/numeroporextenso": {
-        "version": "2.0.0"
     },
     "zendframework/zend-code": {
         "version": "3.3.0"

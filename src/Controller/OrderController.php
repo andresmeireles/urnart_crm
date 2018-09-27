@@ -250,7 +250,15 @@ class OrderController extends Controller
                 'Alguma informação incosistente...'
             );
             $this->redirectToRoute('order');
-        }        
+        }   
+
+        //teste
+        $output = $this->renderView('order/printOrder/print.html.twig', [
+            'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id)
+        ]);
+        $mpdf = new mPdf\mPdf();
+        $mpdf->writeHtml();
+        
         return $this->render('order/printOrder/print.html.twig', [
             'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id)
         ]);
