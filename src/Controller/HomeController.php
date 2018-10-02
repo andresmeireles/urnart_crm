@@ -21,6 +21,8 @@ class HomeController extends Controller
 
     /**
      * @Route("/activiment")
+     * 
+     * Redireciona paga pagina de objetivos a alcançar
      *
      * @return Response
      */

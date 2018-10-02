@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Knp\Snappy\Pdf;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Symfony\Component\Yaml\Yaml;
+use Mpdf\Mpdf;
 
 class OrderController extends Controller
 {
@@ -256,8 +257,10 @@ class OrderController extends Controller
         $output = $this->renderView('order/printOrder/print.html.twig', [
             'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id)
         ]);
-        $mpdf = new mPdf\mPdf();
-        $mpdf->writeHtml();
+        $mpdf = new Mpdf();
+        var_dump($output, $mpdf);
+        die('hellow');
+        $mpdf->writeHtml($output);
         
         return $this->render('order/printOrder/print.html.twig', [
             'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id)

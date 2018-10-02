@@ -33,12 +33,6 @@ class Municipio
     private $uf;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Estado", inversedBy="iniUf")
-     * @ORM\JoinColumn(name="idUf", referencedColumnName="id") 
-     */
-    private $idUf;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Address", mappedBy="municipio")
      */
     private $endereco;

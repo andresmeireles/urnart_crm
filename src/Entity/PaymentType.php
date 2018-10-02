@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PaymentTypeRepository")
@@ -33,10 +34,10 @@ class PaymentType
 
     public function __construct()
     {
-        $this->orderNumber = new ArrayCollection();
+        $this->orderNumber = new ArrayCollection;
     }
 
-    public function __toString()
+    public function __toString(): ?string
     {
         return $this->name;
     }
