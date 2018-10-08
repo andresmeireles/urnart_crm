@@ -2,7 +2,6 @@
 
 {% block title %}Devoluções{% endblock %}
 
-
 {% block content %}
 <div class="col py-3 px-4">
 	<div class="col-12" >
@@ -15,17 +14,20 @@
 				<div class="row">
 					<div class="col-md-6">
 						<input type="submit" class="btn btn-primary btn-block" value="Criar">
-						<input type="button" id="exportPdf" name="remand" class="btn btn-light btn-block" value="Exportar pdf"> 
+						{#<input type="button" id="exportPdf" name="remand" class="btn btn-light btn-block" value="Exportar pdf">#}
 					</div>
+					<div class="col-md-6">
+						<a href="/forms/remand" class="btn btn-secondary btn-block">Novo</a>
+                    </div>
 				</div>
 				<div class="row py-2">
 					<div class="col">
 						<ul class="nav nav-tabs" id="mytab" role="tablist">
 							<li class="nav-item">
-								<a href="#product" id="product-tab" class="nav-link active text-dark" data-toggle="tab" aria-controls="product" aria-select="true" tab>Produtos</a>
+								<a href="#product" id="product-tab" form-name="remand" class="nav-link active text-dark" data-toggle="tab" aria-controls="product" aria-select="true" tab>Produtos</a>
 							</li>
 							<li class="nav-item">
-								<a href="#cheque" id="chq-tab" class="nav-link text-dark" data-toggle="tab" aria-controls="cheque" aria-select="true" tab>Cheque</a>
+								<a href="#cheque" id="chq-tab" form-name="remandCheck" class="nav-link text-dark" data-toggle="tab" aria-controls="cheque" aria-select="true" tab>Cheque</a>
 							</li>
 						</ul>
 
@@ -63,7 +65,7 @@
 																		<input type="text" class="form-control my-1" id="remandProduct" name="cloneableField0[remandProduct]" placeholder="Produto" > 
 																	</div>
 																	<div class="col-3">
-																		<input type="number" class="form-control my-1" id="remandQnt" name="cloneableField0[remandQnt]" placeholder="Quantidade"> 
+																		<input type="number" class="form-control my-1" id="remandQnt" name="cloneableField0[remandQnt]" placeholder="Quantidade">
 																	</div>
 																	<button type="submit" class="btn btn-success" add-btn="true">
 																		<span class="fas fa-fw fa-plus" id="add-btn" add-btn="true"></span>

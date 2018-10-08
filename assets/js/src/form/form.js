@@ -8,6 +8,13 @@ document.addEventListener('DOMContentLoaded', function () {
 				let formData = new FormData(formTag)				
 				simpleRequestForm(`/forms/pdf/${reportName}`, 'POST', formData)
 			}
-		})	
+		})
+
+		document.addEventListener('click', function (el) {
+			if (el.target.hasAttribute('form-name')) {
+				let fornName = el.target.getAttribute('form-name')
+				document.querySelector('form').setAttribute('action', `/forms/${fornName}`)
+			}
+		})
 	}
 })

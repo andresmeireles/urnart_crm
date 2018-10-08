@@ -64,7 +64,15 @@ class FormController extends Controller
             echo 'Nenhum dado enviado';
         }
         $data = $request->request->all();
-        $result = $form->returnSelectedFromType('pdf', $formName, $data);
-        return new Response($result['template']);
+	$result = $form->returnSelectedFromType('pdf', $formName, $data);
+	$filename = sprintf('pdf-%s.pdf', date('d-m-Y')); 
+	return new Response(
+		$result['template'],
+		200,
+		[
+			'Contenty-type'		=> 'application/pdf',
+			'Content-Disposition' 	=> sprintf('attachment; filename="%s"', $filename),			
+		]
+	);
     }
 }

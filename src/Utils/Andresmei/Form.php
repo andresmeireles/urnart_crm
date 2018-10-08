@@ -28,8 +28,15 @@ class Form extends GenericContainer
 	public function show(string $formName, array $data): array
 	{
 		$file = $this->checkFileExistence($formName);
-		$parsedTemplate = $this->twig->render($file, array(
-			'data' => $data
+		$clonedFields = [];
+		foreach ($data as $key => $value) {
+		    if (is_array($value)) {
+		        $clonedFields[] = $value;
+            }
+        }
+		$parsedTemplate = $this->twig->render($file, array(	
+			'data' => $data,
+            'prod' => $clonedFields,
 		));
 		return array(	
 			'template' => $parsedTemplate
@@ -42,9 +49,10 @@ class Form extends GenericContainer
 		$parsedTemplate = $this->twig->render($file, array(
 			'data' => $data
 		));
-		$this->pdf->getOutputFromHtml($parsedTemplate);
+		$pdf = $this->pdf->getOutput($parsedTemplate);
+		
 		return array(	
-			'template' => $parsedTemplate
+			'template' => $pdf
 		);
 	}
 
