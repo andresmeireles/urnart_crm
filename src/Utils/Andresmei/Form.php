@@ -7,12 +7,12 @@ use App\Utils\GenericContainer;
 class Form extends GenericContainer
 {
 	protected $templateFolder = 'print/forms/';
-	protected $allowedTypes = ['print', 'show'];
+	protected $allowedTypes = ['pdf', 'show'];
 
 	public function returnSelectedFromType(string $type, string $formName, array $data): array
 	{
 		if (!in_array($type, $this->allowedTypes)) {
-			return sprintf('Tipo %s não é um tipo valido', $type);
+			throw new \Exception(sprintf('Tipo %s não é um tipo valido', $type));
 		}
 		$result = $this->$type($formName, $data);
 		return $result;
@@ -42,7 +42,7 @@ class Form extends GenericContainer
 		$parsedTemplate = $this->twig->render($file, array(
 			'data' => $data
 		));
-		$this->pdf->generateFromHtml($parsedTemplate);
+		$this->pdf->getOutputFromHtml($parsedTemplate);
 		return array(	
 			'template' => $parsedTemplate
 		);

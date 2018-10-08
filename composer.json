@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.1.3",
         "ext-iconv": "*",
-        "h4cc/wkhtmltopdf-amd64": "0.12.x",
+        "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "jms/serializer": "^1.12",
         "knplabs/knp-snappy-bundle": "^1.5",
         "mpdf/mpdf": "dev-master",
@@ -23,7 +23,8 @@
         "symfony/validator": "^4.0",
         "symfony/webpack-encore-pack": "^1.0",
         "symfony/yaml": "^4.0",
-        "twig/extensions": "^1.5"
+        "twig/extensions": "^1.5",
+        "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3"
     },
     "require-dev": {
         "symfony/debug": "^4.0",

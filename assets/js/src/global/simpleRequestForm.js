@@ -4,10 +4,8 @@ module.exports = function (url, method = 'POST', info = null, responseFunction =
         for (var [key,value] of info.entries()) {
             obj[key] = value
         }
-
         info = obj
     }
-
     axios({
         method: method,
         url: url,
