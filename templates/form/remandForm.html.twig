@@ -5,156 +5,157 @@
 
 {% block content %}
 <div class="col py-3 px-4">
-<div class="col-12" >
-	<h1 class="display-3">Devoluções</h1>
-	<hr> 
-</div>
-<div class="row">
-	<div class="col">
-	<form method="POST" action="/forms/{{ formName }}" target="_blank">
-		<div class="row">
-			<div class="col-8 col-md-12">
-					<input type="submit" id="send-form" class="btn btn-primary btn-block" value="Criar"> 
-			</div>
-		</div>
-		<div class="row py-2">
-			<div class="col">
-				<ul class="nav nav-tabs" id="mytab" role="tablist">
-					<li class="nav-item">
-						<a href="#product" id="product-tab" class="nav-link active text-dark" data-toggle="tab" aria-controls="product" aria-select="true" tab>Produtos</a>
-					</li>
-					<li class="nav-item">
-						<a href="#cheque" id="chq-tab" class="nav-link text-dark" data-toggle="tab" aria-controls="cheque" aria-select="true" tab>Cheque</a>
-					</li>
-				</ul>
-
-				<div class="tab-content" id="remand">
-					<div class="tab-pane fade show active" id="product" role="tabpanel" aria-labelledby="product-tab">
-						<div class="py-2" id="prod">
-							<div class="col" id="prod-form">
-								<fieldset class="border border-light">
-									<legend class="px-1 bg-light">Devolução de Produtos</legend>
-									<div class="row m-1">
-										<div class="col-md-12 px-4" id="prod-tab">
-											<div class="row">
-												<div class="col-1">N°</div>
-												<div class="col">Cliente</div>
-												<div class="col">Cidade</div>
-											</div>
-											<div class="row">
-												<div class="col-2">
-													<input class="form-control" id="number" name="clientNumber" placeholder="N°"> 
-												</div>
-												<div class="col">
-													<input class="form-control" id="clientName" name="clientName" placeholder="Nome">
-												</div>
-												<div class="col">
-													<input class="form-control" id="clientCity" name="clientCity" placeholder="Nome"> 
-												</div>
-											</div>
-											<div class="row py-3">
-												<div class="col">
-													<fieldset class="border border-light">
-														<legend class="px-1 bg-light" >Produtos</legend>
-														<div class="input-group my-1 w-100" id="cloneableField">
-															<div class="col">
-																<input type="hidden" input-number="true" value="1">
-																<input type="text" class="form-control my-1" id="remandProduct" name="cloneableField0[remandProduct]" placeholder="Produto" > 
-															</div>
-															<div class="col-3">
-																<input type="number" class="form-control my-1" id="remandQnt" name="cloneableField0[remandQnt]" placeholder="Quantidade"> 
-															</div>
-															<button type="submit" class="btn btn-success" add-btn="true">
-																<span class="fas fa-fw fa-plus" id="add-btn" add-btn="true"></span>
-															</button>
-															<button type="submit" class="btn mx-1 btn-danger" remove-btn="true" disabled="">
-																<i class="fas fa-fw fa-times" id="remove-btn" remove-btn="true"></i>
-															</button>
-														</div>
-													</fieldset>
-												</div>
-											</div>
-										</div>
-									</div>
-								</fieldset>
-							</div>
-						</div>
+	<div class="col-12" >
+		<h1 class="display-3">Devoluções</h1>
+		<hr> 
+	</div>
+	<div class="row">
+		<div class="col">
+			<form method="POST" action="/forms/{{ formName }}" target="_blank">
+				<div class="row">
+					<div class="col-md-6">
+						<input type="submit" class="btn btn-primary btn-block" value="Criar">
+						<input type="button" class="btn btn-light btn-block" value="Exportar pdf"> 
 					</div>
-					<div class="tab-pane fade" id="cheque" role="tabpanel" aria-labelledby="chq-tab">
-						<div class="py-2" id="chq">
-							<div class="col" id="chq-form">
-								<fieldset class="border border-light">
-									<legend class="px-1 bg-light">Devolução de Cheque</legend>
-									<div class="row m-1">
-										<div class="col-md-12 px-4" id="chq-tab">
-											<div class="row">
-												<div class="col-1">N°</div>
-												<div class="col">Cliente</div>
-												<div class="col">Cidade</div>
-											</div>
-											<div class="row">
-												<div class="col-2">
-													<input class="form-control" id="number" name="clientNumber" placeholder="N°"> 
-												</div>
-												<div class="col">
-													<input class="form-control" id="clientName" name="clientName" placeholder="Nome">
-												</div>
-												<div class="col">
-													<input class="form-control" id="clientCity" name="clientCity" placeholder="Nome"> 
-												</div>
-											</div>
-											<div class="row py-3">
-												<div class="col">
-													<fieldset class="border border-light">
-														<legend class="px-1 bg-light" >Informação do Cheque</legend>
-														<div class="row p-1">
-														<div class="col-8">
-															<fieldset class="border border-secondary">
-																<legend class="px-1 bg-secondary">Geral</legend>
-																<div class="col">
-																	<div class="input-group mb-2">
-																		<input type="text" id="chqName" class="form-control" name="chqName" placeholder="Nome no Cheque">
+				</div>
+				<div class="row py-2">
+					<div class="col">
+						<ul class="nav nav-tabs" id="mytab" role="tablist">
+							<li class="nav-item">
+								<a href="#product" id="product-tab" class="nav-link active text-dark" data-toggle="tab" aria-controls="product" aria-select="true" tab>Produtos</a>
+							</li>
+							<li class="nav-item">
+								<a href="#cheque" id="chq-tab" class="nav-link text-dark" data-toggle="tab" aria-controls="cheque" aria-select="true" tab>Cheque</a>
+							</li>
+						</ul>
+
+						<div class="tab-content" id="remand">
+							<div class="tab-pane fade show active" id="product" role="tabpanel" aria-labelledby="product-tab">
+								<div class="py-2" id="prod">
+									<div class="col" id="prod-form">
+										<fieldset class="border border-light">
+											<legend class="px-1 bg-light">Devolução de Produtos</legend>
+											<div class="row m-1">
+												<div class="col-md-12 px-4" id="prod-tab">
+													<div class="row">
+														<div class="col-1">N°</div>
+														<div class="col">Cliente</div>
+														<div class="col">Cidade</div>
+													</div>
+													<div class="row">
+														<div class="col-2">
+															<input class="form-control" id="number" name="clientNumber" placeholder="N°"> 
+														</div>
+														<div class="col">
+															<input class="form-control" id="clientName" name="clientName" placeholder="Nome">
+														</div>
+														<div class="col">
+															<input class="form-control" id="clientCity" name="clientCity" placeholder="Nome"> 
+														</div>
+													</div>
+													<div class="row py-3">
+														<div class="col">
+															<fieldset class="border border-light">
+																<legend class="px-1 bg-light" >Produtos</legend>
+																<div class="input-group my-1 w-100" id="cloneableField">
+																	<div class="col">
+																		<input type="hidden" input-number="true" value="1">
+																		<input type="text" class="form-control my-1" id="remandProduct" name="cloneableField0[remandProduct]" placeholder="Produto" > 
 																	</div>
-																	<div class="input-group mb-2">
-																		<input type="text" class="form-control" id="chqNumber" name="chqNumber" placeholder="Nome no Cheque">
+																	<div class="col-3">
+																		<input type="number" class="form-control my-1" id="remandQnt" name="cloneableField0[remandQnt]" placeholder="Quantidade"> 
 																	</div>
-																	<div class="input-group mb-2">
-																		<input type="text" class="form-control f-date" id="chqDate" name="chqDate">
-																	</div>
+																	<button type="submit" class="btn btn-success" add-btn="true">
+																		<span class="fas fa-fw fa-plus" id="add-btn" add-btn="true"></span>
+																	</button>
+																	<button type="submit" class="btn mx-1 btn-danger" remove-btn="true" disabled="">
+																		<i class="fas fa-fw fa-times" id="remove-btn" remove-btn="true"></i>
+																	</button>
 																</div>
 															</fieldset>
 														</div>
-														<div class="col-4">
-															<fieldset class="border border-secondary">
-																<legend class="px-1 bg-secondary">Outros</legend>
-																<div class="col">
-																	<div class="input-group mb-2">
-																		<div class="input-group-prepend">
-																			<div class="input-group-text">R$</div>
-																		</div>
-																	<input type="number" class="form-control" id="value" name="chqValue" placeholder="Valor">
-																	</div>
-																	<div class="input-group mb-2">
-																		<input type="text" class="form-control" id="bank" name="chqBank" placeholder="Banco">
-																	</div>
-																</div>
-															</fieldset>
-														</div>
-														</div>
-													</fieldset>
+													</div>
 												</div>
 											</div>
-										</div>
+										</fieldset>
 									</div>
-								</fieldset>
+								</div>
+							</div>
+							<div class="tab-pane fade" id="cheque" role="tabpanel" aria-labelledby="chq-tab">
+								<div class="py-2" id="chq">
+									<div class="col" id="chq-form">
+										<fieldset class="border border-light">
+											<legend class="px-1 bg-light">Devolução de Cheque</legend>
+											<div class="row m-1">
+												<div class="col-md-12 px-4" id="chq-tab">
+													<div class="row">
+														<div class="col-1">N°</div>
+														<div class="col">Cliente</div>
+														<div class="col">Cidade</div>
+													</div>
+													<div class="row">
+														<div class="col-2">
+															<input class="form-control" id="number" name="cclientNumber" placeholder="N°"> 
+														</div>
+														<div class="col">
+															<input class="form-control" id="clientName" name="cclientName" placeholder="Nome">
+														</div>
+														<div class="col">
+															<input class="form-control" id="clientCity" name="cclientCity" placeholder="Nome"> 
+														</div>
+													</div>
+													<div class="row py-3">
+														<div class="col">
+															<fieldset class="border border-light">
+																<legend class="px-1 bg-light" >Informação do Cheque</legend>
+																<div class="row p-1">
+																	<div class="col-8">
+																		<fieldset class="border border-secondary">
+																			<legend class="px-1 bg-secondary">Geral</legend>
+																			<div class="col">
+																				<div class="input-group mb-2">
+																					<input type="text" id="chqName" class="form-control" name="chqName" placeholder="Nome no Cheque">
+																				</div>
+																				<div class="input-group mb-2">
+																					<input type="text" class="form-control" id="chqNumber" name="chqNumber" placeholder="Nome no Cheque">
+																				</div>
+																				<div class="input-group mb-2">
+																					<input type="text" class="form-control f-date" id="chqDate" name="chqDate">
+																				</div>
+																			</div>
+																		</fieldset>
+																	</div>
+																	<div class="col-4">
+																		<fieldset class="border border-secondary">
+																			<legend class="px-1 bg-secondary">Outros</legend>
+																			<div class="col">
+																				<div class="input-group mb-2">
+																					<div class="input-group-prepend">
+																						<div class="input-group-text">R$</div>
+																					</div>
+																					<input type="number" class="form-control" id="value" name="chqValue" placeholder="Valor">
+																				</div>
+																				<div class="input-group mb-2">
+																					<input type="text" class="form-control" id="bank" name="chqBank" placeholder="Banco">
+																				</div>
+																			</div>
+																		</fieldset>
+																	</div>
+																</div>
+															</fieldset>
+														</div>
+													</div>
+												</div>
+											</div>
+										</fieldset>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</form>
 		</div>
-	</form>
+	</div>
 </div>
-</div>
-</div>
-						{% endblock %}
+{% endblock %}

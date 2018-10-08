@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Utils\Form\Form;
+use App\Utils\Andresmei\Form;
 
 class FormController extends Controller
 {
@@ -20,34 +20,51 @@ class FormController extends Controller
     }
 
     /**
-     * @Route("/forms/{formName}", methods={"GET", "HEAD", "POST"})
+     * @Route("/forms/{formName}", methods={"GET"})
      */
-    public function createReport(Request $req, string $formName)
+    public function findFormTemplate(string $formName)
     {
-        $dir = opendir(__DIR__.'/../../templates/form/');
-        while ((readdir($dir)) !== false) {
+        $templateDir = opendir(__DIR__.'/../../templates/form');
+        // to read dir content
+        while (readdir($templateDir) !== false) {
             if (file_exists(__DIR__.'/../../templates/form/'.$formName.'Form.html.twig')) {
-                if ($req->request->all() != []) {
-                    $parameters = $req->request->all();
-                    $form = new Form($formName);  
-
-                    $body = $form->create($parameters);
-
-                    if ($form->fail()) {
-                        $response =  json_encode($form->getMessage());
-                        return new Response($response, 200);
-                    }
-                    
-                    $form->show($body);
-                }
-
                 return $this->render('form/'.$formName.'Form.html.twig', [
                     'formName' => $formName
                 ]);
-            }
+            }    
         }
-
         throw new \Exception('Page not found');   
+    }
 
+    /**
+     * @Route("/forms/{formName}", methods="POST")
+     * @param  Request $request  
+     * @param  string  $formName 
+     * @return Response            
+     */
+    public function printForm(Request $request, string $formName, Form $form)
+    {
+        if (empty($request->request->all())) {
+            echo 'Nenhum dado enviado';
+        }
+        $data = $request->request->all();
+        $result = $form->returnSelectedFromType('show', $formName, $data);
+        return new Response($result['template']);
+    }
+
+    /**
+     * @Route("/forms/pdf/{formName}", methods="POST")
+     * @param  Request $request  
+     * @param  string  $formName 
+     * @return Response            
+     */
+    public function sendPdfForm(Request $request, string $formName, Form $form)
+    {
+        if (empty($request->request->all())) {
+            echo 'Nenhum dado enviado';
+        }
+        $data = $request->request->all();
+        $result = $form->returnSelectedFromType('pdf', $formName, $data);
+        return new Response($result['template']);
     }
 }

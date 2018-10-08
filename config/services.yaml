@@ -26,8 +26,14 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    
-    # service to do simple persistence
-    # https://stackoverflow.com/questions/49618780/how-to-inject-doctrine-entity-manager-into-symfony-4-service
-    App\Utils\Generic\GenericContainer:
-        arguments: ['@doctrine.orm.entity_manager']
+    orc_container.service:
+        class: App\Utils\Generic\GenericContainer
+        arguments:
+            - '@doctrine.orm.entity_manage'
+            
+    generic_container.service:
+        class: App\Utils\GenericContainer
+        arguments: 
+            - '@doctrine.orm.entity_manage'
+            - '@twig'
+            - '@knp_snappy.pdf'
