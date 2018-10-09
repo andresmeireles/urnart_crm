@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 let fornName = el.target.getAttribute('form-name')
                 document.querySelector('form').setAttribute('action', `/forms/${fornName}`)
             }
+			if (el.target.hasAttribute('onclick')) {
+				el.preventDefault()
+			}
 		})
 	}
 })

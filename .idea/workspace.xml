@@ -18,6 +18,7 @@
       <change beforePath="$PROJECT_DIR$/templates/form/receiptForm.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/form/receiptForm.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/form/romaneioForm.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/form/romaneioForm.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/form/tagForm.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/form/tagForm.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/form/travelForm.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/form/travelForm.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/print/forms/tag.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/print/forms/tag.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,7 +34,7 @@
     <session id="1020018314">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.28" value="1" />
           <entry key="project.open.time.54" value="1" />
           <entry key="project.open.time.65" value="1" />
@@ -47,7 +48,7 @@
           <entry key="js" value="2" />
           <entry key="json" value="1" />
           <entry key="php" value="12" />
-          <entry key="twig" value="20" />
+          <entry key="twig" value="22" />
           <entry key="yaml" value="3" />
         </counts>
       </usages-collector>
@@ -57,7 +58,7 @@
           <entry key="JSON" value="1" />
           <entry key="JavaScript" value="2" />
           <entry key="PHP" value="12" />
-          <entry key="Twig" value="20" />
+          <entry key="Twig" value="22" />
           <entry key="YAML" value="3" />
         </counts>
       </usages-collector>
@@ -66,7 +67,7 @@
           <entry key="html" value="311" />
           <entry key="js" value="251" />
           <entry key="php" value="506" />
-          <entry key="twig" value="3359" />
+          <entry key="twig" value="3543" />
           <entry key="yaml" value="126" />
         </counts>
       </usages-collector>
@@ -75,27 +76,14 @@
           <entry key="HTML" value="311" />
           <entry key="JavaScript" value="251" />
           <entry key="PHP" value="506" />
-          <entry key="Twig" value="3359" />
+          <entry key="Twig" value="3543" />
           <entry key="YAML" value="126" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/form/receiptForm.html.twig">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="100" selection-start-line="16" selection-start-column="100" selection-end-line="16" selection-end-column="100" />
-              <folding>
-                <element signature="e#12#27#0#Twig" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -131,6 +119,7 @@
         <option value="$PROJECT_DIR$/templates/form/tagForm.html.twig" />
         <option value="$PROJECT_DIR$/templates/form/freight-letterForm.html.twig" />
         <option value="$PROJECT_DIR$/templates/form/receiptForm.html.twig" />
+        <option value="$PROJECT_DIR$/templates/form/travelForm.html.twig" />
       </list>
     </option>
   </component>
@@ -382,16 +371,15 @@
       <workItem from="1539021323738" duration="1357000" />
       <workItem from="1539023505990" duration="798000" />
       <workItem from="1539024377433" duration="6099000" />
-      <workItem from="1539079286498" duration="14127000" />
+      <workItem from="1539079286498" duration="14971000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22381000" />
+    <option name="totallyTimeSpent" value="23225000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22365038" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -460,13 +448,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="437">
           <caret line="32" column="110" selection-start-line="32" selection-start-column="110" selection-end-line="32" selection-end-column="110" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/form/remandForm.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="29" column="84" selection-start-line="29" selection-start-column="84" selection-end-line="29" selection-end-column="84" />
         </state>
       </provider>
     </entry>
@@ -553,15 +534,6 @@
             <element signature="e#2439#2445#1#HTML" expanded="true" />
             <element signature="e#2464#2470#1#HTML" expanded="true" />
             <element signature="e#2542#2548#1#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/form/travelForm.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-204">
-          <folding>
-            <element signature="e#12#27#0#Twig" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -665,10 +637,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/form/travelForm.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="30" selection-start-column="30" selection-end-column="30" />
+          <folding>
+            <element signature="e#12#27#0#Twig" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/form/remandForm.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="84" selection-start-line="26" selection-start-column="84" selection-end-line="26" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/form/receiptForm.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
-          <caret line="16" column="100" selection-start-line="16" selection-start-column="100" selection-end-line="16" selection-end-column="100" />
+          <caret line="16" column="60" selection-start-line="16" selection-start-column="60" selection-end-line="16" selection-end-column="60" />
           <folding>
             <element signature="e#12#27#0#Twig" expanded="true" />
           </folding>
