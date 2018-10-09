@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.querySelector('form').setAttribute('action', `/forms/${fornName}`)
             }
 			if (el.target.hasAttribute('onclick')) {
-				el.preventDefault()
+				el.preventDefault();
+				location.reload();
 			}
 		})
 	}
