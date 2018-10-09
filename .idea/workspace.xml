@@ -2,24 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f147876-3b9c-4961-b344-3198350daec1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/sys/img/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/print/forms/receipt.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/print/forms/romaneio-board.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/print/forms/romaneio.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/print/forms/travel.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Utils/Andresmei/SimpleFileUpload.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/js/src/form/form.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/src/form/form.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Config/system-config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/Config/system-config.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utils/Andresmei/Form.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/Andresmei/Form.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utils/Form/FormTemplate/ReceiptFormCreator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/Form/FormTemplate/ReceiptFormCreator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/form/freight-letterForm.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/form/freight-letterForm.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/form/receiptForm.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/form/receiptForm.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/form/romaneioForm.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/form/romaneioForm.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/form/tagForm.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/form/tagForm.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/form/travelForm.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/form/travelForm.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/print/forms/tag.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/print/forms/tag.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/RegisterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RegisterController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/register/configuration/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/register/configuration/index.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,56 +21,129 @@
     <session id="1020018314">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.28" value="1" />
           <entry key="project.open.time.54" value="1" />
           <entry key="project.open.time.65" value="1" />
+          <entry key="project.open.time.78" value="1" />
           <entry key="project.open.time.87" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
+          <entry key="css" value="1" />
+          <entry key="env" value="1" />
           <entry key="html" value="1" />
           <entry key="js" value="2" />
           <entry key="json" value="1" />
-          <entry key="php" value="12" />
-          <entry key="twig" value="22" />
-          <entry key="yaml" value="3" />
+          <entry key="md" value="1" />
+          <entry key="php" value="15" />
+          <entry key="properties" value="1" />
+          <entry key="twig" value="23" />
+          <entry key="yaml" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
+          <entry key=".env file" value="1" />
+          <entry key="CSS" value="1" />
           <entry key="HTML" value="1" />
           <entry key="JSON" value="1" />
           <entry key="JavaScript" value="2" />
-          <entry key="PHP" value="12" />
-          <entry key="Twig" value="22" />
-          <entry key="YAML" value="3" />
+          <entry key="Markdown" value="1" />
+          <entry key="PHP" value="15" />
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="Twig" value="23" />
+          <entry key="YAML" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
+          <entry key="css" value="54" />
+          <entry key="env" value="3" />
           <entry key="html" value="311" />
           <entry key="js" value="251" />
-          <entry key="php" value="506" />
-          <entry key="twig" value="3543" />
-          <entry key="yaml" value="126" />
+          <entry key="php" value="1784" />
+          <entry key="twig" value="4266" />
+          <entry key="yaml" value="152" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
+          <entry key=".env file" value="3" />
+          <entry key="CSS" value="54" />
           <entry key="HTML" value="311" />
           <entry key="JavaScript" value="251" />
-          <entry key="PHP" value="506" />
-          <entry key="Twig" value="3543" />
-          <entry key="YAML" value="126" />
+          <entry key="PHP" value="1784" />
+          <entry key="Twig" value="4266" />
+          <entry key="YAML" value="152" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.php.new.class">
+        <counts>
+          <entry key="PHP Class.type" value="1" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Controller/RegisterController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" selection-start-line="15" selection-end-line="15" />
+              <folding>
+                <element signature="e#34#61#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Utils/Andresmei/SimpleFileUpload.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Utils/Andresmei/Form.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="19" column="99" selection-start-line="19" selection-start-column="99" selection-end-line="19" selection-end-column="99" />
+              <folding>
+                <element signature="e#40#71#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/register/configuration/index.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="680">
+              <caret line="40" column="113" selection-start-line="40" selection-start-column="113" selection-end-line="40" selection-end-column="113" />
+              <folding>
+                <element signature="e#12#27#0#Twig" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/css/theme_complement.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="561">
+              <caret line="33" selection-start-line="33" selection-end-line="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -106,7 +166,6 @@
         <option value="$PROJECT_DIR$/templates/print/forms/freight-letter.html.twig" />
         <option value="$PROJECT_DIR$/src/Utils/Andresmei/Form.php" />
         <option value="$PROJECT_DIR$/templates/print/forms/tag.html.twig" />
-        <option value="$PROJECT_DIR$/src/Config/system-config.yaml" />
         <option value="$PROJECT_DIR$/src/Utils/Form/FormTemplate/ReceiptFormCreator.php" />
         <option value="$PROJECT_DIR$/templates/print/forms/receipt.html.twig" />
         <option value="$PROJECT_DIR$/templates/print/forms/romaneio-travel.html.twig" />
@@ -120,6 +179,12 @@
         <option value="$PROJECT_DIR$/templates/form/freight-letterForm.html.twig" />
         <option value="$PROJECT_DIR$/templates/form/receiptForm.html.twig" />
         <option value="$PROJECT_DIR$/templates/form/travelForm.html.twig" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/assets/css/theme_complement.css" />
+        <option value="$PROJECT_DIR$/templates/register/configuration/index.html.twig" />
+        <option value="$PROJECT_DIR$/src/Config/system-config.yaml" />
+        <option value="$PROJECT_DIR$/src/Controller/RegisterController.php" />
+        <option value="$PROJECT_DIR$/src/Utils/Andresmei/SimpleFileUpload.php" />
       </list>
     </option>
   </component>
@@ -243,6 +308,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -259,32 +325,18 @@
               <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
               <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
               <item name="assets" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="form" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
               <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Config" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
@@ -308,32 +360,19 @@
               <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
               <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="register" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
               <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="form" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="print" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="print" type="462c0819:PsiDirectoryNode" />
-              <item name="forms" type="462c0819:PsiDirectoryNode" />
+              <item name="register" type="462c0819:PsiDirectoryNode" />
+              <item name="configuration" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -372,16 +411,17 @@
       <workItem from="1539023505990" duration="798000" />
       <workItem from="1539024377433" duration="6099000" />
       <workItem from="1539079286498" duration="14971000" />
+      <workItem from="1539105744530" duration="8915000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23225000" />
+    <option name="totallyTimeSpent" value="32140000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22365038" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22622108" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -473,36 +513,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Model/OrderModel.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4029">
-          <folding>
-            <element signature="e#54#75#0#PHP" expanded="true" />
-          </folding>
-        </state>
+        <state relative-caret-position="-4029" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/headerTemplate.html.twig">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/RegisterController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="112" selection-start-line="112" selection-end-line="112" />
-          <folding>
-            <element signature="e#34#70#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/composer.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-848" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Config/system-config.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="18" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/config/packages/twig.yaml">
@@ -515,13 +534,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/components/printL.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/components/printL.html.twig" />
     <entry file="file://$PROJECT_DIR$/templates/components/print.html.twig">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -529,12 +542,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
           <caret line="74" column="6" selection-start-line="74" selection-start-column="6" selection-end-line="74" selection-end-column="6" />
-          <folding>
-            <element signature="e#1137#1163#0#Twig" expanded="true" />
-            <element signature="e#2439#2445#1#HTML" expanded="true" />
-            <element signature="e#2464#2470#1#HTML" expanded="true" />
-            <element signature="e#2542#2548#1#HTML" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -549,9 +556,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
-          <folding>
-            <element signature="e#12#27#0#Twig" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -559,12 +563,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="30" column="28" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
-          <folding>
-            <element signature="e#2912#2918#1#HTML" expanded="true" />
-            <element signature="e#2950#2956#1#HTML" expanded="true" />
-            <element signature="e#3028#3034#1#HTML" expanded="true" />
-            <element signature="e#3251#3257#1#HTML" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -579,13 +577,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2205">
           <caret line="155" column="26" selection-start-line="155" selection-start-column="26" selection-end-line="155" selection-end-column="26" />
-          <folding>
-            <element signature="e#1999#2025#0#Twig" expanded="true" />
-            <element signature="e#2435#2441#0#HTML" expanded="true" />
-            <element signature="e#2441#2447#0#HTML" expanded="true" />
-            <element signature="e#2447#2453#0#HTML" expanded="true" />
-            <element signature="e#2453#2459#0#HTML" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -593,16 +584,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="62" selection-start-line="2" selection-start-column="62" selection-end-line="2" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/Andresmei/Form.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-277">
-          <caret line="19" column="99" selection-start-line="19" selection-start-column="99" selection-end-line="19" selection-end-column="99" />
-          <folding>
-            <element signature="e#40#71#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -631,9 +612,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="24" column="80" selection-start-line="24" selection-start-column="80" selection-end-line="24" selection-end-column="80" />
-          <folding>
-            <element signature="e#12#27#0#Twig" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -641,9 +619,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="30" selection-start-column="30" selection-end-column="30" />
-          <folding>
-            <element signature="e#12#27#0#Twig" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -658,9 +633,79 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="16" column="60" selection-start-line="16" selection-start-column="60" selection-end-line="16" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/idea.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="43" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Config/system-config.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="34" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/css/theme_complement.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/register/configuration/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="40" column="113" selection-start-line="40" selection-start-column="113" selection-end-line="40" selection-end-column="113" />
           <folding>
             <element signature="e#12#27#0#Twig" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/Andresmei/Form.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="99" selection-start-line="19" selection-start-column="99" selection-end-line="19" selection-end-column="99" />
+          <folding>
+            <element signature="e#40#71#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/RegisterController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#34#61#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utils/Andresmei/SimpleFileUpload.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
         </state>
       </provider>
     </entry>

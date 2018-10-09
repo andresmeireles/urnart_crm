@@ -2,17 +2,17 @@
 
 namespace App\Controller;
 
-use App\Utils\Generic\GenericSetter;
 use App\Utils\Generic\Crud;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Yaml\Yaml;
 
 class RegisterController extends Controller
 {
+    protected $logoDir = __DIR__.'/../../public/sys/logo';
+
     /**
      * @Route("/register", name="register")
      */
@@ -109,10 +109,19 @@ class RegisterController extends Controller
      * @return Response : write new config
      */
     public function writeConfiguration(Request $request): Response
-    { 
+    {
         $config = Yaml::parse(file_get_contents(__DIR__.'/../Config/system-config.yaml'));
         $configSendData = $request->request->all();
-        
+        $logoImage = $request->files->get('logo_image');
+
+        if (!in_array($logoImage->getMimeType(), $this->supportedImages)) {
+            $this->addFlash(
+                'error',
+                "Tipo {$logoImage->getMimeType()} não suportado"
+            );
+            return $this->redirectToRoute('config');
+        }
+
         foreach ($config as $key => $value) {
             if (array_key_exists($key, $configSendData)) {
                 $config[$key] = ($configSendData[$key] == 'on' ? true : false);
@@ -120,15 +129,12 @@ class RegisterController extends Controller
             }
             $config[$key] = false;
         }
-
         $yaml = Yaml::dump($config);
         file_put_contents(__DIR__.'/../Config/system-config.yaml', $yaml);
-
         $this->addFlash(
             'success',
             'configuração salva com sucesso'
         );
-
         return $this->redirectToRoute('config');
     }
 }
