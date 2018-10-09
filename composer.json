@@ -24,7 +24,8 @@
         "symfony/webpack-encore-pack": "^1.0",
         "symfony/yaml": "^4.0",
         "twig/extensions": "^1.5",
-        "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3"
+        "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3",
+        "wgenial/numeroporextenso": "^2.0"
     },
     "require-dev": {
         "symfony/debug": "^4.0",

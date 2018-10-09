@@ -4,6 +4,7 @@ namespace App\Twig;
 
 use Twig\TwigFilter;
 use Twig\Extension\AbstractExtension;
+use WGenial\NumeroPorExtenso\NumeroPorExtenso;
 
 class AppExtension extends AbstractExtension
 {
@@ -12,6 +13,7 @@ class AppExtension extends AbstractExtension
         return array(
             new TwigFilter('rot13', array($this, 'rot13Filter')),
             new TwigFilter('makeHash', array($this, 'makeHash')),
+            new TwigFilter('extense', array($this, 'extense')),
         );
     }
 
@@ -26,5 +28,12 @@ class AppExtension extends AbstractExtension
     {
         $hasedString = hash('ripemd160', $hashableValue);
         return $hasedString;
+    }
+
+    public function extense(float $number): string
+    {
+        $extense = new NumeroPorExtenso();
+        $extense = $extense->converter($number);
+        return $extense;
     }
 }
