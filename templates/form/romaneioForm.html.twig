@@ -8,7 +8,7 @@
           <h1 class="display-3">Romaneio</h1>
           <hr> </div>
         <div class="row">
-          <div class="col">
+          <div class="col" id="type-form">
             <form method="POST" action="/forms/{{ formName }}" target="_blank">
               <div class="row">
                 <div class="col-8">
@@ -16,11 +16,11 @@
                 </div>
                 <div class="col-4">
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="type" id="inlineRadio1" value="2" checked="">
+                    <input class="form-check-input" type="radio" form-name="romaneio" name="type" id="inlineRadio1" value="2" checked="">
                     <label class="form-check-label" for="inlineRadio1">Entrega</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="type" id="inlineRadio1" value="1" required="">
+                    <input class="form-check-input" type="radio" form-name="romaneio-board" name="type" id="inlineRadio1" value="1" required="">
                     <label class="form-check-label" for="inlineRadio1">Carregamento</label>
                   </div>
                 </div>

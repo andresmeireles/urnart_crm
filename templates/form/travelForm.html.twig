@@ -1,49 +1,61 @@
 {% extends 'index.html.twig' %}
-
 {% block tittle %}Formulario de Viagem{% endblock %}
-
 {% block content %}
-<div class="col py-3 px-4" >
+    <div class="col py-3 px-4">
         <div class="col-12">
-          <h1 class="display-3">Formulário de Viagem</h1>
-          <hr> </div>
-        <div class="col-12">
-          <form method="POST" action="/forms/{{ formName }}" target="_blank">
-            <input type="submit" class="btn btn-block btn-lg btn-primary" id="send-form" value="Criar relatório">
-            <div class="row py-3">
-              <div class="col">
-                <div class="input-group row">
-                  <label class="col-2 col-form-label">Nome Morotista</label>
-                  <div class="col-10">
-                    <input type="text" class="form-control" placeholder="inserir nome do morotista" id="driver-name" name="driverName" required="required"> </div>
-                </div>
-                <div class="row py-2">
-                  <div class="col">
-                    <fieldset class="border border-light">
-                      <legend class="px-1 bg-light">Cidades</legend>
-                      <div class="row m-1">
-                        <div class="col-md-12">
-                          <div class="input-group my-1 w-100"  id="cloneableField">
-                            <div class="col">
-                          	  <input type="hidden" input-number='true' value="1">
-                              <input type="text" class="form-control my-1" id="name" name="cloneableField0[name]" placeholder="Nome do cliente" required> </div>
-                            <div class="col-3">
-                              <input type="text" class="form-control my-1" id="city" name="cloneableField0[city]" placeholder="Cidade" required> </div>
-                            <button type="submit" class="btn btn-success" add-btn="true">
-                              <span class="fas fa-fw fa-plus" add-btn="true"></span>
-                            </button>
-                            <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
-                              <i class="fas fa-fw fa-times" remove-btn="true"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </fieldset>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
+            <h1 class="display-3">Formulário de Viagem</h1>
+            <hr>
         </div>
-      </div>
+        <div class="col-12">
+            <form method="POST" action="/forms/{{ formName }}" target="_blank">
+                <div class="row">
+                    <div class="col-md-8">
+                        <input type="submit" class="btn btn-block btn-lg btn-primary" id="send-form"
+                               value="Criar relatório">
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-secondary btn-block btn-lg" onclick="location.reload()">Novo</button>
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <div class="col">
+                        <div class="input-group row">
+                            <label class="col-2 col-form-label">Nome Morotista</label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" placeholder="inserir nome do morotista"
+                                       id="driver-name" name="driverName" required="required"></div>
+                        </div>
+                        <div class="row py-2">
+                            <div class="col">
+                                <fieldset class="border border-light">
+                                    <legend class="px-1 bg-light">Cidades</legend>
+                                    <div class="row m-1">
+                                        <div class="col-md-12">
+                                            <div class="input-group my-1 w-100" id="cloneableField">
+                                                <div class="col">
+                                                    <input type="hidden" input-number='true' value="1">
+                                                    <input type="text" class="form-control my-1" id="name"
+                                                           name="cloneableField0[name]" placeholder="Nome do cliente"
+                                                           required></div>
+                                                <div class="col-3">
+                                                    <input type="text" class="form-control my-1" id="city"
+                                                           name="cloneableField0[city]" placeholder="Cidade" required>
+                                                </div>
+                                                <button type="submit" class="btn btn-success" add-btn="true">
+                                                    <span class="fas fa-fw fa-plus" add-btn="true"></span>
+                                                </button>
+                                                <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
+                                                    <i class="fas fa-fw fa-times" remove-btn="true"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}

@@ -1,0 +1,75 @@
+{% set number = 1 %}
+{% set totalG = 0 %}
+{% set totalM = 0 %}
+{% set totalP = 0 %}
+{% set total = 0 %}
+<html>
+<head>
+    <title>Romaneio</title>
+</head>
+<style type="text/css">
+    @page{size:landscape}
+    body {margin-top: 0px;margin-left: 0px;}
+    #page_1 {position:relative; overflow: hidden;margin: 0px 10px 0px 0px;padding: 0px;border: none;width: 100%;}
+    .t0{width: 922px;margin-top: 6px;font: 17px "Calibri"; border: 1px solid black}
+    .head { border-bottom: 1px solid black; text-align: center; padding: 2px 0 0 3px; font-size: 20px;}
+    .head2 span { margin: 0 80px 0 0; font-size: 20px}
+    .head1 td { border-bottom: 1px solid black; }
+    .hbody td {
+        font-weight: bold;
+        font-size: 22px;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+    .body td { border-right: 1px solid black; border-bottom: 1px solid black; }
+    .space td { border-bottom: 1px solid black; }
+    .foot td { border-right: 1px solid black}
+    .no-border { border-right: 1px solid white !important }
+    .lp { padding: 0 0 0 2px;}
+    .center { text-align:center }
+</style>
+{% include 'components/print.html.twig' %}
+<body>
+<div id="page_1">
+    <table cellpadding=0 cellspacing=0 class="t0">
+        <tr>
+            <td colspan=10 class="head">Romaneio de Carregamento</td>
+        </tr>
+        <tr class="hbody">
+            <td width="3%" class="lp">N°</td>
+            <td width="30%" class="lp">Cliente</td>
+            <td width="22%" class="lp">Cidade</td>
+            <td colspan=3 class="center" width="15%">Urnas</td>
+            <td width="6%" class="center no-border">Total</td>
+        </tr>
+        {% for data in prod  %}
+        <tr class="body">
+            <td class="lp">{{ number }}</td>
+            <td class="lp">{{ data.name }}</td>
+            <td class="lp">{{ data.city }}</td>
+            <td class="center">{{ data.urnG }}</td>
+            <td class="center">{{ data.urnM }}</td>
+            <td class="center">{{ data.urnP }}</td>
+            <td class="center no-border">{{ (data.urnG + data.urnM + data.urnP) }}</td>
+        </tr>
+        {%  set number = number + 1 %}
+        {% set totalP = totalP + data.urnP %}
+        {% set totalM = totalM + data.urnM %}
+        {% set totalG = totalG + data.urnG %}
+        {% set total  = total + (data.urnG + data.urnM + data.urnP) %}
+        {% endfor %}
+        <tr class="space">
+            <td>&nbsp;</td>
+            <td colspan=9>&nbsp;</td>
+        </tr>
+        <tr class="foot">
+            <td colspan=3>&nbsp;</td>
+            <td class="center">{{ totalG }}</td>
+            <td class="center">{{ totalM }}</td>
+            <td class="center">{{ totalP }}</td>
+            <td class="center no-border">{{ total }}</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

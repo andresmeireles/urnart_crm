@@ -18,8 +18,11 @@
   <form method="POST" action="/forms/{{ formName }}" target="_blank">
     <div class="py-2">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
           <input type="submit" class="btn btn-primary btn-block btn-lg" id="send-form" value="Criar etiquetas">
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-secondary btn-block btn-block btn-lg" onclick="location.reload()">Novo</button>
         </div>
       </div>
     </div>

@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		document.addEventListener('click', function (el) {
 			if (el.target.hasAttribute('form-name')) {
-				let fornName = el.target.getAttribute('form-name')
-				document.querySelector('form').setAttribute('action', `/forms/${fornName}`)
-			}
+                let fornName = el.target.getAttribute('form-name')
+                document.querySelector('form').setAttribute('action', `/forms/${fornName}`)
+            }
 		})
 	}
 })

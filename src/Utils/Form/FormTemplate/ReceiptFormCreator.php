@@ -76,13 +76,13 @@ class ReceiptFormCreator implements CreateFormInterface
 		.c { margin: 0px 0px 0px 90px;}
 		</style>';
 
-		foreach ($parameters as $param) {
-			$freightFloat = number_format($param['price'], 2, '.', '');
-			$number = $extenseNumber->converter($freightFloat);
-			$freightPrice = number_format($param['price'], 2, ',', '.');
-			$body .= '<div id="page">';
+        foreach ($parameters as $param) {
+            $freightFloat = number_format($param['price'], 2, '.', '');
+            $number = $extenseNumber->converter($freightFloat);
+            $freightPrice = number_format($param['price'], 2, ',', '.');
+            $body .= '<div id="page">';
 
-			$halfPage = '<div id="half-page">
+            $halfPage = '<div id="half-page">
 			<div id="form">
 			<div class="head">
 			<div class="f-right">Urnas Mart Ltda</div>
@@ -123,9 +123,9 @@ class ReceiptFormCreator implements CreateFormInterface
 			</div>
 			</div>';
 
-			$body .= $halfPage .''. $halfPage;
+            $body .= $halfPage .''. $halfPage;
 
-			$body.= '</div>';
+            $body.= '</div>';
 		}
 
 		return $body;

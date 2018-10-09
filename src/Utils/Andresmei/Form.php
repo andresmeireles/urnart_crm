@@ -3,13 +3,24 @@
 namespace App\Utils\Andresmei;
 
 use App\Utils\GenericContainer;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Snappy\Pdf;
+use Symfony\Component\Yaml\Yaml;
+use Twig\Environment;
 
 class Form extends GenericContainer
 {
 	protected $templateFolder = 'print/forms/';
 	protected $allowedTypes = ['pdf', 'show'];
+	protected $config;
 
-	public function returnSelectedFromType(string $type, string $formName, array $data): array
+	public function __construct(EntityManagerInterface $em, Environment $twig, Pdf $snappy)
+    {
+        parent::__construct($em, $twig, $snappy);
+        $this->config = Yaml::parse(file_get_contents(__DIR__.'/../../Config/system-config.yaml'));
+    }
+
+    public function returnSelectedFromType(string $type, string $formName, array $data): array
 	{
 		if (!in_array($type, $this->allowedTypes)) {
 			throw new \Exception(sprintf('Tipo %s não é um tipo valido', $type));
@@ -37,6 +48,7 @@ class Form extends GenericContainer
 		$parsedTemplate = $this->twig->render($file, array(	
 			'data' => $data,
             'prod' => $clonedFields,
+            'logo' => $this->config['logo_image_path'],
 		));
 		return array(	
 			'template' => $parsedTemplate

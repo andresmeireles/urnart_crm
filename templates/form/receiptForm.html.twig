@@ -11,8 +11,11 @@
           <div class="col">
             <form method="POST" action="/forms/{{ formName }}" target="_blank">
               <div class="row">
-                <div class="col-8 col-md-12">
+                <div class="col-md-8">
                   <input type="submit" class="btn btn-primary btn-block" id="send-form" value="Criar Recibo"> </div>
+                <div class="col-md-4">
+                  <button class="btn btn-secondary btn-block" onclick="location.reload()">Novo</button>
+                </div>
               </div>
               <div class="row py-2">
                 <div class="col">

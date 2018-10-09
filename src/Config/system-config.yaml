@@ -1,2 +1,3 @@
 allow_negative_stock: false
 allow_ninja_guard: false
+logo_image_path: "sys/img/logo.png"
