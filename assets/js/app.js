@@ -60,6 +60,7 @@ global.cloneFieldForm = require('./src/global/cloneFieldForm')
 global.getOptionText = require('./src/global/tools/getOptionText')
 global.sendFl = require('./src/global/tools/sendDataFormless')
 global.getFormLessData = require('./src/global/tools/sendDataFormless')
+global.notification = require('./src/global/tools/notification')
 
 // validations
 global.checkRequired = require('./src/global/validation/checkRequired')
@@ -90,6 +91,7 @@ import './src/storage/feedStockActions'
 import './src/register/registerEvents';
 import './src/register/customer';
 import './src/register/cloneFieldCustomer';
+import './src/register/config';
 
 import './src/global/masks'
 import './src/global/tools/sorter'

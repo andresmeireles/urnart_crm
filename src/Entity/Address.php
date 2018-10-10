@@ -133,7 +133,7 @@ class Address
 
     /**
      * Get the value of pessoaFisicaId
-     */ 
+     */
     public function getPessoaFisicaId(): ?PessoaFisica
     {
         return $this->pessoaFisicaId;
@@ -142,8 +142,9 @@ class Address
     /**
      * Set the value of pessoaFisicaId
      *
+     * @param   PessoaFisica $pessoaFisicaId
      * @return  self
-     */ 
+     */
     public function setPessoaFisicaId(?PessoaFisica $pessoaFisicaId): self
     {
         $this->pessoaFisicaId = $pessoaFisicaId;

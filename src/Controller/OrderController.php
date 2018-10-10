@@ -87,7 +87,6 @@ class OrderController extends Controller
                 'error',
                 $result['message']
             );
-
             return $this->redirectToRoute('createOrder');
         }
         $this->addFlash(

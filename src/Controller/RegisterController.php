@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Utils\Andresmei\SimpleFileUpload;
 use App\Utils\Generic\Crud;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,6 +16,9 @@ class RegisterController extends Controller
 
     /**
      * @Route("/register", name="register")
+     *
+     * @param Crud $getter
+     * @return Response
      */
     public function index(Crud $getter)
     {
@@ -31,11 +35,16 @@ class RegisterController extends Controller
 
     /**
      * @Route("/register/add/{entity}", methods="POST")
+     *
+     * @param string $entity
+     * @param Crud $setter
+     * @param Request $request
+     * @return Response
      */
     public function addGenericRegister(string $entity, Crud $setter, Request $request)
     {
         $setter->set($entity, $request->request->all());
-        return new Response (
+        return new Response(
             $setter->getMessage(), 
             Response::HTTP_OK,
             array('type-message' => $setter->getTypeMessage())
@@ -44,6 +53,10 @@ class RegisterController extends Controller
 
     /**
      * @Route("/register/get/{entity}", methods="POST")
+     *
+     * @param string $entity
+     * @param Crud $getter
+     * @return Response
      */
     public function getGenericRegister(string $entity, Crud $getter)
     {
@@ -53,17 +66,25 @@ class RegisterController extends Controller
 
     /**
      * @Route("/register/get/criteria/{entity}", methods="POST")
+     *
+     * @param string $entity
+     * @param Request $request
+     * @param Crud $getter
+     * @return Response
      */
     public function getRegisterWithSimpleCriteria(string $entity, Request $request, Crud $getter)
     {
         $criteria = (array) json_decode($request->getContent());
         $result = $getter->getWithSimpleCriteriaJson($entity, $criteria);
-        $var = json_encode($result);
         return new Response($result, Response::HTTP_OK);
     }
 
     /**
      * @Route("/register/get", methods="GET")
+     *
+     * @param Request $request
+     * @param Crud $getter
+     * @return Response
      */
     public function getSingleRegiterById(Request $request, Crud $getter)
     {
@@ -75,6 +96,11 @@ class RegisterController extends Controller
 
     /**
      * @Route("/register/remove/{entity}", methods="POST")
+     *
+     * @param string $entity
+     * @param Request $request
+     * @param Crud $crud
+     * @return Response
      */
     public function getGenericRemover(string $entity, Request $request, Crud $crud)
     {
@@ -113,15 +139,14 @@ class RegisterController extends Controller
         $config = Yaml::parse(file_get_contents(__DIR__.'/../Config/system-config.yaml'));
         $configSendData = $request->request->all();
         $logoImage = $request->files->get('logo_image');
-
-        if (!in_array($logoImage->getMimeType(), $this->supportedImages)) {
+        SimpleFileUpload::uploadLogoImage($logoImage);
+        if (!SimpleFileUpload::getStatus()) {
             $this->addFlash(
                 'error',
-                "Tipo {$logoImage->getMimeType()} não suportado"
+                SimpleFileUpload::getMessage()
             );
             return $this->redirectToRoute('config');
         }
-
         foreach ($config as $key => $value) {
             if (array_key_exists($key, $configSendData)) {
                 $config[$key] = ($configSendData[$key] == 'on' ? true : false);
@@ -129,6 +154,7 @@ class RegisterController extends Controller
             }
             $config[$key] = false;
         }
+        $config['logo_image_path'] = SimpleFileUpload::getFilePath();
         $yaml = Yaml::dump($config);
         file_put_contents(__DIR__.'/../Config/system-config.yaml', $yaml);
         $this->addFlash(

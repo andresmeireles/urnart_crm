@@ -95,7 +95,8 @@ document.addEventListener('DOMContentLoaded', function () {
     
     document.addEventListener('change', function (el) {
         if (el.target.id == 'estado') {
-            var stateValue = el.target.value
+            var stateId = el.target.value
+            let stateValue = document.querySelector('#estado').querySelector(`option[value="${stateId}"]`).getAttribute('state')
             var entity = el.target.getAttribute('target')
             var url = `/register/get/criteria/${entity}`
             var select = document.querySelector('#' + entity)
@@ -115,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     option.text = opt.nome
                     select.add(option)
                 } 
-            }, 'idUf')
+            }, 'uf')
         }       
     })
     
