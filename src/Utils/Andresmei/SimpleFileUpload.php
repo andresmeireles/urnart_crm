@@ -19,7 +19,7 @@ class SimpleFileUpload
     public static function uploadLogoImage(?UploadedFile $file): bool
     {
         if (is_null($file)) {
-            self::$filePath = 'sys/logo_img/logo.jpg';
+            self::$filePath = "sys/logo_img/logo.png";
             self::$status = true;
             return true;
         }

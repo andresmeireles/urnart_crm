@@ -13,6 +13,7 @@ class ProductModel extends Model
      *
      * @param array $data
      * @return array
+     * @throws \Exception
      */
     public function insert(array $data): array
     {
@@ -26,6 +27,7 @@ class ProductModel extends Model
      * @param array $data
      * @param integer $id
      * @return array
+     * @throws \Exception
      */
     public function update(array $data, int $id): array
     {
@@ -33,6 +35,10 @@ class ProductModel extends Model
         return $result;
     }
 
+    /**
+     * @param int $id
+     * @return array
+     */
     public function remove(int $id): array
     {
         $product = $this->em->getRepository(Product::class)->find($id);
@@ -53,6 +59,7 @@ class ProductModel extends Model
      * @param integer $id
      * @param string $unclearType
      * @return array
+     * @throws \Exception
      */
     public function runAction(array $data, int $id = null, string $unclearType): array
     {
@@ -69,7 +76,6 @@ class ProductModel extends Model
         }
 
         $type = strtolower($unclearType);
-
         $allowParameters = array(
             'insert',
             'update'
@@ -80,51 +86,36 @@ class ProductModel extends Model
         }
 
         $this->em->getConnection()->beginTransaction();
-
         try {
-
             $product = new Product;
             $productInventory = new ProductInventory();
-
             if ($type == 'update') {
                 $product = $this->em->getRepository(Product::class)->find($id);
                 $productInventory = $product->getProductInventory();
             }
-
             $product->setName($data['name']);
-
             $price = (float) $data['price'];
             $product->setPrice($price);
-
             $color = $data['colors'] ?? array();
-
             $product->setColor($color);
             $product->setSeries($data['model']);
-            
             if ($type == 'insert') {
                 $productInventory->setProduct($product);
             }
-
             $minStock = (float) $data['maxStock'];
             $productInventory->setMinStock($minStock);
-
             $maxStock = (int) $data['maxStock'];
             $productInventory->setMaxStock($maxStock);
-
             if ($type == 'insert') {
                 $this->em->persist($product);
                 $this->em->persist($productInventory);
-            } 
-
+            }
             if ($type == 'update') {
                 $this->em->merge($product);
                 $this->em->merge($productInventory);
             }
-            
             $this->em->flush();
-
             $this->em->getConnection()->commit();
-
             return array(
                 'http_code' => 200,
                 'message' => 'Sucesso'
@@ -135,40 +126,34 @@ class ProductModel extends Model
         }
     }
 
+    /**
+     * @param object $data
+     * @return array
+     */
     public function productIn(object $data): array
     {
         $date = $data->date;
         unset($data->date);
-
         $this->em->getConnection()->beginTransaction();
-        
         try {
             foreach($data as $info) {
                 $productInventory = $this->em->getRepository(ProductInventory::class)->findOneBy(array(
                     'product' => $info->product
                 ));
-
                 $oldStock = $productInventory->getStock();
-
                 $stock = (float) $info->amount;
-
                 $newStock = $stock + $oldStock;
-
                 $productInventory->setStock($newStock);
-
                 $this->em->merge($productInventory);
             }
-
             $this->em->flush();
             $this->em->getConnection()->commit();
-
             return array(
                 'http_code' => 200,
                 'message' => 'Sucesso!'
             );
         } catch (\Exception $e) {
             $this->em->getConnection()->rollback();
-
             return array(
                 'http_code' => 203,
                 'message' => $e->getMessage()

@@ -64,9 +64,9 @@
 
                                     <div class="form-group">
                                         <label for="colors">Cores</label>
-                                        <select name="colors[]" class="d-none" name="colors" id="colorsList" multiple="multiple" required>
+                                        <select name="colors[]" class="d-none" name="colors[]" id="colorsList" multiple="multiple" required>
                                             {% for color in product.color %}
-                                                <option value="{{ color }}" id="{{ color }}">{{ color }}</option>
+                                                <option value="{{ color }}" id="{{ color }}" selected>{{ color }}</option>
                                             {% endfor %}
                                         </select>
                                         <div id="inputOtherVendors">

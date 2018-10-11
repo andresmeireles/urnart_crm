@@ -23,7 +23,6 @@ class StorageController extends Controller
      * @Route("/storage", name="storage")
      * 
      * @param Crud $getter
-     * 
      * @return Response
      */
     public function index(Crud $getter): Response
@@ -57,6 +56,7 @@ class StorageController extends Controller
      * @param int|null $id
      * @param Crud $getter
      * @return Response
+     * @throws \Exception
      */
     public function feedstockAction(Request $request, ?int $id, Crud $getter): Response
     {
@@ -76,9 +76,8 @@ class StorageController extends Controller
             if (!is_int($id)) {
                 throw new \Exception('Não é um número');
             }
-            
-            $item = $em->getRepository(Feedstock::class)->find($id);
 
+            $item = $em->getRepository(Feedstock::class)->find($id);
             try {
                 $em->remove($item);
                 $em->flush();
@@ -93,7 +92,6 @@ class StorageController extends Controller
         
         if ($method == 'GET') {
             $update = $this->getDoctrine()->getManager()->getRepository(Feedstock::class)->find($id);
-            
             $feedForm = $this->createForm(FeedstockForm::class, $update);
 
             return $this->render('storage/forms/feedstockForm.html.twig', [
@@ -118,6 +116,7 @@ class StorageController extends Controller
     {
         $data = $request->request->all();
         $model->update($data, $id);
+
         return $this->redirectToRoute('feedstock');
     }
 
@@ -126,7 +125,8 @@ class StorageController extends Controller
      * 
      * @param Feedstock $model 
      * @param Request $request
-     * @return Response 
+     * @return Response
+     * @throws \Exception
      */
     public function feedIn(FeedstockModel $model, Request $request): Response
     {
@@ -142,6 +142,7 @@ class StorageController extends Controller
      * @param FeedstockModel $model
      * @param Request $request
      * @return Response
+     * @throws \Exception
      */
     public function feedOut(FeedstockModel $model, Request $request): Response
     {
@@ -155,7 +156,6 @@ class StorageController extends Controller
      * @Route("/storage/product", name="showProd")
      * 
      * @param Crud $getter
-     * 
      * @return Response
      */
     public function prodStock(Crud $getter): Response
@@ -172,11 +172,13 @@ class StorageController extends Controller
      * @param array $data
      * @param Request $require
      * @return Response
+     * @throws \Exception
      */
     public function addProduct(ProductModel $model, Request $request): Response
     {
         $data = $request->request->all();
         $response = $model->insert($data);
+
         return new Response($response['message'], $response['http_code']);
     }
 
@@ -201,8 +203,9 @@ class StorageController extends Controller
      * @Route("/storage/product/update/{id}", methods="POST", requirements={"page"="\d+"})
      *
      * @param ProductModel $model
-     * @param [type] $id
+     * @param $id
      * @return Response
+     * @throws \Exception
      */
     public function updateProduct(ProductModel $model, Request $request, $id): Response
     {

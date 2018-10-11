@@ -11,9 +11,19 @@ use App\Entity\PessoaJuridica;
 use App\Entity\ProductInventory;
 use App\Entity\ProductCart as Cart;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Yaml\Yaml;
 
 class OrderModel extends Model
 {
+    protected $config;
+
+    public function __construct(ObjectManager $entityManager)
+    {
+        $this->config = Yaml::parse(file_get_contents(__DIR__.'/../Config/system-config.yaml'));
+        parent::__construct($entityManager);
+    }
+
     /**
      * Execute ação de criacao ou atualização de ordem de serviço e carrinho.
      *
@@ -27,45 +37,33 @@ class OrderModel extends Model
         $em = $this->em;
         $em->getConnection()->beginTransaction();
         try {
-
             if ($type == 'update') {
                 $id = $information['id'];
                 $order = $em->getRepository(Order::class)->find($id);
             } else {
                 $order = new Order();
             }
-
             $totalPrice = 0;
-
             $customer = $this->em->getRepository(PessoaJuridica::class)->find($information['clientName']);
             $order->setCustomer($customer);
-
             $freight = $information['freight'] === '' ? null : (float) $information['freight'];
             $order->setFreight($freight);
-
             $discount = $information['discount'] === '' ? null : (float) $information['discount'];
             $order->setDiscount($discount);
-
             $transporter = $this->em->getRepository(Transporter::class)->find($information['transporter']);
             $transporter = $transporter ?? null;
             $order->setTransporter($transporter);
-
             $customPort = array_key_exists('port', $information) ? $information['port'] : null;
             if (!is_null($transporter) && !is_null($customPort)) {
                 $customPort = (ltrim(trim($information['port'])) === $transporter->getPort()) ? null : ltrim(trim($information['port']));
             }
             $order->setCustomPort($customPort);
-
             $paymentType = $this->em->getRepository(PaymentType::class)->find($information['formPg']);
             $order->setPaymentType($paymentType);
-
             $installments = array_key_exists('installments', $information) ? (int) $information['installments'] : null;
-
             $order->setInstallment($installments);
-
             $comments = trim(ltrim(filter_var($information['observation'], FILTER_SANITIZE_STRING)));
             $order->setComments($comments);
-
             if ($type == 'update') {
               $productCart = $em->getRepository(Cart::class)->findBy(array(
                 'orderNumber' => $id
@@ -74,10 +72,8 @@ class OrderModel extends Model
                 $em->remove($p);
               }
             }
-
             foreach ($products as $product) {
                 $cart = new Cart;
-
                 $existentProduct = $this->em->getRepository(Product::class)->find($product['cod']);
                 if (is_null($existentProduct)) {
                     return array(
@@ -86,32 +82,24 @@ class OrderModel extends Model
                     );
                 }
                 $cart->setProduct($existentProduct);
-
                 $amount = (int) $product['qnt'];
                 $cart->setAmount($amount);
-
                 $price = array_key_exists('price', $product) ? (float) $product['price'] : $existentProduct->getPrice();
                 if ($existentProduct->getPrice() !== $price) {
                     $cart->setCustomPrice($price);
                 }
-
                 $cart->setOrderNumber($order);
                 $em->persist($cart);
-
                 $totalPrice += ( $price * (float) $product['qnt']);
             }
-
             $order->setTotalPrice($totalPrice);
-
             if ($type == 'update') {
                 $em->merge($order);
             } else {
                 $order->setActive(true);
                 $em->persist($order);
             }
-
             $em->flush();
-
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
@@ -121,7 +109,6 @@ class OrderModel extends Model
                 'message' => $e->getMessage()
             );
         }
-
         return array(
             'http_code' => 301,
             'message' => "Pedido {$order->getId()} criado com sucesso"
@@ -160,6 +147,13 @@ class OrderModel extends Model
      */
     public function reserve(int $id): array
     {
+        if (!$this->config['allow_reserve']) {
+            return array(
+              'http_code' => 400,
+              'type' => 'warning',
+              'message' => 'Operação desablitida pelo sistema.'
+            );
+        }
         $em = $this->em;
         $em->getConnection()->beginTransaction();
         $order = $em->getRepository(Order::class)->find($id);
@@ -282,16 +276,12 @@ class OrderModel extends Model
                 'message' => 'Erro interno'
             );
         }
-
         $cartsToRemove = $removeOrder->getProductCarts();
         $this->em->getConnection()->beginTransaction();
-
         try {
-
             foreach ($cartsToRemove as $cart) {
                 $this->em->remove($cart);
             }
-
             $this->em->remove($removeOrder);
             $this->em->flush();
             $this->em->getConnection()->commit();

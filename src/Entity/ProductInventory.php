@@ -41,11 +41,6 @@ class ProductInventory
      */
     private $reserved = 0;
 
-    /**
-     * @ORM\Column(type="bigint", nullable=true)
-     */
-    private $nonReservedStock = 0;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -108,11 +103,17 @@ class ProductInventory
     {
         $this->reserved = $reserved;
         $this->nonReserved = $this->stock - $reserved;
+
         return $this;
     }
 
     public function getNonReservedStock(): ?int
     {
-        return $this->nonReservedStock;
+        if ($this->reserved > $this->stock) {
+            return 0;
+        }
+        $nonReserved = $this->stock - $this->reserved;
+
+        return $nonReserved;
     }
 }

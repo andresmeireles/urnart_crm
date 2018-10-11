@@ -119,7 +119,8 @@
                                 <div class="input-group">
                                     <h3>Valor da(s) Parcela(s)</h3>
                                     <h3>R$&nbsp;&nbsp;</h3>
-                                    <h3><span id="installmentPrice">{{ ((order.totalPrice - order.discount) / order.getInstallment) | number_format(2, ',', '.') }}</span>
+                                    {% set inst = order.getInstallment == 0 ? 1 : order.getInstallment %}
+                                    <h3><span id="installmentPrice">{{ ((order.totalPrice - order.discount) / inst) | number_format(2, ',', '.') }}</span></h3>
                                 </div>
                             </div>
                         </div>

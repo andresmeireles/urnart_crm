@@ -1,4 +1,3 @@
 allow_negative_stock: false
 allow_reserve: false
-logo_image_path: /sys/logo_img/logo.png
-'logo_ima   ge_path': sys/logo_img/logo.jpg
+logo_image_path: sys/logo_img/logo.png

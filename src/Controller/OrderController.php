@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Estado;
 use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\PaymentType;
@@ -61,7 +62,9 @@ class OrderController extends Controller
             'products' => $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll(),
             'customers' => $this->getDoctrine()->getManager()->getRepository(PessoaJuridica::class)->findAll(),
             'payments' => $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll(),
-            'transporters' => $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll()
+            'transporters' => $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll(),
+            // for dynamic add customer
+            'estado' => $this->getDoctrine()->getManager()->getRepository(Estado::class)->findAll()
         ]);
     }
 
@@ -109,7 +112,7 @@ class OrderController extends Controller
             'products' => $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll(),
             'customers' => $this->getDoctrine()->getManager()->getRepository(PessoaJuridica::class)->findAll(),
             'payments' => $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll(),
-            'transporters' => $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll()
+            'transporters' => $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll(),
         ));
     }
 

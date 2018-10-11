@@ -5,6 +5,7 @@
 /vendor/
 /.phpintel
 /.vscode
+/.idea
 /src/Migrations/*
 !/src/Migrations/.keep
 /public/form/*

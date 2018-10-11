@@ -157,7 +157,7 @@ class RegisterController extends Controller
             }
             $config[$key] = false;
         }
-        $config['logo_ima   ge_path'] = SimpleFileUpload::getFilePath();
+        $config['logo_image_path'] = SimpleFileUpload::getFilePath();
         $yaml = Yaml::dump($config);
         file_put_contents(__DIR__.'/../Config/system-config.yaml', $yaml);
         $this->addFlash(

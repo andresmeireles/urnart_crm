@@ -3,13 +3,15 @@ module.exports = function (data, type = 'view') {
     var endereco = pessoa.address
     var email = pessoa.emails
     var phone = pessoa.phones
-    var states = simpleRequest('/register/get/estado', 'post', null, function (respose) {
-        return Response.data
+    var states = simpleRequest('/register/get/estado', 'post', null, function (response) {
+	console.log(response.data)
+        //return response.data
+	response.data
     })
-    var cities = simpleRequest('/register/get/municipio', 'post', null, function (respose) {
-        return Response.data
+    var cities = simpleRequest('/register/get/municipio', 'post', null, function (response) {
+        return response.data
     })
-
+    console.log(states, cities)
     var birthDate = new Date(data.data_de_fundacao);
     var personBirthDate = new Date(pessoa.birth_date)
     
