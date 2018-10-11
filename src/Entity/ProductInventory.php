@@ -39,12 +39,12 @@ class ProductInventory
     /**
      * @ORM\Column(type="bigint", nullable=true)
      */
-    private $reserved;
+    private $reserved = 0;
 
     /**
      * @ORM\Column(type="bigint", nullable=true)
      */
-    private $nonReservedStock;
+    private $nonReservedStock = 0;
 
     public function getId(): ?int
     {

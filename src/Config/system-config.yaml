@@ -1,3 +1,4 @@
 allow_negative_stock: false
-allow_ninja_guard: false
-logo_image_path: /sys/img/logo.png
+allow_reserve: false
+logo_image_path: /sys/logo_img/logo.png
+'logo_ima   ge_path': sys/logo_img/logo.jpg

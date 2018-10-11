@@ -40,7 +40,7 @@ class TagFormCreator implements CreateFormInterface
 		.s-tag div {margin: 0px 15px 0px 0px;}
 		.i-tag div {margin: 0px 15px 0px 0px;}
 
-		.tag-img { max-width: 100%; max-height: 100%: }
+		.tag-logo_img { max-width: 100%; max-height: 100%: }
 		.tag-box-1 { width: 3cm; height: 4.5cm; padding-top: 20px; overflow: hidden }
 		.tag-box-2 { width: 17cm; height: 4.5cm; overflow: hidden}
 		.tag-box-3 { width: 3cm; height: 4.5cm; overflow: hidden}
@@ -84,7 +84,7 @@ class TagFormCreator implements CreateFormInterface
 				$body .= '<div class="tag">
 				<div class="s-tag t-border">
 				
-				<div class="tag-box-1 tag-float-left"><img class="tag-img" src="'. $image .'"></div>
+				<div class="tag-box-1 tag-float-left"><logo_img class="tag-logo_img" src="'. $image .'"></div>
 				
 				<div class="tag-box-2 tag-float-left">
 				<span class="t-w100 tag-float-left '. ( $param['city'] == '' ? "t-font-sz6" : ( (strlen($param['name']) > 27) ? "t-font-sz0" : "t-font-sz5" ) )  .'">'. $param['name'] .'</span>

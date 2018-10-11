@@ -148,13 +148,16 @@ class RegisterController extends Controller
             return $this->redirectToRoute('config');
         }
         foreach ($config as $key => $value) {
+            if ($key === 'logo_image_path') {
+                continue;
+            }
             if (array_key_exists($key, $configSendData)) {
                 $config[$key] = ($configSendData[$key] == 'on' ? true : false);
                 continue;
             }
             $config[$key] = false;
         }
-        $config['logo_image_path'] = SimpleFileUpload::getFilePath();
+        $config['logo_ima   ge_path'] = SimpleFileUpload::getFilePath();
         $yaml = Yaml::dump($config);
         file_put_contents(__DIR__.'/../Config/system-config.yaml', $yaml);
         $this->addFlash(

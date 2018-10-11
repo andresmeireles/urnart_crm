@@ -24,11 +24,18 @@
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input"
                                        name="allow_negative_stock" {{ config.allow_negative_stock ? 'checked' : '' }}>
-                                <label for="allowNegativeStock">
+                                <label for="allowNegativeStock" class="mx-2">
                                     Permitir estoque negativo <span class="mx-1 badge badge-pill badge-warning"
                                                                     data-balloon="Permite o fazer reserva de produtos mesmo sem estoque sufuciente, disponivel."
                                                                     data-balloon-pos="up"><i
                                                 class="fas fa-question"></i></span>
+                                </label>
+                            </div>
+                            <hr>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="allow_reserve" {{ config.allow_reserve ? 'checked' : '' }}>
+                                <label for="allowReserve" class="mx-2">
+                                    Permitir reserva de pedidos <span class="mx-1 badge badge-pill badge-warning" data-balloon="Permitir função de reserva de pedidos"><i class="fa fa-question"></i></span>
                                 </label>
                             </div>
                             <hr>

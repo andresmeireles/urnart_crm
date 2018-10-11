@@ -51,8 +51,8 @@ class TravelFormCreator implements CreateFormInterface
 		.clear { clear: both;}  
 		.center { text-align: center}
 
-		.img { width: 19%}
-		.img img { margin: 0 0 0 0;}
+		.logo_img { width: 19%}
+		.logo_img logo_img { margin: 0 0 0 0;}
 		.head { margin: 20 0 0 100;}
 		.head span { display: block; margin: 3px 0px 0 0px; padding: 0px 0px 0px 100px;}
 		.rzs { font-weight: bolder; font-size: 25px }
@@ -81,7 +81,7 @@ class TravelFormCreator implements CreateFormInterface
 		<div class="first-page">
 		<div class="content">
 		<div class="a-header">
-		<div class="f-left img"><img class="fit" src="'. $logo .'"></div>
+		<div class="f-left logo_img"><logo_img class="fit" src="'. $logo .'"></div>
 		<div class="f-left head"><span class="rzs">Urnas Mart Ltda</span><span class="cnpj">005.020.839/0001-05</span></div>
 		<div class="clear"></div>
 		</div>
@@ -110,7 +110,7 @@ class TravelFormCreator implements CreateFormInterface
 				<div class="page">
 				<div class="content">
 				<div class="a-header">
-				<div class="f-left img"><img class="fit" src="'. $logo .'"></div>
+				<div class="f-left logo_img"><logo_img class="fit" src="'. $logo .'"></div>
 				<div class="f-left head"><span class="rzs">Urnas Mart Ltda</span><span class="cnpj">005.020.839/0001-05</span></div>
 				<div class="clear"></div>
 				</div>

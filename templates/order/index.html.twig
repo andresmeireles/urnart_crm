@@ -8,21 +8,21 @@
                 <li class="noline text">
                     <a href="/order/create">
                         <div class="d-flex align-items-center">
-                            <span class="mx-1 my-2">&nbsp;&nbsp;Fazer Pedido</span>
+                            <span class="mx-2 my-2 btn btn-outline-light"><b>Fazer Pedido</b></span>
                         </div>
                     </a>
                 </li>
                 <li class="noline text">
                     <a href="/forms/order">
                         <div class="d-flex align-items-center">
-                            <span class="mx-1 my-2">&nbsp;&nbsp;Pedido Manual</span>
+                            <span class="mx-2 my-2 btn btn-outline-light"><b>Pedido Manual</b></span>
                         </div>
                     </a>
                 </li>
                 <li class="noline">
                     <a href="/order/list?type="> <!-- href="/person/customer" -->
                         <div class="d-flex align-items-center">
-                            <span class="mx-1 my-2 disabled">&nbsp;&nbsp;Lista de pedidos</span>
+                            <span class="mx-2 my-2 btn btn-outline-light disabled">Lista de pedidos</span>
                         </div>
                     </a>
                 </li>
@@ -48,12 +48,10 @@
             {% endfor %}
         </script>
     {% endfor %}
-
     <div class="col p-3">
     {% if orders == [] %}
         Não ha pedidos cadastrados no momento :(
     {% else %}
-
         <table class="table">
             <thead>
                 <th scope="col" class="text-center">Numero do Pedido</th>
@@ -99,12 +97,9 @@
                 {% endfor %}
             </tbody>
         </table>
-
     {% endif %}
     </div>
-
     {% for order in orders %}
         {% include '/order/pages/viewOrder.html.twig' with {'order' : order } %}
     {% endfor %}
-
 {% endblock %}

@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class SimpleFileUpload
 {
-    protected static $logoDir = __DIR__.'/../../../public/sys/img';
+    protected static $logoDir = __DIR__ . '/../../../public/sys/logo_img';
     protected static $supportedImages = array(
         'image/jpeg',
         'image/jpg'
@@ -16,19 +16,24 @@ class SimpleFileUpload
     protected static $message;
     protected static $status = false;
 
-    public static function uploadLogoImage(UploadedFile $file): bool
+    public static function uploadLogoImage(?UploadedFile $file): bool
     {
+        if (is_null($file)) {
+            self::$filePath = 'sys/logo_img/logo.jpg';
+            self::$status = true;
+            return true;
+        }
         if (!self::checkImage($file->getMimeType())) {
             return false;
         }
         self::clearFolder();
-        $uploadPath = self::$logoDir.'/'.$file->getClientOriginalName();
+        $uploadPath = self::$logoDir.'/custom/'.$file->getClientOriginalName();
         $uploadFile = move_uploaded_file($file->getRealPath(), $uploadPath);
         if (!$uploadFile) {
             self::$message = 'Erro ao enviar imagem.';
             return false;
         }
-        self::$filePath = '/sys/img/'.$file->getClientOriginalName();
+        self::$filePath = '/sys/logo_img/custom/'.$file->getClientOriginalName();
         self::$message = "Imagem {$file->getClientOriginalName()} enviada com sucesso";
         self::$status = true;
         return true;
@@ -39,7 +44,7 @@ class SimpleFileUpload
         return self::$status;
     }
 
-    public static function getMessage(): string
+    public static function getMessage(): ?string
     {
         return self::$message;
     }

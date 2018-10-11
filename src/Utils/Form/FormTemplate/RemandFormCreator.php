@@ -48,7 +48,7 @@ class RemandFormCreator implements CreateFormInterface
 			.body-cf { font: 18px "Arial"}  
 
 			.footer { padding: 0px 30px 0px 30px; font: 18px "Arial"; }
-			.img img { width: 120px; height: 100px; display:inline;}
+			.logo_img logo_img { width: 120px; height: 100px; display:inline;}
 			.date { margin: 70px 250px 0px 0px; float:right}
 			.center { text-align:center }
 			.sign { margin: 30px 0px 0px 0px }
@@ -81,8 +81,8 @@ class RemandFormCreator implements CreateFormInterface
 			<p>Atenciosamente,</p>
 			</div>
 			<div class="footer">
-			<div class="img f-left">
-			<img src="'. $imgSign .'">
+			<div class="logo_img f-left">
+			<logo_img src="'. $imgSign .'">
 			<div class="clear"></div>
 			<small>Urnas Mart</small>
 			</div>
@@ -133,7 +133,7 @@ class RemandFormCreator implements CreateFormInterface
 				.body-cf { font: 18px "Arial"}  
 
 				.footer { padding: 0px 30px 0px 30px; font: 18px "Arial"; }
-				.img img { width: 120px; height: 100px; display:inline;}
+				.logo_img logo_img { width: 120px; height: 100px; display:inline;}
 				.date { margin: 70px 250px 0px 0px; float:right}
 				.center { text-align:center }
 				.sign { margin: 30px 0px 0px 0px }
@@ -166,8 +166,8 @@ class RemandFormCreator implements CreateFormInterface
 			$body .= '<p>Atenciosamente,</p>
 				</div>
 				<div class="footer">
-				<div class="img f-left">
-				<img src="'. $imgSign .'">
+				<div class="logo_img f-left">
+				<logo_img src="'. $imgSign .'">
 				<div class="clear"></div>
 				<small>Urnas Mart</small>
 				</div>
