@@ -29,7 +29,7 @@ class PessoaFisica extends BaseEntity
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", nullable=true, unique=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $cpf;
 
