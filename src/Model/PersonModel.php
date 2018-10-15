@@ -8,11 +8,13 @@ use App\Entity\Estado;
 use App\Entity\Municipio;
 use App\Entity\PessoaJuridica;
 use App\Model\Model;
+use Doctrine\Common\Persistence\ObjectManager;
 use Respect\Validation\Validator as v;
 use App\Entity\PessoaFisica;
 use App\Entity\Phone;
 use App\Entity\Email;
 use App\Entity\Proprietario;
+use Symfony\Component\Yaml\Yaml;
 
 class PersonModel extends Model
 {
@@ -22,35 +24,47 @@ class PersonModel extends Model
     /**
      * @param array $data
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     public function persist(array $data): array
     {
         extract($data);
-        $cpf = empty($person['cpf']) ? null : v::cpf()->validate($person['cpf']) ? $person['cpf'] : $this->error('cpf');
-        
-        $cnpj = v::cnpj()->validate($customer['cnpj']) ? $customer['cnpj'] : $this->error('cnpj');
-        $date = empty($person['birthDate']) ? null : v::date('d/m/Y')->validate($person['birthDate']) ? new \DateTime(str_replace('/', '-', $person['birthDate'])) : $this->error('data de nascimento');
-        $fundationDate = $customer['fondationDate'] !== '' ? null : v::date('d/m/Y')->validate($customer['fondationDate']) ? new \DateTime(str_replace('/', '-', $customer['fondationDate'])) : $this->error('data de fundação');
-
+        $person['cpf'] = $person['cpf'] === "" ? null : $person['cpf'];
+        if (!is_null($person['cpf'])) {
+            $person['cpf'] = v::cpf()->validate($person['cpf']) === true ? $person['cpf'] : $this->error('cpf');
+        }
+        if ($this->config['allow_same_cpf']) {
+            $this->checkSameCpf($person['cpf']);
+        }
+        $customer['cnpj'] = $customer['cnpj'] === "" ? null : $customer['cnpj'];
+        if (!is_null($customer['cnpj'])) {
+            $cnpj = v::cnpj()->validate($customer['cnpj']) ? $customer['cnpj'] : $this->error('cnpj');
+        }
+        $person['birthDate'] = $person['birthDate'] === "" ? null : $person['birthDate'];
+        if (!is_null($person['birthDate'])) {
+            $person['birthDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $person['birthDate']))) == true ? $person['birthDate'] : $this->error('data de nascimento');
+        }
+        $customer['foundationDate'] = $customer['foundationDate'] === "" ? null : $customer['foundationDate'];
+        if (!is_null($customer['foundationDate'])) {
+            $customer['foundationDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $customer['foundationDate']))) == true ? $customer['foundationDate'] : $this->error('data de fundação');
+        }
         if ($this->error) {
-            dump($customer['fondationDate'] === '', v::date()->validate(\DateTime(str_replace('/', '-', $customer['fondationDate']))), $this->error, $this->errorResponse);
-            die();
             return $this->errorResponse;
         }
 
         $em = $this->em;
-        $em->getConnection()->beginTransation();
+        $em->getConnection()->beginTransaction();
 
         try {
             $pessoaFisica = new PessoaFisica();
             $pessoaFisica->setFirstName($person['firstName']);
             $pessoaFisica->setLastName($person['lastName']);
-            $pessoaFisica->setCpf($cpf);
+            $pessoaFisica->setCpf($person['cpf']);
+            if ($this->config)
             $pessoaFisica->setRg($person['rg']);
             $g = $person['genre'] ?? null;
             $pessoaFisica->setGenre($g);
-            $pessoaFisica->setBirthDate($date);
+            $pessoaFisica->setBirthDate($person['birthDate']);
 
             foreach ($phone as $phones) {
                 $telephone = new Phone;
@@ -78,9 +92,9 @@ class PersonModel extends Model
             $client->setCnpj($cnpj);
             $inscricaoEstadual = $customer['inscricaoEstadual'] == '' ? null : $customer['inscricaoEstadual'];
             $client->setInscricaoEstadual($inscricaoEstadual);
-            $client->setDataDeFundacao($fundationDate);
+            $client->setDataDeFundacao($customer['foundationDate']);
             $client->addProprietario($proprietary);
-            $situcaoCadastral = $customer['situacaoCadastral'] ?? 3;
+            $situcaoCadastral = $customer['situacaoCadastral'] === "" ? 3 : (int) $customer['situacaoCadastral'];
             $client->setSituacaoCadastral($situcaoCadastral);
 
             $state = isset($address['estado']) ? $em->getRepository(Estado::class)->find($address['estado']) : null;
@@ -129,5 +143,10 @@ class PersonModel extends Model
             'message' => "Informação em {$type} não é valida"
         );
         return false;
+    }
+
+    public function checkSameCpf(string $cpf): array
+    {
+        //fazer checkagem simples
     }
 }

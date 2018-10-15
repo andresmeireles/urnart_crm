@@ -65,10 +65,6 @@ global.notification = require('./src/global/tools/notification')
 // validations
 global.checkRequired = require('./src/global/validation/checkRequired')
 
-// forms folder
-//global.openModal = require('./src/form/createFormModal.js');
-//global.printForm = require('./src/form/printForm');
-
 // dialogs folder
 global.defaultDialog = require('./src/dialog/defaultDialog')
 global.simpleDialog = require('./src/dialog/simpleDialog')
@@ -82,8 +78,6 @@ import './src/globals'
 import './src/form/createFormModal.js';
 import './src/form/cloneField.js';
 import './src/form/form.js'
-//import './src/form/remand.js';
-//import './src/form/sendForm.js';
 
 import './src/storage/feedstock'
 import './src/storage/feedStockActions'

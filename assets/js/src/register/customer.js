@@ -1,3 +1,6 @@
+/**
+ * Funçãos de ação da pagina de criação de clientes
+ */
 document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener('click', function (el) {
@@ -5,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (el.target.getAttribute('send')) {
             el.preventDefault()
             var form = document.getElementById(el.target.getAttribute('target'))
+            let dynamic = el.target.hasAttribute('dynamic') ? true : false
             var fieldsRequired = form.querySelectorAll('.required')
             var response = true
             
