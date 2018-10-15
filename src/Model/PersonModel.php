@@ -33,8 +33,15 @@ class PersonModel extends Model
         if (!is_null($person['cpf'])) {
             $person['cpf'] = v::cpf()->validate($person['cpf']) === true ? $person['cpf'] : $this->error('cpf');
         }
-        if ($this->config['allow_same_cpf']) {
-            $this->checkSameCpf($person['cpf']);
+        if ($this->config['allow_same_cpf'] && !is_null($person['cpf'])) {
+            $result = $this->checkSameCpf($person['cpf']);
+            if ($result['result'] !== 0) {
+                return array(
+                    'http_code' => 400,
+                    'type' => 'warning',
+                    'message' => 'CPF já cadastrado para algum outro cliente'
+                );
+            }
         }
         $customer['cnpj'] = $customer['cnpj'] === "" ? null : $customer['cnpj'];
         if (!is_null($customer['cnpj'])) {
@@ -145,8 +152,12 @@ class PersonModel extends Model
         return false;
     }
 
-    public function checkSameCpf(string $cpf): array
+    public function checkSameCpf(?string $cpf): ?array
     {
-        //fazer checkagem simples
+            $connection = $this->em->getConnection();
+            $statement = $connection->prepare("SELECT COUNT(cpf) AS result FROM pessoa_fisica WHERE cpf = :cpf");
+            $statement->bindValue('cpf', $cpf);
+            $statement->execute();
+            return $statement->fetch();
     }
 }

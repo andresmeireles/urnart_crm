@@ -92,78 +92,14 @@ class PersonController extends Controller
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
-            throw new \Exception($e->getMessage() . '. Arquivo ' . $e->getFile() . ' linha ' . $e->getLine());
+            $this->addFlash(
+                'error',
+                'Cliente possui um pedido cadastrado em seu nome, por isso não pode ser removido'
+            );
+            //throw new \Exception($e->getMessage() . '. Arquivo ' . $e->getFile() . ' linha ' . $e->getLine());
         }
 
-        return $this->redirectToRoute('customer'); 
-    }
-
-    public function persistPerson(array $data): void
-    {
-        extract($data);
-
-        $em = $this->getDoctrine()->getManager();
-        $pessoaFisica = new PessoaFisica();
-
-        $pessoaFisica->setFirstName($person['firstName']);
-        $pessoaFisica->setLastName($person['lastName']);
-        $pessoaFisica->setCpf($person['cpf']);
-        $pessoaFisica->setRg($person['rg']);
-        $g = $person['genre'] ?? null;
-        $pessoaFisica->setGenre($g);
-        $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null;
-        $pessoaFisica->setBirthDate($date);
-        
-        foreach ($phone as $phones) {
-            $telephone = new Phone();
-            $phones = (int) str_replace(' ', '', str_replace('(', '', str_replace(')', '', str_replace('-', '', $phones))));
-            
-            $telephone->setNumber($phones);
-            $em->persist($telephone);
-            $pessoaFisica->addPhone($telephone);
-        }
-
-        foreach ($email as $emails) {
-            $mail = new Email();
-            $emails = str_replace('(', '', str_replace(')', '', str_replace('-', '', $emails)));
-            $mail->setEmail($emails);
-            $em->persist($mail);
-            $pessoaFisica->addEmail($mail);
-        }
-
-        $proprietary = new Proprietario();
-        $proprietary->setPessoaFisica($pessoaFisica);
-
-        $client = new PessoaJuridica();
-        $client->setRazaoSocial($customer['razaoSocial']);
-        $client->setNomeFantasia($customer['nomeFantasia']);
-        $client->setCnpj($customer['cnpj']);
-        $inscricaoEstadual = $customer['inscricaoEstadual'] == '' ? null : $customer['inscricaoEstadual'];
-        $client->setInscricaoEstadual($inscricaoEstadual);
-        $date = $customer['fondationDate'] != '' ? new \DateTime(str_replace('/', '.', $customer['fondationDate'])) : null;
-        $client->setDataDeFundacao($date);
-        $client->addProprietario($proprietary);
-        $situcaoCadastral = $customer['situacaoCadastral'] ?? 3;
-        $client->setSituacaoCadastral($situcaoCadastral);
-
-        $state = isset($address['estado']) ? $em->getRepository(Estado::class)->find($address['estado']) : null;
-        $city = isset($address['municipio']) ?  $em->getRepository(Municipio::class)->find($address['municipio']) : null;
-
-        $addr = new Address();
-        $addr->setPessoaFisicaId($pessoaFisica);
-        $addr->setMunicipio($city);
-        $addr->setEstado($state);
-        $addr->setRoad($address['road']);
-        $addr->setNeighborhood($address['neightborhood']);
-        $addr->setNumber($address['number']);
-        $addr->setZipcode($address['cep']);
-        
-        $pessoaFisica->setAddress($addr);
-
-        $em->persist($proprietary);
-        $em->persist($client);
-        $em->persist($pessoaFisica);
-        $em->persist($addr);
+        return $this->redirectToRoute('person');
     }
 
     public function removeAllCustomerData(PessoaJuridica $pessoa): void 
