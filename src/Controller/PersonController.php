@@ -6,10 +6,12 @@ use App\Entity\Phone;
 use App\Entity\Estado;
 use App\Entity\Address;
 use App\Entity\Municipio;
-use App\Utils\Generic\Crud;
 use App\Entity\PessoaFisica;
 use App\Entity\Proprietario;
 use App\Entity\PessoaJuridica;
+use App\Model\PersonModel;
+use App\Utils\Generic\Crud;
+use Respect\Validation\Validator as v;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,7 +39,7 @@ class PersonController extends Controller
     }
 
     /**
-     * @Route("/person/person")
+     * @Route("/person/person", name="person")
      * 
      * Pagina apenas para visualização de informações
      */
@@ -50,24 +52,20 @@ class PersonController extends Controller
 
     /**
      * @Route("/person/add/person", methods="POST")
+     * @param PersonModel $model
+     * @param Request $request
+     * @return Response
+     * @throws \Exception
      */
-    public function persist(Request $request)
+    public function persist(PersonModel $model, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        
-        //start transation 
-        $em->getConnection()->beginTransaction();
-
-        try {
-            $this->persistPerson($request->request->all());
-            $em->flush();
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-            throw new \Exception($e->getMessage().'. Arquivo - '. $e->getFile() .' Linha '. $e->getLine());
-        }
-
-        return new Response('sucesso!');
+        $data = $request->request->all();
+        $result = $model->persist($data);
+        $this->addFlash(
+            $result['type'],
+            $result['message']
+        );
+        return $this->redirectToRoute('customer');
     }
 
     /**
@@ -198,7 +196,6 @@ class PersonController extends Controller
         if (!$data) {
             throw $this->createNotFoundException('Parametros não encontrados');
         }
-
         if (!$pessoa) {
             throw $this->createNotFoundException('Item não existe');
         }
@@ -211,9 +208,12 @@ class PersonController extends Controller
         $proprietary = $em->getRepository(Proprietario::class)->findOneBy(array('pessoaFisica' => $pessoaFisica->getId()));
         $addr = $pessoaFisica->getAddress();
 
+        $cpf = v::cpf()->validate($person['cpf']) ? $person['cpf'] : false;
+        $cnpj = $customer['cnpj'];
+
         $pessoaFisica->setFirstName($person['firstName']);
         $pessoaFisica->setLastName($person['lastName']);
-        $pessoaFisica->setCpf($person['cpf']);
+        $pessoaFisica->setCpf($cpf);
         $pessoaFisica->setRg($person['rg']);
         $g = $person['genre'] ?? null;
         $pessoaFisica->setGenre($g);
@@ -242,7 +242,7 @@ class PersonController extends Controller
 
         $client->setRazaoSocial($customer['razaoSocial']);
         $client->setNomeFantasia($customer['nomeFantasia']);
-        $client->setCnpj($customer['cnpj']);
+        $client->setCnpj($cnpj);
         $inscricaoEstadual = $customer['inscricaoEstadual'] == '' ? null : $customer['inscricaoEstadual'];
         $client->setInscricaoEstadual($inscricaoEstadual);
         $date = $customer['fondationDate'] != '' ? new \DateTime(str_replace('/', '.', $customer['fondationDate'])) : null;

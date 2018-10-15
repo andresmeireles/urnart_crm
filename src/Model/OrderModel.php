@@ -30,6 +30,7 @@ class OrderModel extends Model
      * @param array $information
      * @param array $products
      * @param string $type
+     * @throws \Exception
      * @return array
      */
     public function executeActionOnOrder(array $information, array $products, string $type = 'insert'): array
@@ -102,6 +103,7 @@ class OrderModel extends Model
             $em->flush();
             $em->getConnection()->commit();
         } catch (\Exception $e) {
+            // development message
             throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
             $em->getConnection()->rollback();
             return array(
@@ -120,11 +122,12 @@ class OrderModel extends Model
      *
      * @param array $information
      * @param array $products
+     * @throws \Exception
      * @return void
      */
     public function updateOrder(array $information, array $products): array
     {
-        return $this->executeActionOnOrder($information, $products, 'update');
+        $this->executeActionOnOrder($information, $products, 'update');
     }
 
     /**
@@ -132,11 +135,12 @@ class OrderModel extends Model
      *
      * @param array $information
      * @param array $products
+     * @throws \Exception
      * @return void
      */
     public function createOrder(array $information, array $products): array
     {
-        return $this->executeActionOnOrder($information, $products, 'insert');
+        $this->executeActionOnOrder($information, $products, 'insert');
     }
 
     /**
@@ -144,6 +148,7 @@ class OrderModel extends Model
      *
      * @param  int   $id [description]
      * @return array     [description]
+     * @throws \Exception
      */
     public function reserve(int $id): array
     {
@@ -170,13 +175,15 @@ class OrderModel extends Model
           $order->reserve();
           foreach ($productCarts as $cart) {
             $product = $cart->getProduct();
-            if ($product->getStock() < $cart->getAmount()) {
-              $em->getConnection()->rollback();
-              return array(
-                'http_code' => 400,
-                'type' => 'error',
-                'message' => "Produto {$product->getName()} não tem estoque suficiente para reservar."
-              );
+            if (!$this->config['allow_negative_stock']) {
+                if ($product->getStock() < $cart->getAmount()) {
+                    $em->getConnection()->rollback();
+                    return array(
+                        'http_code' => 400,
+                        'type' => 'error',
+                        'message' => "Produto {$product->getName()} não tem estoque suficiente para reservar."
+                    );
+                }
             }
             $reserved = $product->getProductInventory()->getReserved();
             $amountReserved = ($reserved + $cart->getAmount());
@@ -197,6 +204,13 @@ class OrderModel extends Model
         );
     }
 
+    /**
+     * @param int|null $id
+     * @param string $hash
+     * @param string $type
+     * @return array
+     * @throws \Exception
+     */
     public function runUnreserveTypeAction(?int $id, string $hash, string $type = 'open'): array
     {
         $em = $this->em;
@@ -217,12 +231,12 @@ class OrderModel extends Model
             );
         }
         if ($type == 'close' && $order->isClosed()) {
+            $order->setAtive(false);
             return array(
                 'http_code' => 400,
                 'type' => 'error',
                 'message' => "Pedido {$id} já está fechado..."
             );
-            $order->setAtive(false);
         }
         try {
             $productCarts = $order->getProductCarts();
@@ -256,16 +270,32 @@ class OrderModel extends Model
         );
     }
 
+    /**
+     * @param int $id
+     * @param string $hash
+     * @throws \Exception
+     * @return array
+     */
     public function radiateOrder(int $id, string $hash): array
     {
         return $this->runUnreserveTypeAction($id, $hash, 'open');
     }
 
+    /**
+     * @param int $id
+     * @param string $hash
+     * @return array
+     * @throws \Exception
+     */
     public function closeOrder(int $id, string $hash): array
     {
         return $this->runUnreserveTypeAction($id, $hash, 'close');
     }
 
+    /**
+     * @param $id
+     * @return array
+     */
     public function removeOrder($id): array
     {
         $removeOrder = $this->em->getRepository(Order::class)->find($id);
