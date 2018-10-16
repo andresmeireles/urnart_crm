@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Config\Configuration;
 use App\Utils\Andresmei\SimpleFileUpload;
 use App\Utils\Generic\Crud;
 use Symfony\Component\Routing\Annotation\Route;
@@ -136,9 +137,23 @@ class RegisterController extends Controller
      * @param Request
      * @return Response : write new config
      */
-    public function writeConfiguration(Request $request): Response
+    public function writeConfiguration(Request $request, Configuration $config): Response
     {
-        $config = Yaml::parse(file_get_contents(__DIR__.'/../Config/system-config.yaml'));
+        dump($request->request->all(), $request->files->all());
+        die();
+        //$config = Yaml::parse(file_get_contents(__DIR__.'/../Config/system-config.yaml'));
+        $check = $request->request->get('check');
+        $images = $request->files->get('images');
+        $result = $config->writeConfigurationFile($check, $images);
+
+        $this->addFlash(
+            $result['type'],
+            $result['message']
+        );
+
+        return $this->redirectToRoute('config');
+        dump($request->request->all(), $request->files->all());
+        die();
         $configSendData = $request->request->all();
         $logoImage = $request->files->get('logo_image');
         SimpleFileUpload::uploadLogoImage($logoImage);

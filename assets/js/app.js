@@ -35,6 +35,8 @@ vexjs.defaultOptions.className = 'vex-theme-default'
 vexjs.dialog.buttons.YES.text = 'Sim'
 vexjs.dialog.buttons.NO.text = 'Cancelar'
 
+const pond = require('filepond')
+
 //globals
 global.$ = global.jQuery = $
 global.axios = require('axios')
@@ -43,6 +45,7 @@ global.rot = require('rot')
 global.noty = noty
 global.numeral = numeralJs
 global.vex = vexjs
+global.filePond = pond
 
 // root folder
 global.messageSend = require('./src/messageDispatcher');
@@ -89,6 +92,7 @@ import './src/register/config';
 
 import './src/global/masks'
 import './src/global/tools/sorter'
+import './src/global/tools/progress'
 
 // order import
 import './src/order/orderAction'

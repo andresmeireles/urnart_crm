@@ -3,10 +3,65 @@ declare(strict_types=1);
 
 namespace App\Config;
 
+use App\Utils\Andresmei\FlashResponse;
+use App\Utils\Andresmei\SimpleFileUpload;
+use Symfony\Component\Yaml\Yaml;
+
 class Configuration
 {
-    public function verification()
-    {
+    private $config;
+    private $writableConfig = array();
 
+    public function __construct()
+    {
+        $this->config = Yaml::parse(file_get_contents(__DIR__.'/system-config.yaml'));
+    }
+
+    public function writeConfigurationFile(array $check, array $images): array
+    {
+        $imagePaths = $this->uploadImages($images);
+        if (!SimpleFileUpload::getStatus()) {
+            return FlashResponse::response(400,'warning', SimpleFileUpload::getMessage());
+        }
+
+        $this->writeChecks($check);
+        $this->writeImages($images, $imagePaths);
+
+        $yaml = Yaml::dump($this->writableConfig);
+        file_put_contents(__DIR__.'/system-config.yaml', $yaml);
+
+        return FlashResponse::response(200,'success', 'Configuração gravado com sucesso');
+    }
+
+    public function uploadImages(array $images): array
+    {
+        $result = array();
+        foreach ($images as $name => $image) {
+            SimpleFileUpload::uploadLogoImage($image);
+            $result[$name] = SimpleFileUpload::getFilePath();
+        }
+        return $result;
+    }
+
+    public function writeChecks(array $check): void
+    {
+        foreach ($check as $key => $value) {
+            if (array_key_exists($key, $this->config)) {
+                $this->writableConfig[$key] = ($check[$key] === 'on' ? true : false);
+                continue;
+            }
+            $this->writableConfig[$key] = false;
+        }
+    }
+
+    public function writeImages(array $images, array $imagePaths)
+    {
+        foreach ($images as $key => $value) {
+            if (array_key_exists($key, $imagePaths)) {
+                $this->writableConfig[$key] = $imagePaths[$key];
+                continue;
+            }
+            $this->writableConfig[$key] = false;
+        }
     }
 }

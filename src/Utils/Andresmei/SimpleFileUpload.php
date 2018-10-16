@@ -23,6 +23,8 @@ class SimpleFileUpload
             self::$status = true;
             return true;
         }
+        dump($file);
+        die();
         if (!self::checkImage($file->getMimeType())) {
             return false;
         }

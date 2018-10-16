@@ -3,3 +3,17 @@ check:
     name:     'allow_negative_stock'
     label:    'Permitir estoque negativo'
     tooltip:  'Permitir reserva de produtos mesmo se não houver estoque'
+  allowReserve:
+    name:     'allow_reserve'
+    label:    'Habilitar função de reservar'
+    tooltip:  'Habilita função de reserva no sistema'
+  allowSameCpf:
+    name:     'allow_same_cpf'
+    label:    'Não verificar cpf'
+    tooltip:  'Desativar função de checagem de CPF no cadastro de pessoa fisica'
+
+images:
+  logoImage:
+    name:     'logo_image_path'
+    label:    'Logo que será posto em formularios'
+    alt:      'Logomarca da empresa no sistema'

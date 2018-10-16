@@ -13,7 +13,7 @@
                         <legend>Maque ou desmarque as opções</legend>
                     </fieldset>
                 </div>
-                <div class="p-2 col-md-12">
+                <div class="p-2 col-md-12 row">
                     <div class="col-md-6">
                         <div class="bg-light col-md-12">
                             <fieldset>
@@ -22,6 +22,53 @@
                         </div>
                         <div class="p-2 border border-light">
                             {% for key, value in draw.check %}
-                                {{ value.name }}, {{ dump(value.label) }}
-    {% endfor %}
+                                <div class="form-check">
+                                    <input type="hidden" class="form-check-input"
+                                           name="check[{{ value.name }}]" value="off">
+                                    <input type="checkbox" class="form-check-input"
+                                           name="check[{{ value.name }}]" value="on" {{ config[value.name] ? 'checked' : '' }}>
+                                    <label for="{{ key }}">
+                                        {{ value.label }} <span class="mx-1 badge badge-pill badge-warning"
+                                                                data-balloon="{{ value.tooltip }}"
+                                                                data-balloon-pos="up"><i
+                                                    class="fas fa-question"></i></span>
+                                    </label>
+                                </div>
+                                <hr>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="bg-light col-md-12">
+                            <fieldset>
+                                <legend>Carregar Imagens</legend>
+                            </fieldset>
+                        </div>
+                        <div class="p-2 border border-light">
+                            {% for key, value in draw.images %}
+                                <div>
+                                    <label for="{{ key }}">
+                                        {{ value.label }} <span class="mx-1 badge badge-pill badge-warning"
+                                                                data-balloon="{{ value.tooltip is defined ? value.tooltip : '' }}"
+                                                                data-balloon-pos="up"><i
+                                                    class="fas fa-question"></i></span>
+                                    </label>
+                                    <div class="col-md-6">
+                                        <img src="{{ asset(config[value.name] is defined ? config[value.name] : '') }}" class="img-fluid img-thumbnail" alt="{{ value.alt is defined ? value.alt : '' }}">
+                                    </div>
+                                    <div class="custom-file my-3">
+                                        <input type="file" class="filepond" name="images[{{ value.name }}]">
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group">
+                <input type="submit" class="btn btn-success" value="Salvar">
+            </div>
+        </form>
+    </div>
 {% endblock %}
