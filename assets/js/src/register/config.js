@@ -9,9 +9,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const input = document.querySelector('.filepond')
         const pond = filePond.create(input)
+        filePond.setOptions({
+            instantUpload: false,
+            server: './configuration'
+        })
 
         document.addEventListener('change', function (el) {
-            if (el.target.classList.contains('filepond')) {
+            if (el.target.classList.contains('custom-file-upload')) {
                 el.preventDefault()
                 let filePath = el.target.value
                 let removePath = filePath.slice(0, 12)
