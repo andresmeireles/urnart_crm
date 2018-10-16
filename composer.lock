@@ -2213,16 +2213,16 @@
         },
         {
             "name": "respect/validation",
-            "version": "1.1.27",
+            "version": "1.1.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Respect/Validation.git",
-                "reference": "892b39e5ff407f630c57f3e40c6d9fb2a9674d00"
+                "reference": "48b06254c4af1a2d6c1715eb3a2bb3cb72e08bfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Respect/Validation/zipball/892b39e5ff407f630c57f3e40c6d9fb2a9674d00",
-                "reference": "892b39e5ff407f630c57f3e40c6d9fb2a9674d00",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/48b06254c4af1a2d6c1715eb3a2bb3cb72e08bfc",
+                "reference": "48b06254c4af1a2d6c1715eb3a2bb3cb72e08bfc",
                 "shasum": ""
             },
             "require": {
@@ -2257,7 +2257,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD Style"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -2272,7 +2272,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2018-10-10T18:51:31+00:00"
+            "time": "2018-10-11T12:18:10+00:00"
         },
         {
             "name": "setasign/fpdi",
@@ -5100,16 +5100,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.7.0",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "22a9bf33868f0fed6cab013fe5231e8485d15e20"
+                "reference": "26643943fe19b5b47d620744907f09d1d6b3f06f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/22a9bf33868f0fed6cab013fe5231e8485d15e20",
-                "reference": "22a9bf33868f0fed6cab013fe5231e8485d15e20",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/26643943fe19b5b47d620744907f09d1d6b3f06f",
+                "reference": "26643943fe19b5b47d620744907f09d1d6b3f06f",
                 "shasum": ""
             },
             "require": {
@@ -5162,7 +5162,7 @@
                 "scaffold",
                 "scaffolding"
             ],
-            "time": "2018-08-30T01:08:06+00:00"
+            "time": "2018-10-13T19:56:32+00:00"
         },
         {
             "name": "symfony/polyfill-php72",

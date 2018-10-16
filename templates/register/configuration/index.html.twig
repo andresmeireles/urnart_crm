@@ -21,41 +21,7 @@
                             </fieldset>
                         </div>
                         <div class="p-2 border border-light">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input"
-                                       name="allow_negative_stock" {{ config.allow_negative_stock ? 'checked' : '' }}>
-                                <label for="allowNegativeStock" class="mx-2">
-                                    Permitir estoque negativo <span class="mx-1 badge badge-pill badge-warning"
-                                                                    data-balloon="Permite o fazer reserva de produtos mesmo sem estoque sufuciente, disponivel."
-                                                                    data-balloon-pos="up"><i
-                                                class="fas fa-question"></i></span>
-                                </label>
-                            </div>
-                            <hr>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="allow_reserve" {{ config.allow_reserve ? 'checked' : '' }}>
-                                <label for="allowReserve" class="mx-2">
-                                    Permitir reserva de pedidos <span class="mx-1 badge badge-pill badge-warning" data-balloon="Permitir função de reserva de pedidos"><i class="fa fa-question"></i></span>
-                                </label>
-                            </div>
-                            <hr>
-                            <div>
-                                <label><b>Logo do sistema</b></label>
-                                <div class="col-md-8 py-3">
-                                    <img src="{{ asset(config.logo_image_path) }}" class="img-fluid rounded" alt="">
-                                </div>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile" name="logo_image">
-                                    <label class="custom-file-label" for="customFile">Selecione</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-2 col-md-12">
-                    <button type="submit" class="btn btn-success" id="save">Salvar</button>
-                </div>
-            </div>
-        </form>
-    </div>
+                            {% for key, value in draw.check %}
+                                {{ value.name }}, {{ dump(value.label) }}
+    {% endfor %}
 {% endblock %}

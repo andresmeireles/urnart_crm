@@ -2,238 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f147876-3b9c-4961-b344-3198350daec1" name="Default Changelist" comment="">
-<<<<<<< HEAD
-      <change afterPath="$PROJECT_DIR$/src/Model/PersonModel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Config/draw-form.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/PersonController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PersonController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/OrderModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/OrderModel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/person/pages/__formCustomer.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/person/pages/__formCustomer.html.twig" afterDir="false" />
-=======
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/js/src/register/customer.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/src/register/customer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/laradock" beforeDir="false" afterPath="$PROJECT_DIR$/laradock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/.github/CODE_OF_CONDUCT.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/.github/CODE_OF_CONDUCT.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/.github/CONTRIBUTING.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/.github/CONTRIBUTING.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/.github/ISSUE_TEMPLATE.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/.github/ISSUE_TEMPLATE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/.github/PULL_REQUEST_TEMPLATE.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/.github/PULL_REQUEST_TEMPLATE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/.github/README-zh.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/.github/README-zh.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/.github/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/.github/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/.gitlab-ci.yml" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/.gitlab-ci.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/.travis.yml" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/.travis.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/config.toml" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/config.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/contributing/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/contributing/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/documentation/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/documentation/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/getting-started/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/getting-started/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/guides/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/guides/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/help/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/help/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/introduction/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/introduction/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/license/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/license/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/related-projects/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/content/related-projects/index.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/static/CNAME" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/static/CNAME" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/LICENSE.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/LICENSE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/archetypes/default.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/archetypes/default.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/404.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/_default/__list.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/_default/__list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/_default/single.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/_default/single.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/drawer.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/drawer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/footer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/footer_js.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/footer_js.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/head.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/head.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/nav.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/nav.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/nav_link.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/partials/nav_link.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/shortcodes/note.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/shortcodes/note.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/shortcodes/warning.html" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/layouts/shortcodes/warning.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/favicon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/logo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/Connection.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/Connection.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/ConnectionData.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/ConnectionData.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/ConnectionSSH.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/ConnectionSSH.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/ConnectionSSHAuth.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/ConnectionSSHAuth.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/Session.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/Session.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/Terminal.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/Terminal.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/TerminalKeyboard.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/TerminalKeyboard.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/TerminalShell.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/TerminalShell.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/Window.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/Window.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/WindowAppearance.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/KiTTY/WindowAppearance.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/DebugRemoteOn.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/DebugRemoteOn.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/RemoteDebuggingSuccess.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/RemoteDebuggingSuccess.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/RemoteHost.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/RemoteHost.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/RemoteTestDebuggingSuccess.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/RemoteTestDebuggingSuccess.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/RemoteWebDebuggingSuccess.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/RemoteWebDebuggingSuccess.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/BuildDeploymentConnection.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/BuildDeploymentConnection.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/BuildDeploymentConnectionMappings.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/BuildDeploymentConnectionMappings.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/BuildDeploymentDebugger.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/BuildDeploymentDebugger.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/EditRunConfigurationRemoteExampleTestDebug.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/EditRunConfigurationRemoteExampleTestDebug.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/EditRunConfigurationRemoteWebDebug.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/EditRunConfigurationRemoteWebDebug.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/LangsPHPDebug.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/LangsPHPDebug.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/LangsPHPInterpreters.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/LangsPHPInterpreters.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/LangsPHPPHPUnit.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/LangsPHPPHPUnit.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/LangsPHPServers.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/LangsPHPServers.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/WindowsFirewallAllowedApps.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/WindowsFirewallAllowedApps.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/WindowsHyperVManager.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/WindowsHyperVManager.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/hosts.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/Settings/hosts.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/linux/configuration/debugConfiguration.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/linux/configuration/debugConfiguration.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/linux/configuration/serverConfiguration.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/PHPStorm/linux/configuration/serverConfiguration.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/SimpleHostsEditor/AddHost_laravel.png" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/images/photos/SimpleHostsEditor/AddHost_laravel.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/javascripts/application.js" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/javascripts/application.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/javascripts/modernizr.js" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/javascripts/modernizr.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/stylesheets/application.css" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/stylesheets/application.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/stylesheets/highlight/highlight.css" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/stylesheets/highlight/highlight.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/stylesheets/palettes.css" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/stylesheets/palettes.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/stylesheets/temporary.css" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/static/stylesheets/temporary.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/theme.toml" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/DOCUMENTATION/themes/hugo-material-docs/theme.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/adminer/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/adminer/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/aerospike/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/aerospike/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/aerospike/aerospike.conf" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/aerospike/aerospike.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/apache2/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/apache2/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/apache2/sites/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/apache2/sites/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/apache2/sites/default.apache.conf" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/apache2/sites/default.apache.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/apache2/sites/sample.conf.example" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/apache2/sites/sample.conf.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/apache2/vhost.conf" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/apache2/vhost.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/aws/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/aws/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/aws/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/aws/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/beanstalkd-console/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/beanstalkd-console/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/beanstalkd/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/beanstalkd/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/caddy/Caddyfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/caddy/Caddyfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/caddy/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/caddy/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/certbot/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/certbot/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/certbot/letsencrypt/.gitkeep" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/certbot/letsencrypt/.gitkeep" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/certbot/letsencrypt/.well-known/.gitkeep" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/certbot/letsencrypt/.well-known/.gitkeep" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/certbot/run-certbot.sh" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/certbot/run-certbot.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/docker-compose.sync.yml" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/docker-compose.sync.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/docker-sync.yml" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/docker-sync.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/elasticsearch/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/elasticsearch/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/env-example" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/env-example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/gitlab/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/gitlab/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/grafana/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/grafana/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/haproxy/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/haproxy/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/hhvm/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/hhvm/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/hhvm/server.ini" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/hhvm/server.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/ide-codiad/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/ide-codiad/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/ide-codiad/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/ide-codiad/config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/ide-icecoder/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/ide-icecoder/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/ide-theia/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/ide-theia/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/ide-webide/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/ide-webide/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/ipython/Dockerfile.controller" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/ipython/Dockerfile.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/ipython/Dockerfile.engine" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/ipython/Dockerfile.engine" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/ipython/ipcontroller-client.json" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/ipython/ipcontroller-client.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/ipython/ipcontroller-engine.json" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/ipython/ipcontroller-engine.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/.github/ISSUE_TEMPLATE.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/.github/ISSUE_TEMPLATE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/.gitmodules" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/CONTRIBUTING.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/CONTRIBUTING.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/Jenkinsfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/init.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/init.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/jenkins_home/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/jenkins_home/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/tests/functions.bats" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/tests/functions.bats" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/tests/install-plugins.bats" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/tests/install-plugins.bats" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/tests/install-plugins/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/tests/install-plugins/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/tests/install-plugins/update/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/tests/install-plugins/update/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/tests/plugins/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/tests/plugins/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/tests/plugins/plugins.txt" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/tests/plugins/plugins.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/tests/runtime.bats" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/tests/runtime.bats" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/tests/test_helpers.bash" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/tests/test_helpers.bash" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jenkins/tests/upgrade-plugins/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jenkins/tests/upgrade-plugins/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jupyterhub/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jupyterhub/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jupyterhub/Dockerfile.user" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jupyterhub/Dockerfile.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jupyterhub/jupyterhub_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jupyterhub/jupyterhub_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jupyterhub/start-notebook.sh" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jupyterhub/start-notebook.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jupyterhub/start-singleuser.sh" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jupyterhub/start-singleuser.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jupyterhub/start.sh" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jupyterhub/start.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/jupyterhub/userlist" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/jupyterhub/userlist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/kibana/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/kibana/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/laravel-echo-server/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/laravel-echo-server/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/laravel-echo-server/laravel-echo-server.json" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/laravel-echo-server/laravel-echo-server.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/laravel-echo-server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/laravel-echo-server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/logs/apache2/.gitkeep" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/logs/apache2/.gitkeep" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/logs/nginx/.gitkeep" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/logs/nginx/.gitkeep" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/maildev/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/maildev/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mailhog/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mailhog/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mariadb/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mariadb/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mariadb/docker-entrypoint-initdb.d/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mariadb/docker-entrypoint-initdb.d/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mariadb/docker-entrypoint-initdb.d/createdb.sql.example" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mariadb/docker-entrypoint-initdb.d/createdb.sql.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mariadb/my.cnf" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mariadb/my.cnf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/memcached/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/memcached/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/minio/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/minio/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mongo-webui/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mongo-webui/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mongo/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mongo/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mssql/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mssql/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mssql/create_table.sh" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mssql/create_table.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mssql/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mssql/entrypoint.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mssql/setup.sql" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mssql/setup.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mysql/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mysql/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mysql/docker-entrypoint-initdb.d/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mysql/docker-entrypoint-initdb.d/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mysql/docker-entrypoint-initdb.d/createdb.sql.example" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mysql/docker-entrypoint-initdb.d/createdb.sql.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/mysql/my.cnf" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/mysql/my.cnf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/neo4j/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/neo4j/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/nginx/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/nginx/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/nginx/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/nginx/nginx.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/nginx/sites/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/nginx/sites/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/nginx/sites/app.conf.example" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/nginx/sites/app.conf.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/nginx/sites/default.conf" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/nginx/sites/default.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/nginx/sites/laravel.conf.example" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/nginx/sites/laravel.conf.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/nginx/sites/symfony.conf.example" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/nginx/sites/symfony.conf.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/percona/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/percona/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/percona/docker-entrypoint-initdb.d/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/percona/docker-entrypoint-initdb.d/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/percona/docker-entrypoint-initdb.d/createdb.sql.example" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/percona/docker-entrypoint-initdb.d/createdb.sql.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/percona/my.cnf" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/percona/my.cnf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/pgadmin/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/pgadmin/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-fpm/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-fpm/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-fpm/aerospike.ini" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-fpm/aerospike.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-fpm/laravel.ini" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-fpm/laravel.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-fpm/mysql.ini" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-fpm/mysql.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-fpm/opcache.ini" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-fpm/opcache.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-fpm/php5.6.ini" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-fpm/php5.6.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-fpm/php7.0.ini" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-fpm/php7.0.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-fpm/php7.1.ini" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-fpm/php7.1.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-fpm/php7.2.ini" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-fpm/php7.2.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-fpm/xdebug.ini" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-fpm/xdebug.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-fpm/xlaravel.pool.conf" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-fpm/xlaravel.pool.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-worker/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-worker/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-worker/supervisord.conf" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-worker/supervisord.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/php-worker/supervisord.d/laravel-worker.conf" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/php-worker/supervisord.d/laravel-worker.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/phpmyadmin/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/phpmyadmin/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/portainer/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/portainer/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/postgres-postgis/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/postgres-postgis/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/postgres/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/postgres/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/postgres/docker-entrypoint-initdb.d/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/postgres/docker-entrypoint-initdb.d/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/postgres/docker-entrypoint-initdb.d/createdb.sh.example" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/postgres/docker-entrypoint-initdb.d/createdb.sh.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/postgres/docker-entrypoint-initdb.d/init_gitlab_db.sh" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/postgres/docker-entrypoint-initdb.d/init_gitlab_db.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/postgres/docker-entrypoint-initdb.d/init_jupyterhub_db.sh" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/postgres/docker-entrypoint-initdb.d/init_jupyterhub_db.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/rabbitmq/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/rabbitmq/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/redis/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/redis/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/rethinkdb/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/rethinkdb/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/selenium/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/selenium/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/solr/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/solr/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/varnish/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/varnish/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/varnish/default.vcl" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/varnish/default.vcl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/varnish/start.sh" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/varnish/start.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/workspace/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/workspace/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/workspace/aerospike.ini" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/workspace/aerospike.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/workspace/aliases.sh" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/workspace/aliases.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/workspace/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/workspace/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/workspace/crontab/laradock" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/workspace/crontab/laradock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/workspace/insecure_id_rsa" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/workspace/insecure_id_rsa" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/workspace/insecure_id_rsa.ppk" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/workspace/insecure_id_rsa.ppk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/workspace/insecure_id_rsa.pub" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/workspace/insecure_id_rsa.pub" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/workspace/mc/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/workspace/mc/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/laradock/workspace/xdebug.ini" beforeDir="false" afterPath="$PROJECT_DIR$/laradock/workspace/xdebug.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Config/Configuration.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Config/Configuration.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/PessoaFisica.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/PessoaFisica.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/order/pages/create.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/pages/create.html.twig" afterDir="false" />
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
+      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/RegisterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RegisterController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/PersonModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/PersonModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/register/configuration/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/register/configuration/index.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -254,29 +30,28 @@
           <entry key="project.open.time.38" value="1" />
           <entry key="project.open.time.48" value="1" />
           <entry key="project.open.time.54" value="1" />
-          <entry key="project.open.time.57" value="1" />
           <entry key="project.open.time.65" value="1" />
-          <entry key="project.opened" value="7" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="gitignore" value="1" />
           <entry key="html" value="1" />
-          <entry key="js" value="6" />
-          <entry key="php" value="33" />
-          <entry key="twig" value="20" />
-          <entry key="yaml" value="3" />
+          <entry key="js" value="5" />
+          <entry key="php" value="22" />
+          <entry key="twig" value="19" />
+          <entry key="yaml" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="HTML" value="1" />
-          <entry key="JavaScript" value="6" />
-          <entry key="PHP" value="33" />
+          <entry key="JavaScript" value="5" />
+          <entry key="PHP" value="22" />
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Twig" value="20" />
-          <entry key="YAML" value="3" />
+          <entry key="Twig" value="19" />
+          <entry key="YAML" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -284,8 +59,8 @@
           <entry key="gitignore" value="8" />
           <entry key="html" value="311" />
           <entry key="js" value="729" />
-          <entry key="php" value="3624" />
-          <entry key="twig" value="1303" />
+          <entry key="php" value="1096" />
+          <entry key="twig" value="1243" />
           <entry key="yaml" value="54" />
         </counts>
       </usages-collector>
@@ -293,9 +68,9 @@
         <counts>
           <entry key="HTML" value="311" />
           <entry key="JavaScript" value="729" />
-          <entry key="PHP" value="3624" />
+          <entry key="PHP" value="1096" />
           <entry key="PLAIN_TEXT" value="8" />
-          <entry key="Twig" value="1303" />
+          <entry key="Twig" value="1243" />
           <entry key="YAML" value="54" />
         </counts>
       </usages-collector>
@@ -352,115 +127,99 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="-2146519596">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.39" value="1" />
+          <entry key="project.open.time.52" value="1" />
+          <entry key="project.opened" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="env" value="2" />
+          <entry key="php" value="3" />
+          <entry key="twig" value="2" />
+          <entry key="yaml" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key=".env file" value="2" />
+          <entry key="PHP" value="3" />
+          <entry key="Twig" value="2" />
+          <entry key="YAML" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="env" value="59" />
+          <entry key="php" value="106" />
+          <entry key="twig" value="448" />
+          <entry key="yaml" value="352" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key=".env file" value="59" />
+          <entry key="PHP" value="106" />
+          <entry key="Twig" value="448" />
+          <entry key="YAML" value="352" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Controller/PersonController.php">
+        <entry file="file://$PROJECT_DIR$/src/Config/system-config.yaml">
           <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
-            <state relative-caret-position="1054">
-              <caret line="62" column="41" selection-start-line="62" selection-start-column="41" selection-end-line="62" selection-end-column="41" />
-              <folding>
-                <element signature="e#33#54#0#PHP" expanded="true" />
-              </folding>
-=======
-            <state relative-caret-position="780">
-              <caret line="52" column="67" selection-start-line="52" selection-start-column="67" selection-end-line="52" selection-end-column="67" />
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
+            <state>
+              <caret lean-forward="true" />
             </state>
           </provider>
         </entry>
       </file>
-<<<<<<< HEAD
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Model/PersonModel.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
-              <folding>
-                <element signature="e#48#71#0#PHP" expanded="true" />
-              </folding>
-=======
+            <state relative-caret-position="-127" />
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/src/order/orderAction.js">
+        <entry file="file://$PROJECT_DIR$/src/Config/draw-form.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2085">
-              <caret line="139" column="29" selection-start-line="139" selection-start-column="29" selection-end-line="139" selection-end-column="29" />
+            <state relative-caret-position="75">
+              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Controller/OrderController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="780">
-              <caret line="67" column="11" selection-start-line="67" selection-start-column="11" selection-end-line="67" selection-end-column="11" />
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
-            </state>
-          </provider>
-        </entry>
-      </file>
-<<<<<<< HEAD
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/src/register/customer.js">
+        <entry file="file://$PROJECT_DIR$/config/services.yaml">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/person/pages/__formCustomer.html.twig">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="70" column="123" selection-start-line="70" selection-start-column="110" selection-end-line="70" selection-end-column="123" />
-              <folding>
-                <element signature="e#66#100#0#Twig" expanded="true" />
-              </folding>
-=======
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/person/pages/__formCustomer.html.twig">
+        <entry file="file://$PROJECT_DIR$/templates/register/configuration/index.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="554">
-              <caret line="183" column="133" selection-start-line="183" selection-start-column="133" selection-end-line="183" selection-end-column="133" />
+            <state relative-caret-position="360">
+              <caret line="24" column="69" selection-start-line="24" selection-start-column="69" selection-end-line="24" selection-end-column="69" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/src/register/customer.js">
+        <entry file="file://$PROJECT_DIR$/src/Controller/RegisterController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="37" column="15" selection-start-line="37" selection-start-column="15" selection-end-line="37" selection-end-column="15" />
+            <state relative-caret-position="263">
+              <caret line="125" column="84" selection-start-line="125" selection-start-column="84" selection-end-line="125" selection-end-column="84" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Entity/PessoaFisica.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="31" column="47" selection-start-line="31" selection-start-column="47" selection-end-line="31" selection-end-column="47" />
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
-            </state>
-          </provider>
-        </entry>
-      </file>
-<<<<<<< HEAD
-=======
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/phpstorm64.vmoptions">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="21" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/assets/js/src/openModal.js">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -472,8 +231,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>persistPerson</find>
-      <find>fondationDa</find>
+      <find>ROOT</find>
+      <find>mariadb</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -496,11 +255,10 @@
         <option value="$PROJECT_DIR$/templates/print/forms/tag.html.twig" />
         <option value="$PROJECT_DIR$/templates/order/index.html.twig" />
         <option value="$PROJECT_DIR$/templates/storage/product.html.twig" />
-        <option value="$PROJECT_DIR$/templates/register/configuration/index.html.twig" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/src/Config/system-config.yaml" />
         <option value="$PROJECT_DIR$/src/Utils/Andresmei/SimpleFileUpload.php" />
         <option value="$PROJECT_DIR$/src/Config/Configuration.php" />
+        <option value="$PROJECT_DIR$/src/Model/OrderModel.php" />
         <option value="$PROJECT_DIR$/templates/register/pages/paymentType.html.twig" />
         <option value="$PROJECT_DIR$/src/Entity/Estado.php" />
         <option value="$PROJECT_DIR$/templates/order/pages/editOrder.html.twig" />
@@ -510,24 +268,21 @@
         <option value="$PROJECT_DIR$/src/Entity/ProductInventory.php" />
         <option value="$PROJECT_DIR$/src/Entity/FeedstockInventory.php" />
         <option value="$PROJECT_DIR$/assets/js/src/global/simpleRequest.js" />
-        <option value="$PROJECT_DIR$/src/Controller/RegisterController.php" />
         <option value="$PROJECT_DIR$/assets/js/src/register/templates/customerTemplate.js" />
         <option value="$PROJECT_DIR$/templates/person/pages/customer.html.twig" />
         <option value="$PROJECT_DIR$/src/Controller/OrderController.php" />
         <option value="$PROJECT_DIR$/templates/order/pages/create.html.twig" />
-<<<<<<< HEAD
-        <option value="$PROJECT_DIR$/src/Model/OrderModel.php" />
-        <option value="$PROJECT_DIR$/src/Controller/PersonController.php" />
-        <option value="$PROJECT_DIR$/templates/person/pages/__formCustomer.html.twig" />
-        <option value="$PROJECT_DIR$/src/Model/PersonModel.php" />
-=======
         <option value="$PROJECT_DIR$/assets/js/app.js" />
         <option value="$APPLICATION_CONFIG_DIR$/phpstorm64.vmoptions" />
         <option value="$APPLICATION_CONFIG_DIR$/idea.properties" />
         <option value="$PROJECT_DIR$/src/Entity/PessoaFisica.php" />
         <option value="$PROJECT_DIR$/assets/js/src/register/customer.js" />
         <option value="$PROJECT_DIR$/templates/person/pages/__formCustomer.html.twig" />
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/src/Config/system-config.yaml" />
+        <option value="$PROJECT_DIR$/src/Controller/RegisterController.php" />
+        <option value="$PROJECT_DIR$/src/Config/draw-form.yaml" />
+        <option value="$PROJECT_DIR$/templates/register/configuration/index.html.twig" />
       </list>
     </option>
   </component>
@@ -647,26 +402,6 @@
     <option name="width" value="1400" />
     <option name="height" value="820" />
   </component>
-  <component name="ProjectInspectionProfilesVisibleTreeState">
-    <entry key="Project Default">
-      <profile-state>
-        <expanded-state>
-          <State />
-          <State>
-            <id>PHP</id>
-          </State>
-          <State>
-            <id>UndefinedPHP</id>
-          </State>
-        </expanded-state>
-        <selected-state>
-          <State>
-            <id>PhpUndefinedClassInspection</id>
-          </State>
-        </selected-state>
-      </profile-state>
-    </entry>
-  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -684,35 +419,12 @@
             <path>
               <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
               <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
               <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-<<<<<<< HEAD
-              <item name="register" type="462c0819:PsiDirectoryNode" />
-=======
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
-            </path>
-            <path>
-              <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-<<<<<<< HEAD
             </path>
             <path>
               <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
@@ -729,29 +441,20 @@
             <path>
               <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
               <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
               <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="person" type="462c0819:PsiDirectoryNode" />
+              <item name="register" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="sysadmin" type="b2602c69:ProjectViewProjectNode" />
               <item name="sysadmin" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="person" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-=======
-              <item name="Entity" type="462c0819:PsiDirectoryNode" />
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
+              <item name="register" type="462c0819:PsiDirectoryNode" />
+              <item name="configuration" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -762,11 +465,8 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-<<<<<<< HEAD
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
-=======
-    <property name="settings.editor.selected.configurable" value="preferences.intentionPowerPack" />
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -803,34 +503,21 @@
       <workItem from="1539253397270" duration="9820000" />
       <workItem from="1539270288345" duration="80000" />
       <workItem from="1539270524537" duration="1311000" />
-<<<<<<< HEAD
-      <workItem from="1539607702433" duration="9277000" />
-=======
       <workItem from="1539279757702" duration="1354000" />
       <workItem from="1539282455516" duration="467000" />
       <workItem from="1539284114973" duration="1600000" />
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
+      <workItem from="1539647332369" duration="199000" />
+      <workItem from="1539650693639" duration="5359000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-<<<<<<< HEAD
-    <option name="totallyTimeSpent" value="39223000" />
+    <option name="totallyTimeSpent" value="38925000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="0" width="1366" height="732" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27056554" />
-=======
-    <option name="totallyTimeSpent" value="33367000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1366" height="768" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2810606" />
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24166666" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -880,90 +567,7 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <ignored-roots>
-      <path value="$PROJECT_DIR$/laradock" />
-    </ignored-roots>
-  </component>
   <component name="editorHistoryManager">
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/src/Utils/Form/FormTemplate/FreightLetterFormCreator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-255">
-          <caret line="55" selection-start-line="55" selection-end-line="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/composer.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/print/forms/freight-letter.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="342" column="37" selection-start-line="342" selection-start-column="37" selection-end-line="342" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/form/tagForm.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/Form/FormTemplate/ReceiptFormCreator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-630" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/print/forms/tag.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="119" column="37" selection-start-line="119" selection-start-column="37" selection-end-line="119" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/Form/FormTemplate/TagFormCreator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="614">
-          <caret line="104" column="8" selection-start-line="104" selection-start-column="8" selection-end-line="104" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Utils/Andresmei/Form.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="35" column="8" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-=======
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
-    <entry file="file://$PROJECT_DIR$/templates/print/forms/remand.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/components/print.html.twig">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Twig/AppExtension.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/order/index.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1665">
-          <caret line="104" column="13" selection-start-line="104" selection-start-column="13" selection-end-line="104" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/index.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1381" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/storage/product.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -985,16 +589,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/Model.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/FormController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="32" column="9" selection-start-line="32" selection-start-column="9" selection-end-line="32" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Config/Configuration.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/OrderModel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="152" column="32" selection-start-line="152" selection-start-column="32" selection-end-line="152" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Entity/PaymentType.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1144" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/register/configuration/index.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="26" column="76" selection-start-line="26" selection-start-column="76" selection-end-line="26" selection-end-column="76" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Entity/Municipio.php">
@@ -1035,13 +656,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/StorageController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Entity/Product.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2436" />
@@ -1075,13 +689,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/RegisterController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="658">
-          <caret line="54" column="49" selection-start-line="54" selection-start-column="49" selection-end-line="54" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Utils/Generic/Crud.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="658">
@@ -1099,22 +706,6 @@
     <entry file="file://$PROJECT_DIR$/templates/person/pages/person.html.twig">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/templates/order/pages/create.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3315">
-          <caret line="195" column="5" selection-start-line="195" selection-start-column="5" selection-end-line="195" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/OrderController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="833">
-          <caret line="64" column="111" selection-start-line="64" selection-start-column="111" selection-end-line="64" selection-end-column="111" />
-          <folding>
-            <element signature="e#34#56#0#PHP" expanded="true" />
-          </folding>
-=======
     <entry file="file://$PROJECT_DIR$/src/Controller/PersonController.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1122,101 +713,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="990">
           <caret line="66" column="53" selection-start-line="66" selection-end-line="66" selection-end-column="53" />
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/person/pages/customer.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1122">
-          <caret line="66" column="53" selection-start-line="66" selection-end-line="66" selection-end-column="53" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/person/index.html.twig">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/assets/js/src/order/orderAction.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Config/Configuration.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Config/system-config.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="37" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Model.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/HomeController.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/FormController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-153">
-          <caret line="32" column="9" selection-start-line="32" selection-start-column="9" selection-end-line="32" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/FeedstockModel.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/src/register/customer.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/OrderModel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3961">
-          <caret line="241" column="54" selection-start-line="241" selection-start-column="54" selection-end-line="241" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/person/pages/__formCustomer.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="70" column="123" selection-start-line="70" selection-start-column="110" selection-end-line="70" selection-end-column="123" />
-          <folding>
-            <element signature="e#66#100#0#Twig" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Entity/PessoaJuridica.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="130" column="20" selection-start-line="130" selection-start-column="20" selection-end-line="130" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Controller/PersonController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1054">
-          <caret line="62" column="41" selection-start-line="62" selection-start-column="41" selection-end-line="62" selection-end-column="41" />
-          <folding>
-            <element signature="e#33#54#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/PersonModel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
-          <folding>
-            <element signature="e#48#71#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-=======
     <entry file="file://$PROJECT_DIR$/templates/register/index.html.twig">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1247,42 +749,33 @@
     <entry file="file://$PROJECT_DIR$/assets/js/src/dialog/simpleDialog.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/order/pages/create.html.twig">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/phpstorm64.vmoptions" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/idea.properties" />
+    <entry file="file://$PROJECT_DIR$/assets/js/src/register/customer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="52" column="67" selection-start-line="52" selection-start-column="67" selection-end-line="52" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/src/order/orderAction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2085">
-          <caret line="139" column="29" selection-start-line="139" selection-start-column="29" selection-end-line="139" selection-end-column="29" />
+        <state relative-caret-position="555">
+          <caret line="37" column="15" selection-start-line="37" selection-start-column="15" selection-end-line="37" selection-end-column="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/OrderController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
+        <state relative-caret-position="518">
           <caret line="67" column="11" selection-start-line="67" selection-start-column="11" selection-end-line="67" selection-end-column="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/phpstorm64.vmoptions">
+    <entry file="file://$PROJECT_DIR$/assets/js/src/order/orderAction.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="21" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
+        <state relative-caret-position="518">
+          <caret line="139" column="29" selection-start-line="139" selection-start-column="29" selection-end-line="139" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/src/openModal.js">
-      <provider selected="true" editor-type-id="text-editor" />
->>>>>>> f31e9472447f12764f0e3b48144ff63f55489812
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/idea.properties">
+    <entry file="file://$PROJECT_DIR$/templates/order/pages/create.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
+        <state relative-caret-position="518">
+          <caret line="52" column="67" selection-start-line="52" selection-start-column="67" selection-end-line="52" selection-end-column="67" />
         </state>
       </provider>
     </entry>
@@ -1293,17 +786,78 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/js/src/register/customer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="37" column="15" selection-start-line="37" selection-start-column="15" selection-end-line="37" selection-end-column="15" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/assets/js/src/openModal.js">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/person/pages/__formCustomer.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="554">
-          <caret line="183" column="133" selection-start-line="183" selection-start-column="133" selection-end-line="183" selection-end-column="133" />
+        <state relative-caret-position="354">
+          <caret line="181" column="22" lean-forward="true" selection-start-line="181" selection-start-column="22" selection-end-line="181" selection-end-column="22" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#form#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="e#490#496#0#HTML" expanded="true" />
+            <element signature="e#1506#1512#0#HTML" expanded="true" />
+            <element signature="e#4950#4956#0#HTML" expanded="true" />
+            <element signature="e#7787#7793#0#HTML" expanded="true" />
+            <element signature="e#10221#10227#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/laradock/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="220" column="11" selection-start-line="220" selection-start-column="4" selection-end-line="220" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/StorageController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/services.yaml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Controller/RegisterController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="125" column="84" selection-start-line="125" selection-start-column="84" selection-end-line="125" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Config/system-config.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Config/draw-form.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/PersonModel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-127" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/register/configuration/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="69" selection-start-line="24" selection-start-column="69" selection-end-line="24" selection-end-column="69" />
         </state>
       </provider>
     </entry>

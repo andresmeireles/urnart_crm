@@ -1,0 +1,5 @@
+check:
+  allowNegativeStock:
+    name:     'allow_negative_stock'
+    label:    'Permitir estoque negativo'
+    tooltip:  'Permitir reserva de produtos mesmo se não houver estoque'
