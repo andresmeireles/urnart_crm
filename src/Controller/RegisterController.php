@@ -139,8 +139,6 @@ class RegisterController extends Controller
      */
     public function writeConfiguration(Request $request, Configuration $config): Response
     {
-        dump($request->request->all(), $request->files->all());
-        die();
         //$config = Yaml::parse(file_get_contents(__DIR__.'/../Config/system-config.yaml'));
         $check = $request->request->get('check');
         $images = $request->files->get('images');
@@ -151,36 +149,6 @@ class RegisterController extends Controller
             $result['message']
         );
 
-        return $this->redirectToRoute('config');
-        dump($request->request->all(), $request->files->all());
-        die();
-        $configSendData = $request->request->all();
-        $logoImage = $request->files->get('logo_image');
-        SimpleFileUpload::uploadLogoImage($logoImage);
-        if (!SimpleFileUpload::getStatus()) {
-            $this->addFlash(
-                'error',
-                SimpleFileUpload::getMessage()
-            );
-            return $this->redirectToRoute('config');
-        }
-        foreach ($config as $key => $value) {
-            if ($key === 'logo_image_path') {
-                continue;
-            }
-            if (array_key_exists($key, $configSendData)) {
-                $config[$key] = ($configSendData[$key] == 'on' ? true : false);
-                continue;
-            }
-            $config[$key] = false;
-        }
-        $config['logo_image_path'] = SimpleFileUpload::getFilePath();
-        $yaml = Yaml::dump($config);
-        file_put_contents(__DIR__.'/../Config/system-config.yaml', $yaml);
-        $this->addFlash(
-            'success',
-            'configuração salva com sucesso'
-        );
         return $this->redirectToRoute('config');
     }
 }

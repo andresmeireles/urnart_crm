@@ -57,9 +57,10 @@
                                         <img src="{{ asset(config[value.name] is defined ? config[value.name] : '') }}" class="img-fluid img-thumbnail" alt="{{ value.alt is defined ? value.alt : '' }}">
                                     </div>
                                     <div class="custom-file my-3">
-                                        <input type="file" class="custom-file-input" name="images[{{ value.name }}]">
-                                        <label class="custom-file-label" for="customFile">Choose file</label>
-                                        {# <input type="file" class="filepond"> #}
+                                        <input type="hidden" name="images[{{ value.name }}]" value="null">
+                                        <input type="file" id="file" class="custom-file-input" name="images[{{ value.name }}]">
+                                        <label class="custom-file-label" for="customFile">Selecione seu arquivo</label>
+                                        {# <input type="file" class="filepond" data-max-file-size="4MB" data-max-files="1"> #}
                                     </div>
                                 </div>
                                 <hr>

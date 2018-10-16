@@ -11,6 +11,7 @@ class Configuration
 {
     private $config;
     private $writableConfig = array();
+    private static $imageNameAndPath;
 
     public function __construct()
     {
@@ -37,8 +38,9 @@ class Configuration
     {
         $result = array();
         foreach ($images as $name => $image) {
-            SimpleFileUpload::uploadLogoImage($image);
-            $result[$name] = SimpleFileUpload::getFilePath();
+            if (SimpleFileUpload::uploadLogoImage($image)) {
+                $result[$name] = SimpleFileUpload::getFilePath();
+            }
         }
         return $result;
     }
@@ -63,5 +65,15 @@ class Configuration
             }
             $this->writableConfig[$key] = false;
         }
+    }
+
+    public function writeImageAsync(array $images): array
+    {
+        foreach ($images as $name => $image) {
+            SimpleFileUpload::uploadLogoImage($image);
+            self::$imageNameAndPath[$name] = SimpleFileUpload::getFilePath();
+        }
+
+        return FlashResponse::response(200, 'success', 'Imagens enviadas com sucesso, para finalizar aperte para finalizar alterações aparete em salvar');
     }
 }

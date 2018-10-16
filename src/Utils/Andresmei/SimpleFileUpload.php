@@ -23,9 +23,7 @@ class SimpleFileUpload
             self::$status = true;
             return true;
         }
-        dump($file);
-        die();
-        if (!self::checkImage($file->getMimeType())) {
+        if (!self::checkImage($file->getClientMimeType())) {
             return false;
         }
         self::clearFolder();
@@ -60,6 +58,7 @@ class SimpleFileUpload
     {
         if (!in_array($type, self::$supportedImages)) {
             self::$message = "Tipo {$type} não supportado";
+            self::$status = false;
             return false;
         }
         return true;
@@ -67,9 +66,11 @@ class SimpleFileUpload
     
     private static function clearFolder(): void
     {
-        $files = glob(self::$logoDir);
+        $files = glob(self::$logoDir.'/custom/*');
         foreach($files as $file) {
-            unlink($file);
+            if (!is_dir($file) && file_exists($file)) {
+                unlink($file);
+            }
         }
     }
 }
