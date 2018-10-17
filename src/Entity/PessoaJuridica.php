@@ -87,6 +87,11 @@ class PessoaJuridica extends BaseEntity
         return $this;
     }
 
+    public function getProprietarioPrincipal(): PessoaFisica
+    {
+        return $this->proprietarios->first()->getPessoaFisica();
+    }
+
     /**
      * @return Collection|Proprietario[]
      */
@@ -118,8 +123,11 @@ class PessoaJuridica extends BaseEntity
     /**
      * Get the value of dataDeFundacao
      */ 
-    public function getDataDeFundacao(): ?\DateTimeInterface
+    public function getDataDeFundacao(): ?string
     {
+        if (is_null($this->dataDeFundacao)) {
+            return null;
+        }
         return $this->dataDeFundacao->format('d-m-Y');
     }
 

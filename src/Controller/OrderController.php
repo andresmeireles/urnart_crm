@@ -107,6 +107,15 @@ class OrderController extends Controller
      */
     public function redirectOrderActions($id): Response
     {
+        $order = $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id);
+        if ($order->isClosed()) {
+            $this->addFlash(
+                'warning',
+                "Pedido {$order->getId()} do cliente {$order->getCustomer()} está fechado e não pode ser editado"
+            );
+            return $this->redirectToRoute('order');
+        }
+
         return $this->render('/order/pages/editOrder.html.twig', array(
             'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id),
             'products' => $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll(),
@@ -121,6 +130,7 @@ class OrderController extends Controller
      *
      * @param $id
      * @return Response
+     * @throws \Exception
      */
     public function updateOrder(OrderModel $model, Request $request, $id): Response
     {

@@ -183,6 +183,9 @@ class PessoaFisica extends BaseEntity
      */ 
     public function getBirthDate(): ?string
     {
+        if (is_null($this->birthDate)) {
+            return null;
+        }
         return $this->birthDate->format('d-m-Y');
     }
 

@@ -10,6 +10,7 @@ use App\Entity\Transporter;
 use App\Entity\PessoaJuridica;
 use App\Entity\ProductInventory;
 use App\Entity\ProductCart as Cart;
+use App\Utils\Andresmei\FlashResponse;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Yaml\Yaml;
@@ -41,6 +42,9 @@ class OrderModel extends Model
             if ($type == 'update') {
                 $id = $information['id'];
                 $order = $em->getRepository(Order::class)->find($id);
+                if ($order->isClosed()) {
+                    return FlashResponse::response(400, 'warning', 'Pedido fechado não pode ser editado');
+                }
             } else {
                 $order = new Order();
             }
@@ -127,7 +131,7 @@ class OrderModel extends Model
      */
     public function updateOrder(array $information, array $products): array
     {
-        $this->executeActionOnOrder($information, $products, 'update');
+        return $this->executeActionOnOrder($information, $products, 'update');
     }
 
     /**
@@ -140,7 +144,7 @@ class OrderModel extends Model
      */
     public function createOrder(array $information, array $products): array
     {
-        $this->executeActionOnOrder($information, $products, 'insert');
+        return $this->executeActionOnOrder($information, $products, 'insert');
     }
 
     /**

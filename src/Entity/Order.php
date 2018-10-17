@@ -293,9 +293,9 @@ class Order extends BaseEntity
         return false;
     }
 
-    public function isClosed(): int
+    public function isClosed(): bool
     {
-        if ($this->reserved == 2) {
+        if ($this->reserved === 2) {
             return true;
         }
         return false;
