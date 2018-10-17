@@ -92,6 +92,11 @@ class PessoaJuridica extends BaseEntity
         return $this->proprietarios->first()->getPessoaFisica();
     }
 
+    public function getPrincipalAddress(): PessoaFisica
+    {
+        return $this->proprietarios->first()->getPessoaFisica()->getAddress();
+    }
+
     /**
      * @return Collection|Proprietario[]
      */

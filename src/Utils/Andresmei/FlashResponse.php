@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Utils\Andresmei;
 
+
 class FlashResponse
 {
     protected static $http_code = 200;
@@ -11,6 +12,8 @@ class FlashResponse
 
     public static function response(int $http_code = null, string $type = null, string $message = null): array
     {
+        $o = new Email;
+        
         return array(
             'http_code' => $http_code ?? self::$http_code,
             'type' => $type ?? self::$type,

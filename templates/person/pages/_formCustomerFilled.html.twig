@@ -121,38 +121,29 @@
                     <div class="row">
                         <div class="form-group col-md-5">
                             <label for="road">Rua</label>
-                            <input type="text" class="form-control" name="address[road]" id="road" placeholder="Rua x">
+                            <p class="h4">{{ pf.address.road }}</p>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="road">Bairro</label>
-                            <input type="text" class="form-control" name="address[neightborhood]" id="neightborhood"
-                                   placeholder="Inserir aqui">
+                            <p class="h4">{{ pf.address.neighborhood }}</p>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="road">Numero</label>
-                            <input type="text" class="form-control" name="address[number]" id="number"
-                                   placeholder="Numero">
+                            <p class="h4">{{ pf.address.number }}</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col">
-                            <input type="text" class="form-control cep-mask" name="address[cep]" id="cep"
-                                   placeholder="CEP">
+                            <label for="zipcode">CEP</label>
+                            <p class="h4">{{ pf.address.zipcode }}</p>
                         </div>
                         <div class="form-group col">
-                            <select name="address[estado]" class="form-control" id="estado" target="municipio">
-                                <option selected disabled>Selecione Estado</option>
-                                {% if estado != [] %}
-                                    {% for e in  estado %}
-                                        <option value="{{ e.id }}" state="{{ e.uf }}">{{ e.nome }}</option>
-                                    {% endfor %}
-                                {% endif %}
-                            </select>
+                            <label for="estado">Estado</label>
+                            <p class="h4">{{ person.getEstado }}</p>
                         </div>
                         <div class="form-group col">
-                            <select name="address[municipio]" class="form-control" id="municipio">
-                                <option selected disabled>Selecione Municipio</option>
-                            </select>
+                            <label for="municipio">Municipio</label>
+                            <p class="h4">{{ person.getMunicipio }}</p>
                         </div>
                     </div>
                 </fieldset>
@@ -162,10 +153,9 @@
                     <div class="form-inline my-1" cloneableField>
                         <div clone-area>
                             <div clone-field>
-                                <input type="text" class="form-control col-md-8 mx-1 phone-with-ddd-br numbers-only"
-                                       id="phone" name="phone[0]" placeholder="numero com ddd">
-                                <button class="btn btn-primary fas fa-plus" add-btn></button>
-                                <button class="btn btn-danger fas fa-minus" rmv-btn></button>
+                                {% for phones in pf.phones %}
+                                    <p class="h4 phone-with-ddd-br">{{ phones.number == 0 ? '' : phones.number }}</p>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -173,11 +163,9 @@
                     <div class="form-inline my-1" cloneableField>
                         <div clone-area>
                             <div clone-field>
-                                <input type="hidden" input-number='true' value="1">
-                                <input type="text" class="form-control col-md-8 mx-1" id="email" name="email[0]"
-                                       placeholder="nome@dominio.com">
-                                <button class="btn btn-primary fas fa-plus" add-btn></button>
-                                <button class="btn btn-danger fas fa-minus" rmv-btn></button>
+                                {% for email in pf.emails  %}
+                                    <p class="h4">{{ email.email }}</p>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
