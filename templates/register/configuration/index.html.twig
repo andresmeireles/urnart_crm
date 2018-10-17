@@ -44,9 +44,11 @@
                                 <legend>Carregar Imagens</legend>
                             </fieldset>
                         </div>
-                        <div class="p-2 border border-light">
+                        <div class="border border-light">
+                            <small class="p-1">* Formatos suportados jpg e png</small><br>
+                            <small class="p-1">* Imagens devem ter no maximo 4mb</small>
                             {% for key, value in draw.images %}
-                                <div>
+                                <div class="p-1">
                                     <label for="{{ key }}">
                                         {{ value.label }} <span class="mx-1 badge badge-pill badge-warning"
                                                                 data-balloon="{{ value.tooltip is defined ? value.tooltip : '' }}"
@@ -62,8 +64,8 @@
                                         <label class="custom-file-label" for="customFile">Selecione seu arquivo</label>
                                         {# <input type="file" class="filepond" data-max-file-size="4MB" data-max-files="1"> #}
                                     </div>
+                                    <hr>
                                 </div>
-                                <hr>
                             {% endfor %}
                         </div>
                     </div>
