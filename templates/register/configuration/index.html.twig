@@ -1,6 +1,14 @@
 {% extends 'index.html.twig' %}
 
 {% block content %}
+    <script>
+        function reset(el) {
+            el.preventDefault()
+            simpleDialog('Deseja resetar a imagem?', function () {
+                return true;
+            })
+        }
+    </script>
     {% include '/components/notification.html.twig' %}
     <div class="px-4 py-3 col-md-12" type="config">
         <div class="clearfix">
@@ -58,11 +66,15 @@
                                     <div class="col-md-6">
                                         <img src="{{ asset(config[value.name] is defined ? config[value.name] : '') }}" class="img-fluid img-thumbnail" alt="{{ value.alt is defined ? value.alt : '' }}">
                                     </div>
-                                    <div class="custom-file my-2">
-                                        <input type="hidden" name="images[{{ value.name }}]" value="null">
-                                        <input type="file" id="file" class="custom-file-input" name="images[{{ value.name }}]">
-                                        <label class="custom-file-label" for="customFile">Selecione seu arquivo</label>
-                                        {# <input type="file" class="filepond" data-max-file-size="4MB" data-max-files="1"> #}
+                                    <div class="input-group mb-3 my-2">
+                                        <div class="custom-file">
+                                            <input type="hidden" name="images[{{ value.name }}]" value="null">
+                                            <input type="file" id="file" class="custom-file-input" name="images[{{ value.name }}]">
+                                            <label class="custom-file-label" for="customFile" aria-describedby="file">Selecione um arquivo</label>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <a href="/resetlogo" class="input-group-text bg-warning" id="reset" onclick="reset()">Resetar</a>
+                                        </div>
                                     </div>
                                     <hr>
                                 </div>

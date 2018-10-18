@@ -1,4 +1,9 @@
-// simpleDialog
+/**
+ * name simpleDialog
+ *
+ * @param message
+ * @param responseFunction
+ */
 module.exports = function (message, responseFunction = null) {
     var parsedMessage = `${message}`;
 

@@ -44,6 +44,7 @@ class SimpleFileUpload
 
     public static function uploadLogoImage(?UploadedFile $file): bool
     {
+
         if (is_null($file)) {
             //self::$filePath = "sys/logo_img/logo.png";
             self::$status = true;
@@ -78,7 +79,7 @@ class SimpleFileUpload
         return self::$message;
     }
 
-    public static function getFilePath(): string
+    public static function getFilePath(): ?string
     {
         return self::$filePath;
     }

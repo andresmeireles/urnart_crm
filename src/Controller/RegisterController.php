@@ -151,4 +151,16 @@ class RegisterController extends Controller
 
         return $this->redirectToRoute('config');
     }
+
+    /**
+     * @Route("/resetlogo")
+     *
+     * @param Configuration $config
+     * @return Response
+     */
+    public function resetlogo(Configuration $config): Response
+    {
+        $config->resetLogoImage();
+        return $this->redirectToRoute('config');
+    }
 }

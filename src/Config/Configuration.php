@@ -59,6 +59,10 @@ class Configuration
     public function writeImages(array $images, array $imagePaths)
     {
         foreach ($images as $key => $value) {
+            if (is_null($value)) {
+                $this->writableConfig[$key] = $this->config[$key];
+                continue;
+            }
             if (array_key_exists($key, $imagePaths)) {
                 $this->writableConfig[$key] = $imagePaths[$key];
                 continue;
@@ -75,5 +79,16 @@ class Configuration
         }
 
         return FlashResponse::response(200, 'success', 'Imagens enviadas com sucesso, para finalizar aperte para finalizar alterações aparete em salvar');
+    }
+
+    public function resetLogoImage()
+    {
+        $yaml = $this->config;
+        $yaml['logo_image_path'] = 'sys/logo_img/logo.png';
+        dump($yaml);
+        die();
+        $yaml = Yaml::dump($yaml);
+        file_put_contents(__DIR__.'/system-config.yaml', $yaml);
+        return FlashResponse::response(200, 'success', 'Imagem resetada com sucesso :)');
     }
 }

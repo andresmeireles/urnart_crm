@@ -1,4 +1,10 @@
-// notification function
+/**
+ *
+ * @param text => string a ser mostrado pela notificacao
+ * @param label => tipo de notificação
+ * @param notyTimeout => tempo de duração da imagem
+ * @param timeout
+ */
 module.exports = function (text, label = 'error', notyTimeout = 2500, timeout = 1000) {
     setTimeout(() => {
         var notify = new noty({
