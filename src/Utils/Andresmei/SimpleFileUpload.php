@@ -7,15 +7,39 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class SimpleFileUpload
 {
+    /**
+     * Tamanho maximo do arquivo
+     */
     const MAX_SIZE_FILE = 400000;
 
+    /**
+     * @var string
+     *
+     * Caminho absoluto da imagem
+     */
     protected static $logoDir = __DIR__ . '/../../../public/sys/logo_img';
+
+    /**
+     * @var array
+     *
+     * Array com tipos de imagem suportados.
+     */
     protected static $supportedImages = array(
         'image/jpeg',
-        'image/jpg'
+        'image/png',
+        'image/svg+xml',
+        'image/webp'
     );
+
+    /**
+     * @var string
+     *
+     * String com caminho da imagem
+     */
     protected static $filePath;
+
     protected static $message;
+
     protected static $status = false;
 
     public static function uploadLogoImage(?UploadedFile $file): bool
@@ -26,7 +50,9 @@ class SimpleFileUpload
 
             return true;
         }
-        if (!self::checkImage($file->getClientMimeType()) && self::checkFileSize($file->getClientSize())) {
+        dump($file->getClientSize() > self::MAX_SIZE_FILE);
+        die();
+        if (!self::checkImage($file->getClientMimeType()) && !self::checkFileSize($file->getClientSize())) {
             return false;
         }
         self::clearFolder();

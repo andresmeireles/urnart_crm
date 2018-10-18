@@ -2,34 +2,38 @@
 
 namespace App\EventSubscriber;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Finder\Exception\AccessDeniedException;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
 {
-    protected static $valid= true;
-
-    public function onKernelController(FilterControllerEvent $event)
+    /**
+     * @param FilterControllerEvent $event
+     */
+    public function onKernelController(FilterControllerEvent $event): void
     {
         $request = $event->getRequest();
-        if ($request->server->get('REQUEST_METHOD') == 'POST' && $request->server->get('APP_ENV') == 'dev') {
+        if ($request->server->get('REQUEST_METHOD') == 'POST') {
             $token = $request->request->get('token');
             $controller = $event->getController()[0];
-            if (!$controller->isCsrfTokenValid('token-v', $token)) {
-                self::$valid = false;
-                //die('token incorreto, por favor volte a pagina anterior, não recarrege a pagina');
+            if (!$controller->isCsrfTokenValid('token', $token)) {
+                throw new AccessDeniedException('Token invalido');
             }
         }
     }
 
-    public function onKernelResponse(FilterResponseEvent $event)
+    /**
+     * @param GetResponseForExceptionEvent $event
+     */
+    public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        if (!self::$valid) {
-            return $event->setResponse(new Response('<b>É tetra</b>'));
+        $exception = $event->getException();
+        if (strpos(get_class($exception), 'AccessDeniedException')) {
+            return $event->setResponse(new Response($exception->getMessage(), 301));
         }
     }
 
@@ -37,7 +41,7 @@ class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
     {
         return [
            'kernel.controller'  => 'onKernelController',
-           'kernel.response'    => 'onKernelResponse'
+           'kernel.exception'   => 'onKernelException'
         ];
     }
 }
