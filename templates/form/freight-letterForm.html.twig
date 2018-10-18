@@ -12,7 +12,9 @@
             <form method="POST" action="/forms/{{ formName }}" target="_blank">
               <div class="row">
                 <div class="col-8 col-md-8">
-                  <input type="submit" class="btn btn-primary btn-block" id="send-form" value="Criar Carta Frete"> </div>
+                  <input type="submit" class="btn btn-primary btn-block" id="send-form" value="Criar Carta Frete">
+                  <input type="hidden" name="token" value="{{ csrf_token('token') }}">
+                </div>
                 <div class="col-md-4">
                   <button class="btn btn-secondary btn-block" onclick="location.reload()">Novo</button>
                 </div>

@@ -14,7 +14,8 @@
 				<div class="row">
 					<div class="col-md-6">
 						<input type="submit" class="btn btn-primary btn-block" value="Criar">
-						{#<input type="button" id="exportPdf" name="remand" class="btn btn-light btn-block" value="Exportar pdf">#}
+						<input type="hidden" name="token" value="{{ csrf_token('token') }}">
+                        {#<input type="button" id="exportPdf" name="remand" class="btn btn-light btn-block" value="Exportar pdf">#}
 					</div>
 					<div class="col-md-6">
 						<a href="/forms/remand" class="btn btn-secondary btn-block">Novo</a>

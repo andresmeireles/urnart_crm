@@ -23,7 +23,8 @@
             <form method="POST" action="/forms/{{ formName }}">
               <div class="row">
                 <div class="col">
-                  <input type="submit" class="btn btn-primary btn-block" value="Criar Autorização de Retirada" id="send-form"> 
+                  <input type="submit" class="btn btn-primary btn-block" value="Criar Autorização de Retirada" id="send-form">
+                  <input type="hidden" name="token" value="{{ csrf_token('token') }}">
                 </div>
               </div>
                   <div class="my-1">

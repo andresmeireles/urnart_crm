@@ -12,9 +12,10 @@
                     <div class="col-md-8">
                         <input type="submit" class="btn btn-block btn-lg btn-primary" id="send-form"
                                value="Criar relatório">
+                        <input type="hidden" name="token" value="{{ csrf_token('token') }}">
                     </div>
                     <div class="col-md-4">
-                        <button class="btn btn-secondary btn-block btn-lg" onclick="location.reload()">Novo</button>
+                        <a class="btn btn-secondary btn-block btn-lg" href="/form/{{ formName }}">Novo</a>
                     </div>
                 </div>
                 <div class="row py-3">
