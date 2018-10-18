@@ -16,7 +16,7 @@
     .c { margin: 0px 0px 0px 90px;}
 </style>
 {% for data in prod %}
-{% set freightPrice = data.price | number_format(2, '.', ',') %}
+{% set freightPrice = data.price | number_format(0, '', '') %}
 <div id="page">
     <div id="half-page">
         <div id="form">

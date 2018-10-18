@@ -12,5 +12,5 @@ module.exports = function (pieceOfDom) {
     // cep
     $(pieceOfDom).find('.cep-mask').mask('00000-000')
     // money
-    $(pieceOfDom).find('.money-mask').mask('000.000.000,00', {reverse: true})
+    $(pieceOfDom).find('.money-mask').mask('000000000,00', {reverse: true})
 }

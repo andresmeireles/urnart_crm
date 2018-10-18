@@ -45,14 +45,13 @@ class SimpleFileUpload
     public static function uploadLogoImage(?UploadedFile $file): bool
     {
         if (is_null($file)) {
-            self::$filePath = "sys/logo_img/logo.png";
+            //self::$filePath = "sys/logo_img/logo.png";
             self::$status = true;
 
             return true;
         }
-        dump($file->getClientSize() > self::MAX_SIZE_FILE);
-        die();
-        if (!self::checkImage($file->getClientMimeType()) && !self::checkFileSize($file->getClientSize())) {
+
+        if (!self::checkImage($file->getClientMimeType()) && !self::checkFileSize((int) $file->getSize())) {
             return false;
         }
         self::clearFolder();
@@ -60,7 +59,6 @@ class SimpleFileUpload
         $uploadFile = move_uploaded_file($file->getRealPath(), $uploadPath);
         if (!$uploadFile) {
             self::$message = 'Erro ao enviar imagem.';
-
             return false;
         }
         self::$filePath = '/sys/logo_img/custom/'.$file->getClientOriginalName();
@@ -98,7 +96,8 @@ class SimpleFileUpload
 
     private static function checkFileSize(int $fileSize): bool
     {
-        if ($fileSize > self::MAX_SIZE_FILE) {
+        if ($fileSize > self::MAX_SIZE_FILE || $fileSize === 0) {
+            dump($fileSize);
             self::$message = "Imagem maior que o suportado";
             return false;
         }

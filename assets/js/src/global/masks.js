@@ -11,5 +11,5 @@ document.addEventListener('DOMContentLoaded', function () {
     // cep
     $(document).find('.cep-mask').mask('00000-000')
     // money mask
-    $(document).find('.money-mask').mask('000.000.000,00', {reverse: true})
+    $(document).find('.money-mask').mask('000000000,00', {reverse: true})
 })
