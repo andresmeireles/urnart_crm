@@ -74,24 +74,24 @@ $(function () {
 			 */
 			for (var c=0; c < document.querySelectorAll('#cloneableField [required]').length; c++) {
 				if (document.querySelectorAll('#cloneableField [required]')[c].value == '') {
-					alert('Preencher campos antes de acrescentar novo registro');
-					return false;
+					alert('Preencher campos antes de acrescentar novo registro')
+					return false
 				}
 			}
 
-			iNumber += 1;
-			el.preventDefault();
+			iNumber += 1
+			el.preventDefault()
 
 			/**
 			 * Caso exista apenas um registo bloqueia o botão de remoção
 			 */
             if (document.querySelectorAll('#cloneableField').length == 1 ) {
-                document.querySelector('[remove-btn]').removeAttribute('disabled');
+                document.querySelector('[remove-btn]').removeAttribute('disabled')
             }
 
             //clona o elemento
-            var node = el.target.closest('#cloneableField');
-            var cloneEl = node.cloneNode(true);
+            var node = el.target.closest('#cloneableField')
+            var cloneEl = node.cloneNode(true)
 
             //desmarca checkbox caso exista
             if (cloneEl.querySelector('input[type="checkbox"]')) {
@@ -100,20 +100,20 @@ $(function () {
             }
 
             // reseta todos os campos escrevedo um nome unico
-            var cloneElInputs = cloneEl.querySelectorAll('input'); 
+            var cloneElInputs = cloneEl.querySelectorAll('input')
            	for (var c=0; c < cloneElInputs.length; c++) {	
-           		var inputName = 'cloneableField'+ iNumber +'['+ cloneElInputs[c].getAttribute('id') +']';
-           		cloneElInputs[c].setAttribute('name', inputName); 
-           		cloneElInputs[c].value = cloneElInputs[c].defaultValue;
+           		var inputName = 'cloneableField'+ iNumber +'['+ cloneElInputs[c].getAttribute('id') +']'
+           		cloneElInputs[c].setAttribute('name', inputName)
+           		cloneElInputs[c].value = cloneElInputs[c].defaultValue
             }
             
-			cloneEl.querySelector('[input-number]').value = iNumber;          	
+			cloneEl.querySelector('[input-number]').value = iNumber
 
 			// cria o campo novo
-            node.after(cloneEl);
-
+            node.after(cloneEl)
+            checkMask(cloneEl)
             // poem o foco no novo campo
-            cloneEl.querySelector('[type="text"]').focus();
+            cloneEl.querySelector('[type="text"]').focus()
 
             return true;
 		}
