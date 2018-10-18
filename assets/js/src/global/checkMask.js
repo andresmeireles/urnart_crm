@@ -1,4 +1,4 @@
-// checkMask
+    // checkMask
 module.exports = function (pieceOfDom) {
 	//date
     $(pieceOfDom).find('.date-mask').mask('00/00/0000')

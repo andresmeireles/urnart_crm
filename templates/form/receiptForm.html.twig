@@ -14,7 +14,7 @@
                 <div class="col-md-8">
                   <input type="submit" class="btn btn-primary btn-block" id="send-form" value="Criar Recibo"> </div>
                 <div class="col-md-4">
-                  <button class="btn btn-secondary btn-block" onclick="location.reload()">Novo</button>
+                  <a class="btn btn-secondary btn-block" href="/forms/{{ formName }}">Novo</a>
                 </div>
               </div>
               <div class="row py-2">
@@ -28,7 +28,7 @@
                           <div class="col">Cliente</div>
                           <div class="col-2">Cidade</div>
                           <div class="col-1">Estado</div>
-                          <div class="col-2">Pedido</div>
+                          <div class="col-2">Valor</div>
                           <div class="col-2">N° Pedido</div>
                           <div class="col-1">&nbsp;</div>
                         </div>
@@ -47,7 +47,7 @@
                               <div class="input-group-prepend">
                                 <div class="input-group-text">R$</div>
                               </div>
-                              <input type="number" class="form-control" id="price" name="cloneableField0[price]" placeholder="Valor" required=""> </div>
+                              <input type="text" class="form-control numbers-only money-mask" id="price" name="cloneableField0[price]" placeholder="Valor" required=""> </div>
                           </div>
                           <div class="col-2">
                             <input type="text" class="form-control my-1" id="orderNumber" name="cloneableField0[orderNumber]" placeholder="Numero" required=""> </div>

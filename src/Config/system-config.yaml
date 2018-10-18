@@ -1,4 +1,4 @@
-allow_negative_stock: false
+allow_negative_stock: true
 allow_reserve: false
 allow_same_cpf: false
 logo_image_path: sys/logo_img/logo.png
