@@ -153,14 +153,18 @@ class RegisterController extends Controller
     }
 
     /**
-     * @Route("/resetlogo")
+     * @Route("/resetlogo", methods="PUT")
      *
      * @param Configuration $config
      * @return Response
      */
-    public function resetlogo(Configuration $config): Response
+    public function resetlogo(Configuration $config, Request $request): Response
     {
+        $hash = (json_decode($request->getContent()))->hash;
+        if (!($hash == hash('ripemd160', 'valido'))) {
+            return new Response('false', 400);
+        }
         $config->resetLogoImage();
-        return $this->redirectToRoute('config');
+        return new Response('true', 200);
     }
 }

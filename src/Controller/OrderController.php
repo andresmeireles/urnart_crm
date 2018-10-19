@@ -74,6 +74,7 @@ class OrderController extends Controller
      * @param OrderModel $model
      * @param Request $request
      * @return Response
+     * @throws \Exception
      */
     public function createOrder(OrderModel $model, Request $request): Response
     {
@@ -163,6 +164,7 @@ class OrderController extends Controller
      * @Route("/order/action/reserve", methods="GET")
      *
      * @return Response
+     * @throws \Exception
      */
     public function reserveOrderProducts(OrderModel $model, Request $request): Response
     {
@@ -235,7 +237,6 @@ class OrderController extends Controller
      */
     public function removeOrder(OrderModel $model, $id): Response
     {
-        $id = $id;
         $result = $model->removeOrder($id);
         $this->addFlash(
             $result['type'],

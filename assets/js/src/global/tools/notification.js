@@ -1,4 +1,5 @@
 /**
+ * name => notification
  *
  * @param text => string a ser mostrado pela notificacao
  * @param label => tipo de notificação

@@ -85,8 +85,6 @@ class Configuration
     {
         $yaml = $this->config;
         $yaml['logo_image_path'] = 'sys/logo_img/logo.png';
-        dump($yaml);
-        die();
         $yaml = Yaml::dump($yaml);
         file_put_contents(__DIR__.'/system-config.yaml', $yaml);
         return FlashResponse::response(200, 'success', 'Imagem resetada com sucesso :)');

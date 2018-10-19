@@ -14,6 +14,29 @@ document.addEventListener('DOMContentLoaded', function () {
             server: './write/images'
         })
 
+        document.addEventListener('click', function (el) {
+            if (el.target.hasAttribute('file')) {
+                el.preventDefault()
+
+                simpleDialog('Deseja resetar a imagem para forma pádrão?', function () {
+                    let link = el.target.getAttribute('file')
+                    let hash = el.target.getAttribute('hash')
+
+                    simpleRequest(link, 'PUT', hash, function (response) {
+                        let message = `Imagem resetado com sucesso, salve as configurações para aplicar alterações`
+                        let type = 'success'
+                        if (!response.data) {
+                            message = 'Erro ao aplicar alterar alterações'
+                            type = 'error'
+                        }
+                        notification(message, type)
+
+                        return true
+                    }, 'hash')
+                })
+            }
+        })
+
         document.addEventListener('change', function (el) {
             if (el.target.classList.contains('custom-file-input')) {
                 el.preventDefault()

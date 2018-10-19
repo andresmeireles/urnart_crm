@@ -1,4 +1,5 @@
 /**
+ * name: simpleRequest
  *
  * @param url [url para requisição]
  * @param method [tipo de verbo http para requisição, valor padrão POST]

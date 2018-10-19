@@ -1,4 +1,4 @@
-allow_negative_stock: false
+allow_negative_stock: true
 allow_reserve: false
-allow_same_cpf: false
-logo_image_path: /sys/logo_img/custom/3f032fb57c44f657dacea850d66791c0.jpg
+allow_same_cpf: true
+logo_image_path: sys/logo_img/logo.png

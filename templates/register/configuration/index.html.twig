@@ -73,7 +73,7 @@
                                             <label class="custom-file-label" for="customFile" aria-describedby="file">Selecione um arquivo</label>
                                         </div>
                                         <div class="input-group-append">
-                                            <a href="/resetlogo" class="input-group-text bg-warning" id="reset" onclick="reset()">Resetar</a>
+                                            <button class="input-group-text bg-warning" id="reset" file="/resetlogo" hash="{{ 'valido' | makeHash }}" token="{{ csrf_token('token') }}">Resetar</button>
                                         </div>
                                     </div>
                                     <hr>

@@ -98,7 +98,6 @@ class SimpleFileUpload
     private static function checkFileSize(int $fileSize): bool
     {
         if ($fileSize > self::MAX_SIZE_FILE || $fileSize === 0) {
-            dump($fileSize);
             self::$message = "Imagem maior que o suportado";
             return false;
         }
