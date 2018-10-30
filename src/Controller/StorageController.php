@@ -179,8 +179,8 @@ class StorageController extends Controller
         $data = $request->request->all();
         $response = $model->insert($data);
         $this->addFlash(
-            'success',
-            'Produto adicionado com sucesso'
+            $response['type'],
+            $response['message']
         );
         return $this->redirectToRoute('showProd');
     }

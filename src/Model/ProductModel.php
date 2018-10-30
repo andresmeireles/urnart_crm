@@ -5,6 +5,7 @@ namespace App\Model;
 
 use App\Entity\Product;
 use App\Entity\ProductInventory;
+use App\Utils\Andresmei\FlashResponse;
 
 class ProductModel extends Model
 {
@@ -88,12 +89,20 @@ class ProductModel extends Model
         $this->em->getConnection()->beginTransaction();
         try {
             $product = new Product;
+            $name = strtolower($data['name']);
+            if ($type === 'insert') {
+                $result = $this->em->getRepository(Product::class)->findOneBy(array('name' => $name));
+                if (!is_null($result)) {
+                    return FlashResponse::response(400, 'warning', 'Produto com nome igual já cadastrado');
+                }             
+            }
             $productInventory = new ProductInventory();
             if ($type == 'update') {
                 $product = $this->em->getRepository(Product::class)->find($id);
                 $productInventory = $product->getProductInventory();
             }
-            $product->setName($data['name']);
+
+            $product->setName($name);
             $price = (float) $data['price'];
             $product->setPrice($price);
             $color = $data['colors'] ?? array();
@@ -118,6 +127,7 @@ class ProductModel extends Model
             $this->em->getConnection()->commit();
             return array(
                 'http_code' => 200,
+                'type' => 'success',
                 'message' => 'Sucesso'
             );
         } catch (\Exception $e) {

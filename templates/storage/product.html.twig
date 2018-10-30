@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+    {% include 'components/notification.html.twig' %}
     <div class="col p-3">
         <h1>Estoques de Produtos</h1>
         <hr>
@@ -77,7 +78,7 @@
                                             {% for p in product %}
                                                 <tr>
                                                     <td>{{ p.getId }}</td>
-                                                    <td>{{ p.name }}</td>
+                                                    <td>{{ p.name | upper }}</td>
                                                     <td>
                                                         {% if p.color != [] %}
                                                             {% for color in p.color %}
