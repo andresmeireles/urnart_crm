@@ -1,8 +1,11 @@
-module.exports = function (routeUrl, formData, responseFunction = null) {
+module.exports = function (routeUrl, formData, method = 'POST' , token = null, responseFunction = null) {
 	axios({
-		method: 'POST',
+		method: `${method}`,
 		url: '/'+routeUrl,
-		data: formData
+		data: formData,
+		headers: {
+			'auth': token
+		}
 	})
 	.then( function (response) {
 		responseFunction(response.data, response.headers['type-message']);

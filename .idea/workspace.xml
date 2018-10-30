@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8f147876-3b9c-4961-b344-3198350daec1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/js/src/global/simpleRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/src/global/simpleRequest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/js/src/global/tools/notification.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/src/global/tools/notification.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/js/src/register/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/src/register/config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Config/Configuration.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Config/Configuration.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Config/system-config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/Config/system-config.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/OrderController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/RegisterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RegisterController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EventSubscriber/CsrfAuthSubscriber.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/EventSubscriber/CsrfAuthSubscriber.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Utils/Andresmei/SimpleFileUpload.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utils/Andresmei/SimpleFileUpload.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/register/configuration/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/register/configuration/index.html.twig" afterDir="false" />
-    </list>
+    <list default="true" id="8f147876-3b9c-4961-b344-3198350daec1" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,9 +184,18 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="-610816364">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.18" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/assets/js/src/register/config.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -300,9 +297,6 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
-  </component>
-  <component name="NodeModulesDirectoryManager">
-    <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths>
@@ -413,6 +407,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -424,7 +419,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -484,16 +478,17 @@
       <workItem from="1539883092994" duration="1339000" />
       <workItem from="1539884652980" duration="5736000" />
       <workItem from="1539957151454" duration="5225000" />
+      <workItem from="1540568879928" duration="80000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="94420000" />
+    <option name="totallyTimeSpent" value="94500000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <frame x="0" y="0" width="1366" height="732" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21465296" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21818182" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />

@@ -35,7 +35,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * @Route("/register/add/{entity}", methods="POST")
+     * @Route("/register/add/{entity}", methods={"POST", "PUT"})
      *
      * @param string $entity
      * @param Crud $setter
@@ -53,7 +53,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * @Route("/register/get/{entity}", methods="POST")
+     * @Route("/register/get/{entity}", methods={"POST", "PATCH"})
      *
      * @param string $entity
      * @param Crud $getter

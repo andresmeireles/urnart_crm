@@ -1,5 +1,5 @@
 <div class="py-4 col-md-11 d-none" id="add-prod">
-    <form id="form-add">
+    <form method="POST" id="form-add" action="/storage/productAction">
         <div class="card">
             <div class="card-header">Cadastrar</div>
             <div class="card-body fitable">
@@ -72,7 +72,8 @@
             </div>
             <div class="card-footer text-muted">
                 <button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>
-                <button class="btn btn-primary" sendvt="/storage/productAction">Adicionar</button>
+                <input type="hidden" name="token" value="{{ csrf_token('token') }}">
+                <button type="submit" class="btn btn-primary">Adicionar</button>
             </div>
         </div>
     </form>

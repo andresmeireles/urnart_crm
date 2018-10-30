@@ -8,7 +8,7 @@ document.addEventListener('click', function(el) {
 	if (el.target.id == 'inputOtherVendors' ||  el.target.tagName == 'UL') {
 		//var inputVendorDiv = document.querySelector('#inputOtherVendors');
 		var inputDiv = el.target.getAttribute('data-target');
-		var input = document.querySelector(`#${inputDiv}`);
+		var input = document.querySelector(`#form-add #${inputDiv}`);
 		//inputDiv.classList.add('bg-light');
 		input.classList.remove('d-none');
 		input.focus();
@@ -25,7 +25,7 @@ document.addEventListener('click', function(el) {
 		var target = el.target.getAttribute('data-target')
 		var liElement = el.target.parentNode
 		let liName = liElement.getAttribute('name')
-		var option = document.querySelector(`select#${target}List`).querySelector(`#${liName}`)
+		var option = document.querySelector(`form#form-add select#${target}List`).querySelector(`#${liName}`)
 		option.remove()
 		liElement.remove()
 	}
@@ -47,7 +47,7 @@ document.addEventListener('keyup', function (el) {
 		}
 		
 		var input = el.target.value;
-		var select = document.querySelector(`#${el.target.id}List`);
+		var select = document.querySelector(`#form-add #${el.target.id}List`);
 		
 		if (el.keyCode == 13) {
 			if (input.value == '') {
@@ -111,14 +111,14 @@ document.addEventListener('change', function (el) {
 })
 
 var addOnUl = function (value, id) {
-	var ul = document.querySelector(`#${id}Grid`);
+	var ul = document.querySelector(`#form-add #${id}Grid`);
 	var addStr = `<li class="badge badge-pill badge-light" name="${value.toLowerCase()}"><span class="mx-1">${value}</span><span class="text-danger cursor-decoration" data-target="${id}" id="removeItem">x</span></li>`;
 	ul.innerHTML += addStr;
 	return true;
 }
 
 var hideInputField = function (id) {
-	var inputVendorDiv = document.querySelector(`#${id}`);
+	var inputVendorDiv = document.querySelector(`#form-add #${id}`);
 	inputVendorDiv.classList.remove('bg-light')
 	inputVendorDiv.classList.add('d-none')
 	inputVendorDiv.value= ''

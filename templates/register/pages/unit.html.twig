@@ -19,7 +19,8 @@
 				<thead class="table-primary">
 					<tr>
 						<th>Ini</th>
-						<th colspan=2>Unidades</th>
+						<th>Unidades</th>
+						<th>&nbsp;</th>
 					</tr>
 				</thead>
 				<tbody id="unit-body">
@@ -60,7 +61,7 @@
 				<div class="form-group">
 					<input type="text" name="name" class="form-control" placeholder="Nome da Unidade">
 				</div>
-				<button class="btn btn-primary sender" data-sender="register/add/unit">Cadastrar</button>
+				<button class="btn btn-primary sender" data-sender="register/add/unit" method="post" token="{{ csrf_token('token') }}">Cadastrar</button>
 			</form>
 		</div>
 	</div>

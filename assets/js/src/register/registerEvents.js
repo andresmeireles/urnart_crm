@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				name, 
 				entity, 
 				function () {
-					simpleRequest(target, 'post', rowValue, function (response) {
+					simpleRequest(target, 'delete', rowValue, function (response) {
 						var type = response.headers['type-message'];
 						var info = response.data;
 						var messageAlert = document.querySelector('#alert-message');
@@ -32,15 +32,16 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 		
 		if (el.target.classList.contains('reload')) {
-			var rowName = el.target.closest('button').id;
+			//var rowName = el.target.closest('button').id;
+			var rowName = el.target.id;
 			var tableName = rowName.replace('reload', 'body');
 			var entity = rowName.slice(0, -7);
 			var url = `/register/get/${entity}`;
-			
+			console.log(rowName, tableName)
 			var table = document.getElementById(tableName); 
 			table.innerHTML = '';
 			
-			simpleRequest(url, 'post', null, function (response) {
+			simpleRequest(url, 'patch', null, function (response) {
 				var data = response.data;
 				var tr = '';
 				for (var info of data) {

@@ -24,7 +24,7 @@
                         <th colspan="2">Porto</th>
                     </tr>
                 </thead>
-                <tbody id="unit-body">
+                <tbody id="transporter-body">
                     {% for transporter in transporters %}
                         <tr>
                             <td class="d-none id-transporter">
@@ -62,7 +62,7 @@
                 <div class="form-group">
                     <input type="text" name="port" class="form-control" placeholder="Nome do Porto">
                 </div>
-                <button class="btn btn-primary sender" data-sender="register/add/transporter">Cadastrar</button>
+                <button class="btn btn-primary sender" data-sender="register/add/transporter" method="post" token="{{ csrf_token('token') }}">Cadastrar</button>
             </form>
         </div>
     </div>
