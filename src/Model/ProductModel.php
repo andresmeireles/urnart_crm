@@ -103,6 +103,8 @@ class ProductModel extends Model
             }
 
             $product->setName($name);
+            $description = htmlentities($data['description'], ENT_QUOTES, 'UTF-8');
+            
             $price = (float) $data['price'];
             $product->setPrice($price);
             $color = $data['colors'] ?? array();

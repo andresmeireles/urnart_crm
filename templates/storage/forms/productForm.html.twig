@@ -9,8 +9,8 @@
     {% endif %}
     
 
-    <div class="py-4 col-md-12" id="add">
-        <form method="POST" action="/storage/product/update/{{ product.getId }}">
+    <div class="py-4 col-md-12" id="update">
+        <form method="POST" action="/storage/product/update/{{ product.getId }}" id="update">
             <div class="card">
                 <div class="card-header">
                     <div class="float-left">
@@ -104,7 +104,7 @@
                 <div class="card-footer text-muted">
                     <a href="/storage/feedstock" class="btn btn-light">Voltar</a>
                     <a class="btn btn-danger text-light" del="{{ '/storage/productAction/' | rot13 }}{{ product.getId }}">Remover</a>
-                    <input type="hidden" name="token" token="{{ csrf_token('token') }}">
+                    <input type="hidden" name="token" value="{{ csrf_token('token') }}">
                     <input type="submit" class="btn btn-primary" value="Atualizar">
                 </div>
             </div>
