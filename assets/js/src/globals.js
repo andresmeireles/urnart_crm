@@ -1,10 +1,3 @@
-module.exports = function (formAdd) {
-	var requiredFormInputs = document.querySelectorAll('#'+formAdd+' [required]');
-	for (var input of requiredFormInputs) {
-		//console.log(input);
-	}
-}
-
 document.addEventListener('DOMContentLoaded', function () {
 
 	//add single elements
@@ -18,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			var method = el.target.getAttribute('method');
 			var token = el.target.getAttribute('token');
 			sendSimpleRequest(url, formData, method, token, function (message, type) {
-				console.log(message, type)
 				var messageAlert = document.querySelector('#alert-message');
 				messageAlert.innerHTML = messageSend(type, message);
 
@@ -57,19 +49,16 @@ document.addEventListener('DOMContentLoaded', function () {
 		for (var input of inputs) {
 			input.addEventListener('keypress', function (evt) {
 				var charCode = (evt.which) ? evt.which : evt.keyCode;
-				
 				if (charCode == 44) {
 					return true;
 				}
-
 				if (charCode > 31 && (charCode < 48 || charCode > 57)) {
 					evt.preventDefault();
 					return false;
 				}
-
 				return true;
 			});
-		}	
+		}
 	}
 
 	if (document.addEventListener('click', function (el) {

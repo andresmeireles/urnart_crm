@@ -20,5 +20,19 @@ module.exports = function (url, method = 'POST', info = null, responseFunction =
 			return resopnse.data;
 		}
 		responseFunction(response);
+	})
+	.catch( (err) => {
+		let response = err.response;
+		var notify = new noty({
+			text: `${response.data}`,
+			layout: 'topCenter',
+                    type: "error",
+                    theme: 'bootstrap-v4',
+                    animation: {
+                        open: 'animated fadeInUp', // Animate.css class names
+                        close: 'animated fadeOutDown' // Animate.css class names
+                    }
+                }).show();
+		notify.setTimeout(2500);
 	});
 }

@@ -66,7 +66,7 @@
                 el.target.value = ''
                 alert('Valor muito grande')
                 return false
-            } 
+            }
 
             if (el.target.classList.contains('is-invalid')) {
                 el.target.classList.remove('is-invalid')
@@ -92,14 +92,12 @@
             el.preventDefault()
 
             var form = el.target.closest('form')
-            
             if (!checkRequired(form)) {
                 el.target.removeAttribute('disabled')
                 return false
-            } 
+            }
 
             genericSend(el, 'sendvt', 'POST', function (response) {
-                //console.log(response)
                 location.reload()
             })
         }

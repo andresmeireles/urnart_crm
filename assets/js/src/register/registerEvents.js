@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-	
+
 	document.addEventListener('click', function (el) {
 		if (el.target.classList.contains('remover')) {
 			var row = el.target.closest('tr');
@@ -8,16 +8,16 @@ document.addEventListener('DOMContentLoaded', function () {
 			var rowValue = row.querySelectorAll('td')[0].innerHTML;
 			rowValue = rowValue.replace(/\s/g, '');
 			var target = '/register/remove/'+row.closest('div').getAttribute('data-name');
-			
+			var res = false;
 			// fecha caixa de dialogo
 			$.fancybox.close();
-			
+
 			defaultDialog(
-				'Deseja remover item ', 
-				name, 
-				entity, 
+				'Deseja remover item ',
+				name,
+				entity,
 				function () {
-					simpleRequest(target, 'delete', rowValue, function (response) {
+					res = simpleRequest(target, 'delete', rowValue, function (response) {
 						var type = response.headers['type-message'];
 						var info = response.data;
 						var messageAlert = document.querySelector('#alert-message');
@@ -25,28 +25,25 @@ document.addEventListener('DOMContentLoaded', function () {
 						setTimeout(function () {
 							$(document).find('#close-button').trigger('click');
 						}, 2000);
+						row.remove();
 					});
-					row.remove();
 				}
 			);
 		}
-		
+
 		if (el.target.classList.contains('reload')) {
 			//var rowName = el.target.closest('button').id;
 			var rowName = el.target.id;
 			var tableName = rowName.replace('reload', 'body');
 			var entity = rowName.slice(0, -7);
 			var url = `/register/get/${entity}`;
-			console.log(rowName, tableName)
 			var table = document.getElementById(tableName); 
 			table.innerHTML = '';
-			
 			simpleRequest(url, 'patch', null, function (response) {
 				var data = response.data;
 				var tr = '';
 				for (var info of data) {
 					var fields = Object.keys(info)
-					
 					tr += '<tr>'
 					for (var field of fields) {
 						if (field == 'id') {
@@ -58,11 +55,8 @@ document.addEventListener('DOMContentLoaded', function () {
 					}
 					tr += `<td class="text-right"><span class="badge badge-pill badge-danger remover cursor-decoration">Remover</span></td></tr>`;
 				}
-				
 				table.innerHTML = tr;
 			});
 		}
-		
 	});
-	
 });

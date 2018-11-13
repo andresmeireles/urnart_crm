@@ -16,5 +16,8 @@ module.exports = function (url, method = 'POST', info = null, responseFunction =
             return resopnse.data;
         }
         responseFunction(response);
+    })
+    .catch((error) => {
+        console.log(error);
     });
 }
