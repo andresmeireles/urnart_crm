@@ -83,7 +83,7 @@
                             {{ order.getCreateDate | date('d/m/Y') }}
                         </td>
                         <td class="text-center">
-                            <span data-action="view{{ order.getId }}"
+                            <span href="javascript:;" data-fancybox data-src="#view{{ order.getId }}"
                                   class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
                             {% if order.isOpen %}
                                 <span reserve="h={{ 'valido' | makeHash }}&i={{ order.id }}"

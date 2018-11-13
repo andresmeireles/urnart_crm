@@ -10,7 +10,7 @@
 module.exports = function (url, method = 'POST', info = null, responseFunction = null, dataName = 'id') {
 	axios({
 		method: method,
-		url: url, 
+		url: url,
 		data: {
 			[dataName]: info
 		},

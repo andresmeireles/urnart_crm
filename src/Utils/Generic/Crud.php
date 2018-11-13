@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Utils\Generic;
 
 use App\Utils\Generic\GenericContainer;
@@ -37,9 +37,7 @@ class Crud extends GenericContainer
 	public function remove(string $id, string $entity = null): void
 	{
 		$this->setEntity($entity);
-		
 		$registry = $this->em->getRepository($this->entity)->find($id);
-		
 		$this->em->remove($registry);
 		$this->commit('Erro na operação');
 	}
@@ -49,10 +47,8 @@ class Crud extends GenericContainer
 		try {
 			$this->em->flush();
 			$this->userMessage = 'Operação feita com sucesso';
-		} catch (\Exception $e) {
-			$this->typeMessage = 'danger';
-			$this->userMessage = $errorMessage ?? $e->getMessage();
-			$this->devMessage = $e->getMessage();
+		} catch (\PDOException $e) {
+			throw new \PDOException();
 		}
 	}
 

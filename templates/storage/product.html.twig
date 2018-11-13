@@ -13,8 +13,8 @@
             <div class="col">
 
                 <div class="action-buttons">
-                    <a data-action="add-prod" class="btn btn-primary text-light">Adicionar Produto</a>
-                    <a data-action="in-prod" class="btn btn-primary text-light">Adicionar Produção</a>
+                    <a href="javascript:;" data-fancybox data-src="#add-prod" class="btn btn-primary text-light">Adicionar Produto</a>
+                    <a href="javascript:;" data-fancybox data-src="#in-prod" class="btn btn-primary text-light">Adicionar Produção</a>
                 </div>
 
                 <div class="mx-0 my-3">
@@ -93,7 +93,7 @@
                                                     <td>{{ p.getMinStock }}</td>
                                                     <td>{{ p.getMaxStock }}</td>
                                                     <td>
-                                                        <a data-action="view{{ p.getId }}"
+                                                        <a href="javascript:;" data-fancybox data-src="#view{{ p.getId }}"
                                                            class="badge badge-secondary text-light cursor-decoration">Visualizar</a>
                                                         <a href="/storage/productAction/{{ p.getId }}"
                                                            class="badge badge-success text-light">Editar</a>

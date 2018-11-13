@@ -11,9 +11,9 @@
 		<div class="row px-2">
 			<div class="col">
 				<div class="action-buttons">
-					<a href="/feedstock/add" data-action="add" class="btn btn-primary">Adicionar Produto</a>
-					<a data-action="in" class="btn btn-primary text-light">Cadastrar Entrada de Produtos</a>
-					<a data-action="out" class="btn btn-primary text-light">Cadastrar Saida de Produto</a>
+					<a href="/feedstock/add" href="javascript:;" data-fancybox data-src="#add" class="btn btn-primary">Adicionar Produto</a>
+					<a href="javascript:;" data-fancybox data-src="#in" class="btn btn-primary text-light">Cadastrar Entrada de Produtos</a>
+					<a href="javascript:;" data-fancybox data-src="#out" class="btn btn-primary text-light">Cadastrar Saida de Produto</a>
 				</div>
 				<div class="mx-0 my-3">
 					<div class="col">
@@ -68,7 +68,7 @@
 														<td>{{ f.getFeedstockId.getDepartament.getName | capitalize }}</td>
 														<td>{{ f.getFeedstockId.getMainVendor }}</td>
 														<td class="text-center">
-														<a data-action="view{{ f.getFeedstockId.getId }}" class="badge badge-secondary text-light cursor-decoration">Visualizar</a>
+														<a href="javascript:;" data-fancybox data-src="#view{{ f.getFeedstockId.getId }}" class="badge badge-secondary text-light cursor-decoration">Visualizar</a>
 														<a href="/storage/feedstockAction/{{ f.getFeedstockId.getId }}" class="badge badge-success text-light">Editar</a>
 														<a href="#" class="badge badge-danger text-light" del={{ '/storage/feedstockAction/' | rot13 }}{{ f.getFeedstockId.getId }}>Remover</a>
 														</td>

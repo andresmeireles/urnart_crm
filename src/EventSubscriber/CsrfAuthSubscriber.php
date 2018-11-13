@@ -23,7 +23,7 @@ class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
                 $token = $request->headers->get('auth');
             }
             $controller = $event->getController()[0];
-            if (!$controller->isCsrfTokenValid('token', $token)) {   
+            if (!$controller->isCsrfTokenValid('token', $token)) {
                 throw new AccessDeniedException("Token invalido.");
             }
         }
@@ -31,20 +31,20 @@ class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
 
     /**
      * @param GetResponseForExceptionEvent $event
-     */
+     *
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
         if (strpos(get_class($exception), 'AccessDeniedException')) {
             return $event->setResponse(new Response($exception->getMessage(), 301));
         }
-    }
+    }*/
 
     public static function getSubscribedEvents()
     {
         return [
            'kernel.controller'  => 'onKernelController',
-           'kernel.exception'   => 'onKernelException'
+           //'kernel.exception'   => 'onKernelException'
         ];
     }
 }

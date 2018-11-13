@@ -46,10 +46,10 @@ class RegisterController extends Controller
     {
         $setter->set($entity, $request->request->all());
         return new Response(
-            $setter->getMessage(), 
+            $setter->getMessage(),
             Response::HTTP_OK,
             array('type-message' => $setter->getTypeMessage())
-        );     
+        );
     }
 
     /**
@@ -96,7 +96,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * @Route("/register/remove/{entity}", methods="POST")
+     * @Route("/register/remove/{entity}", methods={"POST", "DELETE"})
      *
      * @param string $entity
      * @param Request $request

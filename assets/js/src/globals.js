@@ -6,7 +6,7 @@ module.exports = function (formAdd) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-	
+
 	//add single elements
 	document.querySelectorAll('.sender').forEach( function (el) {
 		el.addEventListener('click', function (el) {
@@ -14,15 +14,16 @@ document.addEventListener('DOMContentLoaded', function () {
 			var url = el.target.getAttribute('data-sender');
 			var formId = '#'+el.target.closest('form').id;
 			var form = document.querySelector(formId);
-			var formData = new FormData(form);			
-			var method = el.target.getAttribute('method')
-			var token = el.target.getAttribute('token')
-			sendSimpleRequest(el.target.getAttribute('data-sender'), formData, method, token, function (message, type) {
+			var formData = new FormData(form);
+			var method = el.target.getAttribute('method');
+			var token = el.target.getAttribute('token');
+			sendSimpleRequest(url, formData, method, token, function (message, type) {
+				console.log(message, type)
 				var messageAlert = document.querySelector('#alert-message');
 				messageAlert.innerHTML = messageSend(type, message);
-				
+
 				if (type == 'success') {
-					form.reset();	
+					form.reset();
 					var name = el.target.closest('form').getAttribute('target');
 					$('#'+name+'-reload').trigger('click');
 					$.fancybox.close();
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				return true;
 			});
 			return false;
-		});  
+		});
 	});
 
 	if(document.querySelector('.numbers-only')) {

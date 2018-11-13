@@ -1,4 +1,4 @@
-<div id="paymentType" class="d-none">
+<div id="paymentType" style="display:none">
     <div class="card text-center my-2">
         <div class="card-header" data-name="paymentType">
             <ul class="nav nav-pills card-header-pills">
@@ -6,7 +6,7 @@
                     <h4>Formas de Pagamento</h4>
                 </li>
                 <li class="nav-item mx-5">
-                    <button data-action="add-paymentType" class="btn btn-primary">Adicionar</button>
+                    <button href="javascript:;" data-fancybox data-src="#add-paymentType" class="btn btn-primary">Adicionar</button>
                 </li>
                 <li class="nav-item mx-2">
                     <button id="paymentType-reload" class="btn reload">
@@ -50,7 +50,7 @@
         </div>
     </div>
 </div>
-<div id="add-paymentType" class="d-none">
+<div id="add-paymentType" style="display:none">
     <div class="card text-center my-2">
         <div class="card-header">
             <form method="post" action="register/add/paymentType" id="add-payment-form" target="paymentType">

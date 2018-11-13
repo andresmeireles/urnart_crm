@@ -1,4 +1,4 @@
-<div id="transporter" class="d-none">
+<div id="transporter" style="display:none">
 
     <div class="card text-center my-2">
         <div class="card-header" data-name="transporter">
@@ -7,7 +7,7 @@
                     <h4>Transportadoras</h4>
                 </li>
                 <li class="nav-item mx-5">
-                    <button data-action="add-transporter" class="btn btn-primary">Adicionar</button>
+                    <button href="javascript:;" data-fancybox data-src="#add-transporter" class="btn btn-primary">Adicionar</button>
                 </li>
                 <li class="nav-item mx-2">
                     <button id="transporter-reload" class="btn reload">
@@ -21,7 +21,8 @@
                 <thead class="table-primary">
                     <tr>
                         <th>Nome da Transportadora</th>
-                        <th colspan="2">Porto</th>
+                        <th>Porto</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody id="transporter-body">
@@ -48,11 +49,11 @@
 
 </div>
 
-<div id="add-transporter" class="d-none">
+<div id="add-transporter" style="display:none">
 
     <div class="card text-center my-2">
         <div class="card-header">
-            Adicionar Unidade
+            Adicionar Porto
         </div>
         <div class="card-body">
             <form method="post" id="add-transporter-form" target="transporter">

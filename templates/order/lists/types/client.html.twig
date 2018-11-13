@@ -37,7 +37,7 @@
                             {{ status }}
                         </td>
                         <td class="text-center">
-                            <span data-action="view{{customerNameOrder.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
+                            <span href="javascript:;" data-fancybox data-src="#view{{customerNameOrder.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
                             {% if customerNameOrder.isOpen %}
                                 <span reserve="h={{'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Reservar</span><span close="h={{ 'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
                             {% elseif customerNameOrder.isClosed %}
@@ -71,7 +71,7 @@
                             {{ status }}
                         </td>
                         <td class="text-center">
-                            <span data-action="view{{customerNameOrder.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
+                            <span href="javascript:;" data-fancybox data-src="#view{{customerNameOrder.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
                             {% if customerNameOrder.isOpen %}
                                 <span reserve="h={{'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Reservar</span><span close="h={{ 'valido' | makeHash }}&i={{ customerNameOrder.id }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
                             {% elseif customerNameOrder.isClosed %}
@@ -94,7 +94,7 @@
                             {{ status }}
                         </td>
                         <td class="text-center">
-                            <span data-action="view{{customerNameOrder.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
+                            <span href="javascript:;" data-fancybox data-src="#view{{customerNameOrder.getId}}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
                             {% if customerNameOrder.isOpen %}
                                 <span reserve="h={{'valido' | makeHash }}&i={{ customerNameOrder.getId }}" class="badge badge-pill badge-secondary cursor-decoration mx-1">Reservar</span><span close="h={{ 'valido' | makeHash }}&i={{ customerNameOrder.getId }}" class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
                             {% elseif customerNameOrder.isClosed %}
