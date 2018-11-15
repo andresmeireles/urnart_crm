@@ -9,8 +9,16 @@ check:
     tooltip:  'Habilita função de reserva no sistema'
   allowSameCpf:
     name:     'allow_same_cpf'
-    label:    'Não verificar cpf'
-    tooltip:  'Desativar função de checagem de CPF no cadastro de pessoa fisica'
+    label:    'Permitir clientes com mesmo cpf'
+    tooltip:  'Permiti que clientes diferentes possuam mesmo CPF'
+  allowNoCpf:
+    name:     'allow_no_cpf'
+    label:    'Permitir cadastro sem CPF'
+    tooltip:  'Permitir cadastro de clientes sem C.P.F, cuidado com essa opção'
+  allowNoCNPJ:
+    name:     'allow_no_cnpj'
+    label:    'Permitir cadastro de clientes sem CNPJ'
+    tooltip:  'Essa opção pode causar falhas no cadastro e pesquisa de clientes e pedidos, cuidado com esta opção'
 
 images:
   logoImage:

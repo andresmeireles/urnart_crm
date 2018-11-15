@@ -29,11 +29,22 @@ class PersonModel extends Model
     public function persist(array $data): array
     {
         extract($data);
-        $person['cpf'] = $person['cpf'] === "" ? null : $person['cpf'];
-        if (!is_null($person['cpf'])) {
-            $person['cpf'] = v::cpf()->validate($person['cpf']) === true ? $person['cpf'] : $this->error('cpf');
+        //$person['cpf'] = $person['cpf'] === "" ? null : $person['cpf'];
+        $person['cpf'] = v::cpf()->validate($person['cpf']) === true ? $person['cpf'] : $this->error('cpf');
+        $cnpj = v::cnpj()->validate($customer['cnpj']) ? $customer['cnpj'] : $this->error('cnpj');
+        $person['birthDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $person['birthDate']))) == true ? $person['birthDate'] : $this->error('data de nascimento');
+        $customer['foundationDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $customer['foundationDate']))) == true ? $customer['foundationDate'] : $this->error('data de fundação');
+        if ($this->error) {
+            return $this->errorResponse;
         }
-        if ($this->config['allow_same_cpf'] && !is_null($person['cpf'])) {
+        if (is_null($person['cpf'])) {
+            return array(
+                'http_code' => 400,
+                'type' => 'warning',
+                'message' => 'CPF não pode estar vázio',
+            );
+        }
+        if (!$this->config['allow_same_cpf']) {
             $result = $this->checkSameCpf($person['cpf']);
             if ($result['result'] !== 0) {
                 return array(
@@ -44,20 +55,8 @@ class PersonModel extends Model
             }
         }
         $customer['cnpj'] = $customer['cnpj'] === "" ? null : $customer['cnpj'];
-        if (!is_null($customer['cnpj'])) {
-            $cnpj = v::cnpj()->validate($customer['cnpj']) ? $customer['cnpj'] : $this->error('cnpj');
-        }
         $person['birthDate'] = $person['birthDate'] === "" ? null : $person['birthDate'];
-        if (!is_null($person['birthDate'])) {
-            $person['birthDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $person['birthDate']))) == true ? $person['birthDate'] : $this->error('data de nascimento');
-        }
         $customer['foundationDate'] = $customer['foundationDate'] === "" ? null : $customer['foundationDate'];
-        if (!is_null($customer['foundationDate'])) {
-            $customer['foundationDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $customer['foundationDate']))) == true ? $customer['foundationDate'] : $this->error('data de fundação');
-        }
-        if ($this->error) {
-            return $this->errorResponse;
-        }
 
         $em = $this->em;
         $em->getConnection()->beginTransaction();
@@ -71,7 +70,8 @@ class PersonModel extends Model
             $pessoaFisica->setRg($person['rg']);
             $g = $person['genre'] ?? null;
             $pessoaFisica->setGenre($g);
-            $pessoaFisica->setBirthDate($person['birthDate']);
+            $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null;
+            $pessoaFisica->setBirthDate($date);
 
             foreach ($phone as $phones) {
                 $telephone = new Phone;
@@ -98,8 +98,9 @@ class PersonModel extends Model
             $client->setNomeFantasia($customer['nomeFantasia']);
             $client->setCnpj($cnpj);
             $inscricaoEstadual = $customer['inscricaoEstadual'] == '' ? null : $customer['inscricaoEstadual'];
-            $client->setInscricaoEstadual($inscricaoEstadual);
-            $client->setDataDeFundacao($customer['foundationDate']);
+            $client->setInscricaoEstadual((int) $inscricaoEstadual);
+            $foundation = $customer['foundationDate'] != '' ? new \DateTime(str_replace('/', '.', $customer['foundationDate'])) : null;
+            $client->setDataDeFundacao($foundation);
             $client->addProprietario($proprietary);
             $situcaoCadastral = $customer['situacaoCadastral'] === "" ? 3 : (int) $customer['situacaoCadastral'];
             $client->setSituacaoCadastral($situcaoCadastral);

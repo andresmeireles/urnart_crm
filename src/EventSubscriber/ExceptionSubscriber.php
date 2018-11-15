@@ -15,7 +15,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
         $exception = $exceptionClass === 'Exception' ? $exceptionClass : substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
         switch ($exception) {
             case 'AccessDeniedException':
-                return $event->setResponse(new Response($exception->getMessage(), 301));
+                return $event->setResponse(new Response($event->getException()->getMessage(), 301));
                 break;
             case 'ForeignKeyConstraintViolationException':
                 return $event->setResponse(new Response(

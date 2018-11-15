@@ -6,10 +6,9 @@
 /.phpintel
 /.vscode
 /.idea
-/src/Migrations/*
-!/src/Migrations/.keep
 /public/form/*
-!/public/form/.keep
+/phpdocker
+docker-composer.yml
 ###< symfony/framework-bundle ###
 
 ###> symfony/webpack-encore-pack ###
