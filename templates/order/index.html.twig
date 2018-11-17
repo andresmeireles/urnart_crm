@@ -88,10 +88,10 @@
                             {% if order.isOpen %}
                                 <span reserve="h={{ 'valido' | makeHash }}&i={{ order.id }}"
                                 <a href="/order/action/edit/{{ order.getId }}"
-                                   class="badge badge-pill badge-success text-light cursor-decoration">Editar</a>
-                                      class="badge badge-pill badge-secondary cursor-decoration mx-1">Reservar</span>
+                                   class="badge badge-pill badge-success text-light cursor-decoration">Editar</a></span>
+                                <span class="badge badge-pill badge-secondary cursor-decoration">Reservar</span>
                                 <span close="h={{ 'valido' | makeHash }}&i={{ order.id }}"
-                                      class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
+                                      class="badge badge-pill badge-warning cursor-decoration">Fechar</span>
                             {% elseif order.isClosed %}
                                 <a print="h={{ 'valido' | makeHash }}&i={{ order.getId }}" href="/order/action/print"
                                    class="badge badge-pill badge-light cursor-decoration">Imprimir</a>

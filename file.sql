@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.24, for Linux (x86_64)
+-- MySQL dump 10.16  Distrib 10.1.37-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: dev_sysadmin
 -- ------------------------------------------------------
--- Server version	5.7.24-0ubuntu0.18.04.1
+-- Server version	10.1.37-MariaDB-1~bionic
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -10,36 +10,9 @@
 /*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `address`
---
-
-DROP TABLE IF EXISTS `address`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `address` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `estado_id` int(11) DEFAULT NULL,
-  `municipio_id` int(11) DEFAULT NULL,
-  `road` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `neighborhood` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `zipcode` int(11) DEFAULT NULL,
-  `pessoaFisicaId` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_D4E6F8194420EDB` (`pessoaFisicaId`),
-  KEY `IDX_D4E6F819F5A440B` (`estado_id`),
-  KEY `IDX_D4E6F8158BC1BE0` (`municipio_id`),
-  CONSTRAINT `FK_D4E6F8158BC1BE0` FOREIGN KEY (`municipio_id`) REFERENCES `municipio` (`id`),
-  CONSTRAINT `FK_D4E6F8194420EDB` FOREIGN KEY (`pessoaFisicaId`) REFERENCES `pessoa_fisica` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_D4E6F819F5A440B` FOREIGN KEY (`estado_id`) REFERENCES `estado` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `address`
@@ -47,24 +20,9 @@ CREATE TABLE `address` (
 
 LOCK TABLES `address` WRITE;
 /*!40000 ALTER TABLE `address` DISABLE KEYS */;
-INSERT INTO `address` VALUES (1,NULL,NULL,'','','',0,1),(5,NULL,NULL,'','','',0,10);
+INSERT INTO `address` VALUES (1,NULL,NULL,'Pedro Mesquita ','Centro','1260',67200000,1),(2,NULL,NULL,'Don Pedro II','Centro','88',65010450,2),(3,NULL,NULL,'Professor Carlos Cunha','Periferia','98',33320000,3),(4,NULL,NULL,'','','',0,4),(5,NULL,NULL,'Branco Breno Bauchita','Bebiam','8B',87980000,5);
 /*!40000 ALTER TABLE `address` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `departament`
---
-
-DROP TABLE IF EXISTS `departament`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `departament` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_34F6FDA35E237E06` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `departament`
@@ -72,29 +30,9 @@ CREATE TABLE `departament` (
 
 LOCK TABLES `departament` WRITE;
 /*!40000 ALTER TABLE `departament` DISABLE KEYS */;
-INSERT INTO `departament` VALUES (1,'produção');
+INSERT INTO `departament` VALUES (3,'acabamento'),(2,'pintura'),(1,'produção');
 /*!40000 ALTER TABLE `departament` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `email`
---
-
-DROP TABLE IF EXISTS `email`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `email` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `owner_id` int(11) DEFAULT NULL,
-  `active` tinyint(1) NOT NULL,
-  `create_date` datetime NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `last_update` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_E7927C747E3C61F9` (`owner_id`),
-  CONSTRAINT `FK_E7927C747E3C61F9` FOREIGN KEY (`owner_id`) REFERENCES `pessoa_fisica` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `email`
@@ -102,26 +40,9 @@ CREATE TABLE `email` (
 
 LOCK TABLES `email` WRITE;
 /*!40000 ALTER TABLE `email` DISABLE KEYS */;
-INSERT INTO `email` VALUES (1,1,0,'2018-10-02 16:56:14','','2018-10-02 16:56:14'),(5,10,0,'2018-10-15 17:27:43','','2018-10-15 17:27:43');
+INSERT INTO `email` VALUES (1,1,0,'2018-11-15 18:10:32','andre2meireles@gmail.com','2018-11-15 18:10:32'),(2,2,0,'2018-11-15 20:26:14','','2018-11-15 20:26:14'),(3,3,0,'2018-11-15 20:36:34','','2018-11-15 20:36:34'),(4,4,0,'2018-11-15 20:39:49','','2018-11-15 20:39:49'),(5,5,0,'2018-11-15 21:00:40','','2018-11-15 21:00:40');
 /*!40000 ALTER TABLE `email` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `estado`
---
-
-DROP TABLE IF EXISTS `estado`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `estado` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `codigoUf` int(11) NOT NULL,
-  `nome` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uf` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `regiao` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `estado`
@@ -134,33 +55,6 @@ INSERT INTO `estado` VALUES (1,12,'Acre','AC',1),(2,27,'Alagoas','AL',2),(3,16,'
 UNLOCK TABLES;
 
 --
--- Table structure for table `feedstock`
---
-
-DROP TABLE IF EXISTS `feedstock`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `feedstock` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `unit_id` int(11) DEFAULT NULL,
-  `departament_id` int(11) DEFAULT NULL,
-  `active` tinyint(1) NOT NULL,
-  `create_date` datetime NOT NULL,
-  `nome` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `vendors` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `periodicity` int(11) NOT NULL,
-  `last_update` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_9684CD2C54BD530C` (`nome`),
-  KEY `IDX_9684CD2CF8BD700D` (`unit_id`),
-  KEY `IDX_9684CD2C48B3EEE4` (`departament_id`),
-  CONSTRAINT `FK_9684CD2C48B3EEE4` FOREIGN KEY (`departament_id`) REFERENCES `departament` (`id`),
-  CONSTRAINT `FK_9684CD2CF8BD700D` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `feedstock`
 --
 
@@ -170,25 +64,6 @@ LOCK TABLES `feedstock` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `feedstock_inventory`
---
-
-DROP TABLE IF EXISTS `feedstock_inventory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `feedstock_inventory` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `feedstock_id_id` int(11) DEFAULT NULL,
-  `stock` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `max_stock` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `min_stock` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_BB31244CF327EC2` (`feedstock_id_id`),
-  CONSTRAINT `FK_BB31244CF327EC2` FOREIGN KEY (`feedstock_id_id`) REFERENCES `feedstock` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `feedstock_inventory`
 --
 
@@ -196,45 +71,6 @@ LOCK TABLES `feedstock_inventory` WRITE;
 /*!40000 ALTER TABLE `feedstock_inventory` DISABLE KEYS */;
 /*!40000 ALTER TABLE `feedstock_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `migration_versions`
---
-
-DROP TABLE IF EXISTS `migration_versions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `migration_versions` (
-  `version` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `migration_versions`
---
-
-LOCK TABLES `migration_versions` WRITE;
-/*!40000 ALTER TABLE `migration_versions` DISABLE KEYS */;
-INSERT INTO `migration_versions` VALUES ('20181001195819'),('20181002132942'),('20181011122155'),('20181015181540'),('20181113110644');
-/*!40000 ALTER TABLE `migration_versions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `municipio`
---
-
-DROP TABLE IF EXISTS `municipio`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `municipio` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `codigo` int(11) NOT NULL,
-  `nome` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uf` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5571 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `municipio`
@@ -247,61 +83,13 @@ INSERT INTO `municipio` VALUES (1,1100015,'Alta Floresta D\'Oeste','RO'),(2,1100
 UNLOCK TABLES;
 
 --
--- Table structure for table `order`
---
-
-DROP TABLE IF EXISTS `order`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `order` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `customer_id` int(11) DEFAULT NULL,
-  `transporter_id` int(11) DEFAULT NULL,
-  `payment_type_id` int(11) DEFAULT NULL,
-  `active` tinyint(1) NOT NULL,
-  `create_date` datetime NOT NULL,
-  `custom_port` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `total_price` double NOT NULL,
-  `discount` double DEFAULT NULL,
-  `freight` double DEFAULT NULL,
-  `installment` int(11) DEFAULT NULL,
-  `comments` varchar(1500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `reserved` smallint(6) NOT NULL,
-  `last_update` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_F52993989395C3F3` (`customer_id`),
-  KEY `IDX_F52993984F335C8B` (`transporter_id`),
-  KEY `IDX_F5299398DC058279` (`payment_type_id`),
-  CONSTRAINT `FK_F52993984F335C8B` FOREIGN KEY (`transporter_id`) REFERENCES `transporter` (`id`),
-  CONSTRAINT `FK_F52993989395C3F3` FOREIGN KEY (`customer_id`) REFERENCES `pessoa_juridica` (`id`),
-  CONSTRAINT `FK_F5299398DC058279` FOREIGN KEY (`payment_type_id`) REFERENCES `payment_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `order`
 --
 
 LOCK TABLES `order` WRITE;
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES (1,1,NULL,1,1,'2018-10-02 17:01:36','',750,21,21,NULL,'',2,'2018-10-02 17:01:36'),(2,11,NULL,NULL,1,'2018-10-17 07:44:32','',2250,0,0,NULL,'',2,'2018-10-17 07:44:32');
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `payment_type`
---
-
-DROP TABLE IF EXISTS `payment_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `payment_type` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `plot` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `payment_type`
@@ -309,31 +97,9 @@ CREATE TABLE `payment_type` (
 
 LOCK TABLES `payment_type` WRITE;
 /*!40000 ALTER TABLE `payment_type` DISABLE KEYS */;
-INSERT INTO `payment_type` VALUES (1,'Boleto',0);
+INSERT INTO `payment_type` VALUES (1,'Boleto',1),(2,'Cheque',1),(3,'À vista',0);
 /*!40000 ALTER TABLE `payment_type` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `pessoa_fisica`
---
-
-DROP TABLE IF EXISTS `pessoa_fisica`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `pessoa_fisica` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `active` tinyint(1) NOT NULL,
-  `create_date` datetime NOT NULL,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cpf` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `rg` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `genre` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `birth_date` datetime DEFAULT NULL,
-  `last_update` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `pessoa_fisica`
@@ -341,36 +107,9 @@ CREATE TABLE `pessoa_fisica` (
 
 LOCK TABLES `pessoa_fisica` WRITE;
 /*!40000 ALTER TABLE `pessoa_fisica` DISABLE KEYS */;
-INSERT INTO `pessoa_fisica` VALUES (1,0,'2018-10-02 16:56:14','Andre','Meireles','02069579204','192344557','m','1950-12-20 00:00:00','2018-10-02 16:56:14'),(10,0,'2018-10-15 17:27:43','Jão','','','','',NULL,'2018-10-15 17:27:43');
+INSERT INTO `pessoa_fisica` VALUES (1,0,'2018-11-15 18:10:32','André','Meireles','02069579204','6601971','m','1992-12-20 00:00:00','2018-11-15 18:10:32'),(2,0,'2018-11-15 20:26:14','Fred','Morgan','02069579204','66017788','m','1912-09-10 00:00:00','2018-11-15 20:26:14'),(3,0,'2018-11-15 20:36:34','Maria','Joana','02069579204','1234488','f','1902-12-31 00:00:00','2018-11-15 20:36:34'),(4,0,'2018-11-15 20:39:49','Marcos','Marcelino','02069579204','2211887','',NULL,'2018-11-15 20:39:49'),(5,0,'2018-11-15 21:00:40','Mary','Huana','02069579204','','m','2011-11-11 00:00:00','2018-11-15 21:00:40');
 /*!40000 ALTER TABLE `pessoa_fisica` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `pessoa_juridica`
---
-
-DROP TABLE IF EXISTS `pessoa_juridica`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `pessoa_juridica` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `active` tinyint(1) NOT NULL,
-  `create_date` datetime NOT NULL,
-  `razao_social` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nome_fantasia` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `inscricao_estadual` int(11) DEFAULT NULL,
-  `inscricao_municipal` int(11) DEFAULT NULL,
-  `cnpj` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `situacao_cadastral` int(11) DEFAULT NULL COMMENT '1-Contribuente 2-Não Contribuente 3-isento',
-  `data_de_fundacao` datetime DEFAULT NULL,
-  `last_update` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_776DFB0E94787B27` (`razao_social`),
-  UNIQUE KEY `UNIQ_776DFB0E81FFD124` (`inscricao_estadual`),
-  UNIQUE KEY `UNIQ_776DFB0EF86BB0B1` (`inscricao_municipal`),
-  UNIQUE KEY `UNIQ_776DFB0EC8C6906B` (`cnpj`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `pessoa_juridica`
@@ -378,29 +117,9 @@ CREATE TABLE `pessoa_juridica` (
 
 LOCK TABLES `pessoa_juridica` WRITE;
 /*!40000 ALTER TABLE `pessoa_juridica` DISABLE KEYS */;
-INSERT INTO `pessoa_juridica` VALUES (1,0,'2018-10-02 16:56:14','Urnas Mart Ltda','Andre',1523355,NULL,'05020839000105',1,'1992-12-10 00:00:00','2018-10-02 16:56:14'),(11,0,'2018-10-15 17:27:43','J. R. Leite Protázio ME','Sociedade Funerária Renascer',NULL,NULL,'04855449000192',1,NULL,'2018-10-15 17:27:43');
+INSERT INTO `pessoa_juridica` VALUES (1,0,'2018-11-15 18:10:32','Urnas Mart Ltda','Urnart',1655666,NULL,'05020839000105',1,'1975-12-20 00:00:00','2018-11-15 18:10:32'),(4,0,'2018-11-15 20:26:14','Empresa Legal Do Maranhão','Empresa do MA',1557222,NULL,'06354468000160',1,'1911-09-10 00:00:00','2018-11-15 20:26:14'),(5,0,'2018-11-15 20:36:34','Evil Corp Maranhão','EC MA',123455699,NULL,'06354468000241',2,'1954-02-03 00:00:00','2018-11-15 20:36:34'),(6,0,'2018-11-15 20:39:49','Empresa Legal do Piaui','Empresa do PI',352299,NULL,'06553481000149',1,'1988-01-21 00:00:00','2018-11-15 20:39:49'),(7,0,'2018-11-15 21:00:40','Evil Corp Piaui','EPI',0,NULL,'05807524000102',3,'1978-08-08 00:00:00','2018-11-15 21:00:40');
 /*!40000 ALTER TABLE `pessoa_juridica` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `phone`
---
-
-DROP TABLE IF EXISTS `phone`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `phone` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `owner_id` int(11) DEFAULT NULL,
-  `active` tinyint(1) NOT NULL,
-  `create_date` datetime NOT NULL,
-  `number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `last_update` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_444F97DD7E3C61F9` (`owner_id`),
-  CONSTRAINT `FK_444F97DD7E3C61F9` FOREIGN KEY (`owner_id`) REFERENCES `pessoa_fisica` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `phone`
@@ -408,29 +127,9 @@ CREATE TABLE `phone` (
 
 LOCK TABLES `phone` WRITE;
 /*!40000 ALTER TABLE `phone` DISABLE KEYS */;
-INSERT INTO `phone` VALUES (1,1,0,'2018-10-02 16:56:14','0','2018-10-02 16:56:14'),(5,10,0,'2018-10-15 17:27:43','0','2018-10-15 17:27:43');
+INSERT INTO `phone` VALUES (1,1,0,'2018-11-15 18:10:32','91989454399','2018-11-15 18:10:32'),(2,2,0,'2018-11-15 20:26:14','0','2018-11-15 20:26:14'),(3,3,0,'2018-11-15 20:36:34','0','2018-11-15 20:36:34'),(4,4,0,'2018-11-15 20:39:49','0','2018-11-15 20:39:49'),(5,5,0,'2018-11-15 21:00:40','0','2018-11-15 21:00:40');
 /*!40000 ALTER TABLE `phone` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `product`
---
-
-DROP TABLE IF EXISTS `product`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `active` tinyint(1) NOT NULL,
-  `create_date` datetime NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `series` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `price` double NOT NULL,
-  `color` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:array)',
-  `last_update` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `product`
@@ -438,30 +137,8 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,0,'2018-10-02 17:00:57','P2 190','P2',250,'a:2:{i:0;s:8:\"castanha\";i:1;s:8:\"nogueira\";}','2018-10-02 17:00:57');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `product_cart`
---
-
-DROP TABLE IF EXISTS `product_cart`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product_cart` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_number_id` int(11) DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  `amount` bigint(20) NOT NULL,
-  `custom_price` double DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_864BAA168C26A5E8` (`order_number_id`),
-  KEY `IDX_864BAA164584665A` (`product_id`),
-  CONSTRAINT `FK_864BAA164584665A` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
-  CONSTRAINT `FK_864BAA168C26A5E8` FOREIGN KEY (`order_number_id`) REFERENCES `order` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `product_cart`
@@ -469,29 +146,8 @@ CREATE TABLE `product_cart` (
 
 LOCK TABLES `product_cart` WRITE;
 /*!40000 ALTER TABLE `product_cart` DISABLE KEYS */;
-INSERT INTO `product_cart` VALUES (1,1,1,3,NULL),(5,2,1,9,NULL);
 /*!40000 ALTER TABLE `product_cart` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `product_inventory`
---
-
-DROP TABLE IF EXISTS `product_inventory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product_inventory` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `product_id` int(11) DEFAULT NULL,
-  `max_stock` bigint(20) NOT NULL,
-  `min_stock` double NOT NULL,
-  `stock` double NOT NULL,
-  `reserved` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_DF8DFCBB4584665A` (`product_id`),
-  CONSTRAINT `FK_DF8DFCBB4584665A` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `product_inventory`
@@ -499,25 +155,8 @@ CREATE TABLE `product_inventory` (
 
 LOCK TABLES `product_inventory` WRITE;
 /*!40000 ALTER TABLE `product_inventory` DISABLE KEYS */;
-INSERT INTO `product_inventory` VALUES (1,1,250,250,1800,0);
 /*!40000 ALTER TABLE `product_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `proprietario`
---
-
-DROP TABLE IF EXISTS `proprietario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `proprietario` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `pessoaFisica` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_3073F7C3898C2316` (`pessoaFisica`),
-  CONSTRAINT `FK_3073F7C3898C2316` FOREIGN KEY (`pessoaFisica`) REFERENCES `pessoa_fisica` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `proprietario`
@@ -525,27 +164,9 @@ CREATE TABLE `proprietario` (
 
 LOCK TABLES `proprietario` WRITE;
 /*!40000 ALTER TABLE `proprietario` DISABLE KEYS */;
-INSERT INTO `proprietario` VALUES (1,1),(5,10);
+INSERT INTO `proprietario` VALUES (1,1),(2,2),(3,3),(4,4),(5,5);
 /*!40000 ALTER TABLE `proprietario` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `proprietario_pessoa_juridica`
---
-
-DROP TABLE IF EXISTS `proprietario_pessoa_juridica`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `proprietario_pessoa_juridica` (
-  `proprietario_id` int(11) NOT NULL,
-  `pessoa_juridica_id` int(11) NOT NULL,
-  PRIMARY KEY (`proprietario_id`,`pessoa_juridica_id`),
-  KEY `IDX_1350EDA26759BAE5` (`proprietario_id`),
-  KEY `IDX_1350EDA2A894CDDE` (`pessoa_juridica_id`),
-  CONSTRAINT `FK_1350EDA26759BAE5` FOREIGN KEY (`proprietario_id`) REFERENCES `proprietario` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_1350EDA2A894CDDE` FOREIGN KEY (`pessoa_juridica_id`) REFERENCES `pessoa_juridica` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `proprietario_pessoa_juridica`
@@ -553,24 +174,9 @@ CREATE TABLE `proprietario_pessoa_juridica` (
 
 LOCK TABLES `proprietario_pessoa_juridica` WRITE;
 /*!40000 ALTER TABLE `proprietario_pessoa_juridica` DISABLE KEYS */;
-INSERT INTO `proprietario_pessoa_juridica` VALUES (1,1),(5,11);
+INSERT INTO `proprietario_pessoa_juridica` VALUES (1,1),(2,4),(3,5),(4,6),(5,7);
 /*!40000 ALTER TABLE `proprietario_pessoa_juridica` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `transporter`
---
-
-DROP TABLE IF EXISTS `transporter`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `transporter` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `port` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `transporter`
@@ -578,26 +184,9 @@ CREATE TABLE `transporter` (
 
 LOCK TABLES `transporter` WRITE;
 /*!40000 ALTER TABLE `transporter` DISABLE KEYS */;
-INSERT INTO `transporter` VALUES (1,'','R. J. J. Transportes'),(2,'','Transluz Transportes'),(3,'Porto Santa Efigênia','Barco Abençoado'),(4,'Porto Marques Pinto','Barco San Marino'),(5,'Porto São Domingos','Navio São Domingos');
+INSERT INTO `transporter` VALUES (1,'','R. J. J. Transportes'),(2,'','Transluz Transportes'),(3,'Porto Santa Efigênia','Barco Abençõado'),(4,'Porto São Domingos','Navio São Domingos'),(5,'Porto Marques Pinto','Barco San Marino');
 /*!40000 ALTER TABLE `transporter` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `unit`
---
-
-DROP TABLE IF EXISTS `unit`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `unit` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `initials` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_DCBB0C535DD9566F` (`initials`),
-  UNIQUE KEY `UNIQ_DCBB0C535E237E06` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `unit`
@@ -605,17 +194,16 @@ CREATE TABLE `unit` (
 
 LOCK TABLES `unit` WRITE;
 /*!40000 ALTER TABLE `unit` DISABLE KEYS */;
-INSERT INTO `unit` VALUES (1,'UN','Unidade'),(2,'MT','Metro');
+INSERT INTO `unit` VALUES (1,'UN','unidade'),(2,'MT','Metro'),(3,'LT','Litro');
 /*!40000 ALTER TABLE `unit` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-13 17:30:38
+-- Dump completed on 2018-11-15 23:30:36

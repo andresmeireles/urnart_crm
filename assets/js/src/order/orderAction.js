@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (el.target.hasAttribute('del')) {
               el.preventDefault()
-
               var link = rot(el.target.getAttribute('del'))
               simpleDialog('Tem certeza que deseja remover esse item?', () => {
                   simpleRequest(link, 'DELETE', null, function (response) {
@@ -44,13 +43,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (el.target.hasAttribute('print')) {
                 el.preventDefault()
-
                 let value = el.target.getAttribute('print')
                 let link = el.target.href
                 if (value == '') {
                     return false
                 }
-                
                 window.open(`${link}?${value}`)
             }
 
@@ -80,22 +77,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     onSelect: function (option) {
                         let cod = Number(option.cod)
                         if (Number.isInteger(cod)) {
-                            let paymentType = document.querySelector('#formPgNumber')
-                            paymentType.value = option.cod
-
+                            document.querySelector('#formPgNumber').value = cod;
                         }
-
-                        if (option.plot == '1') {
-                            let installment = document.querySelector('#inst')
-                            installment.removeAttribute('disabled')
-                            installment.focus()
-                            return true
-                        }
-
-                        let installment = document.querySelector('#inst')
-                        installment.setAttribute('disabled', '')
-                        contabilize()
-                        contabilizeInstallmentValue()
                         return true
                     }
                 })
@@ -142,32 +125,26 @@ document.addEventListener('DOMContentLoaded', function () {
                     let value = el.target.value
                     let result = false
                     let items = eval(el.target.getAttribute('transcp'))
-
                     for (item of items) {
                         if (item.value == value) {
                             result = true
                             continue
                         }
                     }
-
                     if (!result) {
                         document.querySelector('#transp').value = ''
                     }
-
                 }, 200)
             }
 
             if (el.target.hasAttribute('autocp') && el.target.closest('[clone-area]')) {
                 let items = eval(el.target.getAttribute('autocp'))
                 isValid(el, items, 200)
-
                 let disabledInputs = el.target.closest('[clone-area]').querySelectorAll('[input="text"]')
-
                 for (let di of disabledInputs) {
                     if (di.id === 'total') {
                         continue
                     }
-
                     if (di.value === '') {
                         di.setAttribute('disabled', 'disabled')
                     }
@@ -180,8 +157,8 @@ document.addEventListener('DOMContentLoaded', function () {
               let value = field.querySelector('#prod-price').value
               value = Number(value.replace(',','.'))
               let qnt = Number(el.target.value)
-
-              field.querySelector('#total').innerHTML = numeral((value * qnt)).format('0.00')
+              //field.querySelector('#total').innerHTML = numeral((value * qnt)).format('0.00')
+              field.querySelector('#total').value = numeral((value * qnt)).format('0.00')
               contabilize()
               contabilizeInstallmentValue()
             }
@@ -191,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 let qnt = Number(field.querySelector('#prod-qnt').value)
                 let value = el.target.value
                     value = Number(value.replace(',','.'))
-
                 field.querySelector('#prod-price').value = numeral(value).format('0.00')
                 field.querySelector('#total').value = numeral((value * qnt)).format('0.00')
                 contabilize()
@@ -204,14 +180,29 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (el.target.id === 'formPg') {
-                let items = eval(el.target.getAttribute('formCp'))
-                isValid(el, items, 200)
-                let paymentType = document.querySelector('#formPgNumber')
-                paymentType.value = ''
-                let installment = document.querySelector('#inst')
-                installment.value = ''
-                installment.setAttribute('disabled', '')
-                return false
+                let paymentTypeName = el.target.value;
+                let items = window[el.target.getAttribute('formCp')];
+                let paymentType = document.querySelector('#formPgNumber');
+                let installment = document.querySelector('#inst');
+                let isPlotable = false;
+                isValid(el, items, 200);
+                paymentType.value = '';
+                installment.value = '';
+                for (let payment of items) {
+                    if (payment.value === paymentTypeName) {
+                        document.querySelector('#formPgNumber').value = payment.cod;
+                        isPlotable = payment.plot;
+                        break;
+                    }
+                }
+                if (isPlotable) {
+                    installment.removeAttribute('disabled');
+                } else {
+                    installment.value = 1;
+                    installment.setAttribute('disabled', '');
+                    contabilize();
+                    contabilizeInstallmentValue();
+                }
             }
 
         }, true)
@@ -221,64 +212,56 @@ document.addEventListener('DOMContentLoaded', function () {
         let allProductsPrice = document.querySelector('#allProductsPrice')
         let allPrices = 0
         let prices = document.querySelectorAll('#total')
-
         let totalPrice = document.querySelector('#finalPrice')
         let freight = (document.querySelector('#freight').value === '') ? 0 : Number(document.querySelector('#freight').value)
         let discount = (document.querySelector('#discount').value === '') ? 0 : Number(document.querySelector('#discount').value)
-
         for (let p of prices) {
-            let price = p.innerHTML
-            price = price.replace('.','')
-            price = price.replace(',','.')
-            allPrices += Number(price)
+            let price = p.value;
+            price = price.replace('.','');
+            price = price.replace(',','.');
+            allPrices += Number(price);
         }
-
         allProductsPrice.innerHTML = numeral(allPrices).format('0.00')
         totalPrice.innerHTML = numeral((allPrices + freight) - discount).format('0.00')
-    }
-
-    const isValid = (el, items, seconds) => {
-        setTimeout(() => {
-            let value = el.target.value
-            let result = false
-
-            for (item of items) {
-                if (item.value == value) {
-                    result = true
-                    continue
-                }
-            }
-
-            if (!result) {
-                alert(`Produto ${value} não é um produto valido`)
-                el.stopImmediatePropagation()
-                el.preventDefault()
-                el.target.value = ''
-                return false
-            }
-
-        }, seconds)
     }
 
     const contabilizeInstallmentValue = () => {
         setTimeout(() => {
             type = document.querySelector('#formPg').value
-
             if (type == 'A vista' || type == '') {
                 document.querySelector('#installmentPrice').innerHTML = numeral(value).format('0.00')
                 return true
             }
-
             let totalPrice = (document.querySelector('#allProductsPrice').innerHTML == '0,00' && document.querySelector('#allProductsPrice').innerHTML == '') ? 0 : document.querySelector('#allProductsPrice').innerHTML
-            totalPrice = totalPrice.replace('.', '')
+            totaflPrice = totalPrice.replace('.', '')
             totalPrice = totalPrice.replace(',', '.')
             totalPrice = Number(totalPrice)
-
             let discount = (document.querySelector('#discount').value == 0 && document.querySelector('#discount').value == '') ? 0 : Number(document.querySelector('#discount').value)
             let installment = (document.querySelector('#inst').value == '' ? 1 : Number(document.querySelector('#inst').value))
-
             let value = (totalPrice - discount) / installment
             document.querySelector('#installmentPrice').innerHTML = numeral(value).format('0.00')
         }, 200);
+    }
+
+    const isValid = (el, items, seconds) => {
+        setTimeout(() => {
+            let value = el.target.value
+            let errorValue = null;
+            let result = false
+            for (let item of items) {
+                if (item.value == value) {
+                    result = true;
+                    continue;
+                }
+                errorValue = item.value;
+            }
+            if (!result) {
+                alert(`Produto/Item ${errorValue} não é um produto valido`)
+                el.stopImmediatePropagation()
+                el.preventDefault()
+                el.target.value = ''
+                return false
+            }
+        }, seconds)
     }
 })
