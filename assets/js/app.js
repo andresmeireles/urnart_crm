@@ -90,9 +90,10 @@ import './src/register/customer';
 import './src/register/cloneFieldCustomer';
 import './src/register/config';
 
-import './src/global/masks'
-import './src/global/tools/sorter'
-import './src/global/tools/progress'
+import './src/global/masks';
+import './src/global/tools/sorter';
+import './src/global/tools/progress';
+import './src/global/tools/disabledClick';
 
 // order import
 import './src/order/orderAction'
