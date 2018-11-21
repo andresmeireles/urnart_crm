@@ -2,15 +2,17 @@
 
 namespace App\EventSubscriber;
 
+use App\Config\Config;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
-class TokenSubscriber implements EventSubscriberInterface
+class StartSubscriber implements EventSubscriberInterface
 {
     public function onKernelRequest(GetResponseEvent $event)
     {
         $session = $event->getRequest()->getSession();
+        Config::start();
         if(!array_key_exists('csrftoken', $session->all())) {
             $ctm = new CsrfTokenManager;
             $token = $ctm->getToken((new \DateTime('now'))->format('d-m-Y H:m:s'));

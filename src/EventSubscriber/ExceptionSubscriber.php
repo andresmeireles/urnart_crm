@@ -5,7 +5,6 @@ namespace App\EventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
@@ -15,6 +14,9 @@ class ExceptionSubscriber implements EventSubscriberInterface
         $exception = $exceptionClass === 'Exception' ? $exceptionClass : substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
         switch ($exception) {
             case 'AccessDeniedException':
+                //dump($event->getRequest()->headers->get('referer'));
+                echo $event->getException()->getMessage();
+                
                 return $event->setResponse(new Response($event->getException()->getMessage(), 301));
                 break;
             case 'ForeignKeyConstraintViolationException':
@@ -25,7 +27,11 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 ));
                 break;
             case 'Exception':
-                dump('Algum erro.');
+                return $event->setResponse(new Response(
+                    'Alguma exceção',
+                    301,
+                    array('type' => 'ninja')
+                ));
                 break;
             default:
                 return;
