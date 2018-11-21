@@ -16,8 +16,12 @@ class HomeController extends Controller
      * @Route("/home", name="home")
      * @Route("/", name="index")
      */
-    public function index()
+    public function index(Request $req)
     {
+        /*$req->getSession()->getFlashBag()->add(
+            'warning',
+            'deu certo, viu'
+        );*/
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);

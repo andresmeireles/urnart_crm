@@ -183,7 +183,7 @@
             </div>
             <div class="card-footer text-muted text-center">
                 <!-- <input type="submit" class="btn btn-secondary w-50" send="/person/add/person" target="customer-form" value="Adicionar"> -->
-                <input type="hidden" name="token" value="{{ csrf_token('token') }}">
+                {% include 'components/csrftoken.html.twig' %}
                 <input type="submit" class="btn btn-secondary w-50" target="customer-form" value="Adicionar">
         </div>
     </div>

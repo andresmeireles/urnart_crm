@@ -13,7 +13,7 @@
               <div class="row">
                 <div class="col-md-8">
                   <input type="submit" class="btn btn-primary btn-block" id="send-form" value="Criar Recibo"> </div>
-                  <input type="hidden" name="token" value="{{ csrf_token('token') }}">
+                  {% include 'components/csrftoken.html.twig' %}
                 <div class="col-md-4">
                   <a class="btn btn-secondary btn-block" href="/forms/{{ formName }}">Novo</a>
                 </div>

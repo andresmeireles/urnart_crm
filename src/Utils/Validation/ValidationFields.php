@@ -17,7 +17,6 @@ class ValidationFields
 
 	public function getParameter()
 	{
-		dump($this->parameterField);
 		foreach ($this->parameterField as $key => $value) {
 			if (is_array($value)) {
 				$p = $value;

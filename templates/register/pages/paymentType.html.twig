@@ -61,7 +61,7 @@
                     <input type="checkbox" class="form-check-input" name="plot">
                     <label for="plot" class="mx-2">Permite parcelamento?</label>
                 </div>
-                <button class="btn btn-primary sender" data-sender="register/add/paymentType" method="post" token="{{ csrf_token('token') }}">Cadastrar</button>
+                <button class="btn btn-primary sender" data-sender="register/add/paymentType" method="post" token="{{ csrf_token(app.session.get('csrftoken')) }}">Cadastrar</button>
             </form>
         </div>
     </div>

@@ -71,7 +71,7 @@
             </div>
             <div class="card-footer text-muted">
                 <button class="btn btn-danget" onclick="$.fancybox.destroy()">Fechar</button>
-                <input type="hidden" name="token" value="{{ csrf_token('token') }}">
+                {% include 'components/csrftoken.html.twig' %}
                 <button type="submit" class="btn btn-primary">Adicionar</button>
             </div>
         </div>

@@ -73,7 +73,7 @@
                                             <label class="custom-file-label" for="customFile" aria-describedby="file">Selecione um arquivo</label>
                                         </div>
                                         <div class="input-group-append">
-                                            <button class="input-group-text bg-warning" id="reset" file="/resetlogo" hash="{{ 'valido' | makeHash }}" token="{{ csrf_token('token') }}">Resetar</button>
+                                            <button class="input-group-text bg-warning" id="reset" file="/resetlogo" hash="{{ 'valido' | makeHash }}" token="{{ csrf_token(app.session.get('csrftoken')) }}">Resetar</button>
                                         </div>
                                     </div>
                                     <hr>
@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="input-group">
-                <input type="hidden" name="token" value="{{ csrf_token('token') }}" />
+                {% include 'components/csrftoken.html.twig' %}
                 <input type="submit" class="btn btn-success" value="Salvar">
             </div>
         </form>

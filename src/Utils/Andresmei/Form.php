@@ -44,7 +44,10 @@ class Form extends GenericContainer
 		    if (is_array($value)) {
 		        $clonedFields[] = $value;
             }
-        }
+		}
+		if ($formName == 'romaneio-board') {
+			$clonedFields = array_reverse($clonedFields);
+		}
 		$parsedTemplate = $this->twig->render($file, array(	
 			'data' => $data,
             'prod' => $clonedFields,
