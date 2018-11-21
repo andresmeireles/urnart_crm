@@ -17,6 +17,7 @@ class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
     public function onKernelController(FilterControllerEvent $event): void
     {
         $request = $event->getRequest();
+        dump($request->cookies->all(), $request->getSession());
         if ($request->getMethod() == 'POST') {
             $token = $request->request->get('token');
             if (is_null($token)) {
@@ -26,6 +27,7 @@ class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
             if (!$controller->isCsrfTokenValid('token', $token)) {
                 throw new AccessDeniedException("Token invalido.");
             }
+            return;
         }
     }
 

@@ -1,8 +1,9 @@
-document.addEventListener('submit', function (el) {
-	console.log(el);
-	/**
-	if (el.target.classList.contains('disabledClick')) {
-		el.target.setAttribute('disabled', '');
-		document
-	}*/
-}, true);
+if (document.querySelector('.disabledClick')) {
+	document.querySelector('.disabledClick').addEventListener('submit', function (el) {
+			el.target.setAttribute('disabled', '');
+			alert('para ai');
+			el.preventDefault();
+			return false;
+			console.log(el);
+	}, true);
+}
