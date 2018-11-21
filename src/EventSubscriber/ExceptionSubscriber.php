@@ -19,13 +19,13 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 break;
             case 'ForeignKeyConstraintViolationException':
                 return $event->setResponse(new Response(
-                    'Item ja está cadastrado em algum registro e não pode ser removido. COD::400', 
+                    'Item ja está cadastrado em algum registro e não pode ser removido. COD::400',
                     301,
                     array('type' => 'ninja')
                 ));
                 break;
             case 'Exception':
-                dump('O que é isso?');
+                dump('Algum erro.');
                 break;
             default:
                 return;

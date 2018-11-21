@@ -365,6 +365,7 @@
                     <div class="r-3">
                         <p>
                             {% set floatFreight = clone.freight | number_format(2, '.', ',') %}
+                            {{ floatFreight }}
                             Pagar ao portador o Valor de R$ {{ floatFreight | number_format(2, ',', '.') }}
                             ({{ floatFreight | extense | upper }}) referente ao frete de urnas do pedido de
                             número {{ clone.orderNumber }}, conforme combinado.

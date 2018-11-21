@@ -15,11 +15,8 @@ class HomeController extends Controller
      * @Route("/home", name="home")
      * @Route("/", name="index")
      */
-    public function index(Request $req)
+    public function index()
     {
-        $req->cookies->set('abdu', '108');
-        $req->getSession()->set('abduo', '109');
-        dump($req, $req->cookies, $req->getSession());
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
@@ -27,7 +24,7 @@ class HomeController extends Controller
 
     /**
      * @Route("/activiment")
-     * 
+     *
      * Redireciona paga pagina de objetivos a alcançar
      *
      * @return Response

@@ -17,7 +17,7 @@ class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
     public function onKernelController(FilterControllerEvent $event): void
     {
         $request = $event->getRequest();
-        dump($request->cookies->all(), $request->getSession());
+        $session = $request->getSession();
         if ($request->getMethod() == 'POST') {
             $token = $request->request->get('token');
             if (is_null($token)) {
@@ -31,22 +31,10 @@ class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param GetResponseForExceptionEvent $event
-     *
-    public function onKernelException(GetResponseForExceptionEvent $event)
-    {
-        $exception = $event->getException();
-        if (strpos(get_class($exception), 'AccessDeniedException')) {
-            return $event->setResponse(new Response($exception->getMessage(), 301));
-        }
-    }*/
-
     public static function getSubscribedEvents()
     {
         return [
            'kernel.controller'  => 'onKernelController',
-           //'kernel.exception'   => 'onKernelException'
         ];
     }
 }

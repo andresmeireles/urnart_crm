@@ -1,6 +1,7 @@
 {% extends 'index.html.twig' %}
 
 {% block content %}
+    {{ app.session.get('csrftoken') }}
 	<a href="https://google.com/google.jpg" data-fancybox data-caption="Caption for single image">
 		<img src="https://google.com/google.jpg">
 	</a>
