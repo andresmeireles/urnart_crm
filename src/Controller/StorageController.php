@@ -70,8 +70,8 @@ class StorageController extends Controller
             $model->persist($parameters);
 
             return new Response('Sucesso');
-        } 
-        
+        }
+
         if($method == 'DELETE') {
             if (!is_int($id)) {
                 throw new \Exception('Não é um número');

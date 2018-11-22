@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			var tableName = rowName.replace('reload', 'body');
 			var entity = rowName.slice(0, -7);
 			var url = `/register/get/${entity}`;
-			var table = document.getElementById(tableName); 
+			var table = document.getElementById(tableName);
 			table.innerHTML = '';
 			simpleRequest(url, 'patch', null, function (response) {
 				var data = response.data;

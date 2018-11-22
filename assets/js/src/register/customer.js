@@ -4,19 +4,16 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener('click', function (el) {
-        
         if (el.target.getAttribute('send')) {
             el.preventDefault()
             var form = document.getElementById(el.target.getAttribute('target'))
             let dynamic = el.target.hasAttribute('dynamic') ? true : false
             var fieldsRequired = form.querySelectorAll('.required')
             var response = true
-            
             fieldsRequired.forEach(function (element) {
                 var name = element.getAttribute('for')
                 var required = document.getElementById(name)
                 var value = required.value
-                
                 if (value == '') {
                     el.preventDefault()
                     required.classList.add('is-invalid')
@@ -24,16 +21,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     response = false;
                 }
             })
-            
+
             if (!response) {
                 return false
             }
-            
+
             var link = el.target.getAttribute('send')
             var dataTarget = el.target.getAttribute('target')
             var form = document.getElementById(dataTarget)
             var data = new FormData(form)
-            
+
             simpleRequestForm(link, 'post', data, function () {
                 location.reload()
             })

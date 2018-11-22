@@ -3,12 +3,13 @@
 namespace App\Controller;
 
 use App\Config\Configuration;
+use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Andresmei\SimpleFileUpload;
 use App\Utils\Generic\Crud;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
 
 class RegisterController extends Controller
@@ -45,11 +46,12 @@ class RegisterController extends Controller
     public function addGenericRegister(string $entity, Crud $setter, Request $request)
     {
         $setter->set($entity, $request->request->all());
-        return new Response(
-            $setter->getMessage(),
-            Response::HTTP_OK,
-            array('type-message' => $setter->getTypeMessage())
+        $response = FlashResponse::response(null, 'Item incluido com sucesso!', 'success');
+        $this->addFlash(
+            $response['type'],
+            $response['message']
         );
+        return new Response(Response::HTTP_OK, 200);
     }
 
     /**

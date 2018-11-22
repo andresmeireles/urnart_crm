@@ -24,28 +24,10 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        /*$req->getSession()->getFlashBag()->add(
-            'warning',
-            'deu certo, viu'
-        );*/
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
         ]);
-    }
-
-    /**
-     * @Route("/order/csrftoken", methods={"patch", "get"})
-     *
-     * @param SessionInterface $session
-     * @return Response
-     */
-    public function getCsrfToken(SessionInterface $session): Response
-    {
-        $csrf = new \Symfony\Component\Security\Csrf\CsrfTokenManager;
-        $t = $csrf->getToken($session->get('csrftoken'));
-        dump($t->getValue(), $session->get('csrftoken'));
-        return new Response($session->get('csrftoken'));
     }
 
     /**

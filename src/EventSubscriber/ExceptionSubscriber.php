@@ -3,8 +3,9 @@
 namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
@@ -15,16 +16,14 @@ class ExceptionSubscriber implements EventSubscriberInterface
         switch ($exception) {
             case 'AccessDeniedException':
                 //dump($event->getRequest()->headers->get('referer'));
-                //echo $event->getException()->getMessage();
-                
-                return $event->setResponse(new Response($event->getException()->getMessage(), 301));
+                $this->triggerFlashMessage($event, $event->getException()->getMessage(), 'error');
+                //return $event->setResponse(new Response($event->getRequest()->headers->get('referer'), 301));
+                return $event->setResponse(new ResponseResponse($event->getRequest()->headers->get('referer')));
                 break;
+            case 'UniqueConstraintViolationException':
             case 'ForeignKeyConstraintViolationException':
-                return $event->setResponse(new Response(
-                    'Item ja está cadastrado em algum registro e não pode ser removido. COD::400',
-                    301,
-                    array('type' => 'ninja')
-                ));
+                $this->triggerFlashMessage($event, 'Item ja está cadastrado em algum registro e não pode ser removido. COD::400', 'error');
+                return $event->setResponse(new Response($event->getRequest()->headers->get('referer'), 301));
                 break;
             case 'Exception':
                 return $event->setResponse(new Response(
@@ -39,6 +38,14 @@ class ExceptionSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * Lança mensagens que serão disparadas em flash notification
+     *
+     * @param  GetResponseForExceptionEvent $event   Objeto de evento
+     * @param  string                       $message Mensagem que será disparada
+     * @param  string                       $type    Tipo de mensagen que será disparada
+     * @return void
+     */
     private function triggerFlashMessage(GetResponseForExceptionEvent $event, string $message, string $type): void
     {
         $event->getRequest()->getSession()->getFlashBag()->add(

@@ -13,15 +13,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			sendSimpleRequest(url, formData, method, token, function (message, type) {
 				var messageAlert = document.querySelector('#alert-message');
 				messageAlert.innerHTML = messageSend(type, message);
-
 				if (type == 'success') {
 					form.reset();
 					var name = el.target.closest('form').getAttribute('target');
 					$('#'+name+'-reload').trigger('click');
 					$.fancybox.close();
-
+					//location.reload();
 				}
-
+				//location.reload();
 				setTimeout(function () {
 					$(document).find('#close-button').trigger('click');
 					$.fancybox.close();

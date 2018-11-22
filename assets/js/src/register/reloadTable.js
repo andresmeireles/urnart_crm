@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (el) {
-        
         if (el.target.classList.contains('reload')) {
             var element = el.target;
             var name = element.closest('div').getAttribute('data-name');
@@ -9,12 +8,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
             //clear table
             tableName.innerHTML = '';
-            
+
             //get table data
             simpleRequest(url, 'post', null, function (response) {
                 var data = response.data
                 var tr = '';
-                
+
                 for (var info of data) {
                     tr += `<tr>
                     <td class="d-none id-number">
@@ -28,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </td>
                 </tr>`
                 }
-        
+
                 tableName.innerHTML = tr;
             });
         }
