@@ -96,6 +96,7 @@ import './src/global/masks';
 import './src/global/tools/sorter';
 import './src/global/tools/progress';
 import './src/global/tools/disabledClick';
+import './src/global/tools/oneTimeClick';
 
 // order import
 import './src/order/orderAction'

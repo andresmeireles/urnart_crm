@@ -22,7 +22,7 @@ class RegisterController extends Controller
      * @param Crud $getter
      * @return Response
      */
-    public function index(Crud $getter)
+    public function index(Crud $getter, Request $request)
     {
         return $this->render('register/index.html.twig', [
             'departament' => $getter->get('departament'),
@@ -46,12 +46,9 @@ class RegisterController extends Controller
     public function addGenericRegister(string $entity, Crud $setter, Request $request)
     {
         $setter->set($entity, $request->request->all());
-        $response = FlashResponse::response(null, 'Item incluido com sucesso!', 'success');
-        $this->addFlash(
-            $response['type'],
-            $response['message']
-        );
-        return new Response(Response::HTTP_OK, 200);
+        return new Response('Produto adicionado com sucesso', 200, array(
+            'type-message' => 'success'
+        ));
     }
 
     /**

@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', function () {
 					var name = el.target.closest('form').getAttribute('target');
 					$('#'+name+'-reload').trigger('click');
 					$.fancybox.close();
-					//location.reload();
+					location.reload();
 				}
-				//location.reload();
+				location.reload();
 				setTimeout(function () {
 					$(document).find('#close-button').trigger('click');
 					$.fancybox.close();

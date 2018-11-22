@@ -27,7 +27,7 @@ class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
             }
             $controller = $event->getController()[0];
             if (!$controller->isCsrfTokenValid($tokenString, $token)) {
-                throw new AccessDeniedException("Token invalido. Token correto $token, token incorreto $tokenString");
+                throw new AccessDeniedException("Token invalido.");
             }
             foreach ($session->all() as $key => $value) {
                 $session->remove($key);

@@ -30,4 +30,15 @@ class HomeController extends Controller
     {
         return $this->render('home/activiments.html.twig');
     }
+
+    /**
+     * @Route("/message", name="message")
+     *
+     * @return Response
+     */
+    public function message(): Response
+    {
+        $x = rand(0, 9999999999999);
+        return new Response($x);
+    }
 }

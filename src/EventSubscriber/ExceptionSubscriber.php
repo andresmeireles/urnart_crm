@@ -23,7 +23,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
             case 'UniqueConstraintViolationException':
             case 'ForeignKeyConstraintViolationException':
                 $this->triggerFlashMessage($event, 'Item ja está cadastrado em algum registro e não pode ser removido. COD::400', 'error');
-                return $event->setResponse(new Response($event->getRequest()->headers->get('referer'), 301));
+                return $event->setResponse(new RedirectResponse($event->getRequest()->headers->get('referer'), 301));
                 break;
             case 'Exception':
                 return $event->setResponse(new Response(
