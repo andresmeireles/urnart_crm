@@ -14,10 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Knp\Snappy\Pdf;
-use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
-use Symfony\Component\Yaml\Yaml;
-use Mpdf\Mpdf;
+use App\EventSubscriber\StartSubscriber;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class OrderController extends Controller
 {
@@ -26,10 +24,28 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+        /*$req->getSession()->getFlashBag()->add(
+            'warning',
+            'deu certo, viu'
+        );*/
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
         ]);
+    }
+
+    /**
+     * @Route("/order/csrftoken", methods={"patch", "get"})
+     *
+     * @param SessionInterface $session
+     * @return Response
+     */
+    public function getCsrfToken(SessionInterface $session): Response
+    {
+        $csrf = new \Symfony\Component\Security\Csrf\CsrfTokenManager;
+        $t = $csrf->getToken($session->get('csrftoken'));
+        dump($t->getValue(), $session->get('csrftoken'));
+        return new Response($session->get('csrftoken'));
     }
 
     /**

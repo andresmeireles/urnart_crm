@@ -7,15 +7,54 @@ use Symfony\Component\Yaml\Yaml;
 
 final class Config
 {
+	/**
+	 * Arquivo de configuração parseado.
+	 *
+	 * @var object Yaml;
+	 */
 	protected static $config;
+	/**
+	 * Status se a configuração está ativa.
+	 *
+	 * @var boolean
+	 */
+	protected static $status = false;
 
-	public static function start()
+	private function __construct() {}
+
+	/**
+	 * Inicia arquivo de configuração.
+	 *
+	 * @return void
+	 */
+	public static function start(): void
 	{
-        self::$config = Yaml::parse(file_get_contents(__DIR__.'/system-config.yaml'));
+		self::$config = Yaml::parse(file_get_contents(__DIR__.'/system-config.yaml'));
+		self::$status = true;
 	}
 
-	public static function getConfig()
+	/**
+	 * Retorna um array com arquivo de configuração iniciado.
+	 *
+	 * @throws NotLoadedConfigException
+	 * @return array
+	 */
+	public static function getConfig(): array
 	{
+		if (!self::getStatus()) {
+			throw new NotLoadedConfigException('Configuração não iniciada, usar methodo Config::start');
+		}
+
 		return self::$config;
+	}
+
+	/**
+	 * Retorna status da confuração.
+	 *
+	 * @return boolean
+	 */
+	public static function getStatus(): bool
+	{
+		return self::$status;
 	}
 }

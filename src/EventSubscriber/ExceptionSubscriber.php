@@ -15,7 +15,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
         switch ($exception) {
             case 'AccessDeniedException':
                 //dump($event->getRequest()->headers->get('referer'));
-                echo $event->getException()->getMessage();
+                //echo $event->getException()->getMessage();
                 
                 return $event->setResponse(new Response($event->getException()->getMessage(), 301));
                 break;

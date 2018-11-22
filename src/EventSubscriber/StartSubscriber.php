@@ -13,8 +13,9 @@ class StartSubscriber implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         $session = $event->getRequest()->getSession();
-        Config::start();
-        dump($session->all());
+        if (!Config::getStatus()) {
+            Config::start();
+        }
         if(!array_key_exists('csrftoken', $session->all())) {
             $this->setTokens($session);
         }

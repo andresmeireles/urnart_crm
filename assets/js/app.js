@@ -91,9 +91,12 @@ import './src/register/cloneFieldCustomer';
 import './src/register/config';
 
 import './src/global/masks';
+
+//global tools
 import './src/global/tools/sorter';
 import './src/global/tools/progress';
 import './src/global/tools/disabledClick';
+import './src/global/tools/reloadCsrfToken';
 
 // order import
 import './src/order/orderAction'
