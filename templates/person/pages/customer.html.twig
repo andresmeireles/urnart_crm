@@ -4,6 +4,9 @@
 
 {% block content %}
     {% include '/components/notification.html.twig' %}
+    <script>
+    var municipio = [{% for municipio in municipios %}{cod: '{{ municipio.id }}',nome: '{{ municipio.nome }}',uf: '{{ municipio.uf }}'},{% endfor %}]
+    </script>
     <div class="col py-2">
         <h1>Clientes - Pessoal Juridica</h1>
         <hr>

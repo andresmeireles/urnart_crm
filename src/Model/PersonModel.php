@@ -3,17 +3,19 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Config\Config;
 use App\Entity\Address;
+use App\Entity\Email;
 use App\Entity\Estado;
 use App\Entity\Municipio;
+use App\Entity\PessoaFisica;
 use App\Entity\PessoaJuridica;
+use App\Entity\Phone;
+use App\Entity\Proprietario;
 use App\Model\Model;
+use App\Utils\Exceptions\FieldAlreadyExistsException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Respect\Validation\Validator as v;
-use App\Entity\PessoaFisica;
-use App\Entity\Phone;
-use App\Entity\Email;
-use App\Entity\Proprietario;
 use Symfony\Component\Yaml\Yaml;
 
 class PersonModel extends Model
@@ -31,11 +33,20 @@ class PersonModel extends Model
         extract($data);
         //$person['cpf'] = $person['cpf'] === "" ? null : $person['cpf'];
         $person['cpf'] = v::cpf()->validate($person['cpf']) === true ? $person['cpf'] : $this->error('cpf');
-        $cnpj = v::cnpj()->validate($customer['cnpj']) ? $customer['cnpj'] : $this->error('cnpj');
+        $cnpj = $customer['cnpj'] === "" ? null : $customer['cnpj'];
+        if (Config::getProperty('check_cnpj')) {
+            $cnpj = v::cnpj()->validate($cnpj) ? $customer['cnpj'] : $this->error('cnpj');
+        }
         $person['birthDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $person['birthDate']))) == true ? $person['birthDate'] : $this->error('data de nascimento');
         $customer['foundationDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $customer['foundationDate']))) == true ? $customer['foundationDate'] : $this->error('data de fundação');
         if ($this->error) {
             return $this->errorResponse;
+        }
+        if (strlen($cnpj) == 14) {
+            $checkCnpj = $this->checkSameField('cnpj', $cnpj);
+            if ($checkCnpj['result'] !== 0) {
+                throw new FieldAlreadyExistsException('Cnpj já existe');
+            }
         }
         if (is_null($person['cpf'])) {
             return array(
@@ -45,7 +56,7 @@ class PersonModel extends Model
             );
         }
         if (!$this->config['allow_same_cpf']) {
-            $result = $this->checkSameCpf($person['cpf']);
+            $result = $this->checkSameField('cpf', $person['cpf']);
             if ($result['result'] !== 0) {
                 return array(
                     'http_code' => 400,
@@ -54,7 +65,6 @@ class PersonModel extends Model
                 );
             }
         }
-        $customer['cnpj'] = $customer['cnpj'] === "" ? null : $customer['cnpj'];
         $person['birthDate'] = $person['birthDate'] === "" ? null : $person['birthDate'];
         $customer['foundationDate'] = $customer['foundationDate'] === "" ? null : $customer['foundationDate'];
 
@@ -67,7 +77,7 @@ class PersonModel extends Model
             $pessoaFisica->setLastName($person['lastName']);
             $pessoaFisica->setCpf($person['cpf']);
             if ($this->config)
-            $pessoaFisica->setRg($person['rg']);
+                $pessoaFisica->setRg($person['rg']);
             $g = $person['genre'] ?? null;
             $pessoaFisica->setGenre($g);
             $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null;
@@ -153,12 +163,12 @@ class PersonModel extends Model
         return false;
     }
 
-    public function checkSameCpf(?string $cpf): ?array
+    private function checkSameField(string $field, string $value): ?array
     {
-            $connection = $this->em->getConnection();
-            $statement = $connection->prepare("SELECT COUNT(cpf) AS result FROM pessoa_fisica WHERE cpf = :cpf");
-            $statement->bindValue('cpf', $cpf);
-            $statement->execute();
-            return $statement->fetch();
+        $connection = $this->em->getConnection();
+        $statement = $connection->prepare("SELECT COUNT($field) AS result FROM pessoa_fisica WHERE $field = :$field");
+        $statement->bindValue($field, $value);
+        $statement->execute();
+        return $statement->fetch();
     }
 }

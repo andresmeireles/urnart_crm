@@ -1,7 +1,7 @@
 /**
  * Funçãos de ação da pagina de criação de clientes
  */
-document.addEventListener('DOMContentLoaded', function () {
+ document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener('click', function (el) {
         if (el.target.getAttribute('send')) {
@@ -99,28 +99,28 @@ document.addEventListener('DOMContentLoaded', function () {
             var stateId = el.target.value
             let stateValue = document.querySelector('#estado').querySelector(`option[value="${stateId}"]`).getAttribute('state')
             var entity = el.target.getAttribute('target')
-            var url = `/register/get/criteria/${entity}`
             var select = document.querySelector('#' + entity)
-            
+
             select.innerHTML = ''
             var selected = document.createElement('option')
             selected.text = 'Selecione'
             selected.setAttribute('selected', '')
             selected.setAttribute('disabled', '')
             select.add(selected)
-            
-            simpleRequest(url, 'POST', stateValue, function(response) {
-                var optData = response.data
-                for (var opt of optData) {
-                    var option = document.createElement('option')
-                    option.value = opt.id
-                    option.text = opt.nome
-                    select.add(option)
-                } 
-            }, 'uf')
-        }       
+
+            var city = eval(entity);
+            console.log(city);
+            for (let m of city) {
+                if (m.uf == stateValue) {
+                     let opt = document.createElement('option');
+                     opt.text = m.nome;
+                     opt.setAttribute('value', m.cod);
+                     select.add(opt);
+                }
+            }
+        }
     })
-    
+
     function drawForm(element, entity, type = 'view') {
         var id = element.target.getAttribute(type)
         simpleRequestForm(`/register/get?entity=${entity}&id=${id}`, 'GET', null, function (response) {

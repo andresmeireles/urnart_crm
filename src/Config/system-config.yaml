@@ -2,5 +2,5 @@ allow_negative_stock: true
 allow_reserve: false
 allow_same_cpf: true
 allow_no_cpf: false
-allow_no_cnpj: false
+check_cnpj: false
 logo_image_path: sys/logo_img/logo.png

@@ -48,6 +48,14 @@ final class Config
 		return self::$config;
 	}
 
+	public static function getProperty($param)
+	{
+		if (!isset(self::$config[$param])) {
+			throw new NotFoundParameterException("Parametro {$param} não existe");
+		}
+		return self::$config[$param];
+	}
+
 	/**
 	 * Retorna status da confuração.
 	 *

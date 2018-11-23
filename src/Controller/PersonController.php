@@ -34,7 +34,8 @@ class PersonController extends Controller
     {
         return $this->render('person/pages/customer.html.twig', [
             'person' => $getter->get('pessoaJuridica'),
-            'estado' => $getter->get('estado')
+            'estado' => $getter->get('estado'),
+            'municipios' => $this->getDoctrine()->getManager()->getRepository(Municipio::class)->findAll(),
         ]);
     }
 
@@ -168,7 +169,6 @@ class PersonController extends Controller
         foreach ($email as $emails) {
             $mail = new Email();
             $emails = str_replace('(', '', str_replace(')', '', str_replace('-', '', $emails)));
-            
             $mail->setEmail($emails);
             $pessoaFisica->addEmail($mail);
             $em->merge($mail);

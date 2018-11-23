@@ -15,10 +15,10 @@ check:
     name:     'allow_no_cpf'
     label:    'Permitir cadastro sem CPF'
     tooltip:  'Permitir cadastro de clientes sem C.P.F, cuidado com essa opção'
-  allowNoCNPJ:
-    name:     'allow_no_cnpj'
-    label:    'Permitir cadastro de clientes sem CNPJ'
-    tooltip:  'Essa opção pode causar falhas no cadastro e pesquisa de clientes e pedidos, cuidado com esta opção'
+  CheckCNPJ:
+    name:     'check_cnpj'
+    label:    'Verifica validade de cnpj'
+    tooltip:  'Sistema verificará cnpj cadastrado'
 
 images:
   logoImage:

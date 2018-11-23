@@ -3,19 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Estado;
+use App\Entity\Municipio;
 use App\Entity\Order;
-use App\Entity\Product;
 use App\Entity\PaymentType;
-use App\Entity\Transporter;
 use App\Entity\PessoaJuridica;
-use App\Model\OrderModel;
+use App\Entity\Product;
+use App\Entity\Transporter;
 use App\Model\ListModel;
+use App\Model\OrderModel;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use App\EventSubscriber\StartSubscriber;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 class OrderController extends Controller
 {
@@ -62,7 +62,7 @@ class OrderController extends Controller
             'payments' => $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll(),
             'transporters' => $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll(),
             // for dynamic add customer
-            'estado' => $this->getDoctrine()->getManager()->getRepository(Estado::class)->findAll()
+            'estado' => $this->getDoctrine()->getManager()->getRepository(Estado::class)->findAll(),
         ]);
     }
 

@@ -15,10 +15,9 @@ class ExceptionSubscriber implements EventSubscriberInterface
         $exception = $exceptionClass === 'Exception' ? $exceptionClass : substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
         switch ($exception) {
             case 'AccessDeniedException':
-                //dump($event->getRequest()->headers->get('referer'));
+            case 'FieldAlreadExistsException':
                 $this->triggerFlashMessage($event, $event->getException()->getMessage(), 'error');
-                //return $event->setResponse(new Response($event->getRequest()->headers->get('referer'), 301));
-                return $event->setResponse(new ResponseResponse($event->getRequest()->headers->get('referer')));
+                return $event->setResponse(new RedirectResponse($event->getRequest()->headers->get('referer')));
                 break;
             case 'UniqueConstraintViolationException':
             case 'ForeignKeyConstraintViolationException':
