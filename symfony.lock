@@ -65,14 +65,8 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
-    "guzzlehttp/psr7": {
-        "version": "1.4.2"
-    },
     "h4cc/wkhtmltopdf-amd64": {
         "version": "0.12.4"
-    },
-    "intervention/image": {
-        "version": "2.4.2"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
@@ -86,32 +80,8 @@
     "jms/serializer": {
         "version": "1.12.1"
     },
-    "knplabs/knp-snappy": {
-        "version": "v1.0.4"
-    },
-    "knplabs/knp-snappy-bundle": {
-        "version": "1.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.5",
-            "ref": "c81bdcf4a9d4e7b1959071457f9608631865d381"
-        }
-    },
-    "league/flysystem": {
-        "version": "1.0.49"
-    },
-    "league/glide": {
-        "version": "1.3.0"
-    },
     "monolog/monolog": {
         "version": "1.23.0"
-    },
-    "mpdf/mpdf": {
-        "version": "dev-master"
-    },
-    "myclabs/deep-copy": {
-        "version": "1.8.1"
     },
     "nikic/php-parser": {
         "version": "v4.0.1"
@@ -121,9 +91,6 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.2.0"
-    },
-    "paragonie/random_compat": {
-        "version": "v9.99.99"
     },
     "phpcollection/phpcollection": {
         "version": "0.5.0"
@@ -137,9 +104,6 @@
     "psr/container": {
         "version": "1.0.0"
     },
-    "psr/http-message": {
-        "version": "1.0.1"
-    },
     "psr/log": {
         "version": "1.0.2"
     },
@@ -148,21 +112,6 @@
     },
     "respect/validation": {
         "version": "1.1.16"
-    },
-    "setasign/fpdi": {
-        "version": "v2.0.3"
-    },
-    "spatie/browsershot": {
-        "version": "3.26.0"
-    },
-    "spatie/image": {
-        "version": "1.5.2"
-    },
-    "spatie/image-optimizer": {
-        "version": "1.1.3"
-    },
-    "spatie/temporary-directory": {
-        "version": "1.1.4"
     },
     "squizlabs/php_codesniffer": {
         "version": "3.0",
@@ -284,9 +233,6 @@
     "symfony/polyfill-php72": {
         "version": "v1.8.0"
     },
-    "symfony/process": {
-        "version": "v4.1.1"
-    },
     "symfony/profiler-pack": {
         "version": "v1.0.3"
     },
@@ -385,9 +331,6 @@
     },
     "twig/twig": {
         "version": "v2.4.8"
-    },
-    "wemersonjanuario/wkhtmltopdf-windows": {
-        "version": "0.12.2.3"
     },
     "wgenial/numeroporextenso": {
         "version": "2.0.0"
