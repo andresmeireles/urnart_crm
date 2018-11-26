@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Snappy\Pdf;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
+use Spatie\Browsershot\Browsershot;
 
 class Form extends GenericContainer
 {
@@ -53,6 +54,7 @@ class Form extends GenericContainer
             'prod' => $clonedFields,
             'logo' => $this->config['logo_image_path'],
 		));
+		Browsershot::html($parsedTemplate)->save('example.pdf');
 		return array(	
 			'template' => $parsedTemplate
 		);

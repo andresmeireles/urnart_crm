@@ -14,6 +14,18 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //$path = "C:/Program Files/nodejs/npm";
+        $path2 = "C:\\Program Files\\nodejs\\node.exe";
+        //$n = exec($path);
+        $node = exec($path2);
+        dump($node);
+        echo $path2.'<br>';
+        if (file_exists($path2)) {
+            dump($path2);
+            echo 'caminho existe';
+        } else {
+            echo 'caminhão não existe';
+        }
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
