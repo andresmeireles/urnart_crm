@@ -74,8 +74,8 @@ class Form extends GenericContainer
 			throw new BinaryNotFoundException('wkhtmltopdf não esta instaldado no sistama ou não está no PATH do sistema operacional.');
 		}
 		$this->setParsedFile($formName, $data);
-		$htmlReportFile = 'report.html';
-		$pdfDir= 'report.pdf';
+		$htmlReportFile = 'reportBuilder/report.html';
+		$pdfDir= 'reportBuilder/report.pdf';
 		file_put_contents($htmlReportFile, $this->parsedFile);
 		exec("wkhtmltopdf $htmlReportFile $pdfDir", $opt, $result);
 		if ($result === 1) {
