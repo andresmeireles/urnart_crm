@@ -26,14 +26,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    orc_container.service:
-        class: App\Utils\Generic\GenericContainer
-        arguments:
-            - '@doctrine.orm.entity_manage'
-            
     generic_container.service:
         class: App\Utils\GenericContainer
         arguments: 
             - '@doctrine.orm.entity_manage'
             - '@twig'
-            - '@knp_snappy.pdf'

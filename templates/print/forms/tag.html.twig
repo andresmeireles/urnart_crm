@@ -123,6 +123,7 @@
     {% set pageCounter = 0 %}
     {% for tag in range(1, data.amount) %}
     {% set pageCounter = pageCounter + 1 %}
+    {% set path =  ('/pdf' in app.request.server.get('REQUEST_URI')) ? logo : asset(logo) %}
     {% if pageCounter == 6 %}
     {% set pageCounter = 0 %}
     <div>
@@ -131,7 +132,7 @@
             <div class="tag">
                 <div class="s-tag t-border">
 
-                    <div class="tag-box-1 tag-float-left"><img class="tag-img" src="{{ asset(logo) }}"></div>
+                    <div class="tag-box-1 tag-float-left"><img class="tag-img" src="{{ path }}"></div>
 
                     <div class="tag-box-2 tag-float-left">
                         {% if data.city == '' %}

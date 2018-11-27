@@ -19,10 +19,9 @@ abstract class GenericContainer
 
 	protected $pdf;
 
-    public function __construct(EntityManagerInterface $em, Environment $twig, Pdf $snappy)
+    public function __construct(EntityManagerInterface $em, Environment $twig)
     {
         $this->em = $em; 
         $this->twig = $twig;
-        $this->pdf = $snappy;
     }
 }

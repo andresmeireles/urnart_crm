@@ -2,26 +2,41 @@
 
 namespace App\Utils\Andresmei;
 
-use App\Utils\GenericContainer;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Snappy\Pdf;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
-use Spatie\Browsershot\Browsershot;
+use App\Utils\GenericContainer;
+use App\Utils\Exceptions\BinaryNotFoundException;
 
 class Form extends GenericContainer
 {
+	/**
+	 * String com caminhos dos formularios para impressão
+	 *
+	 * @var string
+	 */
 	protected $templateFolder = 'print/forms/';
+	/**
+	 * tipos de funções
+	 *
+	 * @var array
+	 */
 	protected $allowedTypes = ['pdf', 'show'];
+	/**
+	 * Arquivo parseado para impressão
+	 *
+	 * @var string
+	 */
+	protected $parsedFile;
 	protected $config;
 
-	public function __construct(EntityManagerInterface $em, Environment $twig, Pdf $snappy)
+	public function __construct(EntityManagerInterface $em, Environment $twig)
     {
-        parent::__construct($em, $twig, $snappy);
+        parent::__construct($em, $twig);
         $this->config = Yaml::parse(file_get_contents(__DIR__.'/../../Config/system-config.yaml'));
     }
 
-    public function returnSelectedFromType(string $type, string $formName, array $data): array
+    public function returnSelectedFromType(string $type, string $formName, array $data): ?array
 	{
 		if (!in_array($type, $this->allowedTypes)) {
 			throw new \Exception(sprintf('Tipo %s não é um tipo valido', $type));
@@ -39,37 +54,37 @@ class Form extends GenericContainer
 
 	public function show(string $formName, array $data): array
 	{
-		$file = $this->checkFileExistence($formName);
-		$clonedFields = [];
-		foreach ($data as $key => $value) {
-		    if (is_array($value)) {
-		        $clonedFields[] = $value;
-            }
-		}
-		if ($formName == 'romaneio-board') {
-			$clonedFields = array_reverse($clonedFields);
-		}
-		$parsedTemplate = $this->twig->render($file, array(	
-			'data' => $data,
-            'prod' => $clonedFields,
-            'logo' => $this->config['logo_image_path'],
-		));
-		Browsershot::html($parsedTemplate)->save('example.pdf');
+		$this->setParsedFile($formName, $data);
 		return array(	
-			'template' => $parsedTemplate
+			'template' => $this->parsedFile
 		);
 	}
 
+	/**
+	 * Recebe parametros para criação de html e conversão para pdf.
+	 *
+	 * @param string $formName => Nome do formulario
+	 * @param array $data => informações do formulário
+	 * @return array => array associativo com parametros [pdf_path] com caminho do pdf gerado e [type] com tipo de mensagem
+	 */
 	public function pdf(string $formName, array $data): array
 	{
-		$file = $this->checkFileExistence($formName);
-		$parsedTemplate = $this->twig->render($file, array(
-			'data' => $data
-		));
-		$pdf = $this->pdf->getOutput($parsedTemplate);
-		
-		return array(	
-			'template' => $pdf
+		exec('wkhtmltopdf --version', $opt, $result);
+		if ($result === 1) {
+			throw new BinaryNotFoundException('wkhtmltopdf não esta instaldado no sistama ou não está no PATH do sistema operacional.');
+		}
+		$this->setParsedFile($formName, $data);
+		$htmlReportFile = 'report.html';
+		$pdfDir= 'report.pdf';
+		file_put_contents($htmlReportFile, $this->parsedFile);
+		exec("wkhtmltopdf $htmlReportFile $pdfDir", $opt, $result);
+		if ($result === 1) {
+			throw new \Exception('Conversão não ocorrida.');
+		}
+		unlink($htmlReportFile);
+		return array(
+			'pdf_path' => $pdfDir,
+			'type' => 'success',
 		);
 	}
 
@@ -80,5 +95,31 @@ class Form extends GenericContainer
 			throw new \Exception("{$formName} não existe em {$this->templateFolder}. Caminho {$completeFilePath}");
 		}
 		return $completeFilePath;
+	}
+
+	/**
+	 * Cria arquivo html parseado
+	 *
+	 * @param string $formName
+	 * @param array $data
+	 * @return void
+	 */
+	private function setParsedFile(string $formName, array $data): void
+	{
+		$file = $this->checkFileExistence($formName);
+		$clonedFields = [];
+		foreach ($data as $key => $value) {
+		    if (is_array($value)) {
+		        $clonedFields[] = $value;
+            }
+		}
+		if ($formName == 'romaneio-board') {
+			$clonedFields = array_reverse($clonedFields);
+		}
+		$this->parsedFile = $this->twig->render($file, array(	
+			'data' => $data,
+            'prod' => $clonedFields,
+            'logo' => $this->config['logo_image_path'],
+		));
 	}
 }

@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Utils\Andresmei\Form;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FormController extends Controller
 {
@@ -53,26 +54,22 @@ class FormController extends Controller
     }
 
     /**
-     * @Route("/forms/pdf/{formName}", methods="POST")
+     * @Route("/forms/{formName}/pdf", methods="POST")
      * @param  Request $request  
      * @param  string  $formName 
      * @return Response            
      */
-    public function sendPdfForm(Request $request, string $formName, Form $form)
+    public function sendPdfForm(Request $request, string $formName, Form $form): Response
     {
         if (empty($request->request->all())) {
             echo 'Nenhum dado enviado';
         }
         $data = $request->request->all();
-	$result = $form->returnSelectedFromType('pdf', $formName, $data);
-	$filename = sprintf('pdf-%s.pdf', date('d-m-Y')); 
-	return new Response(
-		$result['template'],
-		200,
-		[
-			'Contenty-type'		=> 'application/pdf',
-			'Content-Disposition' 	=> sprintf('attachment; filename="%s"', $filename),			
-		]
-	);
+        $result = $form->returnSelectedFromType('pdf', $formName, $data);
+        $this->addFlash(
+            $result['type'],
+            'Sucesso!'
+        );
+        return new BinaryFileResponse($result['pdf_path']);
     }
 }

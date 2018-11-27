@@ -8,6 +8,7 @@
   <title>{% block title %}{% endblock %}</title>
 
   <body>
+  {% include 'components/notification.html.twig' %}
   {% block body %}{% endblock %}
   <script src="{{ asset('build/app.js') }}"></script>
   {% block customJS %}{% endblock %}
