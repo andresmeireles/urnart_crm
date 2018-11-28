@@ -1,0 +1,51 @@
+{% extends 'index.html.twig' %}
+
+{% block content %}
+<div class="p-3 col">
+    <div>
+        <h1>Pesquisas de Satisfação</h1>
+        <hr>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="col">Tipos de pesquisa</h3>  
+        </div>
+        <div class="col-md-12 px-4 py-2">
+            <ul class="nav nav-pills mb-3" id="surveys" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active text-dark" id="travel-tab" data-toggle="pill" href="#travel" role="tab" aria-controls="travel" aria-selected="true">Pesquisas de viagem</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" id="outro-tab" data-toggle="pill" href="#outro" role="tab" aria-controls="outro" aria-selected="false">Pesquisas de viagem</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-surveys">
+                <div class="tab-pane fade show active" id="travel" role="tabpanel" aria-labelledby="travel-tab">
+                    <div class="col">
+                        <legend>Relatórios</legend>
+                        <ul class="list-group py-2">
+                            <legend>21/01/2018</legend>
+                            <li class="list-group-item list-group-item-action align-right">Fred<span class="badge badge-danger badge-pill float-right mx-1"><i class="fas fa-times-circle"></i></span><span class="badge badge-secondary badge-pill float-right mx-1"><i class="fas fa-tasks"></i></span><span class="badge badge-primary badge-pill float-right mx-1"><i class="far fa-comment"></i></span></li>
+                            <li class="list-group-item list-group-item-action">Zeca</li>
+                            <li class="list-group-item list-group-item-action">João</li>
+                            <li class="list-group-item list-group-item-action">Marcley</li>
+                            <li class="list-group-item list-group-item-action">Samuel</li>
+                        </ul>
+                        <ul class="list-group py-2">
+                            <legend>21/01/2018</legend>
+                            <li class="list-group-item list-group-item-action">Fred</li>
+                            <li class="list-group-item list-group-item-action">Zeca</li>
+                            <li class="list-group-item list-group-item-action">João</li>
+                            <li class="list-group-item list-group-item-action">Marcley</li>
+                            <li class="list-group-item list-group-item-action">Samuel</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="outro" role="tabpanel" aria-labelledby="outro-tab">
+                    tudo bem?
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

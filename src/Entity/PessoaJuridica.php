@@ -63,11 +63,17 @@ class PessoaJuridica extends BaseEntity
      */
     private $orderNumber;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Survey", mappedBy="customer", orphanRemoval=true)
+     */
+    private $surveys;
+
     public function __construct()
     {
         parent::__construct();
         $this->proprietarios = new ArrayCollection();
         $this->orderNumber = new ArrayCollection();
+        $this->surveys = new ArrayCollection();
     }
 
     public function getId()
@@ -294,6 +300,37 @@ class PessoaJuridica extends BaseEntity
             // set the owning side to null (unless already changed)
             if ($orderNumber->getCustomer() === $this) {
                 $orderNumber->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Survey[]
+     */
+    public function getSurveys(): Collection
+    {
+        return $this->surveys;
+    }
+
+    public function addSurvey(Survey $survey): self
+    {
+        if (!$this->surveys->contains($survey)) {
+            $this->surveys[] = $survey;
+            $survey->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSurvey(Survey $survey): self
+    {
+        if ($this->surveys->contains($survey)) {
+            $this->surveys->removeElement($survey);
+            // set the owning side to null (unless already changed)
+            if ($survey->getCustomer() === $this) {
+                $survey->setCustomer(null);
             }
         }
 
