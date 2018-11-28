@@ -7,8 +7,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Utils\Andresmei\Form;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Filesystem\Filesystem;
+use App\Utils\Andresmei\Form;
 
 class FormController extends Controller
 {
@@ -55,6 +57,9 @@ class FormController extends Controller
 
     /**
      * @Route("/forms/{formName}/pdf", methods="POST")
+     * 
+     * Recebe parametros, cria e envia para download arquivo pdf.
+     * 
      * @param  Request $request  
      * @param  string  $formName 
      * @return Response            
@@ -66,10 +71,26 @@ class FormController extends Controller
         }
         $data = $request->request->all();
         $result = $form->returnSelectedFromType('pdf', $formName, $data);
+
+        //check if file exists
+        $file = $result['pdf_path'];
+        $fs = new Filesystem();
+        if (!$fs->exists($file)) {
+            throw $this->createNotFoundException('File not found.');
+        }           
+
+        // send message
         $this->addFlash(
             $result['type'],
             'Sucesso!'
         );
-        return new BinaryFileResponse($result['pdf_path']);
+
+        // send file to download
+        $response =  new BinaryFileResponse($file);
+        $response->trustXSendfileTypeHeader();
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+ 
+        return $response;
+        //return $this->file($file); <-- Alternativa mais simples :)
     }
 }
