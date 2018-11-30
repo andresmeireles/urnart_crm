@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Utils\Form\FormTemplate;
 
@@ -15,43 +15,42 @@ use WGenial\NumeroPorExtenso\NumeroPorExtenso;
  */
 class ReceiptFormCreator implements CreateFormInterface
 {
-	public function createForm(Parameters $parameters): ResponseFormInterface
-	{
+    public function createForm(Parameters $parameters): ResponseFormInterface
+    {
+        $clonedParameters = $parameters->getClonedParameters();
+        
+        foreach ($clonedParameters as $parameter) {
+            ValidatorJson::validate($parameter, [
+                'number' => v::notEmpty()->numeric()->positive(),
+                'clientName' => v::notEmpty()->alpha()->not(v::numeric()),
+                'clientCity' => v::notEmpty()->alpha()->not(v::numeric()),
+                'clientState' => v::notEmpty()->alpha()->length(2, 2)->not(v::numeric()),
+                'price' => v::notEmpty()->numeric()->positive(),
+                'orderNumber' => v::notEmpty()->numeric()->positive(),
+            ]);
+        }
 
-		$clonedParameters = $parameters->getClonedParameters();
-		
-		foreach ($clonedParameters as $parameter) {
-			ValidatorJson::validate($parameter, [
-				'number' => v::notEmpty()->numeric()->positive(),
-				'clientName' => v::notEmpty()->alpha()->not(v::numeric()),
-				'clientCity' => v::notEmpty()->alpha()->not(v::numeric()),
-				'clientState' => v::notEmpty()->alpha()->length(2, 2)->not(v::numeric()),
-				'price' => v::notEmpty()->numeric()->positive(),
-				'orderNumber' => v::notEmpty()->numeric()->positive(),
-			]);
-		}
+        if (ValidatorJson::getErrors()) {
+            return new ResponseForm(null, 'Portrait', $this->getMessage());
+        }
 
-		if (ValidatorJson::getErrors()) {
-			return new ResponseForm(null, 'Portrait', $this->getMessage());
-		}
+        $body = $this->createBody($clonedParameters);
 
-		$body = $this->createBody($clonedParameters);
+        return new ResponseForm($body);
+    }
 
-		return new ResponseForm($body);
-	}
+    public function getMessage()
+    {
+        return ValidatorJson::getErrors();
+    }
 
-	public function getMessage()
-	{
-		return ValidatorJson::getErrors();
-	}
+    private function createBody(array $parameters)
+    {
+        $imageBackground = file_get_contents(__DIR__.'/carta-frete/background');
+        $imageSign = file_get_contents(__DIR__.'/carta-frete/sign');
+        $extenseNumber = new NumeroPorExtenso();
 
-	private function createBody(array $parameters)
-	{
-		$imageBackground = file_get_contents(__DIR__.'/carta-frete/background');
-		$imageSign = file_get_contents(__DIR__.'/carta-frete/sign');
-		$extenseNumber = new NumeroPorExtenso();
-
-		$body = '
+        $body = '
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script>
 			document.addEventListener("DOMContentLoaded", function () {
@@ -126,8 +125,8 @@ class ReceiptFormCreator implements CreateFormInterface
             $body .= $halfPage .''. $halfPage;
 
             $body.= '</div>';
-		}
+        }
 
-		return $body;
-	}
+        return $body;
+    }
 }

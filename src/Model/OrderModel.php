@@ -36,12 +36,12 @@ class OrderModel extends Model
      */
     public function executeActionOnOrder(array $information, array $products, string $type = 'insert'): array
     {
-        $em = $this->em;
-        $em->getConnection()->beginTransaction();
+        $entityManager = $this->$entityManager;
+        $entityManager->getConnection()->beginTransaction();
         try {
             if ($type == 'update') {
                 $id = $information['id'];
-                $order = $em->getRepository(Order::class)->find($id);
+                $order = $entityManager->getRepository(Order::class)->find($id);
                 if ($order->isClosed()) {
                     return FlashResponse::response(400, 'warning', 'Pedido fechado não pode ser editado');
                 }
@@ -49,13 +49,13 @@ class OrderModel extends Model
                 $order = new Order();
             }
             $totalPrice = 0;
-            $customer = $this->em->getRepository(PessoaJuridica::class)->find($information['clientName']);
+            $customer = $this->$entityManager->getRepository(PessoaJuridica::class)->find($information['clientName']);
             $order->setCustomer($customer);
             $freight = $information['freight'] === '' ? null : (float) $information['freight'];
             $order->setFreight($freight);
             $discount = $information['discount'] === '' ? null : (float) $information['discount'];
             $order->setDiscount($discount);
-            $transporter = $this->em->getRepository(Transporter::class)->find($information['transporter']);
+            $transporter = $this->$entityManager->getRepository(Transporter::class)->find($information['transporter']);
             $transporter = $transporter ?? null;
             $order->setTransporter($transporter);
             $customPort = array_key_exists('port', $information) ? $information['port'] : null;
@@ -63,23 +63,23 @@ class OrderModel extends Model
                 $customPort = (ltrim(trim($information['port'])) === $transporter->getPort()) ? null : ltrim(trim($information['port']));
             }
             $order->setCustomPort($customPort);
-            $paymentType = $this->em->getRepository(PaymentType::class)->find($information['formPg']);
+            $paymentType = $this->$entityManager->getRepository(PaymentType::class)->find($information['formPg']);
             $order->setPaymentType($paymentType);
             $installments = array_key_exists('installments', $information) ? (int) $information['installments'] : null;
             $order->setInstallment($installments);
             $comments = trim(ltrim(filter_var($information['observation'], FILTER_SANITIZE_STRING)));
             $order->setComments($comments);
             if ($type == 'update') {
-              $productCart = $em->getRepository(Cart::class)->findBy(array(
+                $productCart = $entityManager->getRepository(Cart::class)->findBy(array(
                 'orderNumber' => $id
               ));
-              foreach ($productCart as $p) {
-                $em->remove($p);
-              }
+                foreach ($productCart as $p) {
+                    $entityManager->remove($p);
+                }
             }
             foreach ($products as $product) {
                 $cart = new Cart;
-                $existentProduct = $this->em->getRepository(Product::class)->find($product['cod']);
+                $existentProduct = $this->$entityManager->getRepository(Product::class)->find($product['cod']);
                 if (is_null($existentProduct)) {
                     return array(
                         'http_code' => 400,
@@ -94,22 +94,22 @@ class OrderModel extends Model
                     $cart->setCustomPrice($price);
                 }
                 $cart->setOrderNumber($order);
-                $em->persist($cart);
-                $totalPrice += ( $price * (float) $product['qnt']);
+                $entityManager->persist($cart);
+                $totalPrice += ($price * (float) $product['qnt']);
             }
             $order->setTotalPrice($totalPrice);
             if ($type == 'update') {
-                $em->merge($order);
+                $entityManager->merge($order);
             } else {
                 $order->setActive(true);
-                $em->persist($order);
+                $entityManager->persist($order);
             }
-            $em->flush();
-            $em->getConnection()->commit();
+            $entityManager->flush();
+            $entityManager->getConnection()->commit();
         } catch (\Exception $e) {
             // development message
             throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
-            $em->getConnection()->rollback();
+            $entityManager->getConnection()->rollback();
             return array(
                 'http_code' => 401,
                 'message' => $e->getMessage()
@@ -127,7 +127,7 @@ class OrderModel extends Model
      * @param array $information
      * @param array $products
      * @throws \Exception
-     * @return void
+     * @return array
      */
     public function updateOrder(array $information, array $products): array
     {
@@ -140,7 +140,7 @@ class OrderModel extends Model
      * @param array $information
      * @param array $products
      * @throws \Exception
-     * @return void
+     * @return array
      */
     public function createOrder(array $information, array $products): array
     {
@@ -150,11 +150,11 @@ class OrderModel extends Model
     /**
      * Reserve products in cart or irder number.
      *
-     * @param  int   $id [description]
+     * @param  int   $orderId [description]
      * @return array     [description]
      * @throws \Exception
      */
-    public function reserve(int $id): array
+    public function reserve(int $orderId): array
     {
         if (!$this->config['allow_reserve']) {
             return array(
@@ -163,11 +163,11 @@ class OrderModel extends Model
               'message' => 'Operação desablitida pelo sistema.'
             );
         }
-        $em = $this->em;
-        $em->getConnection()->beginTransaction();
-        $order = $em->getRepository(Order::class)->find($id);
+        $entityManager = $this->$entityManager;
+        $entityManager->getConnection()->beginTransaction();
+        $order = $entityManager->getRepository(Order::class)->find($orderId);
         if (!$order->isOpen()) {
-            $message = $order->isReserved() ? "Pedido {$order->getId()} já tem os produtos reservados" : "Pedido {$order->getId()} já foi fechado e não pode ser modificado";          
+            $message = $order->isReserved() ? "Pedido {$order->getId()} já tem os produtos reservados" : "Pedido {$order->getId()} já foi fechado e não pode ser modificado";
             return array(
                 'http_code' => 400,
                 'type' => 'error',
@@ -175,31 +175,31 @@ class OrderModel extends Model
             );
         }
         try {
-          $productCarts = $order->getProductCarts();
-          $order->reserve();
-          foreach ($productCarts as $cart) {
-            $product = $cart->getProduct();
-            if (!$this->config['allow_negative_stock']) {
-                if ($product->getStock() < $cart->getAmount()) {
-                    $em->getConnection()->rollback();
-                    return array(
+            $productCarts = $order->getProductCarts();
+            $order->reserve();
+            foreach ($productCarts as $cart) {
+                $product = $cart->getProduct();
+                if (!$this->config['allow_negative_stock']) {
+                    if ($product->getStock() < $cart->getAmount()) {
+                        $entityManager->getConnection()->rollback();
+                        return array(
                         'http_code' => 400,
                         'type' => 'error',
                         'message' => "Produto {$product->getName()} não tem estoque suficiente para reservar."
                     );
+                    }
                 }
+                $reserved = $product->getProductInventory()->getReserved();
+                $amountReserved = ($reserved + $cart->getAmount());
+                $product->setReserved($amountReserved);
+                $entityManager->merge($product);
             }
-            $reserved = $product->getProductInventory()->getReserved();
-            $amountReserved = ($reserved + $cart->getAmount());
-            $product->setReserved($amountReserved);
-            $em->merge($product);
-          }
-          $em->merge($order);
-          $em->flush();
-          $em->getConnection()->commit();
+            $entityManager->merge($order);
+            $entityManager->flush();
+            $entityManager->getConnection()->commit();
         } catch (\Exception $e) {
-          $em->getConnection()->rollback();
-          throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+            $entityManager->getConnection()->rollback();
+            throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
         }
         return array(
           'http_code' => 301,
@@ -217,7 +217,7 @@ class OrderModel extends Model
      */
     public function runUnreserveTypeAction(?int $id, string $hash, string $type = 'open'): array
     {
-        $em = $this->em;
+        $entityManager = $this->$entityManager;
         if (!$this->validate($hash) || is_null($id)) {
             return array(
                 'http_code' => 400,
@@ -225,8 +225,8 @@ class OrderModel extends Model
                 'message' => 'erro, operação não autorizada...'
             );
         }
-        $em->getConnection()->beginTransaction();
-        $order = $em->getRepository(Order::class)->find($id);
+        $entityManager->getConnection()->beginTransaction();
+        $order = $entityManager->getRepository(Order::class)->find($id);
         if ($type == 'open' && $order->isOpen()) {
             return array(
                 'http_code' => 400,
@@ -257,13 +257,13 @@ class OrderModel extends Model
                 }
                 $amountReserved = ($reserved - $cart->getAmount());
                 $product->setReserved($amountReserved);
-                $em->merge($product);
+                $entityManager->merge($product);
             }
-            $em->merge($order);
-            $em->flush();
-            $em->getConnection()->commit();
+            $entityManager->merge($order);
+            $entityManager->flush();
+            $entityManager->getConnection()->commit();
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
+            $entityManager->getConnection()->rollback();
             throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
         }
         $message = $order->isClosed() ? "Pedido {$id} fechado com sucesso" : "Produtos do pedido {$id} foi aberto novamento";
@@ -280,9 +280,9 @@ class OrderModel extends Model
      * @throws \Exception
      * @return array
      */
-    public function radiateOrder(int $id, string $hash): array
+    public function radiateOrder(int $orderId, string $hash): array
     {
-        return $this->runUnreserveTypeAction($id, $hash, 'open');
+        return $this->runUnreserveTypeAction($orderId, $hash, 'open');
     }
 
     /**
@@ -291,19 +291,20 @@ class OrderModel extends Model
      * @return array
      * @throws \Exception
      */
-    public function closeOrder(int $id, string $hash): array
+    public function closeOrder(int $orderId, string $hash): array
     {
-        return $this->runUnreserveTypeAction($id, $hash, 'close');
+        return $this->runUnreserveTypeAction($orderId, $hash, 'close');
     }
 
     /**
-     * @param $id
+     * @param int $orderId
+     * 
      * @return array
      */
-    public function removeOrder($id): array
+    public function removeOrder(int $orderId): array
     {
-        $removeOrder = $this->em->getRepository(Order::class)->find($id);
-        $orderId = $removeOrder->getId();
+        $removeOrder = $this->$entityManager->getRepository(Order::class)->find($orderId);
+        $order = $removeOrder->getId();
         if (is_null($removeOrder)) {
             return array(
                 'type' => 'error',
@@ -311,24 +312,24 @@ class OrderModel extends Model
             );
         }
         $cartsToRemove = $removeOrder->getProductCarts();
-        $this->em->getConnection()->beginTransaction();
+        $this->$entityManager->getConnection()->beginTransaction();
         try {
             foreach ($cartsToRemove as $cart) {
-                $this->em->remove($cart);
+                $this->$entityManager->remove($cart);
             }
-            $this->em->remove($removeOrder);
-            $this->em->flush();
-            $this->em->getConnection()->commit();
+            $this->$entityManager->remove($removeOrder);
+            $this->$entityManager->flush();
+            $this->$entityManager->getConnection()->commit();
             return array(
                 'http_code' => '200',
                 'type' => 'warning',
                 'message' => "Pedido {$orderId} removido com sucesso!",
             );
         } catch (\Exception $e) {
-            $this->em->getConnection()->rollback();
+            $this->$entityManager->getConnection()->rollback();
             return array(
                 'type' => 'danger',
-                'message' => "Erro ao remove pedido {$order->getId()}."
+                'message' => "Erro ao remove pedido {$order}."
             );
         }
     }

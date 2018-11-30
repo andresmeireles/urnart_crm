@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Utils;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -8,20 +8,20 @@ use Knp\Snappy\Pdf;
 abstract class GenericContainer
 {
     
-	/**
-	 * Entity Manager
-	 * 
-	 * @var = object
-	 */
-	protected $em;
+    /**
+     * Entity Manager
+     *
+     * @var = object
+     */
+    protected $em;
 
-	protected $twig;
+    protected $twig;
 
-	protected $pdf;
+    protected $pdf;
 
     public function __construct(EntityManagerInterface $em, Environment $twig)
     {
-        $this->em = $em; 
+        $this->em = $em;
         $this->twig = $twig;
     }
 }

@@ -14,10 +14,10 @@ class FeedstockModel extends Model
      *
      * @param array $data = Array associativo com dados a serem incluidos ou atualizados.
      * @param string $type = Tipo de operação. INSERT inseri no banco de dados. UPDATE atualiza o produto no banco de dados.
-     * @param string $id = Caso a TYPE [$type] for UPDATE, ID do produto. 
+     * @param string $id = Caso a TYPE [$type] for UPDATE, ID do produto.
      * @return void
      */
-    public function persist(array $data, string $type = 'insert', ?int $id = null): void
+    public function persist(array $data, string $type = 'insert', ?int $id = null)
     {
         $type = strtolower($type);
 
@@ -37,14 +37,13 @@ class FeedstockModel extends Model
 
         $this->em->getConnection()->beginTransaction();
         try {
+            $feedstock = new Feedstock();
+            $inventory = new FeedstockInventory();
             if ($type == 'update') {
                 $feedstock = $this->em->getRepository(Feedstock::class)->find($id);
                 $inventory = $this->em->getRepository(FeedstockInventory::class)->findOneBy(array(
                     'feedstock_id' => $id
                 ));
-            } else {
-                $feedstock = new Feedstock();
-                $inventory = new FeedstockInventory();
             }
 
             $feedstock->setNome($data['name']);
@@ -86,27 +85,26 @@ class FeedstockModel extends Model
      * @param integer $id
      * @return void
      */
-    public function update(array $data, int $id): void
+    public function update(array $data, int $productId)
     {
-        $this->persist($data, 'update', $id);
+        $this->persist($data, 'update', $productId);
     }
 
     public function feedIn(array $data): void
     {
-        $day = $data['date'];
+        //$day = $data['date'];
         unset($data['date']);
         $values = array_values($data);
 
         $this->em->getConnection()->beginTransaction();
         try {
-            
             foreach ($values as $inv) {
                 $feedstock = $this->em->getRepository(FeedStockInventory::class)->findOneBy(array(
                     'feedstock_id' => $inv['name'],
                 ));
 
                 $actualStock = $feedstock->getStock();
-                $newStock = $actualStock + $inv['amount']; 
+                $newStock = $actualStock + $inv['amount'];
 
                 $feedstock->setStock((string) $newStock);
 
@@ -115,7 +113,6 @@ class FeedstockModel extends Model
             }
             
             $this->em->getConnection()->commit();
-
         } catch (\Exception $e) {
             $this->em->getConnection()->rollback();
             throw new \Exception($e->getMessage());
@@ -130,14 +127,13 @@ class FeedstockModel extends Model
      */
     public function feedOut(array $data): array
     {
-        $day = $data['date'];
+        //$day = $data['date'];
         unset($data['date']);
 
         $values = array_values($data);
         
         $this->em->getConnection()->beginTransaction();
         try {
-            
             foreach ($values as $inv) {
                 $feedstock = $this->em->getRepository(FeedStockInventory::class)->findOneBy(array(
                     'feedstock_id' => $inv['name'],
@@ -165,7 +161,6 @@ class FeedstockModel extends Model
                 'http_code' => 200,
                 'message' => 'Sucesso!'
             );
-
         } catch (\Exception $e) {
             $this->em->getConnection()->rollback();
             throw new \Exception($e->getMessage());

@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * FormController
+ *
+ * @category Controller
+ * @package  App\Controller
+ * @author   André Meireles <andre2meireles@gmail.com>
+ * @license  MIT <https://mit-license.org>
+ * @link     https://bitbucket.org/andresmeireles/sysadmin
+ */
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,10 +20,23 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Filesystem\Filesystem;
 use App\Utils\Andresmei\Form;
 
+/**
+ * Controller das paginas de formulário
+ *
+ * @category Controller
+ * @package  App\Controller\FormController
+ * @author   André Meireles <andre2meireles@gmail.com>
+ * @license  MIT <https://mit-license.org>
+ * @link     https://bitbucket.org/andresmeireles/sysadmin
+ */
 class FormController extends Controller
 {
     /**
+     * Reireciona para pagina inicial da sessão de formulários
+     *
      * @Route("/forms", name="form")
+     *
+     * @return Response
      */
     public function index()
     {
@@ -23,30 +44,46 @@ class FormController extends Controller
     }
 
     /**
+     * Redireciona para o template de formulário requisitado
+     *
+     * @param string $formName Nome do furomulario usado para template
+     *
      * @Route("/forms/{formName}", methods={"GET"})
+     *
+     * @return Response
      */
-    public function findFormTemplate(string $formName)
+    public function findFormTemplate(string $formName): Response
     {
-        $templateDir = opendir(__DIR__.'/../../templates/form');
-        // to read dir content
-        while (readdir($templateDir) !== false) {
-            if (file_exists(__DIR__.'/../../templates/form/'.$formName.'Form.html.twig')) {
-                return $this->render('form/'.$formName.'Form.html.twig', [
+        $fileNamePath = __DIR__.'/../../templates/form/'.$formName.'Form.html.twig';
+        if (file_exists($fileNamePath)) {
+            return $this->render(
+                'form/'.$formName.'Form.html.twig',
+                [
                     'formName' => $formName
-                ]);
-            }    
+                ]
+            );
         }
-        throw new \Exception('Page not found');   
+        
+        throw new \Exception('Page not found');
     }
 
     /**
+     * Cria e exporta arquivos pdf dos formulários.
+     *
+     * @param Request $request  objeto de requisição.
+     * @param string  $formName nome do formulário
+     *                usado como template.
+     * @param Form    $form     objeto de formulário customizado.
+     *
      * @Route("/forms/{formName}", methods="POST")
-     * @param  Request $request  
-     * @param  string  $formName 
-     * @return Response            
+     *
+     * @return Response
      */
-    public function printForm(Request $request, string $formName, Form $form)
-    {
+    public function printForm(
+        Request $request,
+        string $formName,
+        Form $form
+    ): Response {
         if (empty($request->request->all())) {
             echo 'Nenhum dado enviado';
         }
@@ -56,16 +93,21 @@ class FormController extends Controller
     }
 
     /**
-     * @Route("/forms/{formName}/pdf", methods="POST")
-     * 
      * Recebe parametros, cria e envia para download arquivo pdf.
-     * 
-     * @param  Request $request  
-     * @param  string  $formName 
-     * @return Response            
+     *
+     * @param Request $request  Objeto de requisição
+     * @param string  $formName Nome for fomulário usado como template
+     * @param Form    $form     Objeto de manipulação do Fourmulário
+     *
+     * @Route("/forms/{formName}/pdf", methods="POST")
+     *
+     * @return Response
      */
-    public function sendPdfForm(Request $request, string $formName, Form $form): Response
-    {
+    public function sendPdfForm(
+        Request $request,
+        string $formName,
+        Form $form
+    ): Response {
         if (empty($request->request->all())) {
             echo 'Nenhum dado enviado';
         }
@@ -74,10 +116,10 @@ class FormController extends Controller
 
         //check if file exists
         $file = $result['pdf_path'];
-        $fs = new Filesystem();
-        if (!$fs->exists($file)) {
+        $filesystem = new Filesystem();
+        if (!$filesystem->exists($file)) {
             throw $this->createNotFoundException('File not found.');
-        }           
+        }
 
         // send message
         $this->addFlash(

@@ -18,7 +18,7 @@ class ProductModel extends Model
      */
     public function insert(array $data): array
     {
-        $result = $this->runAction($data, null, 'insert'); 
+        $result = $this->runAction($data, null, 'insert');
         return $result;
     }
 
@@ -26,23 +26,23 @@ class ProductModel extends Model
      * Executa a ação de atualizar dados no banco de dados dado id, atravez de uma chamada a função runAction
      *
      * @param array $data
-     * @param integer $id
+     * @param integer $productId
      * @return array
      * @throws \Exception
      */
-    public function update(array $data, int $id): array
+    public function update(array $data, int $productId): array
     {
-        $result = $this->runAction($data, $id, 'update');
+        $result = $this->runAction($data, $productId, 'update');
         return $result;
     }
 
     /**
-     * @param int $id
+     * @param int $productId
      * @return array
      */
-    public function remove(int $id): array
+    public function remove(int $productId): array
     {
-        $product = $this->em->getRepository(Product::class)->find($id);
+        $product = $this->em->getRepository(Product::class)->find($productId);
 
         $this->em->remove($product);
         $this->em->flush();
@@ -94,7 +94,7 @@ class ProductModel extends Model
                 $result = $this->em->getRepository(Product::class)->findOneBy(array('name' => $name));
                 if (!is_null($result)) {
                     return FlashResponse::response(400, 'warning', 'Produto com nome igual já cadastrado');
-                }             
+                }
             }
             $productInventory = new ProductInventory();
             if ($type == 'update') {
@@ -148,7 +148,7 @@ class ProductModel extends Model
         unset($data->date);
         $this->em->getConnection()->beginTransaction();
         try {
-            foreach($data as $info) {
+            foreach ($data as $info) {
                 $productInventory = $this->em->getRepository(ProductInventory::class)->findOneBy(array(
                     'product' => $info->product
                 ));

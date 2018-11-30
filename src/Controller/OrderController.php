@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * OrderController
+ *  
+ * @category Controller
+ * @package  App\Controller
+ * @author   André Meireles <andre2meireles@gmail.com>
+ * @license  MIT <https://mit-license.org>
+ * @link     https://bitbucket.org/andresmeireles/sysadmin
+ */
 namespace App\Controller;
 
 use App\Entity\Estado;
@@ -17,12 +25,24 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Controller das paginas de pedidos
+ * 
+ * @category Controller
+ * @package  App\Controller\OrderController
+ * @author   André Meireles <andre2meireles@gmail.com>
+ * @license  MIT <https://mit-license.org>
+ * @link     https://bitbucket.org/andresmeireles/sysadmin
+ */
 class OrderController extends Controller
 {
     /**
+     * Redireciona para a pagina inicial dos pedidos
+     * 
      * @Route("/order", name="order")
+     * 
      */
-    public function index(Request $request)
+    public function index(): Response
     {
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
         return $this->render('order/index.html.twig', [
@@ -50,8 +70,6 @@ class OrderController extends Controller
     /**
      * @Route("/order/create", name="createOrder", methods="GET")
      *
-     * @param OrderModel $model
-     * @param Request $request
      * @return Response
      */
     public function viewCreateOrder(): Response
@@ -77,6 +95,7 @@ class OrderController extends Controller
     public function createOrder(OrderModel $model, Request $request): Response
     {
         $data = $request->request->all();
+        $arrData = array();
         foreach($data as $key => $value) {
             if (is_array($value)) {
                 unset($data[$key]);
@@ -101,12 +120,13 @@ class OrderController extends Controller
     /**
      * @Route("/order/action/edit/{id}", methods="GET")
      *
-     * @param $id
+     * @param string $orderId
+     * 
      * @return Response
      */
-    public function redirectOrderActions($id): Response
+    public function redirectOrderActions(string $orderId): Response
     {
-        $order = $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id);
+        $order = $this->getDoctrine()->getManager()->getRepository(Order::class)->find($orderId);
         if ($order->isClosed()) {
             $this->addFlash(
                 'warning',
@@ -116,7 +136,7 @@ class OrderController extends Controller
         }
 
         return $this->render('/order/pages/editOrder.html.twig', array(
-            'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id),
+            'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($orderId),
             'products' => $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll(),
             'customers' => $this->getDoctrine()->getManager()->getRepository(PessoaJuridica::class)->findAll(),
             'payments' => $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll(),
@@ -127,14 +147,16 @@ class OrderController extends Controller
     /**
      * @Route("/order/action/edit/{id}", methods="POST")
      *
-     * @param $id
+     * @param string $orderId
+     * 
      * @return Response
      * @throws \Exception
      */
-    public function updateOrder(OrderModel $model, Request $request, $id): Response
+    public function updateOrder(OrderModel $model, Request $request, string  $orderId): Response
     {
         $data = $request->request->all();
-        $data['id'] = $id;
+        $data['id'] = $orderId;
+        $arrData = array();
         foreach($data as $key => $value) {
             if (is_array($value)) {
                 unset($data[$key]);
@@ -167,8 +189,8 @@ class OrderController extends Controller
     public function reserveOrderProducts(OrderModel $model, Request $request): Response
     {
         $hash = $request->query->get('h') ?? null;
-        $id = $request->query->get('i') ?? null;
-        if (is_null($hash) || is_null($id)) {
+        $orderId = $request->query->get('i') ?? null;
+        if (is_null($hash) || is_null($orderId)) {
             $this->addFlash(
               'error',
               'Erro ao criar reserva'
@@ -183,7 +205,7 @@ class OrderController extends Controller
           );
           return $this->redirectToRoute('order');
         }
-        $result = $model->reserve($id);
+        $result = $model->reserve($orderId);
         if ($result['http_code'] == 301) {
           $this->addFlash(
             'success',
@@ -208,10 +230,10 @@ class OrderController extends Controller
      */
     public function runTypeUnReserveAction(OrderModel $model, string $type, Request $request): Response
     {
-        $id = $request->query->get('i') ?? null;
+        $orderId = $request->query->get('i') ?? null;
         $hash = $request->query->get('h') ?? null;
         $function = $type.'Order';
-        $result = $model->$function($id, $hash);
+        $result = $model->$function($orderId, $hash);
         if ($result['http_code'] == 301) {
             $this->addFlash(
                 $result['type'],
@@ -230,12 +252,12 @@ class OrderController extends Controller
      * @Route("/order/action/remove/{id}", methods="DELETE")
      *
      * @param OrderModel $model
-     * @param $id
+     * @param string $orderId
      * @return Response
      */
-    public function removeOrder(OrderModel $model, $id): Response
+    public function removeOrder(OrderModel $model, string $orderId): Response
     {
-        $result = $model->removeOrder($id);
+        $result = $model->removeOrder($orderId);
         $this->addFlash(
             $result['type'],
             $result['message']
@@ -248,15 +270,15 @@ class OrderController extends Controller
     /**
      * @Route("/order/action/print", methods="GET")
      *
-     * @param OrderModel $model
-     * @param Request $request
+     * @param Request    $request
+     * 
      * @return Response
      */
     public function showOrderToOrder(Request $request): Response
     {
         $hash = $request->query->get('h');
-        $id = $request->query->get('i');
-        if (empty($hash) || empty($id)) {
+        $orderId = $request->query->get('i');
+        if (empty($hash) || empty($orderId)) {
             $this->addFlash(
                 'error',
                 'Alguma informação incosistente...'
@@ -264,7 +286,7 @@ class OrderController extends Controller
             $this->redirectToRoute('order');
         }        
         return $this->render('order/printOrder/print.html.twig', [
-            'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($id)
+            'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($orderId)
         ]);
     }
 }

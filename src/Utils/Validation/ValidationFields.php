@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Utils\Validation;
 
 /**
@@ -6,22 +6,22 @@ namespace App\Utils\Validation;
  */
 class ValidationFields
 {
-	private $parameterField;
-	public $validations;
+    private $parameterField;
+    public $validations;
 
-	function __construct(array $parameterField, array $validations)
-	{
-		$this->parameterField = $parameterField;
-		$this->validations = $validations;
-	}
+    public function __construct(array $parameterField, array $validations)
+    {
+        $this->parameterField = $parameterField;
+        $this->validations = $validations;
+    }
 
-	public function getParameter()
-	{
-		foreach ($this->parameterField as $key => $value) {
-			if (is_array($value)) {
-				$p = $value;
-			}
-		}
-		return $this->parameterField;
-	}
+    public function getParameter()
+    {
+        foreach ($this->parameterField as $key => $value) {
+            if (is_array($value)) {
+                $p = $value;
+            }
+        }
+        return $this->parameterField;
+    }
 }

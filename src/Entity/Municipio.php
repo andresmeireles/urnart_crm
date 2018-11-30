@@ -45,7 +45,7 @@ class Municipio
     public function serialize(): array
     {
         return get_object_vars($this);
-    } 
+    }
 
     public function getId()
     {
@@ -90,12 +90,12 @@ class Municipio
 
     public function getIdUf()
     {
-        return $this->idUf; 
+        return $this->idUf;
     }
 
     public function addEndereco(Address $endereco): self
     {
-        if(!$this->contains($endereco)) {
+        if (!$this->contains($endereco)) {
             $this->endereco[] = $endereco;
             $endereco->setMunicipio($this);
         }

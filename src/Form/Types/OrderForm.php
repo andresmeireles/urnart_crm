@@ -9,7 +9,7 @@ class OrderForm
     /**
      * @Assert\Type("string")
      * @Assert\NotBlank()
-     * 
+     *
      * @var string
      */
     public $customer;
@@ -26,7 +26,7 @@ class OrderForm
      * @Assert\Type("float")
      * @Assert\NotBlank()
      * @Assert\Currency
-     * 
+     *
      * @var float
      */
     public $freight;
@@ -44,7 +44,7 @@ class OrderForm
      * @Assert\Type("float")
      * @Assert\NotBlank()
      * @Assert\Currency
-     * 
+     *
      * @var float
      */
     public $total;
@@ -52,7 +52,7 @@ class OrderForm
     /**
      * @Assert\Type("string")
      * @Assert\NotBlank()
-     * 
+     *
      * @var string
      */
     public $paymentType;
@@ -60,7 +60,7 @@ class OrderForm
     /**
      * @Assert\Type("int")
      * @Assert\NotBlank()
-     * 
+     *
      * @var float
      */
     public $installment;

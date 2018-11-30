@@ -22,7 +22,7 @@ class Configuration
     {
         $imagePaths = $this->uploadImages($images);
         if (!SimpleFileUpload::getStatus()) {
-            return FlashResponse::response(400,'warning', SimpleFileUpload::getMessage());
+            return FlashResponse::response(400, 'warning', SimpleFileUpload::getMessage());
         }
 
         $this->writeChecks($check);
@@ -31,7 +31,7 @@ class Configuration
         $yaml = Yaml::dump($this->writableConfig);
         file_put_contents(__DIR__.'/system-config.yaml', $yaml);
 
-        return FlashResponse::response(200,'success', 'Configuração gravado com sucesso');
+        return FlashResponse::response(200, 'success', 'Configuração gravado com sucesso');
     }
 
     public function uploadImages(array $images): array

@@ -11,50 +11,50 @@ use Respect\Validation\Validator as v;
 
 class RomaneioFormCreator implements CreateFormInterface
 {
-	public function createForm(Parameters $parameters): ResponseFormInterface
-	{
-		$clonedParameters = $parameters->getClonedParameters();
+    public function createForm(Parameters $parameters): ResponseFormInterface
+    {
+        $clonedParameters = $parameters->getClonedParameters();
 
-		ValidatorJson::validate($parameters->getNonClonedParameters(), [
-			'type' => v::notEmpty()
-		]);
+        ValidatorJson::validate($parameters->getNonClonedParameters(), [
+            'type' => v::notEmpty()
+        ]);
 
-		foreach ($clonedParameters as $parameter) {
-			ValidatorJson::validate($parameter, [
-				'name' => v::stringType()->notEmpty(),
-				'city' => v::stringType()->notEmpty()->not(v::numeric()),
-				'urnG' => v::alnum(),
-				'urnM' => v::alnum(),
-				'urnP' => v::alnum(),
-				'type' => v::notEmpty(),
-				'freight' => v::notEmpty()->not(v::nullType()->stringType()),
-			]);
-		}
+        foreach ($clonedParameters as $parameter) {
+            ValidatorJson::validate($parameter, [
+                'name' => v::stringType()->notEmpty(),
+                'city' => v::stringType()->notEmpty()->not(v::numeric()),
+                'urnG' => v::alnum(),
+                'urnM' => v::alnum(),
+                'urnP' => v::alnum(),
+                'type' => v::notEmpty(),
+                'freight' => v::notEmpty()->not(v::nullType()->stringType()),
+            ]);
+        }
 
-		if ($parameters->getNonClonedParameters()['type'] == 2) {
-			$response = $this->createTravelRomaneio($clonedParameters);
-			return new ResponseForm($response, 'Landscape');
-		}
+        if ($parameters->getNonClonedParameters()['type'] == 2) {
+            $response = $this->createTravelRomaneio($clonedParameters);
+            return new ResponseForm($response, 'Landscape');
+        }
 
-		$response = $this->createBoardRomaneio($clonedParameters);
-		return new ResponseForm($response, 'Landscape');
-	}
+        $response = $this->createBoardRomaneio($clonedParameters);
+        return new ResponseForm($response, 'Landscape');
+    }
 
-	public function getMessage()
-	{
-		return ValidatorJson::getErrors();
-	}
+    public function getMessage()
+    {
+        return ValidatorJson::getErrors();
+    }
 
-	private function createTravelRomaneio(array $parameters): string
-	{
-		$number = 1;
-		$totalFreight = 0;
-		$totalG = 0;
-		$totalM = 0;
-		$totalP = 0;
-		$total = 0;
+    private function createTravelRomaneio(array $parameters): string
+    {
+        $number = 1;
+        $totalFreight = 0;
+        $totalG = 0;
+        $totalM = 0;
+        $totalP = 0;
+        $total = 0;
 
-		$body = '
+        $body = '
 		<style >
 		#page_1 { width: 100%; height: 100%; }
 
@@ -108,8 +108,8 @@ class RomaneioFormCreator implements CreateFormInterface
 		<td colspan=2 class="lp no-border">Frete</td>
 		</tr>';
 
-		foreach ($parameters as $param) {
-			$body .= '<tr class="body">
+        foreach ($parameters as $param) {
+            $body .= '<tr class="body">
 			<td class="lp">'. $number .'</td>
 			<td class="lp">'. $param['name'] .'</td>
 			<td class="lp">'. $param['city'] .'</td>
@@ -122,19 +122,19 @@ class RomaneioFormCreator implements CreateFormInterface
 			<td class="no-border">'. $param['freight'] .'</td>
 			</tr>';
 
-			$number ++;
+            $number ++;
 
-			if (is_numeric($param['freight'])) {
-				$totalFreight += $param['freight'];
-			}
+            if (is_numeric($param['freight'])) {
+                $totalFreight += $param['freight'];
+            }
 
-			$totalP += $param['urnP'];
-			$totalM += $param['urnM'];
-			$totalG += $param['urnG'];
-			$total += ($param['urnG'] + $param['urnM'] + $param['urnP']);
-		}		
+            $totalP += $param['urnP'];
+            $totalM += $param['urnM'];
+            $totalG += $param['urnG'];
+            $total += ($param['urnG'] + $param['urnM'] + $param['urnP']);
+        }
 
-		$body .= '<tr class="space">
+        $body .= '<tr class="space">
 		<td>&nbsp;</td>
 		<td colspan=9>&nbsp;</td>
 		</tr>
@@ -152,19 +152,19 @@ class RomaneioFormCreator implements CreateFormInterface
 		
 		</div>';
 
-		return $body;
-	}
+        return $body;
+    }
 
-	private function createBoardRomaneio(array $parameters): string
-	{
-		$number = 1;
-		$totalFreight = 0;
-		$totalG = 0;
-		$totalM = 0;
-		$totalP = 0;
-		$total = 0;
+    private function createBoardRomaneio(array $parameters): string
+    {
+        $number = 1;
+        $totalFreight = 0;
+        $totalG = 0;
+        $totalM = 0;
+        $totalP = 0;
+        $total = 0;
 
-		$body = '<!DOCTYPE html>
+        $body = '<!DOCTYPE html>
 		<html>
 		<head>
 		<title>Romaneio</title>
@@ -214,8 +214,8 @@ class RomaneioFormCreator implements CreateFormInterface
 		<td width="6%" class="center no-border">Total</td>
 		</tr>';
 
-		foreach ($parameters as $param) {
-			$body .= '<tr class="body">
+        foreach ($parameters as $param) {
+            $body .= '<tr class="body">
 			<td class="lp">'. $number .'</td>
 			<td class="lp">'. $param['name'] .'</td>
 			<td class="lp">'. $param['city'] .'</td>
@@ -225,14 +225,14 @@ class RomaneioFormCreator implements CreateFormInterface
 			<td class="center no-border">'. ($param['urnG'] + $param['urnM'] + $param['urnP']) .'</td>
 			</tr>';
 
-			$number ++;
-			$totalP += $param['urnP'];
-			$totalM += $param['urnM'];
-			$totalG += $param['urnG'];
-			$total += ($param['urnG'] + $param['urnM'] + $param['urnP']);
-		}		
+            $number ++;
+            $totalP += $param['urnP'];
+            $totalM += $param['urnM'];
+            $totalG += $param['urnG'];
+            $total += ($param['urnG'] + $param['urnM'] + $param['urnP']);
+        }
 
-		$body .= '<tr class="space">
+        $body .= '<tr class="space">
 		<td>&nbsp;</td>
 		<td colspan=9>&nbsp;</td>
 		</tr>
@@ -249,6 +249,6 @@ class RomaneioFormCreator implements CreateFormInterface
 		</body>
 		</html>';
 
-		return $body;
-	}
+        return $body;
+    }
 }

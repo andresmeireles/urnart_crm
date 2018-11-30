@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Utils\Andresmei;
 
-
 class FlashResponse
 {
     protected static $http_code = 200;
@@ -12,7 +11,7 @@ class FlashResponse
 
     /**
      * Retorna aray com parametros para flash message do symfony
-     * 
+     *
      * @param  int|null    $http_code codigo HTTP
      * @param  string|null $type      Tipo de responsta, success, warning, error etc...
      * @param  string|null $message   Corpo da messagem

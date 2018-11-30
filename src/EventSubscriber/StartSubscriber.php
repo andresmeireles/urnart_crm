@@ -16,7 +16,7 @@ class StartSubscriber implements EventSubscriberInterface
         if (!Config::getStatus()) {
             Config::start();
         }
-        if(!array_key_exists('csrftoken', $session->all())) {
+        if (!array_key_exists('csrftoken', $session->all())) {
             $this->setTokens($session);
         }
         if (empty(trim($session->get('csrftoken')))) {
@@ -28,7 +28,7 @@ class StartSubscriber implements EventSubscriberInterface
     public function onKernelController(FilterControllerEvent $event)
     {
         $session = $event->getRequest()->getSession();
-        if(!array_key_exists('csrftoken', $session->all())) {
+        if (!array_key_exists('csrftoken', $session->all())) {
             $this->setTokens($session);
         }
         if (empty(trim($session->get('csrftoken')))) {

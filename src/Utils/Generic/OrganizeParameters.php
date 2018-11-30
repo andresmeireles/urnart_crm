@@ -1,7 +1,7 @@
 <?php
 namespace App\Utils\Generic;
 
-class OrganizeParameters 
+class OrganizeParameters
 {
     /**
      * Parametros desorganizados

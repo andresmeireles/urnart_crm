@@ -1,5 +1,5 @@
-<?php 
-declare (strict_types = 1);
+<?php
+declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -27,7 +27,7 @@ class Feedstock extends BaseEntity
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * 
+     *
      * @var string
      */
     private $description;
@@ -105,7 +105,7 @@ class Feedstock extends BaseEntity
      */
     public function getMainVendor() : ?string
     {
-        $mainVendor = $this->vendors[0]; 
+        $mainVendor = $this->vendors[0];
         return $mainVendor;
     }
 
@@ -208,6 +208,6 @@ class Feedstock extends BaseEntity
 
     public function getLastUpdate(): ?string
     {
-        return $this->lastUpdate->format('d/m/Y');    
+        return $this->lastUpdate->format('d/m/Y');
     }
 }

@@ -1,9 +1,10 @@
-<?php 
+<?php
 
 namespace App\Utils\Form;
 
 use App\Utils\Form\Interfaces\ResponseFormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+
 //use Symfony\Component\HttpFoundation\Session\Session;
 
 class ResponseForm implements ResponseFormInterface
@@ -12,7 +13,7 @@ class ResponseForm implements ResponseFormInterface
     private $orientation;
     private $message;
 
-    function __construct(string $body = null, string $orientation = 'Portrait' ,array $message = null)
+    public function __construct(string $body = null, string $orientation = 'Portrait', array $message = null)
     {
         $this->orientation = $orientation;
 
@@ -30,7 +31,7 @@ class ResponseForm implements ResponseFormInterface
         }
 
         return $this;
-    } 
+    }
 
     public function getBodyForm(): ?string
     {
@@ -42,12 +43,12 @@ class ResponseForm implements ResponseFormInterface
         return $this->message;
     }
 
-    public function getOrientation(): string 
+    public function getOrientation(): string
     {
         return $this->orientation;
     }
 
-    public function setErrorMessage(array $messages): ResponseFormInterface 
+    public function setErrorMessage(array $messages): ResponseFormInterface
     {
         $this->message = $messages;
 

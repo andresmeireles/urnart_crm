@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Utils\Form\FormTemplate;
 
@@ -15,44 +15,44 @@ use WGenial\NumeroPorExtenso\NumeroPorExtenso;
  */
 class FreightLetterFormCreator implements CreateFormInterface
 {
-	public function createForm(Parameters $parameters): ResponseFormInterface
-	{
-		$response = new ResponseForm();
+    public function createForm(Parameters $parameters): ResponseFormInterface
+    {
+        $response = new ResponseForm();
 
-		$clonedParameters = $parameters->getClonedParameters();
+        $clonedParameters = $parameters->getClonedParameters();
 
-		foreach ($clonedParameters as $parameter) {
-			ValidatorJson::validate($parameter, [
-				'number' => v::notEmpty()->numeric()->positive(),
-				'clientName' => v::notEmpty()->stringType()->not(v::numeric()),
-				'clientCity' => v::notEmpty()->alpha()->not(v::numeric()),
-				'clientState' => v::notEmpty()->alpha()->length(2, 2)->not(v::numeric()),
-				'freight' => v::notEmpty()->numeric()->positive(),
-				'orderNumber' => v::notEmpty()->numeric()->positive(),
-			]);
-		}
+        foreach ($clonedParameters as $parameter) {
+            ValidatorJson::validate($parameter, [
+                'number' => v::notEmpty()->numeric()->positive(),
+                'clientName' => v::notEmpty()->stringType()->not(v::numeric()),
+                'clientCity' => v::notEmpty()->alpha()->not(v::numeric()),
+                'clientState' => v::notEmpty()->alpha()->length(2, 2)->not(v::numeric()),
+                'freight' => v::notEmpty()->numeric()->positive(),
+                'orderNumber' => v::notEmpty()->numeric()->positive(),
+            ]);
+        }
 
-		if (ValidatorJson::getErrors()) {
-			return $response->setErrorMessage($this->getMessage());
-		}
+        if (ValidatorJson::getErrors()) {
+            return $response->setErrorMessage($this->getMessage());
+        }
 
-		$body = $this->createBody($clonedParameters);
+        $body = $this->createBody($clonedParameters);
 
-		return $response->setResponse($body);
-	}
+        return $response->setResponse($body);
+    }
 
-	public function getMessage()
-	{
-		return ValidatorJson::getErrors();
-	}
+    public function getMessage()
+    {
+        return ValidatorJson::getErrors();
+    }
 
-	private function createBody(array $parameters)
-	{
-		$imageBackground = file_get_contents(__DIR__.'/carta-frete/background');
-		$imageSign = file_get_contents(__DIR__.'/carta-frete/sign');
-		$extenseNumber = new NumeroPorExtenso();
+    private function createBody(array $parameters)
+    {
+        $imageBackground = file_get_contents(__DIR__.'/carta-frete/background');
+        $imageSign = file_get_contents(__DIR__.'/carta-frete/sign');
+        $extenseNumber = new NumeroPorExtenso();
 
-		$body = '
+        $body = '
 		<style>
 		.r-page { width: 100%; height: 95%;}
 		.r-h-page { width: 100%; height: 50%; }
@@ -76,13 +76,13 @@ class FreightLetterFormCreator implements CreateFormInterface
 		.break-p { page-break-after: always }
 		</style>';
 
-		foreach ($parameters as $param) {
-			$freightFloat = number_format($param['freight'], 2, '.', ',');
-			$number = $extenseNumber->converter($freightFloat);
-			$freightPrice = number_format($param['freight'], 2, ',', '.');
-			$body .= '<div class="r-page break-p">';
+        foreach ($parameters as $param) {
+            $freightFloat = number_format($param['freight'], 2, '.', ',');
+            $number = $extenseNumber->converter($freightFloat);
+            $freightPrice = number_format($param['freight'], 2, ',', '.');
+            $body .= '<div class="r-page break-p">';
 
-			$hBody = '<div class="r-h-page">
+            $hBody = '<div class="r-h-page">
 			<div class="rform">
 
 			<div class="r-head">
@@ -128,11 +128,11 @@ class FreightLetterFormCreator implements CreateFormInterface
 			</div>  
 			</div>';
 
-			$body .= $hBody.''.$hBody;
+            $body .= $hBody.''.$hBody;
 
-			$body .= '</div>';
-		}
+            $body .= '</div>';
+        }
 
-		return $body;
-	}
+        return $body;
+    }
 }

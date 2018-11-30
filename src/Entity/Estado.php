@@ -50,7 +50,7 @@ class Estado
 
     public function getId()
     {
-        return $this->id; 
+        return $this->id;
     }
 
     public function getCodigoUf(): ?int

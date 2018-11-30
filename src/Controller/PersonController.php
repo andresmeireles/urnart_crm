@@ -20,9 +20,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class PersonController extends Controller
 {
     /**
-     * @Route("/person") 
+     * @Route("/person")
      */
-    public function index() 
+    public function index()
     {
         return $this->render('person/index.html.twig');
     }
@@ -41,7 +41,7 @@ class PersonController extends Controller
 
     /**
      * @Route("/person/person", name="person")
-     * 
+     *
      * Pagina apenas para visualização de informações
      */
     public function showPerson(Crud $getter)
@@ -72,27 +72,27 @@ class PersonController extends Controller
     /**
      * @Route("/person/action/{id}", methods={"DELETE", "POST"}, defaults={"id"=""})
      */
-    public function action($id, Request $request): Response
+    public function action($personId, Request $request): Response
     {
-        $em = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
 
-        //start transaction 
-        $em->getConnection()->beginTransaction();
+        //start transaction
+        $$entityManager->getConnection()->beginTransaction();
 
         try {
-            $customer = $em->getRepository(PessoaJuridica::class)->find($id);
+            $customer = $entityManager->getRepository(PessoaJuridica::class)->find($personId);
             if ($request->server->get('REQUEST_METHOD') == 'POST') {
                 $updateData = $request->request->all();
                 $this->updateCustomerData($customer, $updateData);
             } elseif ($request->server->get('REQUEST_METHOD') == 'DELETE') {
                 $this->removeAllCustomerData($customer);
             } else {
-                return $this->createAccessDeniedException('Ação não pode ser concluida');
+                throw $this->createAccessDeniedException('Ação não pode ser concluida');
             }
-            $em->flush();
-            $em->getConnection()->commit();
+            $entityManager->flush();
+            $entityManager->getConnection()->commit();
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
+            $entityManager->getConnection()->rollback();
             $this->addFlash(
                 'error',
                 'Cliente possui um pedido cadastrado em seu nome, por isso não pode ser removido'
@@ -103,32 +103,32 @@ class PersonController extends Controller
         return $this->redirectToRoute('person');
     }
 
-    public function removeAllCustomerData(PessoaJuridica $pessoa): void 
+    public function removeAllCustomerData(PessoaJuridica $pessoa): void
     {
-        $em = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
 
         //dados do usuario
         $pessoaFisica = $pessoa->getProprietarios()->first()->getPessoaFisica();
-        $proprietary = $em->getRepository(Proprietario::class)->findOneBy(array('pessoaFisica' => $pessoaFisica->getId()));
+        $proprietary = $entityManager->getRepository(Proprietario::class)->findOneBy(array('pessoaFisica' => $pessoaFisica->getId()));
         $address = $pessoaFisica->getAddress();
         $emails = $pessoaFisica->getEmails();
         $phones = $pessoaFisica->getPhones();
 
         foreach ($phones as $phone) {
-            $em->remove($phone);
+            $entityManager->remove($phone);
         }
 
         foreach ($emails as $email) {
-            $em->remove($email);
+            $entityManager->remove($email);
         }
 
-        $em->remove($address);
-        $em->remove($pessoa);
-        $em->remove($proprietary);
-        $em->remove($pessoaFisica);
+        $entityManager->remove($address);
+        $entityManager->remove($pessoa);
+        $entityManager->remove($proprietary);
+        $entityManager->remove($pessoaFisica);
     }
 
-    public function updateCustomerData(PessoaJuridica $pessoa, array $data) : void
+    public function updateCustomerData(PessoaJuridica $pessoa, array $data): void
     {
         if (!$data) {
             throw $this->createNotFoundException('Parametros não encontrados');
@@ -137,12 +137,12 @@ class PersonController extends Controller
             throw $this->createNotFoundException('Item não existe');
         }
 
-        $em = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
         extract($data);
 
         $client = $pessoa;
         $pessoaFisica = $pessoa->getProprietarios()->first()->getPessoaFisica();
-        $proprietary = $em->getRepository(Proprietario::class)->findOneBy(array('pessoaFisica' => $pessoaFisica->getId()));
+        $proprietary = $entityManager->getRepository(Proprietario::class)->findOneBy(array('pessoaFisica' => $pessoaFisica->getId()));
         $addr = $pessoaFisica->getAddress();
 
         $cpf = v::cpf()->validate($person['cpf']) ? $person['cpf'] : false;
@@ -152,18 +152,18 @@ class PersonController extends Controller
         $pessoaFisica->setLastName($person['lastName']);
         $pessoaFisica->setCpf($cpf);
         $pessoaFisica->setRg($person['rg']);
-        $g = $person['genre'] ?? null;
-        $pessoaFisica->setGenre($g);
+        $genre = $person['genre'] ?? null;
+        $pessoaFisica->setGenre($genre);
         $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null;
         $pessoaFisica->setBirthDate($date);
-
+        
         foreach ($phone as $phones) {
             $telephone = new Phone;
             $phones = (int)str_replace(' ', '', str_replace('(', '', str_replace(')', '', str_replace('-', '', $phones))));
 
             $telephone->setNumber($phones);
             $pessoaFisica->addPhone($telephone);
-            $em->merge($telephone);
+            $entityManager->merge($telephone);
         }
 
         foreach ($email as $emails) {
@@ -171,7 +171,7 @@ class PersonController extends Controller
             $emails = str_replace('(', '', str_replace(')', '', str_replace('-', '', $emails)));
             $mail->setEmail($emails);
             $pessoaFisica->addEmail($mail);
-            $em->merge($mail);
+            $entityManager->merge($mail);
         }
 
         $proprietary->setPessoaFisica($pessoaFisica);
@@ -187,8 +187,8 @@ class PersonController extends Controller
         $situcaoCadastral = $customer['situacaoCadastral'] ?? 3;
         $client->setSituacaoCadastral($situcaoCadastral);
 
-        $state = isset($address['estado']) ? $em->getRepository(Estado::class)->find($address['estado']) : null;
-        $city = isset($address['municipio']) ? $em->getRepository(Municipio::class)->find($address['municipio']) : null;
+        $state = isset($address['estado']) ? $entityManager->getRepository(Estado::class)->find($address['estado']) : null;
+        $city = isset($address['municipio']) ? $entityManager->getRepository(Municipio::class)->find($address['municipio']) : null;
 
         $addr->setPessoaFisicaId($pessoaFisica);
         $addr->setMunicipio($city);

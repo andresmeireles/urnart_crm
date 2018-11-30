@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Utils\Form\FormTemplate;
 
@@ -12,34 +12,34 @@ use Respect\Validation\Validator as v;
 
 class TravelFormCreator implements CreateFormInterface
 {
-	public function createForm(Parameters $parameters): ResponseFormInterface
-	{
-		foreach ($parameters->getClonedParameters() as $value) {
-			ValidatorJson::validate($value, [
-				'name' => v::notEmpty(),//->alpha()->not(v::numeric()),
-				'city' => v::notEmpty()
-			]);		
-		}
+    public function createForm(Parameters $parameters): ResponseFormInterface
+    {
+        foreach ($parameters->getClonedParameters() as $value) {
+            ValidatorJson::validate($value, [
+                'name' => v::notEmpty(),//->alpha()->not(v::numeric()),
+                'city' => v::notEmpty()
+            ]);
+        }
 
-		ValidatorJson::validate($parameters->getNonClonedParameters(), [
-			'driverName' => v::notEmpty()->not(v::numeric())
-		]);
+        ValidatorJson::validate($parameters->getNonClonedParameters(), [
+            'driverName' => v::notEmpty()->not(v::numeric())
+        ]);
 
-		$body = $this->createFormBody($parameters);
+        $body = $this->createFormBody($parameters);
 
-		return new ResponseForm($body);
-	}
+        return new ResponseForm($body);
+    }
 
-	private function createFormBody(Parameters $parameters): string
-	{
-		$parameter = $parameters->getNonClonedParameters();
-		$clonedParameters = $parameters->getClonedParameters();
-		$background = file_get_contents(__DIR__.'/travel-form/file');
-		$logo = file_get_contents(__DIR__.'/etiqueta/logo');
-		$itemsCounter = 1;
-		$pageCounter = 1;
+    private function createFormBody(Parameters $parameters): string
+    {
+        $parameter = $parameters->getNonClonedParameters();
+        $clonedParameters = $parameters->getClonedParameters();
+        $background = file_get_contents(__DIR__.'/travel-form/file');
+        $logo = file_get_contents(__DIR__.'/etiqueta/logo');
+        $itemsCounter = 1;
+        $pageCounter = 1;
 
-		$body = '
+        $body = '
 		<style>
 		
 		.first-page { margin: 0px 0px 0px 0px; width: 100%; height: 100%; position: relative; background: url("") center no-repeat; -webkit-print-color-adjust: exact;}
@@ -93,10 +93,9 @@ class TravelFormCreator implements CreateFormInterface
 		<span class="tp">Total Percorrido:</span>        
 		</div>';
 
-		foreach ($clonedParameters as $param) {
-			
-			if ($itemsCounter == 0) {
-				$body .= '<div class="footer">
+        foreach ($clonedParameters as $param) {
+            if ($itemsCounter == 0) {
+                $body .= '<div class="footer">
 				<span class="pg_number">'. $pageCounter .'</span>
 				<div class="f-content center">
 				<span class="address">Rua Pedro Mesquita, 1260, 67200-00. Maritua -Pará</span>
@@ -121,33 +120,33 @@ class TravelFormCreator implements CreateFormInterface
 				<div class="info"><span>Data Chegada:</span><span>Hora:</span><span>Data Chegada:</span><span>Hora:</span></div>
 				<div class="h-line"><hr><hr><hr></div>
 				</div>';
-				$pageCounter++;
-				$itemsCounter++;
-				continue;
-			}
+                $pageCounter++;
+                $itemsCounter++;
+                continue;
+            }
 
-			if ($itemsCounter == 4) {
-				$body .= '<div class="row-f center">
+            if ($itemsCounter == 4) {
+                $body .= '<div class="row-f center">
 				<div><span class="title">'. $param['city'] .'</span></div>
 				<div class="c-name"><span>'. $param['name'] .'</span></div>
 				<div class="info"><span>Data Chegada:</span><span>Hora:</span><span>Data Chegada:</span><span>Hora:</span></div>
 				<div class="h-line"><hr><hr><hr></div>
 				</div>';
-				$itemsCounter = 0;
-				continue;
-			}
+                $itemsCounter = 0;
+                continue;
+            }
 
-			$body .= '<div class="row-f center">
+            $body .= '<div class="row-f center">
 			<div><span class="title">'. $param['city'] .'</span></div>
 			<div class="c-name"><span>'. $param['name'] .'</span></div>
 			<div class="info"><span>Data Chegada:</span><span>Hora:</span><span>Data Chegada:</span><span>Hora:</span></div>
 			<div class="h-line"><hr><hr><hr></div>
-			</div>';	
+			</div>';
 
-			$itemsCounter++;
-		}
+            $itemsCounter++;
+        }
 
-		$body .= '
+        $body .= '
 		<div class="footer">
 		<span class="pg_number">'. $pageCounter .'</span>
 		<div class="f-content center">
@@ -160,6 +159,6 @@ class TravelFormCreator implements CreateFormInterface
 		</div>
 		</div>';
 
-		return $body;
-	}
+        return $body;
+    }
 }

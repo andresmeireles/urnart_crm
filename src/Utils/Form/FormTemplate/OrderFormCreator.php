@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Utils\Form\FormTemplate;
 
@@ -11,59 +11,59 @@ use Respect\Validation\Validator as v;
 
 class OrderFormCreator implements CreateFormInterface
 {
-	/**
-	 * Create Form and save on database
-	 * @param  array  $params parameters for Form
-	 * @return ResponseFormInterface
-	 */
-	public function createForm(Parameters $parameters): ResponseFormInterface
-	{
-		ValidatorJson::validate($parameters->getNonClonedParameters(), [
-			'clientName' => v::notEmpty(),
-			'clientCity' => v::notEmpty()->not(v::numeric()),
-			'formPg' => v::notEmpty()->not(v::numeric()),
-			'freight' => v::optional(v::numeric()->positive()),
-			'discount' => v::optional(v::numeric()->positive()),
-			'transporter' => v::optional(v::alpha()),
-			'port' => v::optional(v::alpha()),
-			'observation' => v::optional(v::notBlank())
-		]);
+    /**
+     * Create Form and save on database
+     * @param  array  $params parameters for Form
+     * @return ResponseFormInterface
+     */
+    public function createForm(Parameters $parameters): ResponseFormInterface
+    {
+        ValidatorJson::validate($parameters->getNonClonedParameters(), [
+            'clientName' => v::notEmpty(),
+            'clientCity' => v::notEmpty()->not(v::numeric()),
+            'formPg' => v::notEmpty()->not(v::numeric()),
+            'freight' => v::optional(v::numeric()->positive()),
+            'discount' => v::optional(v::numeric()->positive()),
+            'transporter' => v::optional(v::alpha()),
+            'port' => v::optional(v::alpha()),
+            'observation' => v::optional(v::notBlank())
+        ]);
 
-		foreach ($parameters->getClonedParameters() as $param) {
-			ValidatorJson::validate($param, [
-				'model' => v::notEmpty(),
-				'price' => v::notEmpty()->positive()->not(v::alpha()),
-				'amount' => v::notEmpty()->positive()->not(v::alpha())
-			]);	
-		}
+        foreach ($parameters->getClonedParameters() as $param) {
+            ValidatorJson::validate($param, [
+                'model' => v::notEmpty(),
+                'price' => v::notEmpty()->positive()->not(v::alpha()),
+                'amount' => v::notEmpty()->positive()->not(v::alpha())
+            ]);
+        }
 
-		if (ValidatorJson::getErrors()) {
-			$this->getMessage();
-		}
+        if (ValidatorJson::getErrors()) {
+            $this->getMessage();
+        }
 
-		$response = new ResponseForm();
+        $response = new ResponseForm();
 
-		$FormBody = $this->createBodyForm($parameters);
+        $FormBody = $this->createBodyForm($parameters);
 
-		return $response->setResponse($FormBody);
-	}
+        return $response->setResponse($FormBody);
+    }
 
-	public function getMessage(): array
-	{
-		return ValidatorJson::getErrors();
-	}
+    public function getMessage(): array
+    {
+        return ValidatorJson::getErrors();
+    }
 
-	private function createBodyForm(Parameters $parameters): string
-	{
-		$information = $parameters->getNonClonedParameters();
-		$clonedParameters = $parameters->getClonedParameters();
-		$totalPrice = 0;
-		$totalAmount = 0;
+    private function createBodyForm(Parameters $parameters): string
+    {
+        $information = $parameters->getNonClonedParameters();
+        $clonedParameters = $parameters->getClonedParameters();
+        $totalPrice = 0;
+        $totalAmount = 0;
 
-		$information['freight'] = $information['freight'] != null ? $information['freight'] : 0;
-		$information['discount'] = $information['discount'] != null ? $information['discount'] : 0; 
+        $information['freight'] = $information['freight'] != null ? $information['freight'] : 0;
+        $information['discount'] = $information['discount'] != null ? $information['discount'] : 0;
 
-		$Form = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+        $Form = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 		<HTML>
 		<HEAD>
 		<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -197,19 +197,19 @@ class OrderFormCreator implements CreateFormInterface
 			<TD class="tr3 td9"><P class="p6 ft5"><b>VALOR TOTAL</b></P></TD>
 			</TR>';
 
-			foreach ($clonedParameters as $cParameters) {
-				$Form .= '<TR>
+        foreach ($clonedParameters as $cParameters) {
+            $Form .= '<TR>
 				<TD class="tr4 td5"><P class="p7 ft1">'. $cParameters['amount'] .'</P></TD>
 				<TD class="tr4 td6"><P class="p5 ft1">'. $cParameters['model'] .'</P></TD>
 				<TD class="tr4 td8"><P class="p6 ft5">R$ '. $cParameters['price'] .',00</P></TD>
 				<TD class="tr4 td9"><P class="p6 ft5">R$ '. ($cParameters['price'] * $cParameters['amount']) .',00</P></TD>
 				</TR>';
 
-				$totalAmount += $cParameters['amount'];
-				$totalPrice += ($cParameters['price'] * $cParameters['amount']);
-			}
+            $totalAmount += $cParameters['amount'];
+            $totalPrice += ($cParameters['price'] * $cParameters['amount']);
+        }
 
-			$Form .= '<TR>
+        $Form .= '<TR>
 			<TD class="tr4 td5"><P class="p7 ft1">&nbsp;</P></TD>
 			<TD class="tr4 td6"><P class="p5 ft1">&nbsp;</P></TD>
 			<TD class="tr4 td8"><P class="p6 ft5">&nbsp;</P></TD>
@@ -267,14 +267,14 @@ class OrderFormCreator implements CreateFormInterface
 			<TD colspan=3 class="tr3 td29"><P class="p6 ft5">PRODUTO</P></TD>
 			</TR>';
 
-			foreach ($clonedParameters as $cParameters) {
-				$Form .= '<TR>
+        foreach ($clonedParameters as $cParameters) {
+            $Form .= '<TR>
 				<TD class="tr4 td5"><P class="p14 ft1">'. $cParameters['amount'] .'</P></TD>
 				<TD colspan=3 class="tr4 td29"><P class="p14 ft1">'. $cParameters['model'] .'</P></TD>
 				</TR>';
-			}
+        }
 
-			$Form .='<TR>
+        $Form .='<TR>
 			<TD class="tr4 td5"><P class="p7 ft1">&nbsp;</P></TD>
 			<TD colspan=3 class="tr4 td6"><P class="p5 ft1">&nbsp;</P></TD>
 			</TR>
@@ -293,6 +293,6 @@ class OrderFormCreator implements CreateFormInterface
 			</BODY>
 			</HTML>';
 
-			return $Form;
-		}
-	}
+        return $Form;
+    }
+}

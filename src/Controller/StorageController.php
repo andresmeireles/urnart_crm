@@ -21,7 +21,7 @@ class StorageController extends Controller
 {
     /**
      * @Route("/storage", name="storage")
-     * 
+     *
      * @param Crud $getter
      * @return Response
      */
@@ -35,7 +35,7 @@ class StorageController extends Controller
 
     /**
      * @Route("/storage/feedstock", name="feedstock", methods="GET")
-     * 
+     *
      * @param Crud $getter
      * @return Response
      */
@@ -51,19 +51,19 @@ class StorageController extends Controller
 
     /**
      * @Route("/storage/feedstockAction/{id}", name="feedstockAction", methods={"POST", "DELETE", "GET"}, defaults={"id"=null})
-     * 
+     *
      * @param Request $reques
      * @param int|null $id
      * @param Crud $getter
      * @return Response
      * @throws \Exception
      */
-    public function feedstockAction(Request $request, ?int $id, Crud $getter): Response
+    public function feedstockAction(Request $request, ?int $productId, Crud $getter): Response
     {
-        $id = $id == null ? '' : (int) $id;
+        $productId = $productId == null ? '' : (int) $productId;
         $method = $request->server->get('REQUEST_METHOD');
         $model = new FeedstockModel($this->getDoctrine()->getManager());
-        $em = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
 
         if ($method == 'POST') {
             $parameters = $request->request->all();
@@ -72,23 +72,23 @@ class StorageController extends Controller
             return new Response('Sucesso');
         }
 
-        if($method == 'DELETE') {
-            if (!is_int($id)) {
+        if ($method == 'DELETE') {
+            if (!is_int($productId)) {
                 throw new \Exception('Não é um número');
             }
 
-            $item = $em->getRepository(Feedstock::class)->find($id);
+            $item = $entityManager->getRepository(Feedstock::class)->find($id);
             try {
-                $em->remove($item);
-                $em->flush();
+                $entityManager->remove($item);
+                $entityManager->flush();
             } catch (\Exception $e) {
                 throw new \Exception($e->getMessage());
             }
 
             return new Response(200, Response::HTTP_OK, array(
-            'redirect-route' => '/storage/product' 
+            'redirect-route' => '/storage/product'
             ));
-        } 
+        }
         
         if ($method == 'GET') {
             $update = $this->getDoctrine()->getManager()->getRepository(Feedstock::class)->find($id);
@@ -100,31 +100,34 @@ class StorageController extends Controller
                 'unit' => $getter->get('unit'),
                 'departament' => $getter->get('departament'),
              ]);
-        } else {
-            return $this->createNotFoundException();
         }
+        
+        return $this->createNotFoundException();
+        
     }
 
     /**
      * @Route("/storage/feedstockAction/update/{id}", methods="POST")
-     * 
+     *
      * @param Feedstock $model
-     * @param Request $request
+     * @param Request   $request
+     * @param int       $productId
      * @return Response
      */
-    public function updateFeedStock(FeedstockModel $model, Request $request, int $id): Response
+    public function updateFeedStock(FeedstockModel $model, Request $request, int $productId): Response
     {
         $data = $request->request->all();
-        $model->update($data, $id);
+        $model->update($data, $productId);
 
         return $this->redirectToRoute('feedstock');
     }
 
     /**
      * @Route("/storage/feedstock/in", methods="POST")
+     *
+     * @param Feedstock   $model
+     * @param Request     $request
      * 
-     * @param Feedstock $model 
-     * @param Request $request
      * @return Response
      * @throws \Exception
      */
@@ -154,7 +157,7 @@ class StorageController extends Controller
 
     /**
      * @Route("/storage/product", name="showProd")
-     * 
+     *
      * @param Crud $getter
      * @return Response
      */
@@ -187,34 +190,35 @@ class StorageController extends Controller
 
     /**
      * Redirect to update page.
-     * 
+     *
      * @Route("/storage/productAction/{id<\d+?>}", methods="GET")
      *
      * @param string $id
+     * 
      * @return Response
      */
-    public function redirectToUpdate($id): Response
+    public function redirectToUpdate($productId): Response
     {
         return $this->render('/storage/forms/productForm.html.twig', [
-                'product' => $this->getDoctrine()->getManager()->getRepository(Product::class)->find($id)
+                'product' => $this->getDoctrine()->getManager()->getRepository(Product::class)->find($productId)
         ]);
     }
     
     /**
      * Update page. Accepts only numbers as id
-     * 
+     *
      * @Route("/storage/product/update/{id}", methods="POST", requirements={"page"="\d+"})
      *
      * @param ProductModel $model
-     * @param $id
+     * @param string $productId
      * @return Response
      * @throws \Exception
      */
-    public function updateProduct(ProductModel $model, Request $request, $id): Response
+    public function updateProduct(ProductModel $model, Request $request, string $productId): Response
     {
-        $id = (int) $id;
+        $productId = (int) $productId;
         $data = $request->request->all();
-        $result = $model->update($data, $id);
+        $result = $model->update($data, $productId);
 
         if ($result['http_code'] == 203) {
             return $this->render('/storage/forms/productForm.html.twig', [
@@ -228,20 +232,20 @@ class StorageController extends Controller
     
     /**
      * Remove page. Accepts only numbers as id
-     * 
+     *
      * @Route("/storage/productAction/{id}", methods="DELETE", requirements={"page"="\d+"})
      *
      * @param ProductModel $model
-     * @param [type] $id
+     * @param [type] $productId
      * @return Response
      */
-    public function removeProduct(ProductModel $model, $id): Response
+    public function removeProduct(ProductModel $model, $productId): Response
     {
-        $id = (int) $id;
-        $result = $model->remove($id);
+        $productId = (int) $productId;
+        $result = $model->remove($productId);
 
         return new Response($result['message'], $result['http_code'], array(
-            'redirect-route' => '/storage/product' 
+            'redirect-route' => '/storage/product'
         ));
     }
 

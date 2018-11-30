@@ -45,7 +45,7 @@ class OrderRepository extends ServiceEntityRepository
             ->orderBy('o.createDate', 'DESC')
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult();   
+            ->getResult();
     }
 
 //    /**

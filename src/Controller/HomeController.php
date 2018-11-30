@@ -1,51 +1,57 @@
 <?php
-
+/**
+ * HomeController
+ *
+ * @category Controller
+ * @package  App\Controller
+ * @author   André Meireles <andre2meireles@gmail.com>
+ * @license  MIT <https://mit-license.org>
+ * @link     https://bitbucket.org/andresmeireles/sysadmin
+ */
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Classe do controller home
+ *
+ * @category Contoller
+ * @package  App\Controller\HomeController
+ * @author   André Meireles <andre2meireles@gmail.com>
+ * @license  MIT <https://mit-license.org>
+ * @link     https://bitbucket.org/andresmeireles/sysadmin
+ */
 class HomeController extends Controller
 {
     /**
+     * Move para a primeira pagina
+     *
      * @Route("/home", name="home")
-     * @Route("/", name="index")
+     * @Route("/",     name="index")
+     *
+     * @return Response
      */
     public function index()
     {
-       /*  exec('libreoffice --headless --convert-to pdf xof.doc', $zolf, $alpha);
-        if ($alpha === 1) {
-            $this->addFlash(
-                'error',
-                'pdf não gerado'
-            );
-        } */
-        return $this->render('home/index.html.twig', [
+        return $this->render(
+            'home/index.html.twig',
+            [
             'controller_name' => 'HomeController',
-        ]);
+            ]
+        );
     }
 
     /**
-     * @Route("/activiment")
+     * Redireciona para pagina de objetivos a alcançar
      *
-     * Redireciona paga pagina de objetivos a alcançar
+     * @Route("/activiment")
      *
      * @return Response
      */
     public function activiment(): Response
     {
         return $this->render('home/activiments.html.twig');
-    }
-
-    /**
-     * @Route("/message", name="message")
-     *
-     * @return Response
-     */
-    public function message(): Response
-    {
-        $x = rand(0, 9999999999999);
-        return new Response($x);
     }
 }

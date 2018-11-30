@@ -77,7 +77,7 @@ class PessoaFisica extends BaseEntity
 
     /**
      * Get the value of firstName
-     */ 
+     */
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -87,7 +87,7 @@ class PessoaFisica extends BaseEntity
      * Set the value of firstName
      *
      * @return  self
-     */ 
+     */
     public function setFirstName(?string $firstName): ?self
     {
         $this->firstName = $firstName;
@@ -97,7 +97,7 @@ class PessoaFisica extends BaseEntity
 
     /**
      * Get the value of lastname
-     */ 
+     */
     public function getLastName(): ?string
     {
         return $this->lastName;
@@ -107,7 +107,7 @@ class PessoaFisica extends BaseEntity
      * Set the value of lastname
      *
      * @return  self
-     */ 
+     */
     public function setLastName(?string $lastname): ?self
     {
         $this->lastName = $lastname;
@@ -117,7 +117,7 @@ class PessoaFisica extends BaseEntity
 
     /**
      * Get the value of cpf
-     */ 
+     */
     public function getCpf(): ?string
     {
         return $this->cpf;
@@ -127,7 +127,7 @@ class PessoaFisica extends BaseEntity
      * Set the value of cpf
      *
      * @return  self
-     */ 
+     */
     public function setCpf(?string $cpf): ?self
     {
         $sanitizeString = str_replace('.', '', str_replace('-', '', $cpf));
@@ -139,7 +139,7 @@ class PessoaFisica extends BaseEntity
 
     /**
      * Get the value of rg
-     */ 
+     */
     public function getRg(): ?string
     {
         return $this->rg;
@@ -149,7 +149,7 @@ class PessoaFisica extends BaseEntity
      * Set the value of rg
      *
      * @return  self
-     */ 
+     */
     public function setRg(string $rg): ?self
     {
         $this->rg = $rg;
@@ -159,7 +159,7 @@ class PessoaFisica extends BaseEntity
 
     /**
      * Get the value of genre
-     */ 
+     */
     public function getGenre(): ?string
     {
         return $this->genre;
@@ -169,7 +169,7 @@ class PessoaFisica extends BaseEntity
      * Set the value of genre
      *
      * @return  self
-     */ 
+     */
     public function setGenre(?string $genre): self
     {
         $genre = strtolower($genre);
@@ -180,7 +180,7 @@ class PessoaFisica extends BaseEntity
 
     /**
      * Get the value of birthDate
-     */ 
+     */
     public function getBirthDate(): ?string
     {
         if (is_null($this->birthDate)) {
@@ -193,7 +193,7 @@ class PessoaFisica extends BaseEntity
      * Set the value of birthDate
      *
      * @return  self
-     */ 
+     */
     public function setBirthDate(?\DateTime $birthDate): ?self
     {
         $this->birthDate = $birthDate;

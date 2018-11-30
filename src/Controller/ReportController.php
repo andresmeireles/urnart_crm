@@ -8,19 +8,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReportController extends AbstractController
 {
     /**
+     * Redirect to index pages of reports pages
+     *
      * @Route("/report", name="report")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index()
+    public function index(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('report/index.html.twig');
     }
 
     /**
+     * Redirect survey routes
+     *
      * @Route("/report/survey", name="survey")
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function survey()
+    public function survey(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('report/pages/survey.html.twig');
     }

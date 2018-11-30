@@ -44,7 +44,6 @@ class SimpleFileUpload
 
     public static function uploadLogoImage(?UploadedFile $file): bool
     {
-
         if (is_null($file)) {
             //self::$filePath = "sys/logo_img/logo.png";
             self::$status = true;
@@ -108,7 +107,7 @@ class SimpleFileUpload
     private static function clearFolder(): void
     {
         $files = glob(self::$logoDir.'/custom/*');
-        foreach($files as $file) {
+        foreach ($files as $file) {
             if (!is_dir($file) && file_exists($file)) {
                 unlink($file);
             }

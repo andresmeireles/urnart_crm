@@ -72,7 +72,7 @@ class Order extends BaseEntity
 
     /**
      * @ORM\Column(type="smallint")
-     * 
+     *
      * 0 - open
      * 1 - reserved
      * 2 - closed
@@ -285,11 +285,11 @@ class Order extends BaseEntity
         return false;
     }
 
-    public function isOpen(): bool 
+    public function isOpen(): bool
     {
         if ($this->reserved == 0) {
             return true;
-        } 
+        }
         return false;
     }
 

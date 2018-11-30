@@ -4,18 +4,18 @@ namespace App\Utils\Form;
 
 use App\Utils\Form\Parameters;
 use App\Utils\Form\Interfaces\ResponseFormInterface;
-use App\Utils\Validation\ValidatorJson; 
+use App\Utils\Validation\ValidatorJson;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Knp\Snappy\Pdf;
 
-class Form 
+class Form
 {
     private $FormFactory;
     private $formName;
 
-    function __construct(string $FormName)
+    public function __construct(string $FormName)
     {
         $this->formName = $FormName;
         $FormNameToLower = strtolower($FormName);
@@ -30,18 +30,18 @@ class Form
             return $this->FormFactory = new $Form[$FormNameToLower]();
         }
 
-        throw new \Exception('List of Forms not found, create a FormList.yaml with reoprt names in Forms folder.'); 
+        throw new \Exception('List of Forms not found, create a FormList.yaml with reoprt names in Forms folder.');
     }
 
     public function create(array $parameters)
     {
-        foreach ($parameters as $key => $value) { 
+        foreach ($parameters as $key => $value) {
             if (is_array($value)) {
                 $parameters[$key] = array_map(function ($parameter) {
                     $result = ltrim(trim($parameter));
                     return $result;
                 }, $value);
-                continue;   
+                continue;
             }
 
             $parameters[$key] = ltrim(trim($value));
@@ -56,7 +56,7 @@ class Form
         return $formResponse;
     }
 
-    public function fail() 
+    public function fail()
     {
         if (ValidatorJson::getErrors()) {
             return true;
@@ -67,7 +67,6 @@ class Form
 
     public function save(CreateFormInterface $Form): bool
     {
-
     }
 
     public function getMessage()
@@ -77,11 +76,11 @@ class Form
 
     public function show(ResponseFormInterface $Form): string
     {
-    	// windows
+        // windows
         $pdf = new Pdf(__DIR__.'\..\..\..\vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltopdf.exe');
         
-    	// linux
-    	//$pdf = new Pdf(__DIR__.'/../../../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64');
+        // linux
+        //$pdf = new Pdf(__DIR__.'/../../../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64');
         $html = $Form->getBodyForm();
 
         file_put_contents(__DIR__.'/../../../public/form/bill.html', $html);
@@ -94,13 +93,13 @@ class Form
         $pdf->setOption('page-height', '297.0');
         $pdf->setOption('page-width', '210.0');
         if (file_exists(__DIR__.'/../../../public/form/bill.pdf')) {
-        	//chmod(__DIR__.'/../../../public/form/bill.pdf', 777);
+            //chmod(__DIR__.'/../../../public/form/bill.pdf', 777);
             unlink(__DIR__.'/../../../public/form/bill.pdf');
         }
         $pdf->generateFromHtml($html, __DIR__.'/../../../public/form/bill.pdf');
         
         return new Response(201);
-    } 
+    }
 
     public function createAndShow(array $parameters)
     {

@@ -76,8 +76,9 @@ class PersonModel extends Model
             $pessoaFisica->setFirstName($person['firstName']);
             $pessoaFisica->setLastName($person['lastName']);
             $pessoaFisica->setCpf($person['cpf']);
-            if ($this->config)
+            if ($this->config) {
                 $pessoaFisica->setRg($person['rg']);
+            }
             $g = $person['genre'] ?? null;
             $pessoaFisica->setGenre($g);
             $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null;
@@ -141,7 +142,7 @@ class PersonModel extends Model
                 'type'      => 'success',
                 'message'   => 'Cliente adicionado com sucesso'
             );
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $em->getConnection()->rollback();
             return array(
                 'http_code' => 400,

@@ -20,7 +20,7 @@ class WithdrawalFormCreator implements CreateFormInterface
             ValidatorJson::validate($clone, [
                 'amount' => v::notEmpty()->numeric()->positive()->noWhitespace(),
                 'prodName' => v::notEmpty()->alpha()
-            ]);   
+            ]);
         }
 
         ValidatorJson::validate($nonCloned, [
@@ -31,12 +31,12 @@ class WithdrawalFormCreator implements CreateFormInterface
         return new ResponseForm($response);
     }
 
-    private function getDate(\DateTime $date): string 
+    private function getDate(\DateTime $date): string
     {
         return $date->format('d/m/Y');
     }
 
-    private function createBody (Parameters $parameters): string 
+    private function createBody(Parameters $parameters): string
     {
         $clonedParams = $parameters->getClonedParameters();
         $nonCloned = $parameters->getNonClonedParameters();
@@ -76,12 +76,12 @@ class WithdrawalFormCreator implements CreateFormInterface
             </tr>
             <tr id="body">';
 
-            foreach ($clonedParams as $param) {
-                $body .= '<td class="center">'. $param['amount'] .'</td>
+        foreach ($clonedParams as $param) {
+            $body .= '<td class="center">'. $param['amount'] .'</td>
                 <td colspan=3 class="center">'. $param['prodName'] .'</td>';
-            }
+        }
             
-            $body .= '</tr>
+        $body .= '</tr>
             <tr id="spacer">
               <td class="center">&nbsp;</td>
               <td colspan=3 class="center">&nbsp;</td>

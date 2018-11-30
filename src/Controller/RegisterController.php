@@ -20,9 +20,10 @@ class RegisterController extends Controller
      * @Route("/register", name="register")
      *
      * @param Crud $getter
+     * 
      * @return Response
      */
-    public function index(Crud $getter, Request $request)
+    public function index(Crud $getter): Response
     {
         return $this->render('register/index.html.twig', [
             'departament' => $getter->get('departament'),
@@ -117,7 +118,7 @@ class RegisterController extends Controller
 
     /**
      * @Route("/register/configuration", methods="GET", name="config")
-     * 
+     *
      * @return Response
      */
     public function configuration(): Response

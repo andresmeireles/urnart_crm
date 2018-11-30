@@ -56,7 +56,7 @@ class Unit
     public function getInitials(): ?string
     {
         return $this->initials;
-    } 
+    }
 
     public function setInitials(string $initials): self
     {

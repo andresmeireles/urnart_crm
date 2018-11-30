@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Utils\Form\FormTemplate;
 
@@ -12,32 +12,31 @@ use Respect\Validation\Validator as v;
 
 class RemandFormCreator implements CreateFormInterface
 {
-	public function createForm(Parameters $parameters): ResponseFormInterface 
-	{
-		$response = new ResponseForm();
+    public function createForm(Parameters $parameters): ResponseFormInterface
+    {
+        $response = new ResponseForm();
 
-		if ($parameters->getClonedParameters() == null) {
-			$body = $this->chequeBody($parameters->getNonClonedParameters());
+        if ($parameters->getClonedParameters() == null) {
+            $body = $this->chequeBody($parameters->getNonClonedParameters());
 
-			return $response->setResponse($body);
-		}
+            return $response->setResponse($body);
+        }
 
-		$body = $this->productBody($parameters);
+        $body = $this->productBody($parameters);
 
-		return $response->setResponse($body);
-	}
+        return $response->setResponse($body);
+    }
 
-	public function getMessage()
-	{
+    public function getMessage()
+    {
+    }
 
-	}
+    private function chequeBody(array $parameters): string
+    {
+        $imgSign = file_get_contents(__DIR__.'/carta-frete/sign');
+        $imgBackground = file_get_contents(__DIR__.'/carta-frete/background');
 
-	private function chequeBody(array $parameters): string
-	{
-		$imgSign = file_get_contents(__DIR__.'/carta-frete/sign');
-		$imgBackground = file_get_contents(__DIR__.'/carta-frete/background');
-
-		$body = '
+        $body = '
 			<style>
 		#half-page { height: 50%; width: 100%; margin: 0px 0px 0px 0px; background: url('. $imgBackground .') center no-repeat; -webkit-print-color-adjust: exact; }
 		#form { padding: 10px; font: 15px "Arial"; }
@@ -107,20 +106,20 @@ class RemandFormCreator implements CreateFormInterface
 			</div>
 			</body>';
 
-			$response = $body.''.$body;
+        $response = $body.''.$body;
 
-			return $response;
-		}
+        return $response;
+    }
 
-		private function productBody(Parameters $parameters): string 
-		{
-			$imgSign = file_get_contents(__DIR__.'/carta-frete/sign');
-			$imgBackground = file_get_contents(__DIR__.'/carta-frete/background');
+    private function productBody(Parameters $parameters): string
+    {
+        $imgSign = file_get_contents(__DIR__.'/carta-frete/sign');
+        $imgBackground = file_get_contents(__DIR__.'/carta-frete/background');
 
-			$param = $parameters->getNonClonedParameters();
-			$cParam = $parameters->getClonedParameters();
+        $param = $parameters->getNonClonedParameters();
+        $cParam = $parameters->getClonedParameters();
 
-			$body = '
+        $body = '
 				</script>
 				<style>
 			    #page { size: A4 portrait;}
@@ -159,11 +158,11 @@ class RemandFormCreator implements CreateFormInterface
 				<div class="clear"></div>
 				<p class>Produtos para <b>DEVOLUÇÃO</b>:</p>';
 
-				foreach ($cParam as $p) {
-					$body .= '<div class="center">'. $p['remandQnt'] .' - '. $p['remandProduct'] .'</div>';
-				}
-				
-			$body .= '<p>Atenciosamente,</p>
+        foreach ($cParam as $p) {
+            $body .= '<div class="center">'. $p['remandQnt'] .' - '. $p['remandProduct'] .'</div>';
+        }
+                
+        $body .= '<p>Atenciosamente,</p>
 				</div>
 				<div class="footer">
 				<div class="logo_img f-left">
@@ -192,8 +191,8 @@ class RemandFormCreator implements CreateFormInterface
 				</div>
 				</body>';
 
-				$response = $body.''.$body;
+        $response = $body.''.$body;
 
-				return $response;
-			}
-		}
+        return $response;
+    }
+}
