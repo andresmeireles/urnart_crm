@@ -22,9 +22,7 @@ final class Config
      */
     protected static $status = false;
 
-    private function __construct()
-    {
-    }
+    private function __construct(){}
 
     /**
      * Inicia arquivo de configuração.

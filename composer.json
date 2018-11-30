@@ -25,6 +25,9 @@
         "wgenial/numeroporextenso": "^2.0"
     },
     "require-dev": {
+        "phpstan/phpstan": "^0.10.5",
+        "phpstan/phpstan-doctrine": "^0.10.0",
+        "phpstan/phpstan-symfony": "^0.10.2",
         "symfony/debug": "^4.0",
         "symfony/dotenv": "^4.0",
         "symfony/maker-bundle": "^1.5",
