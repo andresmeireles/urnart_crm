@@ -20,13 +20,14 @@ class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
         $request = $event->getRequest();
         if ($request->getMethod() == 'POST') {
             $session = $request->getSession();
-            $tokenString = $session->get('csrftoken');
-            $token = $request->request->get('token');
-            if (is_null($token)) {
-                $token = $request->headers->get('auth');
+            $tokenId = $session->get('csrftoken')->getId();
+            $tokenValue = $request->request->get('token');
+            dump($request->headers->get('auth'));
+            if (is_null($tokenValue)) {
+                $tokenValue = $request->headers->get('auth');
             }
             $controller = $event->getController()[0];
-            if (!$controller->isCsrfTokenValid($tokenString, $token)) {
+            if (!$controller->isCsrfTokenValid($tokenId, $tokenValue)) {
                 throw new AccessDeniedException("Token invalido.");
             }
             foreach ($session->all() as $key => $value) {

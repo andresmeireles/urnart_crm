@@ -1,2 +1,2 @@
 
-<input type="hidden" name="token" value="{{ csrf_token(app.session.get('csrftoken')) }}">
+<input type="hidden" name="token" value="{{ app.session.get('csrftoken').value }}">

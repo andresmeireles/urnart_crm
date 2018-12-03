@@ -1,8 +1,32 @@
 {% extends 'index.html.twig' %}
 
 {% block content %}
-    {{ app.session.get('csrftoken') }}
-	<a href="https://google.com/google.jpg" data-fancybox data-caption="Caption for single image">
+<div class="p-4 col">
+    No csrf token: <p class="tokenName">{{ app.session.get('csrftoken').id }}</p>
+	Token original: <p class="originaltoken">{{ csrf_token(app.session.get('csrftoken').id) }}</p>
+	<p class="originaltoken">{{ app.session.get('csrftoken').value }}</p>
+	Nova string do token: <p class="nStringToken">{{ app.session.get('csrftoken').id }}</p>
+	Novo token: <p class="csrfTokenString">{{ csrf_token(app.session.get('csrftoken').id) }}</P>
+	<button class="btn btn-primary btn-lg change-token">Alterar csrftoken</button>
+	<div class="col">
+	{#<a href="https://google.com/google.jpg" data-fancybox data-caption="Caption for single image">
 		<img src="https://google.com/google.jpg">
-	</a>
+	</a>#}
+	</div>
+	<script>
+		document.querySelector('.change-token').addEventListener('click', function (el) {
+			el.preventDefault();
+			axios({
+				method: 'get',
+				url: '/changeCsrf',
+				headers: { 'auth': document.querySelector('.csrfTokenString').innerText } 
+			})
+			.then( function (response) {
+				document.querySelector('.nStringToken').innerText = response.data.st
+				document.querySelector('.csrfTokenString').innerText = response.data.cst
+				console.log(response);
+			});
+		});
+	</script>
+</div>
 {% endblock %}

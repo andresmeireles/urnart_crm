@@ -41,7 +41,7 @@ class StartSubscriber implements EventSubscriberInterface
     {
         $ctm = new CsrfTokenManager;
         $token = $ctm->getToken((new \DateTime('now'))->format('d-m-Y H:m:s'));
-        $session->set('csrftoken', $token);
+        $session->set('csrftoken', $token->getId());
     }
     
     public static function getSubscribedEvents()

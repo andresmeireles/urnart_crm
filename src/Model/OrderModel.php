@@ -32,6 +32,7 @@ class OrderModel extends Model
      * @param array $products
      * @param string $type
      * @throws \Exception
+     * 
      * @return array
      */
     public function executeActionOnOrder(array $information, array $products, string $type = 'insert'): array
@@ -127,6 +128,7 @@ class OrderModel extends Model
      * @param array $information
      * @param array $products
      * @throws \Exception
+     * 
      * @return array
      */
     public function updateOrder(array $information, array $products): array
@@ -139,7 +141,9 @@ class OrderModel extends Model
      *
      * @param array $information
      * @param array $products
+     * 
      * @throws \Exception
+     * 
      * @return array
      */
     public function createOrder(array $information, array $products): array
@@ -151,8 +155,10 @@ class OrderModel extends Model
      * Reserve products in cart or irder number.
      *
      * @param  int   $orderId [description]
-     * @return array     [description]
+     * 
      * @throws \Exception
+     * 
+     * @return array     [description]
      */
     public function reserve(int $orderId): array
     {
@@ -163,7 +169,7 @@ class OrderModel extends Model
               'message' => 'Operação desablitida pelo sistema.'
             );
         }
-        $entityManager = $this->$entityManager;
+        $entityManager = $this->em;
         $entityManager->getConnection()->beginTransaction();
         $order = $entityManager->getRepository(Order::class)->find($orderId);
         if (!$order->isOpen()) {
@@ -204,7 +210,7 @@ class OrderModel extends Model
         return array(
           'http_code' => 301,
           'type' => 'success',
-          'message' => "Produtos do pedido {$id} foram reservados com sucesso"
+          'message' => "Produtos do pedido {$orderId} foram reservados com sucesso"
         );
     }
 
@@ -212,8 +218,10 @@ class OrderModel extends Model
      * @param int|null $id
      * @param string $hash
      * @param string $type
-     * @return array
+     * 
      * @throws \Exception
+     * 
+     * @return array
      */
     public function runUnreserveTypeAction(?int $id, string $hash, string $type = 'open'): array
     {
@@ -286,8 +294,9 @@ class OrderModel extends Model
     }
 
     /**
-     * @param int $id
+     * @param int $orderId
      * @param string $hash
+     * 
      * @return array
      * @throws \Exception
      */
