@@ -31,7 +31,7 @@ final class Config
      */
     public static function start(): void
     {
-        self::$config = Yaml::parse(file_get_contents(__DIR__.'/system-config.yaml'));
+        self::$config = Yaml::parse(__DIR__.'/system-config.yaml');
         self::$status = true;
     }
 
@@ -63,8 +63,20 @@ final class Config
      * Retorna status da confuração.
      *
      * @return boolean
+     * 
+     * @deprecated 
      */
     public static function getStatus(): bool
+    {
+        return self::$status;
+    }
+
+    /**
+     * Retorna status da confuração.
+     *
+     * @return boolean
+     */
+    public static function isActive(): bool
     {
         return self::$status;
     }

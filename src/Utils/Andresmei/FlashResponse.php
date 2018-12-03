@@ -15,6 +15,7 @@ class FlashResponse
      * @param  int|null    $http_code codigo HTTP
      * @param  string|null $type      Tipo de responsta, success, warning, error etc...
      * @param  string|null $message   Corpo da messagem
+     * 
      * @return array
      */
     public static function response(int $http_code = null, string $type = null, string $message = null): array

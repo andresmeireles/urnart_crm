@@ -1,6 +1,42 @@
 {% extends 'index.html.twig' %}
 
 {% block content %}
+{% set question = {
+    'questions' : {
+        '1': {
+            'text': 'Qual seu nome meu amiginho',
+            'type': 'text',
+            'alternatives': '',
+        },
+        '2': {
+            'text': 'Qual o seu grau de escolaridade?',
+            'type': 'checkbox',
+            'alternatives': {
+                '1': 'nenhuma',
+                '2': 'ensino médio',
+                '3': 'ensino superior',
+                '4': 'eu inventei o ensino!!!!!!'
+            }
+        },
+        '3': {
+            'text': 'You know what a synchron summon is?',
+            'type': 'radio',
+            'alternatives': ''
+        }
+    }    
+}
+%}
+{% set surveys = {
+        '21.01.2019': {
+            '1': 'andre',
+            '2': 'yasmim' 
+        },
+        '22.01.2019': {
+            '3': 'brito',
+            '4': 'bakerbrodbistviewbst'
+        }
+    } 
+    %}
 <div class="p-3 col">
     <div>
         <h1>Pesquisas de Satisfação</h1>
@@ -23,21 +59,42 @@
                 <div class="tab-pane fade show active" id="travel" role="tabpanel" aria-labelledby="travel-tab">
                     <div class="col">
                         <legend>Relatórios</legend>
-                        <ul class="list-group py-2">
-                            <legend>21/01/2018</legend>
-                            <li class="list-group-item list-group-item-action align-right">Fred<span class="badge badge-danger badge-pill float-right mx-1"><i class="fas fa-times-circle"></i></span><span class="badge badge-secondary badge-pill float-right mx-1"><i class="fas fa-tasks"></i></span><span class="badge badge-primary badge-pill float-right mx-1"><i class="far fa-comment"></i></span></li>
-                            <li class="list-group-item list-group-item-action">Zeca</li>
-                            <li class="list-group-item list-group-item-action">João</li>
-                            <li class="list-group-item list-group-item-action">Marcley</li>
-                            <li class="list-group-item list-group-item-action">Samuel</li>
+                        {% for date, names in surveys %}
+                        <ul class="list-' py-2">
+                            <legend>{{ date }}</legend>
+                            {% for nameId, name in names %}
+                            <li class="list-'-item list-'-item-action align-right">{{ name }} com numero {{ nameId }}
+                            <span class="badge badge-danger badge-pill float-right mx-1"><i class="fas fa-times-circle"></i></span>
+                            <div>
+                                {% set questionNumber = 0 %}
+                                {% for question in questions %}
+                                    <div class="form-group">
+                                        <label for="text">{{ question.text }}</label>
+                                        <input type="{{ question.type }}" class="form-control" name="customer[{{ nameId }}][{% set questionNumber = questionNumber + 1 %}]"
+                                        {% if question.type == 'radio' %}
+                                            value="sim" />
+                                            <label class="form-check-label">Sim</label>
+                                            <input type="radio" class="form-control" />
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <span class="badge badge-secondary badge-pill float-right mx-1"><i class="fas fa-tasks"></i></span>
+                            
+                            <span class="badge badge-primary badge-pill float-right mx-1"><i class="far fa-comment"></i></span></li>
+                            <div class="" style="display: none">
+                                
+                            </div>
+                            {% endfor %}
                         </ul>
-                        <ul class="list-group py-2">
+                        {% endfor %}
+                        <ul class="list-' py-2">
                             <legend>21/01/2018</legend>
-                            <li class="list-group-item list-group-item-action">Fred</li>
-                            <li class="list-group-item list-group-item-action">Zeca</li>
-                            <li class="list-group-item list-group-item-action">João</li>
-                            <li class="list-group-item list-group-item-action">Marcley</li>
-                            <li class="list-group-item list-group-item-action">Samuel</li>
+                            <li class="list-'-item list-'-item-action">Fred</li>
+                            <li class="list-'-item list-'-item-action">Zeca</li>
+                            <li class="list-'-item list-'-item-action">João</li>
+                            <li class="list-'-item list-'-item-action">Marcley</li>
+                            <li class="list-'-item list-'-item-action">Samuel</li>
                         </ul>
                     </div>
                 </div>

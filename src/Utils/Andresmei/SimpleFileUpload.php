@@ -51,7 +51,7 @@ class SimpleFileUpload
             return true;
         }
 
-        if (!self::checkImage($file->getClientMimeType()) && !self::checkFileSize((int) $file->getSize())) {
+        if (!self::checkImage($file->getClientMimeType()) && !self::checkFileSize($file->getSize())) {
             return false;
         }
         self::clearFolder();
