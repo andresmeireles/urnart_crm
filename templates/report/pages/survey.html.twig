@@ -27,7 +27,11 @@
 {% set surveys = {
         '21.01.2019': {
             '1': 'andre',
-            '2': 'yasmim' 
+            '2': 'yasmim',
+            '3': 'debóra',
+            '4': 'fabrício',
+            '5': 'simone',
+            '6': 'augusto' 
         },
         '22.01.2019': {
             '3': 'brito',
@@ -58,13 +62,34 @@
                     <div class="col">
                         <legend>Relatórios</legend>
                         {% for date, names in surveys %}
-                        <ul class="list-group py-2">
-                            <legend>{{ date }}</legend>
+                        <ul class="list-group py-2" surveyDate="{{ date }}{{ csrf_token(date) }}">
+                            <legend>
+                                {{ date | date('d/m/Y') }} 
+                                {% if flops is not defined %}
+                                    <small><a href="javascript:;" class="badge badge-success badge-pill badge-sm text-light py-1">Salvar pesquisa</a></small>
+                                {% else %}
+                                    <small><a href="javascript:;" class="badge badge-light badge-pill badge-sm text-dark py-1">Pesquisa encerrada</a></small>
+                                {% endif %}
+                            </legend>
                             {% for nameId, name in names %}
                             <li class="list-group-item list-group-item-action align-right">{{ name }} com numero {{ nameId }}
-                            <span class="badge badge-danger badge-pill float-right mx-1"><i class="fas fa-times-circle"></i></span>
-                            <div>
+                            <a href="javascript:;" run-save-action="" class="badge badge-success badge-pill float-right mx-1"><i class="fas fa-check"></i></a>
+                            
+                            <a href="javascript:;" data-fancybox data-src="#pesquisa{{name}}{{csrf_token(date)}}" class="badge badge-secondary badge-pill float-right text-light mx-1"><i class="fas fa-tasks"></i></a>
+                            <div id="pesquisa{{name}}{{csrf_token(date)}}" style="display: none;">
+                                {% if flops is defined %}
+                                    Non floped
+                                {% else %}
+                                    <p class="m-2">Pesquisa ainda não salva.</p>
+                                {% endif %}
+                            </div>
+
+                            <a href="javascript:;" data-fancybox data-src="#{{name}}{{csrf_token(date)}}" class="badge badge-primary badge-pill float-right mx-1"><i class="far fa-comment"></i></a></li>
+                            <div id="{{name}}{{csrf_token(date)}}" style="display: none;">
+                            {% if flops is not defined %}
                                 {% set questionNumber = 0 %}
+                                <h5 class="card-title">{{ name | upper }}</h5>
+                                <p><small>Viagem do dia {{ date | date('d/m/Y') }}</small></p>
                                 {% for question in questions %}
                                     {% set questionNumber = questionNumber + 1 %}
                                     <div class="form-group">
@@ -91,24 +116,13 @@
                                         {% endfor %}
                                     </div>
                                 {% endfor %}
-                            </div>
-                            <span class="badge badge-secondary badge-pill float-right mx-1"><i class="fas fa-tasks"></i></span>
-                            
-                            <span class="badge badge-primary badge-pill float-right mx-1"><i class="far fa-comment"></i></span></li>
-                            <div class="" style="display: none">
-                                
+                            {% else %}
+                                <p class="m-2">Pesquisa já realizada.</p>
+                            {% endif %}
                             </div>
                             {% endfor %}
                         </ul>
                         {% endfor %}
-                        <ul class="list-' py-2">
-                            <legend>21/01/2018</legend>
-                            <li class="list-group-item list-group-item-action">Fred</li>
-                            <li class="list-group-item list-group-item-action">Zeca</li>
-                            <li class="list-group-item list-group-item-action">João</li>
-                            <li class="list-group-item list-group-item-action">Marcley</li>
-                            <li class="list-group-item list-group-item-action">Samuel</li>
-                        </ul>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="outro" role="tabpanel" aria-labelledby="outro-tab">
