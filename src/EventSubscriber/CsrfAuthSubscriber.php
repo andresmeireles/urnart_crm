@@ -8,7 +8,8 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
+use App\Utils\Andresmei\CsrfToken;
+use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
 class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
 {
@@ -20,15 +21,16 @@ class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
         $request = $event->getRequest();
         if ($request->getMethod() == 'POST') {
             $session = $request->getSession();
-            $tokenId = $session->get('csrftoken')->getId();
+            $tokenId = $session->get('csrfToken')->getCsrfTokenString();
             $tokenValue = $request->request->get('token');
-            dump($request->headers->get('auth'));
             if (is_null($tokenValue)) {
                 $tokenValue = $request->headers->get('auth');
             }
-            $controller = $event->getController()[0];
-            if (!$controller->isCsrfTokenValid($tokenId, $tokenValue)) {
-                throw new AccessDeniedException("Token invalido.");
+            if ( !(new CsrfToken())->isValid($tokenId, $tokenValue) ) {
+                //throw new AccessDeniedException("Token invalido.");
+                throw new NotAcceptableHttpException(sprintf('Token %s não aceito, token correto é %s', 
+                $tokenValue,
+                $session->get('csrfToken')->getCsrfToken()));
             }
             foreach ($session->all() as $key => $value) {
                 $session->remove($key);

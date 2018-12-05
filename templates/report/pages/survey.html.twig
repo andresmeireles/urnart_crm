@@ -1,14 +1,13 @@
 {% extends 'index.html.twig' %}
 
 {% block content %}
-{% set question = {
-    'questions' : {
-        '1': {
+{% set questions = {
+    1: {
             'text': 'Qual seu nome meu amiginho',
             'type': 'text',
             'alternatives': '',
         },
-        '2': {
+        2: {
             'text': 'Qual o seu grau de escolaridade?',
             'type': 'checkbox',
             'alternatives': {
@@ -18,12 +17,11 @@
                 '4': 'eu inventei o ensino!!!!!!'
             }
         },
-        '3': {
+        3: {
             'text': 'You know what a synchron summon is?',
             'type': 'radio',
             'alternatives': ''
-        }
-    }    
+        }    
 }
 %}
 {% set surveys = {
@@ -60,22 +58,37 @@
                     <div class="col">
                         <legend>Relatórios</legend>
                         {% for date, names in surveys %}
-                        <ul class="list-' py-2">
+                        <ul class="list-group py-2">
                             <legend>{{ date }}</legend>
                             {% for nameId, name in names %}
-                            <li class="list-'-item list-'-item-action align-right">{{ name }} com numero {{ nameId }}
+                            <li class="list-group-item list-group-item-action align-right">{{ name }} com numero {{ nameId }}
                             <span class="badge badge-danger badge-pill float-right mx-1"><i class="fas fa-times-circle"></i></span>
                             <div>
                                 {% set questionNumber = 0 %}
                                 {% for question in questions %}
+                                    {% set questionNumber = questionNumber + 1 %}
                                     <div class="form-group">
                                         <label for="text">{{ question.text }}</label>
-                                        <input type="{{ question.type }}" class="form-control" name="customer[{{ nameId }}][{% set questionNumber = questionNumber + 1 %}]"
-                                        {% if question.type == 'radio' %}
-                                            value="sim" />
-                                            <label class="form-check-label">Sim</label>
-                                            <input type="radio" class="form-control" />
+                                        {% if question.type == 'text' %}
+                                            <input type="{{ question.type }}" class="form-control" name="customer[{{ name }}][{{ questionNumber }}]" /> 
+                                        {% elseif question.type == 'radio' %}
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" name="customer[{{ name }}][{{ questionNumber }}]" value="sim" />
+                                                <label class="form-check-label">Sim</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" name="customer[{{ name }}][{{ questionNumber }}]" value="sim" />
+                                                <label class="form-check-label">Não</label>
+                                            </div>
                                         {% endif %}
+                                        {% for alternative in question.alternatives %}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" />
+                                                <label class="form-check-label">
+                                                    {{ alternative }}
+                                                </label>
+                                            </div>
+                                        {% endfor %}
                                     </div>
                                 {% endfor %}
                             </div>
@@ -90,11 +103,11 @@
                         {% endfor %}
                         <ul class="list-' py-2">
                             <legend>21/01/2018</legend>
-                            <li class="list-'-item list-'-item-action">Fred</li>
-                            <li class="list-'-item list-'-item-action">Zeca</li>
-                            <li class="list-'-item list-'-item-action">João</li>
-                            <li class="list-'-item list-'-item-action">Marcley</li>
-                            <li class="list-'-item list-'-item-action">Samuel</li>
+                            <li class="list-group-item list-group-item-action">Fred</li>
+                            <li class="list-group-item list-group-item-action">Zeca</li>
+                            <li class="list-group-item list-group-item-action">João</li>
+                            <li class="list-group-item list-group-item-action">Marcley</li>
+                            <li class="list-group-item list-group-item-action">Samuel</li>
                         </ul>
                     </div>
                 </div>

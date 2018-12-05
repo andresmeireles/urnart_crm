@@ -13,8 +13,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
-use Symfony\Bridge\Twig\Extension\CsrfRuntime;
+use App\Utils\Andresmei\CsrfToken;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Classe do controller home
@@ -37,8 +37,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        dump($this->get('session')->get('csrftoken')->getId(), $this->get('session')->get('csrftoken')->getValue(), $this->isCsrfTokenValid($this->get('session')->get('csrftoken')->getId(), $this->get('session')->get('csrftoken')),
-        password_verify($this->get('session')->get('csrftoken')->getId(), $this->get('session')->get('csrftoken')));
         return $this->render('home/index.html.twig');
     }
 
@@ -49,13 +47,11 @@ class HomeController extends Controller
      * 
      * @return Response
      */
-    public function changeCsrf()
+    public function changeCsrf(SessionInterface $session)
     {
-        $ctm = new CsrfTokenManager();
-        $newToken = new CsrfRuntime($ctm);
-        $token = $ctm->getToken((new \DateTime('now'))->format('d-m-Y H:m:s'));
-        $this->get('session')->set('csrftoken', $token);
-        return new Response(json_encode(array('st' => $token->getValue(), 'cst' => $newToken->getCsrfToken($token->getId()))));
+        $change = new \DateTime('now');
+        $string = password_hash($change->format('s'), PASSWORD_DEFAULT);
+        return new Response($string, Response::HTTP_OK, array('csrf' => $session->get('csrfToken')));
     }
 
     /**

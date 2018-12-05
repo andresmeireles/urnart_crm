@@ -5,8 +5,8 @@ namespace App\EventSubscriber;
 use App\Config\Config;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use App\Utils\Andresmei\CsrfToken;
 
 class StartSubscriber implements EventSubscriberInterface
 {
@@ -16,11 +16,9 @@ class StartSubscriber implements EventSubscriberInterface
         if (!Config::getStatus()) {
             Config::start();
         }
-        if (!array_key_exists('csrftoken', $session->all())) {
-            $this->setTokens($session);
-        }
-        if (empty(trim($session->get('csrftoken')))) {
-            $this->setTokens($session);
+        if (!array_key_exists('csrfToken', $session->all())) {
+            $csrfToken = $this->setTokens();
+            $session->set('csrfToken', $csrfToken);
         }
         return;
     }
@@ -28,20 +26,17 @@ class StartSubscriber implements EventSubscriberInterface
     public function onKernelController(FilterControllerEvent $event)
     {
         $session = $event->getRequest()->getSession();
-        if (!array_key_exists('csrftoken', $session->all())) {
-            $this->setTokens($session);
-        }
-        if (empty(trim($session->get('csrftoken')))) {
-            $this->setTokens($session);
+        if (!array_key_exists('csrfToken', $session->all())) {
+            $csrfToken = $this->setTokens();
+            $session->set('csrfToken', $csrfToken);
         }
         return;
     }
     
-    public function setTokens($session): void
+    private function setTokens(): CsrfToken
     {
-        $ctm = new CsrfTokenManager;
-        $token = $ctm->getToken((new \DateTime('now'))->format('d-m-Y H:m:s'));
-        $session->set('csrftoken', $token->getId());
+        $string = (new \DateTime('now'))->format('d/m/Y H:m:s');
+        return new CsrfToken($string);
     }
     
     public static function getSubscribedEvents()
