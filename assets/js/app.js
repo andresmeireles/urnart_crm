@@ -92,9 +92,11 @@ import './src/register/customer';
 import './src/register/cloneFieldCustomer';
 import './src/register/config';
 
-import './src/global/masks';
+// reports
+import './src/reports/survey';
 
 //global tools
+import './src/global/masks';
 import './src/global/tools/sorter';
 import './src/global/tools/progress';
 import './src/global/tools/disabledClick';
@@ -112,13 +114,3 @@ if (document.querySelector('.f-date')) {
 		}
 	);
 }
-
-var loadingDiv = document.getElementById('loading');
-
-function showSpinner() {
-  loadingDiv.style.visibility = 'visible';
-};
-
-function hideSpinner() {
-  loadingDiv.style.visibility = 'hidden';
-};

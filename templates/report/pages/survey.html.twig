@@ -66,14 +66,16 @@
                             <legend>
                                 {{ date | date('d/m/Y') }} 
                                 {% if flops is not defined %}
-                                    <small><a href="javascript:;" class="badge badge-success badge-pill badge-sm text-light py-1">Salvar pesquisa</a></small>
+                                    <small send-all-survey="zz"><a href="javascript:;" send-all-survey="zz" class="badge badge-success badge-pill badge-sm text-light py-1">Salvar pesquisa</a></small>
                                 {% else %}
                                     <small><a href="javascript:;" class="badge badge-light badge-pill badge-sm text-dark py-1">Pesquisa encerrada</a></small>
                                 {% endif %}
                             </legend>
                             {% for nameId, name in names %}
-                            <li class="list-group-item list-group-item-action align-right">{{ name }} com numero {{ nameId }}
-                            <a href="javascript:;" run-save-action="" class="badge badge-success badge-pill float-right mx-1"><i class="fas fa-check"></i></a>
+                            <li class="list-group-item list-group-item-action align-right user-name">{{ name }}
+                            {% if flops is not defined %}
+                                <a href="javascript:;" run-save-action="" class="badge badge-success badge-pill float-right mx-1"><i class="fas fa-check"></i></a>
+                            {% endif %}
                             
                             <a href="javascript:;" data-fancybox data-src="#pesquisa{{name}}{{csrf_token(date)}}" class="badge badge-secondary badge-pill float-right text-light mx-1"><i class="fas fa-tasks"></i></a>
                             <div id="pesquisa{{name}}{{csrf_token(date)}}" style="display: none;">
@@ -84,8 +86,8 @@
                                 {% endif %}
                             </div>
 
-                            <a href="javascript:;" data-fancybox data-src="#{{name}}{{csrf_token(date)}}" class="badge badge-primary badge-pill float-right mx-1"><i class="far fa-comment"></i></a></li>
-                            <div id="{{name}}{{csrf_token(date)}}" style="display: none;">
+                            <a href="javascript:;" data-fancybox data-src="#{{name}}{{csrf_token(date)}}" class="content badge badge-primary badge-pill float-right mx-1"><i class="far fa-comment"></i></a></li>
+                            <form id="{{name}}{{csrf_token(date)}}" style="display: none;">
                             {% if flops is not defined %}
                                 {% set questionNumber = 0 %}
                                 <h5 class="card-title">{{ name | upper }}</h5>
@@ -95,20 +97,20 @@
                                     <div class="form-group">
                                         <label for="text">{{ question.text }}</label>
                                         {% if question.type == 'text' %}
-                                            <input type="{{ question.type }}" class="form-control" name="customer[{{ name }}][{{ questionNumber }}]" /> 
+                                            <input type="{{ question.type }}" class="form-control" name="customer[{{ name }}][{{ questionNumber }}]" required /> 
                                         {% elseif question.type == 'radio' %}
                                             <div class="form-check">
                                                 <input type="radio" class="form-check-input" name="customer[{{ name }}][{{ questionNumber }}]" value="sim" />
                                                 <label class="form-check-label">Sim</label>
                                             </div>
                                             <div class="form-check">
-                                                <input type="radio" class="form-check-input" name="customer[{{ name }}][{{ questionNumber }}]" value="sim" />
+                                                <input type="radio" class="form-check-input" name="customer[{{ name }}][{{ questionNumber }}]" value="nao" />
                                                 <label class="form-check-label">Não</label>
                                             </div>
                                         {% endif %}
                                         {% for alternative in question.alternatives %}
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" />
+                                                <input class="form-check-input" type="checkbox" value="{{alternative}}" name="customer[{{name}}][checkbox]" />
                                                 <label class="form-check-label">
                                                     {{ alternative }}
                                                 </label>
@@ -119,7 +121,7 @@
                             {% else %}
                                 <p class="m-2">Pesquisa já realizada.</p>
                             {% endif %}
-                            </div>
+                            </form>              
                             {% endfor %}
                         </ul>
                         {% endfor %}
