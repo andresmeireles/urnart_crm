@@ -76,6 +76,9 @@ global.simpleDialog = require('./src/dialog/simpleDialog');
 //register templates
 global.customerTemplate = require('./src/register/templates/customerTemplate');
 
+// helpers
+global.isNullOrWhiteSpace = require('./src/helpers/isNullOrWhiteSpace');
+
 import './src/sidebarAction.js';
 import './src/globals';
 
