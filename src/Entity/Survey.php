@@ -22,20 +22,15 @@ class Survey extends BaseEntity
     private $surveyType;
 
     /**
-     * @ORM\Column(type="simple_array")
-     */
-    private $answer = [];
-
-    /**
-     * @ORM\Column(type="string", length=200, nullable=true)
-     */
-    private $observation;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PessoaJuridica", inversedBy="surveys")
      * @ORM\JoinColumn(nullable=false)
      */
     private $customer;
+
+    /**
+     * @ORM\Column(type="string", length=3000)
+     */
+    private $answer;
 
     public function getId(): ?int
     {
@@ -54,30 +49,6 @@ class Survey extends BaseEntity
         return $this;
     }
 
-    public function getAnswer(): ?array
-    {
-        return $this->answer;
-    }
-
-    public function setAnswer(array $answer): self
-    {
-        $this->answer = $answer;
-
-        return $this;
-    }
-
-    public function getObservation(): ?string
-    {
-        return $this->observation;
-    }
-
-    public function setObservation(?string $observation): self
-    {
-        $this->observation = $observation;
-
-        return $this;
-    }
-
     public function getCustomer(): ?PessoaJuridica
     {
         return $this->customer;
@@ -86,6 +57,18 @@ class Survey extends BaseEntity
     public function setCustomer(?PessoaJuridica $customer): self
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getAnswer(): ?string
+    {
+        return $this->answer;
+    }
+
+    public function setAnswer(string $answer): self
+    {
+        $this->answer = $answer;
 
         return $this;
     }

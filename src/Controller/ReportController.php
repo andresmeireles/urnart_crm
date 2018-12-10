@@ -5,6 +5,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use App\Model\SurveyModel;
 
 class ReportController extends AbstractController
 {
@@ -39,8 +41,12 @@ class ReportController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sendSurveys(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function sendSurveys(Request $request, SurveyModel $surveyModel): \Symfony\Component\HttpFoundation\Response
     {
-        $data = $request->request;
+        $data = $request->request->all();
+        dump($data, $request->getContent());
+        die();
+        $response = $surveyModel->saveData($data);
+        return new Response('OK');
     }
 }

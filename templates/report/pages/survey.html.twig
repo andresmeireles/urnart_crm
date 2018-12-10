@@ -113,6 +113,7 @@
                 </li>
             </ul>
             <div class="tab-content" id="pills-surveys">
+                {% include 'components/csrftoken.html.twig' %}
                 <div class="tab-pane fade show active" id="travel" role="tabpanel" aria-labelledby="travel-tab">
                     <div class="col">
                         <legend>Relatórios</legend>
@@ -130,7 +131,7 @@
                             {% for name, data in names %}
                             <li class="list-group-item list-group-item-action align-right user-name {{csrf_token(date)}}{{name}}">{{ name }}
                             {% if data.answer is empty %}
-                                <a href="javascript:;" run-save-action="" class="badge badge-success badge-pill float-right mx-1"><i class="fas fa-check" run-save-action-server=""></i></a>
+                                <a href="javascript:;" run-save-action-server="" class="badge badge-success badge-pill float-right mx-1"><i class="fas fa-check" run-save-action-server=""></i></a>
                             {% else %}
                                 <a href="javascript:;" class="badge badge-light badge-pill float-right mx-1 text-dark"><i class="fas fa-check"></i></a>
                             {% endif %}

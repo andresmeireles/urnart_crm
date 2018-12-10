@@ -45,16 +45,32 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (el.target.hasAttribute('run-save-action-server')) {
+                const token = document.querySelector('.token');
                 const targetedLiElement = el.target.closest('li');
                 let survey = targetedLiElement.querySelector('.content').getAttribute('data-src');
                 let data = document.querySelector(survey).querySelector('form');
                 checkIfRequiredIsSatisfied(data);
                 let form = new FormData(data);
-                let userName = targetedLiElement.innerText;
-                changeButton(el.target);
-                data.innerText = 'Pesquisa já realidaza';
-                createNewData(`pesquisa${survey.substr(1)}` ,userName, form);
-                notification(`Formulário do cliente <b>${userName.toUpperCase()}</b> enviado com sucesso.`, 'success');
+                axios({
+                    method: 'POST',
+                    url: '/report/survey/send',
+                    data: form,
+                    headers: {
+                        'auth': token.value
+                    }
+                })
+                .then((response) => {
+                    //document.location.reload(false);
+                })
+                .catch((err) => {
+                    //token.value = err.headers.csrf;
+                    throw Error(err);
+                });
+                //let userName = targetedLiElement.innerText;
+                //changeButton(el.target);
+                //data.innerText = 'Pesquisa já realidaza';
+                //createNewData(`pesquisa${survey.substr(1)}` ,userName, form);
+                //notification(`Formulário do cliente <b>${userName.toUpperCase()}</b> enviado com sucesso.`, 'success');
             }
         })
 
