@@ -3,7 +3,7 @@
 {% block content %}
 {% set questions = {
     1: {
-            'text': 'Qual seu nome meu amiginho',
+            'text': 'Qual seu nome meu amiginho?',
             'type': 'text',
             'alternatives': '',
         },
@@ -28,20 +28,72 @@
 }
 %}
 {% set surveys = {
+        '20.01.2019': {
+            'Fred': {
+                'id': 1,
+                'answer': {},
+            },
+            'Malu': {
+                'id': 82,
+                'answer': {
+                    'você é legal?': 'Claro meu amigo!',
+                    'você gosta de jogar videogame': 'Sim'
+                }
+            }
+        },
         '21.01.2019': {
-            '1': 'andre',
-            '2': 'yasmim',
-            '3': 'debóra',
-            '4': 'fabrício',
-            '5': 'simone',
-            '6': 'augusto' 
+            'andre' : {
+                'id': 1,
+                'answer': {}
+            },
+            'yasmim': {
+                'id': 2,
+                'answer': {
+                    'Você é super legal mesmo?': 'Of course',
+                    'Quantos anos tinha cazuza?': 803,
+                    'Millenial?': 'Não',
+                    'Y Gen?': 'Não',
+                    'Transumanista': 'Sim',
+                    'Solta hadouken?': '2 vezes'
+                }
+            },
+            'debóra': {
+                'id': 3,
+                'answer': {
+                    'Gosta de pular corda': 'Não',
+                }
+            },
+            'fabrício': {
+                'id': 4,
+                'answer': {}
+            },
+            'simone': {
+                'id': 5,
+                'answer': {}
+            },
+            'augusto': {
+                'id': 6,
+                'answer': {
+                    'Froid ou Netzche': 'Froid',
+                    'Azul ou verde': 'Nenhum',
+                    'Onde está o Jão?': 'Lima, Perú'
+                }
+            }
         },
         '22.01.2019': {
-            '3': 'brito',
-            '4': 'bakerbrodbistviewbst'
+            'brito': {
+                'id': 1,
+                'answer': {}
+            },
+            'bakerbrodbistviewbst': {
+                'id': 2,
+                'answer': {
+                    'Onde está o avião?': 'Aeroporto'
+                }
+            }
         }
     } 
-    %}
+%}
 <div class="p-3 col">
     <div>
         <h1>Pesquisas de Satisfação</h1>
@@ -74,23 +126,26 @@
                                     <small><a href="javascript:;" class="badge badge-light badge-pill badge-sm text-dark py-1">Pesquisa encerrada</a></small>
                                 {% endif %}
                             </legend>
-                            {% for nameId, name in names %}
-                            <li class="list-group-item list-group-item-action align-right user-name">{{ name }}
-                            {% if flops is not defined %}
-                                <a href="javascript:;" run-save-action="" class="badge badge-success badge-pill float-right mx-1"><i class="fas fa-check" run-save-action=""></i></a>
+                            
+                            {% for name, data in names %}
+                            <li class="list-group-item list-group-item-action align-right user-name {{csrf_token(date)}}{{name}}">{{ name }}
+                            {% if data.answer is empty %}
+                                <a href="javascript:;" run-save-action="" class="badge badge-success badge-pill float-right mx-1"><i class="fas fa-check" run-save-action-server=""></i></a>
+                            {% else %}
+                                <a href="javascript:;" class="badge badge-light badge-pill float-right mx-1 text-dark"><i class="fas fa-check"></i></a>
                             {% endif %}
                             
                             <a href="javascript:;" data-fancybox data-src="#pesquisa{{name}}{{csrf_token(date)}}" class="badge badge-secondary badge-pill float-right text-light mx-1"><i class="fas fa-tasks"></i></a>
                             <div id="pesquisa{{name}}{{csrf_token(date)}}" style="display: none;">
-                                {% if flops is defined %}
+                                {% if data.answer is not empty %}
                                     <h5 class="card-title">{{ name | upper }}</h5>
                                     
-                                    {% for alternative in question.alternatives %}
+                                    {% for question, answer in data.answer %}
                                         <div class="form-group">
                                             <label class="form-check-label">
-                                                {{ alternative }}
+                                                <b>{{ question }}</b>
                                             </label>
-                                            <p>resposta</p>
+                                            <p>{{ answer }}</p>
                                         </div>
                                     {% endfor %}
                 
@@ -101,7 +156,7 @@
 
                             <a href="javascript:;" data-fancybox data-src="#{{name}}{{csrf_token(date)}}" class="content badge badge-primary badge-pill float-right mx-1"><i class="far fa-comment"></i></a></li>
                             <form id="{{name}}{{csrf_token(date)}}" style="display: none;">
-                            {% if flops is not defined %}
+                            {% if data.answer is empty %}
                                 {% set questionNumber = 0 %}
                                 <h5 class="card-title">{{ name | upper }}</h5>
                                 <p><small>Viagem do dia {{ date | date('d/m/Y') }}</small></p>
@@ -110,12 +165,12 @@
                                     <div class="form-group">
                                         <label for="text">{{ question.text }}</label>
                                         {% if question.type == 'text' %}
-                                            <input type="{{ question.type }}" class="form-control" name="customer[{{ name }}][{{ questionNumber }}]" required /> 
+                                            <input type="{{ question.type }}" class="form-control" name="customer[{{ name }}][{{ questionNumber }}]{{ question.text }}" required /> 
                                         {% elseif question.type == 'radio' %} 
                                             <div class="form-group" required>
                                                 {% for alternative in question.alternatives %}
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" value="{{alternative}}" name="customer[{{name}}][{{ questionNumber }}]" />
+                                                        <input class="form-check-input" type="radio" value="{{alternative}}" name="customer[{{name}}][{{ questionNumber }}]{{question.text}}" />
                                                         <label class="form-check-label">
                                                             {{ alternative }}
                                                         </label>
@@ -128,7 +183,9 @@
                             {% else %}
                                 <p class="m-2">Pesquisa já realizada.</p>
                             {% endif %}
-                            </form>              
+                                <a href="javascript:;" liTag="{{csrf_token(date)}}{{name}}" class="btn btn-success" run-save-action="zz" onclick="this.remove()">Enviar</a>
+                            </form>    
+
                             {% endfor %}
                         </ul>
                         {% endfor %}

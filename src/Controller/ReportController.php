@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class ReportController extends AbstractController
 {
@@ -29,5 +30,17 @@ class ReportController extends AbstractController
     public function survey(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('report/pages/survey.html.twig');
+    }
+
+    /**
+     * Send surveys to databases
+     * 
+     * @Route("/report/survey/send", name="sendSurveys", methods="POST")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function sendSurveys(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $data = $request->request;
     }
 }

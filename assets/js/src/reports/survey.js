@@ -4,25 +4,43 @@ document.addEventListener('DOMContentLoaded', function () {
         
         document.addEventListener('click', function (el) {
             if (el.target.hasAttribute('run-save-action')) {
-                const targetedLiElement = el.target.closest('li');
+                $.fancybox.close();
+                const liEl = el.target.getAttribute('liTag');
+                const targetedLiElement = document.querySelector(`.${liEl}`);
                 let survey = targetedLiElement.querySelector('.content').getAttribute('data-src');
                 let data = document.querySelector(survey);
                 checkIfRequiredIsSatisfied(data);
                 let form = new FormData(data);
                 let userName = targetedLiElement.innerText;
-                alert(`Formulário do cliente ${userName} enviado com sucesso.`);
-                changeButton(el.target);
-                data.innerText = 'Pesquisa já realidaza';
-                createNewData(userName, form);
-
+                //changeButton(el.target);
+                //data.innerText = 'Pesquisa já realidaza';
+                data.insertAdjacentHTML('afterBegin ', `
+                    <div>
+                        Pesquisa já realizada
+                    </div>
+                `);
+                data.setAttribute('style', 'display: none');
+                createNewData(`pesquisa${survey.substr(1)}` ,userName, form);
+                notification(`Formulário do cliente <b>${userName.toUpperCase()}</b> enviado com sucesso.`, 'success');
             }
 
             if (el.target.hasAttribute("send-all-survey")) {
+                el.target.removeAttribute('send-all-survey');
                 const liElements = el.target.closest('ul').querySelectorAll('li');
+                let sucess = false;
                 for (let liEl of liElements) {
-                    liEl.querySelector('a[run-save-action]').click();
+                    if (liEl.querySelector('a').hasAttribute('run-save-action')) {
+                        liEl.querySelector('a[run-save-action]').click();
+                        sucess = true;
+                    }
                 }
-                alert('envio relaizado com sucesso!');
+                if (!sucess) {
+                    alert('envio relaizado com sucesso!');
+                    notification('envio relaizado com sucesso!');
+                }
+                setTimeout(() => {
+                    el.target.setAttribute('send-all-survey', 'zz');
+                }, 2000)
             }
         })
 
@@ -33,7 +51,10 @@ document.addEventListener('DOMContentLoaded', function () {
         for (var input of inputs) {
             if (input.tagName === 'INPUT') {
                 if (isNullOrWhiteSpace(input.value)) {
-                    alert('preencher formulario completo antes de enviar.');
+                    //alert('preencher formulario completo antes de enviar.');
+                    const inputName = input.name;
+                    let user = inputName.slice(inputName.indexOf('[') + 1, inputName.indexOf(']'));
+                    notification(`preencher formulario completo de <b>${user.toUpperCase()}</b> antes de enviar.`);
                     throw Error('formulário não preenchido');
                 }
             }
@@ -47,7 +68,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
                 if (hasError) {
-                    alert('Marcar alternativa em todas as pergintas antes de enviar.');
+                    //alert('Marcar alternativa em todas as pergintas antes de enviar.');
+                    notification('Marcar alternativa em todas as pergintas antes de enviar.');
                     throw Error('Radio button not marked');
                 }
             }
@@ -55,52 +77,39 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const changeButton = function (element) {
+        elementTarget = element;
         if (!element.classList.contains('badge')) {
-            iElelement = element;
+            element.removeAttribute('run-save-action');
             elementTarget = element.parentNode;
+        } else {
+            elementTarget.querySelector('i').removeAttribute('run-save-action');
         }
         let elClasses = elementTarget.classList;
         elClasses.remove('badge-success');
         elClasses.remove('text-light');
         elClasses.add('badge-light');
         elClasses.add('text-dark');
-        element.removeAttribute('run-save-action');
-        iElelement.removeAttribute('run-save-action');
+        elementTarget.removeAttribute('run-save-action');
         return elClasses;
     }
 
-    const createNewData = function (customerName, formData) {
-        let newDiv = `
-        <div id="{{name}}{{csrf_token(date)}}" style="display: none;">
-        {% if flops is not defined %}
-            {% set questionNumber = 0 %}
-            <h5 class="card-title">{{ name | upper }}</h5>
-            <p><small>Viagem do dia {{ date | date('d/m/Y') }}</small></p>
-            {% for question in questions %}
-                {% set questionNumber = questionNumber + 1 %}
-                <div class="form-group">
-                    <label for="text">{{ question.text }}</label>
-                    {% if question.type == 'text' %}
-                        <input type="{{ question.type }}" class="form-control" name="customer[{{ name }}][{{ questionNumber }}]" required /> 
-                    {% elseif question.type == 'radio' %} 
-                        <div class="form-group" required>
-                            {% for alternative in question.alternatives %}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" value="{{alternative}}" name="customer[{{name}}][{{ questionNumber }}]" />
-                                    <label class="form-check-label">
-                                        {{ alternative }}
-                                    </label>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        {% else %}
-            <p class="m-2">Pesquisa já realizada.</p>
-        {% endif %}
-        </form>
+    const createNewData = function (token, customerName, formData) {
+        let title = `
+            <h5><b>${customerName.toUpperCase()}</b></h5>
         `;
+        let answerContent = '';
+        for (let question of formData.entries()) {
+            answerContent += `
+            <label class="form-check-label">
+                <b>${question[0].substr(question[0].lastIndexOf(']') + 1)}</b>
+            </label>
+            <p>${question[1]}</p>
+            `;
+        }
+        let parentElement = document.getElementById(token);
+        parentElement.innerHTML = '';
+        parentElement.insertAdjacentHTML('beforeend', title);
+        parentElement.insertAdjacentHTML('beforeend', answerContent);
     }
 
 });
