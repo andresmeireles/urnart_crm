@@ -9,17 +9,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 const targetedLiElement = document.querySelector(`.${liEl}`);
                 let survey = targetedLiElement.querySelector('.content').getAttribute('data-src');
                 let data = document.querySelector(survey);
-                checkIfRequiredIsSatisfied(data);
-                let form = new FormData(data);
+                let formData = data.querySelector('form');
+                checkIfRequiredIsSatisfied(formData);
+                let form = new FormData(formData);
                 let userName = targetedLiElement.innerText;
                 //changeButton(el.target);
                 //data.innerText = 'Pesquisa já realidaza';
-                data.insertAdjacentHTML('afterBegin ', `
+                data.insertAdjacentHTML('afterBegin', `
                     <div>
                         Pesquisa já realizada
                     </div>
                 `);
-                data.setAttribute('style', 'display: none');
+                formData.classList.add('d-none');
                 createNewData(`pesquisa${survey.substr(1)}` ,userName, form);
                 notification(`Formulário do cliente <b>${userName.toUpperCase()}</b> enviado com sucesso.`, 'success');
             }
@@ -41,6 +42,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 setTimeout(() => {
                     el.target.setAttribute('send-all-survey', 'zz');
                 }, 2000)
+            }
+
+            if (el.target.hasAttribute('run-save-action-server')) {
+                const targetedLiElement = el.target.closest('li');
+                let survey = targetedLiElement.querySelector('.content').getAttribute('data-src');
+                let data = document.querySelector(survey).querySelector('form');
+                checkIfRequiredIsSatisfied(data);
+                let form = new FormData(data);
+                let userName = targetedLiElement.innerText;
+                changeButton(el.target);
+                data.innerText = 'Pesquisa já realidaza';
+                createNewData(`pesquisa${survey.substr(1)}` ,userName, form);
+                notification(`Formulário do cliente <b>${userName.toUpperCase()}</b> enviado com sucesso.`, 'success');
             }
         })
 
