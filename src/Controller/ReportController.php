@@ -44,7 +44,7 @@ class ReportController extends AbstractController
     public function sendSurveys(Request $request, SurveyModel $surveyModel): \Symfony\Component\HttpFoundation\Response
     {
         $data = $request->request->all();
-        dump($data, $request->getContent());
+        dump($data);
         die();
         $response = $surveyModel->saveData($data);
         return new Response('OK');

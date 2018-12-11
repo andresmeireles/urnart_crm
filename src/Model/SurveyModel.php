@@ -3,23 +3,29 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-class SurveyModel implements ModelInterface
+use App\Entity\Survey;
+
+class SurveyModel extends Model implements ModelInterface
 {
-    private $config;
-
-    public function __construct()
-    {
-        $this->config = new \App\Config\NonStaticConfig;
-    }
-
     public function saveData(array $data): object
     {
         $surveyResultString = $this->writeResult($data['customer']);
+        $entityManager = $this->em->getManager();
+        $connection = $this->em->getConnection();
+        $connection->beginTransaction();
+        try {
+            //code...
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollback();
+            throw new \Exception($e->getMessage());
+        }
     }
 
     private function writeResult(array $customerData): string 
     {
-        $questionary = $this->config->getProperty('surveyQuestion');
+        $questionary = $this->settings->getProperty('surveyQuestion');
+
         $resultString = '';
 
         return $resultString;
