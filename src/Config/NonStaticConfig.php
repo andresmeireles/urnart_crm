@@ -12,13 +12,14 @@ final class NonStaticConfig
     /**
      * Arquivo de configuração parseado.
      *
-     * @var array array com strings de configuração;
+     * @var array array associativo com strings de configuração;
      */
     private $config;
 
     public function __construct()
     {
-        $this->config = Yaml::parse(__DIR__.'/system-config.yaml');
+        $fileString = (string) file_get_contents(__DIR__.'/system-config.yaml');
+        $this->config = Yaml::parse($fileString);
     }
 
     /**
@@ -33,7 +34,7 @@ final class NonStaticConfig
         return $this->config;
     }
 
-    public function getProperty(string $param): string
+    public function getProperty(string $param): array
     {
         if (!array_key_exists($param, $this->getConfig())) {
             throw new NotFoundParameterException("Configuração $param não existe");

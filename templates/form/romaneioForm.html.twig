@@ -9,10 +9,13 @@
           <hr> </div>
         <div class="row">
           <div class="col" id="type-form">
-            <form method="POST" action="/forms/{{ formName }}" target="_blank">
+            <form method="POST" id="formObject" action="/forms/{{ formName }}" target="_blank">
               <div class="row">
-                <div class="col-8">
-                  <input type="submit" class="btn btn-primary btn-block" value="Criar Romaneio">
+                <div class="col-4">
+                    <input type="submit" class="btn btn-primary col" value="Criar Romaneio">
+                </div>
+                <div class="col-4">
+                    <a href="javasctipy:;" class="btn btn-danger col" id="createSurvey">Criar pesquisa de satisfação</a>
                   {% include 'components/csrftoken.html.twig' %}
                 </div>
                 <div class="col-4">
@@ -42,7 +45,7 @@
                         </div>
                         <div class="input-group my-1 w-100" id="cloneableField">
                           <div class="col-3">
-                            <input type="hidden" input-number="true" value="1">
+                            <input type="hidden" input-number="true" id="id" name="cloneableField0[id]" value="1">
                             <input type="text" class="form-control my-1" placeholder="Nome" id="name" name="cloneableField0[name]" required> </div>
                           <div class="col">
                             <input type="text" class="form-control my-1" placeholder="Cidade" id="city" name="cloneableField0[city]" required> </div>

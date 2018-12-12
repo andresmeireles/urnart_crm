@@ -31,7 +31,7 @@ final class Config
      */
     public static function start(): void
     {
-        self::$config = Yaml::parse(__DIR__.'/system-config.yaml');
+        self::$config = Yaml::parse( (string) file_get_contents(__DIR__.'/system-config.yaml'));
         self::$status = true;
     }
 

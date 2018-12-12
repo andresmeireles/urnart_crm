@@ -11,9 +11,7 @@ module.exports = function (methodVerb = 'POST', urlPath, dataInfo, csrfToken, re
     axios({
         method: methodVerb,
         url: urlPath,
-        data: {
-            dataInfo
-        },
+        data: dataInfo,
         headers: {
             'auth': csrfToken.value
         }
@@ -24,5 +22,6 @@ module.exports = function (methodVerb = 'POST', urlPath, dataInfo, csrfToken, re
     })
     .catch(function (error) {
         console.log(error);
+        throw Error(error);
     })
 }

@@ -55,6 +55,19 @@ class HomeController extends Controller
     }
 
     /**
+     * Simple greeting
+     *
+     * @Route("/greeting/{name}", defaults={"name"=null})
+     * 
+     * @param string $name
+     * @return Response
+     */
+    public function greeting(string $name = null): Response
+    {
+        return new Response(sprintf('Olá %s', $name));
+    }
+
+    /**
      * Redireciona para pagina de objetivos a alcançar
      *
      * @Route("/activiment")

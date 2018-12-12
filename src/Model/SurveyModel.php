@@ -7,14 +7,50 @@ use App\Entity\Survey;
 
 class SurveyModel extends Model implements ModelInterface
 {
-    public function saveData(array $data): object
+    /**
+     * Create a registry in database
+     *
+     * @param array  $data
+     * @param string $date
+     * @param string $type
+     * @return array
+     */
+    public function createRegistry(array $data, string $date, string $type): array
+    {
+        $entityManager = $this->em->getManager();
+        $connection = $this->em->getConnection();
+        try {
+            $connection->beginTransaction();
+            foreach ($data as $value) {
+                $survey = new Survey();
+                $survey->setCustomerName($value['name']);
+                $survey->setSurveyType($type);
+                $survey->setSurveyReferenceDay($date);
+                $entityManager->persist($survey);
+                $entityManager->flush();
+            }
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollback();
+            throw new \Exception(sprintf("Error: %s", $e->getMessage()));
+        }
+        return array('msg' => 'Sucesso!');
+    }
+
+    public function saveData(array $data, string $customerId, string $surveyReferenceDate): object
     {
         $surveyResultString = $this->writeResult($data['customer']);
         $entityManager = $this->em->getManager();
         $connection = $this->em->getConnection();
         $connection->beginTransaction();
         try {
-            //code...
+            $userSurvey = $entityManager->getRepository(Survey::class)->findOneBy(array(
+                'id' => $customerId,
+                'surveyReferenceDate' => $surveyReferenceDate
+            ));
+            $userSurvey->setAnswer($surveyResultString);
+            $entityManager->merge($userSurvey);
+            $entityManager->flush();
             $connection->commit();
         } catch (\Exception $e) {
             $connection->rollback();
@@ -24,10 +60,14 @@ class SurveyModel extends Model implements ModelInterface
 
     private function writeResult(array $customerData): string 
     {
-        $questionary = $this->settings->getProperty('surveyQuestion');
-
-        $resultString = '';
-
-        return $resultString;
+        $questionary = $this->settings->getProperty('survey_question');
+        $resultString = array();
+        $chupon = '{"Qual seu nome, meu amiginho?":"a","Qual seu grau de escolaridade":"nenhuma","You know what syncron summon is, you brat!?":"sim"}';
+        foreach ($customerData as $key => $value) {
+            $text = $questionary[$key]['text'];
+            $resultString[$text] = $value; 
+        }
+        $answerString = (string) json_encode($resultString);
+        return $answerString;
     }
 }

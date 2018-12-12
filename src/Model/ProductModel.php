@@ -140,6 +140,7 @@ class ProductModel extends Model
 
     /**
      * @param object $data
+     * 
      * @return array
      */
     public function productIn(object $data): array

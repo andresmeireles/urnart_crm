@@ -1,9 +1,9 @@
 {% extends 'index.html.twig' %}
 
 {% block content %}
-{% set questions = {
+{#{% set questions = {
     1: {
-            'text': 'Qual seu nome meu amiginho?',
+            'text': 'Qual seu nome, meu amiginho?',
             'type': 'text',
             'alternatives': '',
         },
@@ -26,8 +26,8 @@
             }
         }    
 }
-%}
-{% set surveys = {
+%}#}
+{#{% set surveys = {
         '20.01.2019': {
             'Fred': {
                 'id': 1,
@@ -93,10 +93,7 @@
             }
         }
     } 
-%}
-<pre>
-    {{ dump(questions) }}
-</pre>
+%}#}
 <div class="p-3 col">
     <div>
         <h1>Pesquisas de Satisfação</h1>
@@ -116,10 +113,16 @@
                 </li>
             </ul>
             <div class="tab-content" id="pills-surveys">
-                {% include 'components/csrftoken.html.twig' %}
                 <div class="tab-pane fade show active" id="travel" role="tabpanel" aria-labelledby="travel-tab">
                     <div class="col">
-                        <legend>Relatórios</legend>
+                        <legend>Pesquisas por data</legend>
+                        {% if survey is empty %}
+                        <ul>
+                            Não ha nenhuma pesquisa :(
+                        </ul>
+                        {% else %}
+
+                        {% include 'components/csrftoken.html.twig' %}
                         {% for date, names in surveys %}
                         <ul class="list-group py-2" surveyDate="{{ date }}{{ csrf_token(date) }}">
                             <legend>
@@ -165,17 +168,19 @@
                                     {% set questionNumber = 0 %}
                                     <h5 class="card-title">{{ name | upper }}</h5>
                                     <p><small>Viagem do dia {{ date | date('d/m/Y') }}</small></p>
+                                    <input type="hidden" value="{{ data.id }}" name="customerId" />
+                                    <input type="hidden" value="{{ date }}" name="surveyReferenceDate" />
                                     {% for question in questions %}
                                         {% set questionNumber = questionNumber + 1 %}
                                         <div class="form-group">
                                             <label for="text">{{ question.text }}</label>
                                             {% if question.type == 'text' %}
-                                                <input type="{{ question.type }}" class="form-control" name="customer[{{ name }}][{{ questionNumber }}]{{ question.text }}" required /> 
+                                                <input type="{{ question.type }}" class="form-control" name="customer[{{ questionNumber }}]{{ question.text }}" required /> 
                                             {% elseif question.type == 'radio' %} 
                                                 <div class="form-group" required>
                                                     {% for alternative in question.alternatives %}
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="radio" value="{{alternative}}" name="customer[{{name}}][{{ questionNumber }}]{{question.text}}" />
+                                                            <input class="form-check-input" type="radio" value="{{alternative}}" name="customer[{{ questionNumber }}]{{question.text}}" />
                                                             <label class="form-check-label">
                                                                 {{ alternative }}
                                                             </label>
@@ -194,6 +199,8 @@
                             {% endfor %}
                         </ul>
                         {% endfor %}
+
+                        {% endif %}
                     </div>
                 </div>
                 <div class="tab-pane fade" id="outro" role="tabpanel" aria-labelledby="outro-tab">

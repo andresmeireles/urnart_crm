@@ -5,9 +5,63 @@ namespace App\Utils\Andresmei;
 
 class FlashResponse
 {
+    /**
+     * HTTP STATUS CODE
+     *
+     * @var integer
+     */
     protected static $http_code = 200;
+
+    /**
+     * TYPE OF RESPONSE ['error', 'success']
+     *
+     * @var string
+     */
     protected static $type = 'success';
+
+    /**
+     * RESPONSE MESSAGE
+     *
+     * @var string
+     */
     protected static $message = 'Sucesso';
+
+    /**
+     * Retorna aray com parametros para flash message do symfony
+     *
+     * @param  int|null    $http_code codigo HTTP
+     * @param  string|null $type      Tipo de responsta, success, warning, error etc...
+     * @param  string|null $message   Corpo da messagem
+     * 
+     * @return array
+     */
+    public function __construct(int $http_code = null, string $type = null, string $message = null)
+    {
+        /* return array(
+            'http_code' => $http_code ?? self::$http_code,
+            'type' => $type ?? self::$type,
+            'message' => $message ?? self::$message
+        ); */
+        $this->nonStaticResponse($http_code, $type, $message);
+    }
+
+    /**
+     * Retorna aray com parametros para flash message do symfony
+     *
+     * @param  int|null    $http_code codigo HTTP
+     * @param  string|null $type      Tipo de responsta, success, warning, error etc...
+     * @param  string|null $message   Corpo da messagem
+     * 
+     * @return array
+     */
+    private function nonStaticResponse(int $http_code = null, string $type = null, string $message = null): array
+    {
+        return array(
+            'http_code' => $http_code ?? self::$http_code,
+            'type' => $type ?? self::$type,
+            'message' => $message ?? self::$message
+        );
+    }
 
     /**
      * Retorna aray com parametros para flash message do symfony

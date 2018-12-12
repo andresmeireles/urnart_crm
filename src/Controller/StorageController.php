@@ -52,8 +52,8 @@ class StorageController extends Controller
     /**
      * @Route("/storage/feedstockAction/{id}", name="feedstockAction", methods={"POST", "DELETE", "GET"}, defaults={"id"=null})
      *
-     * @param Request $reques
-     * @param int|null $id
+     * @param Request $request
+     * @param int|null $productId
      * @param Crud $getter
      * @return Response
      * @throws \Exception
