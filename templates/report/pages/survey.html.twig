@@ -116,7 +116,7 @@
                 <div class="tab-pane fade show active" id="travel" role="tabpanel" aria-labelledby="travel-tab">
                     <div class="col">
                         <legend>Pesquisas por data</legend>
-                        {% if survey is empty %}
+                        {% if surveys is empty %}
                         <ul>
                             Não ha nenhuma pesquisa :(
                         </ul>
@@ -141,13 +141,12 @@
                             {% else %}
                                 <a href="javascript:;" class="badge badge-light badge-pill float-right mx-1 text-dark"><i class="fas fa-check"></i></a>
                             {% endif %}
-                            
                             <a href="javascript:;" data-fancybox data-src="#pesquisa{{name}}{{csrf_token(date)}}" class="badge badge-secondary badge-pill float-right text-light mx-1"><i class="fas fa-tasks"></i></a>
                             <div id="pesquisa{{name}}{{csrf_token(date)}}" style="display: none;">
                                 {% if data.answer is not empty %}
                                     <h5 class="card-title">{{ name | upper }}</h5>
                                     
-                                    {% for question, answer in data.answer %}
+                                    {% for question, answer in data.answer | strToArray %}
                                         <div class="form-group">
                                             <label class="form-check-label">
                                                 <b>{{ question }}</b>
@@ -190,10 +189,10 @@
                                             {% endif %}
                                         </div>
                                     {% endfor %}
+                                    <a href="javascript:;" liTag="{{csrf_token(date)}}{{name}}" class="btn btn-success" run-save-action="zz" onclick="this.remove()">Enviar</a>
                                 {% else %}
                                     <p class="m-2">Pesquisa já realizada.</p>
                                 {% endif %}
-                                    <a href="javascript:;" liTag="{{csrf_token(date)}}{{name}}" class="btn btn-success" run-save-action="zz" onclick="this.remove()">Enviar</a>
                                 </form>    
                             </div>
                             {% endfor %}

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Survey;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Metadata\ClassMetadata;
 
 /**
  * @method Survey|null find($id, $lockMode = null, $lockVersion = null)

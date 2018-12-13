@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Entity\Survey;
+use App\Utils\Andresmei\ObjectResponse;
 
 class SurveyModel extends Model implements ModelInterface
 {
@@ -37,7 +38,7 @@ class SurveyModel extends Model implements ModelInterface
         return array('msg' => 'Sucesso!');
     }
 
-    public function saveData(array $data, string $customerId, string $surveyReferenceDate): object
+    public function saveData(array $data, string $customerId, string $surveyReferenceDate): ObjectResponse
     {
         $surveyResultString = $this->writeResult($data['customer']);
         $entityManager = $this->em->getManager();
@@ -56,6 +57,34 @@ class SurveyModel extends Model implements ModelInterface
             $connection->rollback();
             throw new \Exception($e->getMessage());
         }
+
+        return new ObjectResponse();
+    }
+
+    /**
+     * Recieve assoeiative array with data, return results by dates
+     *
+     * @param array $surveyBruteData
+     * 
+     * @return array
+     */
+    public function getSurveyData(array $surveyBruteData): array
+    { 
+        $cleanSurveyData = array();
+        foreach ($surveyBruteData as $key => $value) {
+                if (!array_key_exists($value->getSurveyReferenceDate(), $cleanSurveyData)) {
+                    $cleanSurveyData[$value->getSurveyReferenceDate()] = array();
+                }
+
+                $cleanSurveyData[$value->getSurveyReferenceDate()] += array(
+                    $value->getCustomerName() => array(
+                        'id' => $value->getId(),
+                        'answer' => $value->getAnswer()
+                    )
+                );
+            
+        }
+        return $cleanSurveyData;
     }
 
     private function writeResult(array $customerData): string 

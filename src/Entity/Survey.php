@@ -35,7 +35,7 @@ class Survey extends BaseEntity
     /**
      * @ORM\Column(type="string", length=15)
      */
-    private $SurveyReferenceDate;
+    private $surveyReferenceDate;
 
     /**
      * @ORM\Column(type="string", length=150)
@@ -83,14 +83,14 @@ class Survey extends BaseEntity
         return $this;
     }
 
-    public function getSurveyReferenceDay(): ?string
+    public function getSurveyReferenceDate(): ?string
     {
-        return $this->SurveyReferenceDate;
+        return $this->surveyReferenceDate;
     }
 
-    public function setSurveyReferenceDay(string $SurveyReferenceDate): self
+    public function setSurveyReferenceDay(string $surveyReferenceDate): self
     {
-        $this->SurveyReferenceDate = $SurveyReferenceDate;
+        $this->surveyReferenceDate = $surveyReferenceDate;
 
         return $this;
     }

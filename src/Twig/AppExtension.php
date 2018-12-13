@@ -14,6 +14,7 @@ class AppExtension extends AbstractExtension
             new TwigFilter('rot13', array($this, 'rot13Filter')),
             new TwigFilter('makeHash', array($this, 'makeHash')),
             new TwigFilter('extense', array($this, 'extense')),
+            new TwigFilter('strToArray', array($this, 'strToArray')),
         );
     }
 
@@ -35,5 +36,22 @@ class AppExtension extends AbstractExtension
         $extense = new NumeroPorExtenso();
         $extense = $extense->converter($number);
         return $extense;
+    }
+
+    /**
+     * Recebe um array parecido com um json e o converte em um array
+     *
+     * @param string $toArrayConverter
+     * @return array
+     */
+    public function strToArray(string $toArrayConverter): array
+    {
+        $toArrayConverter = str_replace('{"', '', str_replace('"}', '', $toArrayConverter));
+        $array = [];
+        foreach (explode('","', $toArrayConverter) as $key => $value) {
+            $answerQuestion = explode('":"', $value);
+            $array[$answerQuestion[0]] = $answerQuestion[1];
+        }
+        return $array;
     }
 }
