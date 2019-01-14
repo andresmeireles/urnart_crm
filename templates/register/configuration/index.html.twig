@@ -92,14 +92,16 @@
                                 <div class="form-check">
                                     <div class="form-check">
                                         <input type="hidden" class="form-check-input"
-                                            name="check[{{ value.name }}]" value="off">
+                                            name="survey[{{ value.name }}]" value="off">
                                         <input type="checkbox" class="form-check-input"
-                                            name="check[{{ value.name }}]" value="on" {{ config[value.name] ? 'checked' : '' }}>
+                                            name="survey[{{ value.name }}]" value="on" {{ config[value.name] ? 'checked' : '' }}>
                                         <label for="{{ key }}">
-                                            {{ value.label }} <span class="mx-1 badge badge-pill badge-warning"
-                                                                    data-balloon="{{ value.tooltip }}"
-                                                                    data-balloon-pos="up"><i
-                                                        class="fas fa-question"></i></span>
+                                            {{ value.label }} 
+                                            <span class="mx-1 badge badge-pill badge-warning"
+                                                  data-balloon="{{ value.tooltip }}"
+                                                  data-balloon-pos="up">
+                                            <i class="fas fa-question"></i>
+                                            </span>
                                         </label>
                                     </div>
                                 </div>
@@ -117,32 +119,35 @@
                                     </button>
                                 </div>
                                 {% for question in config['survey_question'] %}
+                                    {% set questNumber = loop.index %}
                                     <div  class="border border-dark m-2 p-2">
+                                        <div class="f-right badge badge-pill badge-danger cursor-decoration" remove-quest>excluir a pergunta</div>
                                         <div class="form-group">
                                             <label class="form-label">Pergunta</label>
-                                            <input type="text" class="form-control" name="surveyQuestionNumber[{{ loop.index }}][text]" value="{{ question.text }}" />
+                                            <input type="text" class="form-control" name="survey[questNumber][{{ loop.index }}][text]" value="{{ question.text }}" />
                                         </div>
                                         <div class="form-check"> 
-                                            <input type="radio" name="surveyQuestionNumber[{{ loop.index }}][type]" value="radio" {{ question.type == 'radio' ? 'checked' : '' }} />
+                                            <input type="radio" name="survey[questNumber][{{ loop.index }}][type]" value="radio" {{ question.type == 'radio' ? 'checked' : '' }} />
                                             <label class="form-check-label" for="radioType">Radio</label>
                                         </div>
                                         <div class="form-check">
-                                            <input type="radio" name="surveyQuestionNumber[{{ loop.index }}][type]" value="text" {{ question.type == 'text' ? 'checked' : '' }} />
+                                            <input type="radio" name="survey[questNumber][{{ loop.index }}][type]" value="text" {{ question.type == 'text' ? 'checked' : '' }} />
                                             <label class="form-check-label" for="textType">Texto</label>
                                         </div>
 
                                         {% if question.alternatives is not empty %}
                                             <div class="form-group p-2" id="surveyClone">
                                                 {% for alternative in question.alternatives %}
-                                                    <input type="hidden" input-number='true' value="{{ loop.index }}">
+                                                    <input type="hidden" input-number='true' value="{{ loop.index }}" quest="{{ questNumber }}">
                                                     <div class="form-inline py-1">
-                                                        <input type="text" class="form-control col-md-10" id="alternative" name="cloneableField0[alternative]" value="{{ alternative }}" />
-                                                        <button type="button" class="btn mx-1 btn-danger" remove-btn="true">
-                                                            <i class="fas fa-fw fa-times" remove-btn="true"></i>
+                                                        {# <input type="text" class="form-control col-md-10" id="alternative" name="cloneableField{{ questNumber }}[{{ loop.index }}][alternative]" value="{{ alternative }}" /> #}
+                                                        <input type="text" class="form-control col-md-10" id="alternative" name="survey[questNumber][{{ questNumber }}][alternative][{{ loop.index }}]" value="{{ alternative }}" />
+                                                        <button type="button" class="btn mx-1 btn-danger" removeAlt>
+                                                            <i class="fas fa-fw fa-times" removeAlt></i>
                                                         </button>
                                                     </div>
                                                 {% endfor %}
-                                                <button type="button" class="btn btn-success" cloneAlt>
+                                                <button type="button" class="btn btn-success my-2" cloneAlt>
                                                     <span class="fas fa-fw fa-plus" cloneAlt></span>
                                                 </button>
                                             </div>

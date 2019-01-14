@@ -123,9 +123,8 @@ class RegisterController extends Controller
      */
     public function configuration(): Response
     {
-        $config = Yaml::parse(file_get_contents(__DIR__.'/../Config/system-config.yaml'));
-        dump($config);
-        $draw = Yaml::parse(file_get_contents(__DIR__.'/../Config/draw-form.yaml'));
+        $config = Yaml::parse((string) file_get_contents(__DIR__.'/../Config/system-config.yaml'));
+        $draw = Yaml::parse((string) file_get_contents(__DIR__.'/../Config/draw-form.yaml'));
         return $this->render('/register/configuration/index.html.twig', [
             'config' => $config,
             'draw' => $draw
@@ -135,14 +134,17 @@ class RegisterController extends Controller
     /**
      * @Route("/register/configuration", methods="POST")
      *
-     * @param Request
-     * @return Response : write new config
+     * @param Request $request
+     * @param Configuration $config
+     * @return Response write new config
      */
     public function writeConfiguration(Request $request, Configuration $config): Response
     {
-        //$config = Yaml::parse(file_get_contents(__DIR__.'/../Config/system-config.yaml'));
         $check = $request->request->get('check');
+        $survey = $request->request->get('survey');
         $images = $request->files->get('images');
+        dump($survey, $request->request->all());
+        die();
         $result = $config->writeConfigurationFile($check, $images);
 
         $this->addFlash(
