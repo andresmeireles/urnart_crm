@@ -3,6 +3,7 @@ allow_reserve: false
 allow_same_cpf: true
 allow_no_cpf: false
 check_cnpj: false
+allow_survey: false
 logo_image_path: 'sys/logo_img/logo.png'
 survey_question:
   1:

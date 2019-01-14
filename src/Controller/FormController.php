@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Filesystem\Filesystem;
 use App\Utils\Andresmei\Form;
 use App\Config\Config;
+use App\Config\NonStaticConfig;
 
 /**
  * Controller das paginas de formulário
@@ -60,7 +61,8 @@ class FormController extends Controller
             return $this->render(
                 'form/'.$formName.'Form.html.twig',
                 [
-                    'formName' => $formName
+                    'formName' => $formName,
+                    'config' => new NonStaticConfig
                 ]
             );
         }

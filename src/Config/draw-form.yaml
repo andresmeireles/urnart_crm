@@ -25,3 +25,9 @@ images:
     name:     'logo_image_path'
     label:    'Logo que será posto em formularios'
     alt:      'Logomarca da empresa no sistema'
+
+surveyData:
+  AllowSurvey:
+    name:     'allow_survey'
+    label:    'Habilitar criação de pesquisa de satisfação'
+    tooltip:  'Mostrar botão de criação de pesquisas de satisfação'

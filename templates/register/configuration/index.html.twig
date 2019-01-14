@@ -73,12 +73,84 @@
                                             <label class="custom-file-label" for="customFile" aria-describedby="file">Selecione um arquivo</label>
                                         </div>
                                         <div class="input-group-append">
-                                            <button class="input-group-text bg-warning oneTimeClick" id="reset" file="/resetlogo" hash="{{ 'valido' | makeHash }}" token="{{ csrf_token(app.session.get('csrftoken')) }}">Resetar</button>
+                                            <button class="input-group-text bg-warning oneTimeClick" id="reset" file="/resetlogo" hash="{{ 'valido' | makeHash }}" token="{{ app.session.get('csrfToken') }}">Resetar</button>
                                         </div>
                                     </div>
                                     <hr>
                                 </div>
                             {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-12 my-2">
+                        <div class="bg-light col-md-12">
+                            <fieldset>
+                                <legend>Pesquisa de satisfação</legend>
+                            </fieldset>
+                        </div>
+                        <div class="border border-light">
+                            {% for key, value in draw.surveyData %}
+                                <div class="form-check">
+                                    <div class="form-check">
+                                        <input type="hidden" class="form-check-input"
+                                            name="check[{{ value.name }}]" value="off">
+                                        <input type="checkbox" class="form-check-input"
+                                            name="check[{{ value.name }}]" value="on" {{ config[value.name] ? 'checked' : '' }}>
+                                        <label for="{{ key }}">
+                                            {{ value.label }} <span class="mx-1 badge badge-pill badge-warning"
+                                                                    data-balloon="{{ value.tooltip }}"
+                                                                    data-balloon-pos="up"><i
+                                                        class="fas fa-question"></i></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="row m-2">
+                                <div class="bg-light col-md-12">
+                                    <fieldset>
+                                        <legend>Perguntas</legend>
+                                    </fieldset>
+                                </div>
+                                <div class="border border-light col p-3" id="cloneableField">
+                                <div add-btn="true">
+                                    <button class="btn btn-primary" add-btn="true">
+                                        Adicionar nova pergunta
+                                    </button>
+                                </div>
+                                {% for question in config['survey_question'] %}
+                                    <div  class="border border-dark m-2 p-2">
+                                        <div class="form-group">
+                                            <label class="form-label">Pergunta</label>
+                                            <input type="text" class="form-control" name="surveyQuestionNumber[{{ loop.index }}][text]" value="{{ question.text }}" />
+                                        </div>
+                                        <div class="form-check"> 
+                                            <input type="radio" name="surveyQuestionNumber[{{ loop.index }}][type]" value="radio" {{ question.type == 'radio' ? 'checked' : '' }} />
+                                            <label class="form-check-label" for="radioType">Radio</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" name="surveyQuestionNumber[{{ loop.index }}][type]" value="text" {{ question.type == 'text' ? 'checked' : '' }} />
+                                            <label class="form-check-label" for="textType">Texto</label>
+                                        </div>
+
+                                        {% if question.alternatives is not empty %}
+                                            <div class="form-group p-2" id="surveyClone">
+                                                {% for alternative in question.alternatives %}
+                                                    <input type="hidden" input-number='true' value="{{ loop.index }}">
+                                                    <div class="form-inline py-1">
+                                                        <input type="text" class="form-control col-md-10" id="alternative" name="cloneableField0[alternative]" value="{{ alternative }}" />
+                                                        <button type="button" class="btn mx-1 btn-danger" remove-btn="true">
+                                                            <i class="fas fa-fw fa-times" remove-btn="true"></i>
+                                                        </button>
+                                                    </div>
+                                                {% endfor %}
+                                                <button type="button" class="btn btn-success" cloneAlt>
+                                                    <span class="fas fa-fw fa-plus" cloneAlt></span>
+                                                </button>
+                                            </div>
+                                        {% endif %}
+                                    </div>    
+                                {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

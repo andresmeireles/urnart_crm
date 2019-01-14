@@ -98,6 +98,7 @@ import './src/register/config';
 
 // reports
 import './src/reports/survey';
+import './src/reports/surveyClone';
 
 //global tools
 import './src/global/masks';

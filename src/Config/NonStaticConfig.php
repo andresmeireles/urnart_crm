@@ -34,11 +34,17 @@ final class NonStaticConfig
         return $this->config;
     }
 
-    public function getProperty(string $param): array
+    /**
+     * Função para recuperar o valor de alguma configuração.
+     *
+     * @param string $param
+     * @return string
+     */
+    public function getProperty(string $param): string
     {
         if (!array_key_exists($param, $this->getConfig())) {
             throw new NotFoundParameterException("Configuração $param não existe");
         }
-        return $this->config[$param];
+        return (string) $this->config[$param];
     }
 }

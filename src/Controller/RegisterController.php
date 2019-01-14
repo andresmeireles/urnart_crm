@@ -124,6 +124,7 @@ class RegisterController extends Controller
     public function configuration(): Response
     {
         $config = Yaml::parse(file_get_contents(__DIR__.'/../Config/system-config.yaml'));
+        dump($config);
         $draw = Yaml::parse(file_get_contents(__DIR__.'/../Config/draw-form.yaml'));
         return $this->render('/register/configuration/index.html.twig', [
             'config' => $config,
