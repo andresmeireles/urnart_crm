@@ -21,4 +21,19 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		})
 	}
+
+	if (document.querySelector('#romaneioForm')) {
+		document.addEventListener('click', (el) => {
+			if (el.target.type === 'radio') {
+				let formType = el.target.getAttribute('form-name');
+				if (formType === 'travel') {
+					document.getElementById('driverNameFiled').style.display = 'block';
+					document.getElementById('driverName').setAttribute('required', 'required');
+				} else {
+					document.getElementById('driverNameFiled').style.display = 'none';
+					document.getElementById('driverName').removeAttribute('required');
+				}				
+			}
+		})
+	}
 })

@@ -3,7 +3,7 @@
 {% block tittle %}Romaeio{% endblock %}
 
 {% block content %}
-      <div class="col py-3 px-4">
+      <div class="col py-3 px-4" id="romaneioForm">
         <div class="col-12">
           <h1 class="display-3">Romaneio</h1>
           <hr> </div>
@@ -27,6 +27,23 @@
                     <input class="form-check-input" type="radio" form-name="romaneio-board" name="type" id="inlineRadio1" value="1" required="">
                     <label class="form-check-label" for="inlineRadio1">Carregamento</label>
                   </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" form-name="travel" name="type" id="inlineRadio1" value="1" required="">
+                    <label class="form-check-label" for="inlineRadio1">Relatorio de Viagem</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row py-2">
+                <div class="col" id="driverNameFiled" style="display: none" />
+                    <fieldset class="border border-light">
+                      <legend class="px-1 bg-light">Nome do motorista</legend>
+                      <div class="row m-1 ">
+                        <div class="input-group row">
+                          <label class="col-sm-2 col-form-label">Nome do motorista</label> 
+                          <input type="text" class="form-control my-1" id="driverName" name="driverName" />
+                        </div>
+                      </div>
+                    </fieldset>
                 </div>
               </div>
               <div class="row py-2">
