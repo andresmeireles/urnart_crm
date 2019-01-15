@@ -2,7 +2,7 @@ document.addEventListener('click', (el) => {
     if (el.target.hasAttribute('cloneAlt')) {
         el.preventDefault();
         let surveyDiv = el.target.closest('#surveyClone')
-        let questNumber = surveyDiv.querySelector('[quest]').value;
+        let questNumber = surveyDiv.querySelector('[quest]').getAttribute('quest');
         runClone(surveyDiv, questNumber);
     }
 
