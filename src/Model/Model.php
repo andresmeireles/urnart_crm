@@ -1,8 +1,7 @@
 <?php declare(strict_types=1);
 namespace App\Model;
 
-use \Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\AbstractManagerRegistry;
 use Symfony\Component\Yaml\Yaml;
 use App\Config\NonStaticConfig;
@@ -15,7 +14,7 @@ abstract class Model
     /**
      * Entity Manger
      *
-     * @var AbstractManagerRegistry|ManagerRegistry
+     * @var ObjectManager|AbstractManagerRegistry
      */
     protected $em;
 
@@ -33,7 +32,7 @@ abstract class Model
      */
     protected $settings;
 
-    public function __construct(ManagerRegistry $entityManager)
+    public function __construct(ObjectManager $entityManager)
     {
         $this->em = $entityManager;
         $this->config = Yaml::parse(__DIR__.'/../Config/system-config.yaml');

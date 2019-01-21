@@ -211,13 +211,13 @@ class OrderController extends Controller
             'success',
             $result['message']
           );
-          return $this->redirectToRoute('order');
+          return $this->redirectToRoute($request->headers->get('referer'));
         }
         $this->addFlash(
           $result['type'],
           $result['message']
         );
-        return $this->redirectToRoute('order');
+        return $this->redirect($request->headers->get('referer'));
     }
 
     /**

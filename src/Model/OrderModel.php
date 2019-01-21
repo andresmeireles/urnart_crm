@@ -12,19 +12,10 @@ use App\Entity\ProductInventory;
 use App\Entity\ProductCart as Cart;
 use App\Utils\Andresmei\FlashResponse;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Yaml\Yaml;
 
 class OrderModel extends Model
 {
-    protected $config;
-
-    public function __construct(ObjectManager $entityManager)
-    {
-        $this->config = Yaml::parse(file_get_contents(__DIR__.'/../Config/system-config.yaml'));
-        parent::__construct($entityManager);
-    }
-
     /**
      * Execute ação de criacao ou atualização de ordem de serviço e carrinho.
      *
@@ -37,7 +28,7 @@ class OrderModel extends Model
      */
     public function executeActionOnOrder(array $information, array $products, string $type = 'insert'): array
     {
-        $entityManager = $this->$entityManager;
+        $entityManager = $this->em;
         $entityManager->getConnection()->beginTransaction();
         try {
             if ($type == 'update') {
@@ -50,13 +41,13 @@ class OrderModel extends Model
                 $order = new Order();
             }
             $totalPrice = 0;
-            $customer = $this->$entityManager->getRepository(PessoaJuridica::class)->find($information['clientName']);
+            $customer = $this->em->getRepository(PessoaJuridica::class)->find($information['clientName']);
             $order->setCustomer($customer);
             $freight = $information['freight'] === '' ? null : (float) $information['freight'];
             $order->setFreight($freight);
             $discount = $information['discount'] === '' ? null : (float) $information['discount'];
             $order->setDiscount($discount);
-            $transporter = $this->$entityManager->getRepository(Transporter::class)->find($information['transporter']);
+            $transporter = $this->em->getRepository(Transporter::class)->find($information['transporter']);
             $transporter = $transporter ?? null;
             $order->setTransporter($transporter);
             $customPort = array_key_exists('port', $information) ? $information['port'] : null;
@@ -64,7 +55,7 @@ class OrderModel extends Model
                 $customPort = (ltrim(trim($information['port'])) === $transporter->getPort()) ? null : ltrim(trim($information['port']));
             }
             $order->setCustomPort($customPort);
-            $paymentType = $this->$entityManager->getRepository(PaymentType::class)->find($information['formPg']);
+            $paymentType = $this->em->getRepository(PaymentType::class)->find($information['formPg']);
             $order->setPaymentType($paymentType);
             $installments = array_key_exists('installments', $information) ? (int) $information['installments'] : null;
             $order->setInstallment($installments);
@@ -80,7 +71,7 @@ class OrderModel extends Model
             }
             foreach ($products as $product) {
                 $cart = new Cart;
-                $existentProduct = $this->$entityManager->getRepository(Product::class)->find($product['cod']);
+                $existentProduct = $this->em->getRepository(Product::class)->find($product['cod']);
                 if (is_null($existentProduct)) {
                     return array(
                         'http_code' => 400,
@@ -162,11 +153,11 @@ class OrderModel extends Model
      */
     public function reserve(int $orderId): array
     {
-        if (!$this->config['allow_reserve']) {
+        if (!$this->settings->getProperty('allow_reserve')) {
             return array(
               'http_code' => 400,
               'type' => 'warning',
-              'message' => 'Operação desablitida pelo sistema.'
+              'message' => 'Operação desabilitada pelo sistema.'
             );
         }
         $entityManager = $this->em;
@@ -185,7 +176,7 @@ class OrderModel extends Model
             $order->reserve();
             foreach ($productCarts as $cart) {
                 $product = $cart->getProduct();
-                if (!$this->config['allow_negative_stock']) {
+                if (!$this->settings->getProperty('allow_negative_stock')) {
                     if ($product->getStock() < $cart->getAmount()) {
                         $entityManager->getConnection()->rollback();
                         return array(
@@ -225,7 +216,7 @@ class OrderModel extends Model
      */
     public function runUnreserveTypeAction(?int $id, string $hash, string $type = 'open'): array
     {
-        $entityManager = $this->$entityManager;
+        $entityManager = $this->em;
         if (!$this->validate($hash) || is_null($id)) {
             return array(
                 'http_code' => 400,
@@ -312,7 +303,7 @@ class OrderModel extends Model
      */
     public function removeOrder(int $orderId): array
     {
-        $removeOrder = $this->$entityManager->getRepository(Order::class)->find($orderId);
+        $removeOrder = $this->em->getRepository(Order::class)->find($orderId);
         $order = $removeOrder->getId();
         if (is_null($removeOrder)) {
             return array(
@@ -321,21 +312,21 @@ class OrderModel extends Model
             );
         }
         $cartsToRemove = $removeOrder->getProductCarts();
-        $this->$entityManager->getConnection()->beginTransaction();
+        $this->em->getConnection()->beginTransaction();
         try {
             foreach ($cartsToRemove as $cart) {
-                $this->$entityManager->remove($cart);
+                $this->em->remove($cart);
             }
-            $this->$entityManager->remove($removeOrder);
-            $this->$entityManager->flush();
-            $this->$entityManager->getConnection()->commit();
+            $this->em->remove($removeOrder);
+            $this->em->flush();
+            $this->em->getConnection()->commit();
             return array(
                 'http_code' => '200',
                 'type' => 'warning',
                 'message' => "Pedido {$orderId} removido com sucesso!",
             );
         } catch (\Exception $e) {
-            $this->$entityManager->getConnection()->rollback();
+            $this->em->getConnection()->rollback();
             return array(
                 'type' => 'danger',
                 'message' => "Erro ao remove pedido {$order}."

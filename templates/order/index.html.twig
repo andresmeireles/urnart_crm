@@ -5,7 +5,7 @@
         <div class="sidebar-sticky p-1">
             <ul class="list-unstyled">
                 <li class="px-3"><span class="px-3 mx-3">&nbsp;</span></li>
-                <li class="noline text">
+                <li class="noline text d-none">
                     <a href="/order/create">
                         <div class="d-flex align-items-center">
                             <span class="mx-2 my-2 btn btn-outline-light"><b>Fazer Pedido</b></span>
@@ -22,7 +22,7 @@
                 <li class="noline">
                     <a href="/order/list?type="> <!-- href="/person/customer" -->
                         <div class="d-flex align-items-center">
-                            <span class="mx-2 my-2 btn btn-outline-light disabled">Lista de pedidos</span>
+                            <span class="mx-2 my-2 btn btn-outline-light">Lista de pedidos</span>
                         </div>
                     </a>
                 </li>
@@ -86,10 +86,9 @@
                             <span href="javascript:;" data-fancybox data-src="#view{{ order.getId }}"
                                   class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
                             {% if order.isOpen %}
-                                <span reserve="h={{ 'valido' | makeHash }}&i={{ order.id }}"
-                                <a href="/order/action/edit/{{ order.getId }}"
+                                <span><a href="/order/action/edit/{{ order.getId }}"
                                    class="badge badge-pill badge-success text-light cursor-decoration">Editar</a></span>
-                                <span class="badge badge-pill badge-secondary cursor-decoration">Reservar</span>
+                                <span reserve="h={{'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-secondary cursor-decoration">Reservar</span>
                                 <span close="h={{ 'valido' | makeHash }}&i={{ order.id }}"
                                       class="badge badge-pill badge-warning cursor-decoration">Fechar</span>
                             {% elseif order.isClosed %}
