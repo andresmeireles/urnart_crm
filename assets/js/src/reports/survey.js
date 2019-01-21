@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 //createNewData(`pesquisa${survey.substr(1)}` ,userName, form);
                 //notification(`Formulário do cliente <b>${userName.toUpperCase()}</b> enviado com sucesso.`, 'success');
             }
+
         })
 
     }

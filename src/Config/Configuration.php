@@ -79,7 +79,8 @@ class Configuration
     {
         foreach ($survey as $options => $values) {
             if (!is_array($values)) {
-                $this->writableConfig[$options] = $values;
+                $booleanNumberConverter = $values === '1' ? true : false;
+                $this->writableConfig[$options] = $booleanNumberConverter;
                 continue;
             }
             foreach ($values as $key => $value) {
@@ -107,7 +108,7 @@ class Configuration
     {
         foreach ($check as $key => $value) {
             if (array_key_exists($key, $this->config)) {
-                $this->writableConfig[$key] = ($check[$key] === 'on' ? true : false);
+                $this->writableConfig[$key] = ($check[$key] === '1' ? true : false);
                 continue;
             }
             $this->writableConfig[$key] = false;
