@@ -1,20 +1,11 @@
-allow_negative_stock: true
+allow_negative_stock: false
 allow_reserve: false
-allow_same_cpf: true
+allow_same_cpf: false
 allow_no_cpf: false
 check_cnpj: false
-allow_survey: false
-logo_image_path: 'sys/logo_img/logo.png'
+logo_image_path: sys/logo_img/logo.png
+allow_survey: '0'
 survey_question:
-  1:
-      'text': 'Qual seu nome, meu amiginho?'
-      'type': 'text'
-      'alternatives': []
-  2:
-      'text': 'Qual seu grau de escolaridade'
-      'type': 'radio'
-      'alternatives': ['nenhuma', 'ensino médio', 'ensino superior', 'eu inventei o ensino!!!!!!!!!!!!!!!!!!']
-  3:
-      'text': 'You know what syncron summon is, you brat!?'
-      'type': 'radio'
-      'alternatives': ['sim', 'não']
+    1: { text: 'Qual seu nome, meu amiginho?', type: text, alternatives: {  } }
+    2: { text: 'Qual seu grau de escolaridade', type: radio, alternatives: { 2: 'ensino médio', 3: 'ensino superior', 4: 'eu inventei o ensino!!!!!!!!!!!!!!!!!!' } }
+    3: { text: 'You know what syncron summon is, you brat!?', type: radio, alternatives: { 1: sim, 2: não } }

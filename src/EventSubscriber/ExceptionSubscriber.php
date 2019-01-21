@@ -26,7 +26,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 break;
             case 'Exception':
                 return $event->setResponse(new Response(
-                    'Alguma exceção',
+                    $event->getException()->getMessage(),
                     301,
                     array('type' => 'ninja')
                 ));

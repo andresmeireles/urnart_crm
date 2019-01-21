@@ -10,7 +10,19 @@ use Symfony\Component\Yaml\Yaml;
 class Configuration
 {
     private $config;
+
+    /**
+     * array para escrita do arquivo de configuração.
+     *
+     * @var array
+     */
     private $writableConfig = array();
+
+    /**
+     * string com o caminho da imagem no sistema. 
+     *
+     * @var string
+     */
     private static $imageNameAndPath;
 
     public function __construct()
@@ -32,6 +44,52 @@ class Configuration
         file_put_contents(__DIR__.'/system-config.yaml', $yaml);
 
         return FlashResponse::response(200, 'success', 'Configuração gravado com sucesso');
+    }
+
+    public function writeConfFile(array $config, array $image): array
+    {
+        foreach ($config as $keyConfig => $configValue) {
+            switch ($keyConfig) {
+                case 'images':
+                    $imagePath = $this->uploadImages($image);
+                    $this->writeImages($image, $imagePath);
+                    if (!SimpleFileUpload::getStatus()) {
+                        return FlashResponse::response(400, 'warning', SimpleFileUpload::getMessage());
+                    }
+                    break;
+                case 'check':
+                    $this->writeChecks($configValue);
+                    break;
+                case 'survey':
+                    $this->writeSurvey($configValue);
+                    break;
+                default:
+                    continue;
+                    break;
+            }
+        }
+        $yaml = Yaml::dump($this->writableConfig);
+        file_put_contents(__DIR__.'/system-config.yaml', $yaml);
+
+        return FlashResponse::response(200, 'success', 'Configuração gravado com sucesso');
+        //return $this->writableConfig;
+    }
+
+    public function writeSurvey(array $survey): void 
+    {
+        foreach ($survey as $options => $values) {
+            if (!is_array($values)) {
+                $this->writableConfig[$options] = $values;
+                continue;
+            }
+            foreach ($values as $key => $value) {
+                if ($value['alternatives'] === '[]') {
+                    $value['alternatives'] = [];    
+                }
+                $surveyQuestions[$key] = $value;
+            }        
+            $this->writableConfig[$options] = $surveyQuestions;    
+        }
     }
 
     public function uploadImages(array $images): array
@@ -56,7 +114,7 @@ class Configuration
         }
     }
 
-    public function writeImages(array $images, array $imagePaths)
+    public function writeImages(array $images, array $imagePaths): void
     {
         foreach ($images as $key => $value) {
             if (is_null($value)) {

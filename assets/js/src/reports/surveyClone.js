@@ -27,7 +27,7 @@ const runClone = (elements, questNumber) => {
     lastElement.insertAdjacentHTML('afterend', 
     `<div class="form-inline py-1">
     <input type="hidden" input-number='true' value="${alternativeNumber}" quest="${questNumber}">
-    <input type="text" class="form-control col-md-10" id="alternative" name="survey[questNumber][${questNumber}][alternative][${ alternativeNumber }]" />
+    <input type="text" class="form-control col-md-10" id="alternative" name="survey[survey_question][${questNumber}][alternatives][${ alternativeNumber }]" />
     <button type="button" class="btn mx-1 btn-danger" removeAlt>
         <i class="fas fa-fw fa-times" removeAlt></i>
     </button>

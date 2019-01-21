@@ -32,9 +32,9 @@
                             {% for key, value in draw.check %}
                                 <div class="form-check">
                                     <input type="hidden" class="form-check-input"
-                                           name="check[{{ value.name }}]" value="off">
+                                           name="check[{{ value.name }}]" value="0">
                                     <input type="checkbox" class="form-check-input"
-                                           name="check[{{ value.name }}]" value="on" {{ config[value.name] ? 'checked' : '' }}>
+                                           name="check[{{ value.name }}]" value="1" {{ config[value.name] ? 'checked' : '' }}>
                                     <label for="{{ key }}">
                                         {{ value.label }} <span class="mx-1 badge badge-pill badge-warning"
                                                                 data-balloon="{{ value.tooltip }}"
@@ -92,7 +92,7 @@
                                 <div class="form-check">
                                     <div class="form-check">
                                         <input type="hidden" class="form-check-input"
-                                            name="survey[{{ value.name }}]" value="off">
+                                            name="survey[{{ value.name }}]" value="0">
                                         <input type="checkbox" class="form-check-input"
                                             name="survey[{{ value.name }}]" value="on" {{ config[value.name] ? 'checked' : '' }}>
                                         <label for="{{ key }}">
@@ -119,25 +119,26 @@
                                     </button>
                                 </div>
                                 {% for question in config['survey_question'] %}
-                                    {% set questNumber = loop.index %}
+                                    {% set survey_question = loop.index %}
                                     {% set questType = question.type == 'radio' ? 'Alternativas' : 'Texto' %}
                                     <div  class="border border-dark my-2 p-2">
                                         <div class="f-right badge badge-pill badge-danger cursor-decoration" remove-quest>excluir a pergunta</div>
                                         <div class="form-group">
                                             <label class="form-label"><b>Pergunta</b></label>
-                                            <input type="text" class="form-control" name="survey[questNumber][{{ loop.index }}][text]" value="{{ question.text }}" />
+                                            <input type="text" class="form-control" name="survey[survey_question][{{ loop.index }}][text]" value="{{ question.text }}" />
                                         </div>
                                         <div class="form-group my-4"> 
                                             <label class="form-label"><b>Tipo de questionário</b></label>
+                                            <input type="hidden" name="survey[survey_question][{{ loop.index }}][type]" value="{{ question.type }}">
                                             <p>{{ questType }}</p>
                                         {% if question.alternatives is not empty %}
                                             <div class="form-group p-1" >
                                             <legend>Alterntivas</legend>
                                             <div id="surveyClone">
                                                 {% for alternative in question.alternatives %}
-                                                    <input type="hidden" input-number='true' value="{{ loop.index }}" quest="{{ questNumber }}">
+                                                    <input type="hidden" input-number='true' value="{{ loop.index }}" quest="{{ survey_question }}">
                                                     <div class="form-inline py-1">
-                                                        <input type="text" class="form-control col-md-10" id="alternative" name="survey[questNumber][{{ questNumber }}][alternative][{{ loop.index }}]" value="{{ alternative }}" />
+                                                        <input type="text" class="form-control col-md-10" id="alternatives" name="survey[survey_question][{{ survey_question }}][alternatives][{{ loop.index }}]" value="{{ alternative }}" />
                                                         <button type="button" class="btn mx-1 btn-danger" removeAlt>
                                                             <i class="fas fa-fw fa-times" removeAlt></i>
                                                         </button>
@@ -148,6 +149,8 @@
                                                 </button>
                                             </div>
                                             </div>
+                                        {% else %}
+                                            <input type="hidden" name="survey[survey_question][{{ loop.index }}][alternatives]" value="[]">
                                         {% endif %}
                                         </div>    
                                     </div>    

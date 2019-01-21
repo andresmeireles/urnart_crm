@@ -140,12 +140,8 @@ class RegisterController extends Controller
      */
     public function writeConfiguration(Request $request, Configuration $config): Response
     {
-        $check = $request->request->get('check');
-        $survey = $request->request->get('survey');
         $images = $request->files->get('images');
-        dump($survey, $request->request->all());
-        die();
-        $result = $config->writeConfigurationFile($check, $images);
+        $result = $config->writeConfFile($request->request->all(), $images);
 
         $this->addFlash(
             $result['type'],
