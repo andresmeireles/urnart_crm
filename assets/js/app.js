@@ -76,8 +76,17 @@ global.simpleDialog = require('./src/dialog/simpleDialog');
 //register templates
 global.customerTemplate = require('./src/register/templates/customerTemplate');
 
-// helpers
+/********** 
+* helpers *
+***********/
+
+//functions
 global.isNullOrWhiteSpace = require('./src/helpers/isNullOrWhiteSpace');
+global.strToMoney = require('./src/helpers/functions/strToMoney');
+
+/****************
+ * IMPORTS ******
+ ****************/
 
 import './src/sidebarAction.js';
 import './src/globals';
@@ -107,8 +116,15 @@ import './src/global/tools/progress';
 import './src/global/tools/disabledClick';
 import './src/global/tools/oneTimeClick';
 
+/* helpers functions and symbols */
+import './src/helpers/numbersOnly';
+//Auto functions
+import './src/helpers/autoChange';
+
 // order import
-import './src/order/orderAction'
+import './src/order/orderAction';
+import './src/order/manualOrder';
+import './src/order/totalPriceCalculator';
 
 if (document.querySelector('.f-date')) {
 	var dateMask = new IMask(

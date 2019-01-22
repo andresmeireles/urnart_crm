@@ -85,6 +85,20 @@ class OrderController extends Controller
     }
 
     /**
+     * Cria registro no banco de dados através do pedido manual.
+     * 
+     * @Route("/order/createmanualorder", name="createManualOrder", methods="POST")
+     *
+     * @param OrderModel    $model
+     * @param Request       $request
+     * @return Response
+     */
+    public function createManualOrder(OrderModel $model, Request $request): Response
+    {
+        
+    }
+
+    /**
      * @Route("/order/create", methods="POST")
      *
      * @param OrderModel $model

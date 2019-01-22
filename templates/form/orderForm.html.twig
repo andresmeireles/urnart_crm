@@ -3,15 +3,21 @@
 {% block tittle %}Pedido{% endblock %}
 
 {% block content %}
+<script>
+    var product = [{% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}' },{% endfor %}]
+    var transporter = [{% for transporter in transporters %}{ value: '{{ transporter.name }}', port: '{{ transporter.port }}', cod: '{{ transporter.getId }}'},{% endfor %}]
+    var payment = [{% for payment in payments %}{ value: '{{ payment.name }}', cod: '{{ payment.getId }}', plot: '{{ payment.isPlot }}' },{% endfor %}]
+</script>
+
   <div class="p-3">
         <div class="col-12">
           <div class="clearfix">
-            <h1 class="float-left">Criar Pedido</h1><a href="/order/create" class="btn btn-white btn-lg float-left text-dark"><i class="fas fa-arrow-right"></i> Ir para pedido automatico</a></h1>
+            <h1 class="float-left">Criar Pedido</h1>{#<a href="/order/create" class="btn btn-white btn-lg float-left text-dark"><i       class="fas fa-arrow-right"></i> Ir para pedido automatico</a></h1>
           </div>
-	    <small class="text-danger"><b>Esses pedidos não serão registrados no banco de dados nem contarão em relátorios</b></small>
+	    <small class="text-danger"><b>Esses pedidos não serão registrados no banco de dados nem contarão em relátorios</b></small>#}
         </div>
         <hr>
-          <form method="POST" action="/form/{{ formName }}" target="_blank">
+          <form method="POST" action="/order/createmanualorder" target="_blank">
            <div class="row">
           <div class="col-md-12 my-1">
             <input type="submit" class="btn btn-primary active btn-block btn-lg" id="send-form" value="Criar pedido manual">
@@ -33,22 +39,22 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-8">
+              <div class="col-8" id="manualOrder">
                 <fieldset class="border border-light">
                   <legend class="px-1 bg-light">Produtos</legend>
                   <div class="row m-1">
                     <div class="col-md-12" id="tag">
                       <div class="input-group my-1 w-100" id="cloneableField">
-                        <div class="col-4">
+                        <div class="col-3">
                           <input type="hidden" input-number='true' value="1">
                           <input type="text" class="form-control" name="cloneableField0[model]" id="model" placeholder="Urna" required="required"></div>
                         <div class="col">
-                          <input type="number" class="form-control" name="cloneableField0[price]" id="price" placeholder="Preço" required="required">
+                          <input type="text" class="form-control numbers-only auto-float-convert-blur" name="cloneableField0[price]" id="price" placeholder="Preço" required="required" disabled>
                         </div>
                         <div class="col">
-                          <input type="number" class="form-control" name="cloneableField0[amount]" id="amount" placeholder="Qnt" required="required"></div>
-                        <div class="col-2">
-                          <input type='text' class="form-control" id="totalPrice" disabled></div>  
+                          <input type="number" class="form-control col" name="cloneableField0[amount]" id="amount" placeholder="Qnt" required="required" disabled></div>
+                        <div class="col-3">
+                          <input type='text' class="form-control money-mask" id="totalPrice" disabled></div>  
                         <button type="submit" class="btn btn-success" add-btn="true">
                           <span class="fas fa-fw fa-plus" add-btn="true"></span>
                         </button>

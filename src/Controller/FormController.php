@@ -21,6 +21,9 @@ use Symfony\Component\Filesystem\Filesystem;
 use App\Utils\Andresmei\Form;
 use App\Config\Config;
 use App\Config\NonStaticConfig;
+use App\Entity\Product;
+use App\Entity\PaymentType;
+use App\Entity\Transporter;
 
 /**
  * Controller das paginas de formulário
@@ -58,13 +61,16 @@ class FormController extends Controller
     {
         $fileNamePath = __DIR__.'/../../templates/form/'.$formName.'Form.html.twig';
         if (file_exists($fileNamePath)) {
-            return $this->render(
-                'form/'.$formName.'Form.html.twig',
-                [
-                    'formName' => $formName,
-                    'config' => new NonStaticConfig
-                ]
-            );
+            $requestData = [
+                'formName' => $formName,
+                'config' => new NonStaticConfig
+            ];
+            if ($formName === 'order') {
+                $requestData['products'] = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
+                $requestData['payments'] = $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll();
+                $requestData['transporters'] = $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll();    
+            }
+            return $this->render('form/'.$formName.'Form.html.twig', $requestData);
         }
         
         throw new \Exception('Page not found');
