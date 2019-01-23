@@ -2,7 +2,10 @@ if (document.querySelector('#manualOrder')) {
 
     document.addEventListener('focus', function (el) {
 
-        if (el.target.id === 'price') {
+        if (el.target.id === 'price' ||
+            el.target.id === 'discount' ||
+            el.target.id === 'freight') 
+        {
             el.target.value = '';
         }
 
@@ -17,8 +20,14 @@ if (document.querySelector('#manualOrder')) {
             let qnt = row.querySelector('#amount');
             let rowPrice = row.querySelector('#totalPrice');
 
-            if (value.length === 0) {
-                clearInputs();
+            if (value.length === 0) { 
+                preco.value = '';
+                preco.setAttribute('disabled', 'disabled');
+                qnt.value = '';
+                qnt.setAttribute('disabled', 'disabled');
+                rowPrice.value = '';
+                calculate(row);
+                return;
             } 
 
             preco.removeAttribute('disabled');
@@ -39,15 +48,27 @@ if (document.querySelector('#manualOrder')) {
             calculate(row);
         }
 
+        if (el.target.id === 'discount' && el.target.value === '' && document.querySelector('[toggle-disabled]').checked) {
+            document.querySelector('[toggle-disabled]').dispatchEvent(new MouseEvent('click', {'view': window, 'bubbles': true, 'cancelable': true}));
+        } 
+
     }, true);
 
-    document.addEventListener('blur', function (el) {
+    document.addEventListener('change', (el) => {
 
-        if (el.target.id === 'totalPrice') {
-            console.log('você mexeu nessa parada');
+        if (el.target.hasAttribute('toggle-disabled')) {
+            let discountValue = document.querySelector(`#${el.target.getAttribute('toggle-disabled')}`);
+            if (discountValue.hasAttribute('disabled')) {
+                discountValue.value = '';
+                discountValue.dispatchEvent(new Event( 'blur', {
+                    'view': window,
+                    'bubbles': true,
+                    'cancelable': true
+                }));
+            }
         }
 
-    }, true)
+    }, true);
 
     const calculate = (row) => {
         let preco = row.querySelector('#price'); 
@@ -69,14 +90,5 @@ if (document.querySelector('#manualOrder')) {
         // Show values of currency
         rowPrice.value = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(rowPrice.value);
         return true;
-    }
-
-    const clearInputs = () => {
-        preco.value = '';
-        preco.setAttribute('disabled', 'disabled');
-        qnt.value = '';
-        qnt.setAttribute('disabled', 'disabled');
-        rowPrice.value = '';
-        return false;
     }
 }

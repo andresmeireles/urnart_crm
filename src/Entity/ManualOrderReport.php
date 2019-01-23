@@ -55,6 +55,11 @@ class ManualOrderReport
      */
     private $transporter;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ManualProductCart", mappedBy="manualOrderReport", cascade={"persist", "remove"})
+     */
+    private $manualProductCart;
+
     public function __construct()
     {
         $this->cart = new ArrayCollection();
@@ -145,6 +150,23 @@ class ManualOrderReport
     public function setTransporter(?Transporter $transporter): self
     {
         $this->transporter = $transporter;
+
+        return $this;
+    }
+
+    public function getManualProductCart(): ?ManualProductCart
+    {
+        return $this->manualProductCart;
+    }
+
+    public function setManualProductCart(ManualProductCart $manualProductCart): self
+    {
+        $this->manualProductCart = $manualProductCart;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $manualProductCart->getManualOrderReport()) {
+            $manualProductCart->setManualOrderReport($this);
+        }
 
         return $this;
     }

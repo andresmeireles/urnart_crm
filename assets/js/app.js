@@ -120,6 +120,9 @@ import './src/global/tools/oneTimeClick';
 import './src/helpers/numbersOnly';
 //Auto functions
 import './src/helpers/autoChange';
+import './src/helpers/autoClick';
+// helpers classes
+import './src/helpers/classes/noKeypress';
 
 // order import
 import './src/order/orderAction';

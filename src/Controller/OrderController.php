@@ -95,7 +95,8 @@ class OrderController extends Controller
      */
     public function createManualOrder(OrderModel $model, Request $request): Response
     {
-        
+        dump($request->request->all());
+        die();
     }
 
     /**
