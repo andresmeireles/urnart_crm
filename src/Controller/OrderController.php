@@ -142,7 +142,7 @@ class OrderController extends Controller
     public function redirectOrderActions(string $orderId): Response
     {
         $order = $this->getDoctrine()->getManager()->getRepository(Order::class)->find($orderId);
-        if ($order->isClosed()) {
+        if ($order instanceof Order && $order->isClosed()) {
             $this->addFlash(
                 'warning',
                 "Pedido {$order->getId()} do cliente {$order->getCustomer()} está fechado e não pode ser editado"
@@ -272,7 +272,7 @@ class OrderController extends Controller
      */
     public function removeOrder(OrderModel $model, string $orderId): Response
     {
-        $result = $model->removeOrder($orderId);
+        $result = $model->removeOrder((int) $orderId);
         $this->addFlash(
             $result['type'],
             $result['message']
