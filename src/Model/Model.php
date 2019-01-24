@@ -3,6 +3,7 @@ namespace App\Model;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\AbstractManagerRegistry;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Yaml\Yaml;
 use App\Config\NonStaticConfig;
 
@@ -14,7 +15,7 @@ abstract class Model
     /**
      * Entity Manger
      *
-     * @var ObjectManager|AbstractManagerRegistry
+     * @var ObjectManager
      */
     protected $em;
 

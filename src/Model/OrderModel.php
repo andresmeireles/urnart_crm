@@ -13,6 +13,9 @@ use App\Entity\ProductCart as Cart;
 use App\Utils\Andresmei\FlashResponse;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Yaml\Yaml;
+use App\Entity\ManualOrderReport;
+use App\Entity\ManualProductCart;
+use App\Utils\Andresmei\StringConvertions;
 
 class OrderModel extends Model
 {
@@ -61,7 +64,7 @@ class OrderModel extends Model
             $order->setInstallment($installments);
             $comments = trim(ltrim(filter_var($information['observation'], FILTER_SANITIZE_STRING)));
             $order->setComments($comments);
-            if ($type == 'update') {
+            if ($type == 'update' && isset($id)) {
                 $productCart = $entityManager->getRepository(Cart::class)->findBy(array(
                 'orderNumber' => $id
               ));
@@ -274,7 +277,7 @@ class OrderModel extends Model
     }
 
     /**
-     * @param int $id
+     * @param int $orderId
      * @param string $hash
      * @throws \Exception
      * @return array
@@ -341,5 +344,59 @@ class OrderModel extends Model
             return false;
         }
         return true;
+    }
+
+    /***************************************************************
+     ******************** MANUAL REPORT CREATION *******************
+     ***************************************************************/
+    
+
+     public function createManualReport(array $orderData, array $products)
+    {
+        $entityManager = $this->em;
+        
+        $entityManager->getConnection()->beginTransaction();
+
+        try {
+            $report = new ManualOrderReport;
+            $report->setCustomerName($orderData['clientName']);
+            $report->setCustomerCity($orderData['clientCity']);
+            $discount = (int) trim(str_replace('R$', '', $orderData['discount']));
+            $report->setDiscount($discount);
+            $freight = (int) trim(str_replace('R$', '', $orderData['freight']));
+            $report->setFreight($freight);
+            $transporter = $orderData['transporter'] === '' ? null : $entityManager->getRepository(Transporter::class)->find($orderData['transporter']);
+            $report->setTransporter($transporter);
+            $port = $orderData['port'] === '' ? null : $orderData['port'];
+            $report->setPort($port);
+            $observation = $orderData['observation'] === '' ? null : $orderData['observation'];
+            $report->setComments($observation);
+            $paymentType = $entityManager->getRepository(PaymentType::class)->find($orderData['formPg']);
+            $report->setPaymentType($paymentType);
+            dump($transporter, (new StringConvertions)->moneyToFloat($orderData['discount']), $discount, $orderData['freight'], $freight);
+            die();
+            foreach ($products as $product) {
+                $cart = $this->createManualCart($product, $report);
+                $entityManager->persist($cart);
+            }
+            $entityManager->persist($report);
+            $entityManager->flush();
+            $entityManager->getConnection()->commit();
+        } catch (\Exception $e) {
+            $entityManager->getConnection()->rollback();
+            throw new \Exception($e->getMessage());
+        }
+
+        return new FlashResponse(200, 'success', 'Sucesso!');
+    }
+
+    public function createManualCart(array $product, ManualOrderReport $report): ManualProductCart
+    {
+        $cart = new ManualProductCart();
+        $cart->setProductName($product['model']);
+        $cart->setProductPrice( (new StringConvertions())->moneyToFloat($product['price']) );
+        $cart->setProductAmount( (int) $product['amount']);
+        $cart->setManualOrderReport($report);
+        return $cart;
     }
 }

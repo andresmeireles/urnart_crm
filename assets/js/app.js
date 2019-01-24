@@ -128,6 +128,7 @@ import './src/helpers/classes/noKeypress';
 import './src/order/orderAction';
 import './src/order/manualOrder';
 import './src/order/totalPriceCalculator';
+import './src/order/autocompleteInputs';
 
 if (document.querySelector('.f-date')) {
 	var dateMask = new IMask(

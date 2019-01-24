@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (el.target.id === 'formPg') {
                 $(el.target).autocomplete({
                     lookup: eval(el.target.getAttribute('formCp')),
-                    triggerSelectOnValidInput: false,
+                    //triggerSelectOnValidInput: false,
                     onSelect: function (option) {
                         let cod = Number(option.cod)
                         if (Number.isInteger(cod)) {

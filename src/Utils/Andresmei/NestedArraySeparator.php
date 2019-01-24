@@ -30,23 +30,23 @@ class NestedArraySeparator
         }
     }
 
-    private function setSimpleArray(string $key, string $value): void
-    {
-        $this->simpleArray[$key] = $value;
-    }
-
     public function getSimpleArray(): array
     {
         return $this->simpleArray;
     }
 
-    private function setArrayInArray(array $value): void
-    {
-        $this->arrayInArray[] = $value;
-    }
-
     public function getArrayInArray(): array
     {
         return $this->arrayInArray;
+    }
+    
+    private function setSimpleArray(string $key, string $value): void
+    {
+        $this->simpleArray[$key] = $value;
+    }
+    
+    private function setArrayInArray(array $value): void
+    {
+        $this->arrayInArray[] = $value;
     }
 }

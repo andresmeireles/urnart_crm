@@ -4,7 +4,6 @@
 
 {% block content %}
 <script>
-    var product = [{% for product in products %}{ value: '{{ product.name }}', cod: '{{ product.getId }}', price: '{{ product.price }}' },{% endfor %}]
     var transporter = [{% for transporter in transporters %}{ value: '{{ transporter.name }}', port: '{{ transporter.port }}', cod: '{{ transporter.getId }}'},{% endfor %}]
     var payment = [{% for payment in payments %}{ value: '{{ payment.name }}', cod: '{{ payment.getId }}', plot: '{{ payment.isPlot }}' },{% endfor %}]
 </script>
@@ -17,7 +16,7 @@
 	    <small class="text-danger"><b>Esses pedidos não serão registrados no banco de dados nem contarão em relátorios</b></small>#}
         </div>
         <hr>
-          <form method="POST" action="/order/createmanualorder" target="_blank">
+          <form method="POST" action="/order/createmanualorder">
            <div class="row">
           <div class="col-md-12 my-1">
             <input type="submit" class="btn btn-primary active btn-block btn-lg" id="send-form" value="Criar pedido manual">
@@ -92,8 +91,9 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Seleciona a forma de pagamento</label>
-                        <input type="text" class="form-control no-keypress" name="formPg" required="required">
-                        <small>Caso a opção seja putra seleciona outro</small>
+                        <input type="hidden" name="formPg" id="paymentType" value="">
+                        <input type="text" class="form-control no-keypress" id="payment" autocp="payment" autocomplete="off" required="required">
+                        {#<small>Caso a opção seja putra seleciona outro</small>#}
                       </div>
                       <div class="form-group">
                         <label>Valor do frete</label>
@@ -116,7 +116,8 @@
                       <div class="form-group">
                         <label>Barco & Transportadora</label>
                         <div class="input-group">
-                          <input type="text" class="form-control" name="transporter">
+                          <input type="hidden" name="transporter" id="transporter-number" value="">
+                          <input type="text" class="form-control" autocp="transporter" id="transporter">
                         </div>
                       </div>
                       <div class="form-group">

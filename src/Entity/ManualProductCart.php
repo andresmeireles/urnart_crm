@@ -22,7 +22,8 @@ class ManualProductCart
     private $productName;
 
     /**
-     * @ORM\Column(type="bigint")
+     * 
+     * @ORM\Column(type="float")
      */
     private $productPrice;
 
@@ -32,10 +33,9 @@ class ManualProductCart
     private $productAmount;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ManualOrderReport", inversedBy="manualProductCart", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\ManualOrderReport", inversedBy="manualProductCarts")
      */
-    private $manualOrderReport;
+    private $ManualOrderReport;
 
     public function getId(): ?int
     {
@@ -54,12 +54,12 @@ class ManualProductCart
         return $this;
     }
 
-    public function getProductPrice(): ?int
+    public function getProductPrice(): ?float
     {
         return $this->productPrice;
     }
 
-    public function setProductPrice(int $productPrice): self
+    public function setProductPrice(float $productPrice): self
     {
         $this->productPrice = $productPrice;
 
@@ -80,12 +80,12 @@ class ManualProductCart
 
     public function getManualOrderReport(): ?ManualOrderReport
     {
-        return $this->manualOrderReport;
+        return $this->ManualOrderReport;
     }
 
-    public function setManualOrderReport(ManualOrderReport $manualOrderReport): self
+    public function setManualOrderReport(?ManualOrderReport $ManualOrderReport): self
     {
-        $this->manualOrderReport = $manualOrderReport;
+        $this->ManualOrderReport = $ManualOrderReport;
 
         return $this;
     }

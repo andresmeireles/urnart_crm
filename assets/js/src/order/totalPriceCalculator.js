@@ -31,5 +31,5 @@ const calculateAllPrices = (rows) => {
         return false;
     }
     let finalPrice = primePrice + freight - discount;
-    document.querySelector('#finalPrice').innerHTML = Intl.NumberFormat('pt-BR').format(finalPrice) + ',00'; 
+    document.querySelector('#finalPrice').innerHTML = finalPrice + ',00'; 
 }

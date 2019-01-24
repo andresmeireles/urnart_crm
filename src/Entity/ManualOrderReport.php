@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ManualOrderReportRepository")
  */
-class ManualOrderReport
+class ManualOrderReport extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -27,12 +27,6 @@ class ManualOrderReport
      * @ORM\Column(type="string", length=255)
      */
     private $customerCity;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProductCart")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $productCart;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PaymentType")
@@ -56,13 +50,24 @@ class ManualOrderReport
     private $transporter;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ManualProductCart", mappedBy="manualOrderReport", cascade={"persist", "remove"})
+     * @ORM\Column(type="string", nullable=true)
      */
-    private $manualProductCart;
+    private $port;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ManualProductCart", mappedBy="ManualOrderReport")
+     */
+    private $manualProductCarts;
 
     public function __construct()
     {
-        $this->cart = new ArrayCollection();
+        parent::__construct();
+        $this->manualProductCarts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,18 +159,56 @@ class ManualOrderReport
         return $this;
     }
 
-    public function getManualProductCart(): ?ManualProductCart
+    public function getPort(): ?string
     {
-        return $this->manualProductCart;
+        return $this->port;
     }
 
-    public function setManualProductCart(ManualProductCart $manualProductCart): self
+    public function setPort(?string $port): self
     {
-        $this->manualProductCart = $manualProductCart;
+        $this->port = $port;
 
-        // set the owning side of the relation if necessary
-        if ($this !== $manualProductCart->getManualOrderReport()) {
+        return $this;
+    }
+
+    public function getComments(): ?string
+    {
+        return $this->comments;
+    }
+
+    public function setComments(?string $comments): self
+    {
+        $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ManualProductCart[]
+     */
+    public function getManualProductCarts(): Collection
+    {
+        return $this->manualProductCarts;
+    }
+
+    public function addManualProductCart(ManualProductCart $manualProductCart): self
+    {
+        if (!$this->manualProductCarts->contains($manualProductCart)) {
+            $this->manualProductCarts[] = $manualProductCart;
             $manualProductCart->setManualOrderReport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManualProductCart(ManualProductCart $manualProductCart): self
+    {
+        if ($this->manualProductCarts->contains($manualProductCart)) {
+            $this->manualProductCarts->removeElement($manualProductCart);
+            // set the owning side to null (unless already changed)
+            if ($manualProductCart->getManualOrderReport() === $this) {
+                $manualProductCart->setManualOrderReport(null);
+            }
         }
 
         return $this;

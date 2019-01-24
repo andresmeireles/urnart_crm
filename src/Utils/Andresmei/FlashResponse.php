@@ -8,23 +8,23 @@ class FlashResponse
     /**
      * HTTP STATUS CODE
      *
-     * @var integer
+     * @var integer|null
      */
-    protected static $http_code = 200;
+    protected $http_code = 200;
 
     /**
      * TYPE OF RESPONSE ['error', 'success']
      *
-     * @var string
+     * @var string|null
      */
-    protected static $type = 'success';
+    protected $type = 'success';
 
     /**
      * RESPONSE MESSAGE
      *
-     * @var string
+     * @var string|null
      */
-    protected static $message = 'Sucesso';
+    protected $message = 'Sucesso';
 
     /**
      * Retorna aray com parametros para flash message do symfony
@@ -37,11 +37,9 @@ class FlashResponse
      */
     public function __construct(int $http_code = null, string $type = null, string $message = null)
     {
-        /* return array(
-            'http_code' => $http_code ?? self::$http_code,
-            'type' => $type ?? self::$type,
-            'message' => $message ?? self::$message
-        ); */
+        $this->http_code = $http_code;
+        $this->type = $type;
+        $this->message = $message; 
         $this->nonStaticResponse($http_code, $type, $message);
     }
 
@@ -57,36 +55,24 @@ class FlashResponse
     private function nonStaticResponse(int $http_code = null, string $type = null, string $message = null): array
     {
         return array(
-            'http_code' => $http_code ?? self::$http_code,
-            'type' => $type ?? self::$type,
-            'message' => $message ?? self::$message
+            'http_code' => $http_code ?? $this->http_code,
+            'type' => $type ?? $this->type,
+            'message' => $message ?? $this->message
         );
     }
 
-    /**
-     * Retorna aray com parametros para flash message do symfony
-     *
-     * @param  int|null    $http_code codigo HTTP
-     * @param  string|null $type      Tipo de responsta, success, warning, error etc...
-     * @param  string|null $message   Corpo da messagem
-     * 
-     * @return array
-     */
-    public static function response(int $http_code = null, string $type = null, string $message = null): array
+    public function getHttpCode(): ?int
     {
-        return array(
-            'http_code' => $http_code ?? self::$http_code,
-            'type' => $type ?? self::$type,
-            'message' => $message ?? self::$message
-        );
+        return $this->http_code;
     }
 
-    public static function stdResponse(): array
+    public function getType(): ?string
     {
-        return array(
-            'http_code' => self::$http_code,
-            'type' => self::$type,
-            'message' => self::$message
-        );
+        return $this->type;
+    }
+
+    public function getMessage(): ?string
+    {
+        return $this->message;
     }
 }

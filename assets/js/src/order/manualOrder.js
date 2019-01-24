@@ -4,7 +4,9 @@ if (document.querySelector('#manualOrder')) {
 
         if (el.target.id === 'price' ||
             el.target.id === 'discount' ||
-            el.target.id === 'freight') 
+            el.target.id === 'freight' ||
+            el.target.id === 'payment' ||
+            el.target.id === 'transporter') 
         {
             el.target.value = '';
         }

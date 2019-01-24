@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Utils\Andresmei\NestedArraySeparator;
 
 /**
  * Controller das paginas de pedidos
@@ -95,8 +96,14 @@ class OrderController extends Controller
      */
     public function createManualOrder(OrderModel $model, Request $request): Response
     {
-        dump($request->request->all());
-        die();
+        $nestedArray = new NestedArraySeparator($request->request->all());
+        $result = $model->createManualReport($nestedArray->getSimpleArray(), $nestedArray->getArrayInArray());
+        $this->addFlash(
+            $result->getType(),
+            $result->getMessage()
+        );
+        
+        return $this->redirect($request->headers->get('referer'));
     }
 
     /**
