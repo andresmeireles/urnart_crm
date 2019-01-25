@@ -48,7 +48,8 @@
                           <input type="hidden" input-number='true' value="1">
                           <input type="text" class="form-control" name="cloneableField0[model]" id="model" placeholder="Urna" required="required"></div>
                         <div class="col">
-                          <input type="text" class="form-control numbers-only auto-float-convert-blur" name="cloneableField0[price]" id="price" placeholder="Preço" required="required" disabled>
+                          <input type="hidden" name="cloneableField0[money]" id="money" converted-value="">
+                          <input type="text" class="form-control numbers-only auto-float-convert-blur" id="price" placeholder="Preço" required="required" disabled>
                         </div>
                         <div class="col">
                           <input type="number" class="form-control col" name="cloneableField0[amount]" id="amount" placeholder="Qnt" required="required" disabled></div>
@@ -98,7 +99,8 @@
                       <div class="form-group">
                         <label>Valor do frete</label>
                         <div class="input-group">
-                          <input type="text" class="form-control numbers-float-only auto-float-convert-blur" name="freight" id="freight"></div>
+                          <input type="hidden" converted-value name="freight">
+                          <input type="text" class="form-control numbers-float-only auto-float-convert-blur" id="freight"></div>
                       </div>
                       <div class="form-group">
                         <label>Desconto</label>
@@ -108,8 +110,8 @@
                               <input type="checkbox" toggle-disabled="discount" id="discountCheck">
                             </div>
                           </div>
-                          <input type="hidden" name="discount" id="noDiscount" value="0">
-                          <input type="text" class="form-control numbers-float-only auto-float-convert-blur" disabled="disabled" name="discount" id="discount">
+                          <input type="hidden" name="discount" id="noDiscount" converted-value value="0">
+                          <input type="text" class="form-control numbers-float-only auto-float-convert-blur" disabled="disabled" id="discount">
                         </div>
                           <small class="form-text text-muted">Caso exista algum desconto marque a opção</small>
                       </div>

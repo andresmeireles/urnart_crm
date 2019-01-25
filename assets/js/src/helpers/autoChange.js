@@ -7,6 +7,7 @@ document.addEventListener('change', function (el) {
         let inputField = el.target;
         let removeComma = inputField.value.replace('.', '');
         let newValue = strToMoney(removeComma.replace(',', '.'));
+        el.target.closest('div').querySelector('[converted-value]').value = newValue;
         let value = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(newValue);
         inputField.value = value;
         return true;

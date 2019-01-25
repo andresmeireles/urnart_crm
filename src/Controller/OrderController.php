@@ -17,6 +17,8 @@ use App\Entity\PaymentType;
 use App\Entity\PessoaJuridica;
 use App\Entity\Product;
 use App\Entity\Transporter;
+use App\Entity\ManualOrderReport;
+use App\Entity\ManualProductCart;
 use App\Model\ListModel;
 use App\Model\OrderModel;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -310,5 +312,65 @@ class OrderController extends Controller
         return $this->render('order/printOrder/print.html.twig', [
             'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($orderId)
         ]);
+    }
+
+    /********************
+     * MANUAL FUNCTIONS *
+     ********************/
+    
+    /**
+     * @Route("/order/manual/list", name="manualList")
+     *
+     * @param Request $request
+     * @param ListModel $listModel
+     * @return Response
+     */
+    public function manualListing(Request $request, ListModel $listModel): Response
+    {
+        $lists = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findAll();
+        
+        return $this->render('/order/lists/manualList.html.twig', [
+            'lists' => $lists
+        ]);
+    }
+
+    /**
+     * @Route("/order/manual/{orderId<\d+>}", methods={"PUT"})
+     *
+     * @param Request $request
+     * @param integer $orderId
+     * @param OrderModel $orderModel
+     * @throws \Exception
+     * @return Response
+     */
+    public function closeManualOrder(Request $request, int $orderId, OrderModel $orderModel): Response
+    {
+        $order = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
+        if (!$order instanceof ManualOrderreport) {
+            throw new \Exception('Erro. pedido não pode ser fechado.');
+        }
+        $orderModel->closeManualOrder($order);
+        return new Response(200);
+    }
+
+    /**
+     * @Route("/order/manual/{orderId<\d+>}", methods={"DELETE"})
+     *
+     * @param Request $request
+     * @param int $orderId
+     * @return Response
+     */
+    public function removeManualOrder(Request $request, int $orderId, OrderModel $orderModel): Response
+    {
+        $order = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
+        $cart = $this->getDoctrine()->getRepository(ManualProductCart::class)->findBy(array(
+            'manualOrderReport' => $orderId,
+        ));
+        if (!$order instanceof ManualOrderReport) {
+            throw new \Exception('Nada foi mandado para ser apagado');
+        }
+        $orderModel->removeManualProductCart($cart);
+        $orderModel->removeManualOrder($order);
+        return new Response(200);
     }
 }

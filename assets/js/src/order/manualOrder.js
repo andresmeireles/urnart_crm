@@ -62,6 +62,7 @@ if (document.querySelector('#manualOrder')) {
             let discountValue = document.querySelector(`#${el.target.getAttribute('toggle-disabled')}`);
             if (discountValue.hasAttribute('disabled')) {
                 discountValue.value = '';
+                document.querySelector('#noDiscount').value = 0;
                 discountValue.dispatchEvent(new Event( 'blur', {
                     'view': window,
                     'bubbles': true,

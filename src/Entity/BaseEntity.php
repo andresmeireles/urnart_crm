@@ -15,7 +15,7 @@ abstract class BaseEntity
     /**
      * @ORM\Column(type="boolean")
      */
-    private $active = false;
+    private $active = true;
 
     /**
      * @ORM\Column(type="datetimetz")

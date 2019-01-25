@@ -35,7 +35,7 @@ class ManualProductCart
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ManualOrderReport", inversedBy="manualProductCarts")
      */
-    private $ManualOrderReport;
+    private $manualOrderReport;
 
     public function getId(): ?int
     {
@@ -80,12 +80,12 @@ class ManualProductCart
 
     public function getManualOrderReport(): ?ManualOrderReport
     {
-        return $this->ManualOrderReport;
+        return $this->manualOrderReport;
     }
 
-    public function setManualOrderReport(?ManualOrderReport $ManualOrderReport): self
+    public function setManualOrderReport(?ManualOrderReport $manualOrderReport): self
     {
-        $this->ManualOrderReport = $ManualOrderReport;
+        $this->manualOrderReport = $manualOrderReport;
 
         return $this;
     }

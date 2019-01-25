@@ -52,7 +52,7 @@ class FlashResponse
      * 
      * @return array
      */
-    private function nonStaticResponse(int $http_code = null, string $type = null, string $message = null): array
+    public function nonStaticResponse(int $http_code = null, string $type = null, string $message = null): array
     {
         return array(
             'http_code' => $http_code ?? $this->http_code,

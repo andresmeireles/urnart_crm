@@ -1,6 +1,6 @@
-// defaultDialog
 /**
  * name defaultDialog
+ * 
  * @param message
  * @param name
  * @param entity

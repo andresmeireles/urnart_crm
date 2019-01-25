@@ -35,12 +35,12 @@ class ManualOrderReport extends BaseEntity
     private $paymentType;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $freight;
 
     /**
-     * @ORM\Column(type="bigint", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $discount;
 
@@ -60,7 +60,7 @@ class ManualOrderReport extends BaseEntity
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ManualProductCart", mappedBy="ManualOrderReport")
+     * @ORM\OneToMany(targetEntity="App\Entity\ManualProductCart", mappedBy="manualOrderReport")
      */
     private $manualProductCarts;
 
@@ -99,18 +99,6 @@ class ManualOrderReport extends BaseEntity
         return $this;
     }
 
-    public function getProductCart(): ?ProductCart
-    {
-        return $this->productCart;
-    }
-
-    public function setProductCart(?ProductCart $productCart): self
-    {
-        $this->productCart = $productCart;
-
-        return $this;
-    }
-
     public function getPaymentType(): ?PaymentType
     {
         return $this->paymentType;
@@ -123,24 +111,24 @@ class ManualOrderReport extends BaseEntity
         return $this;
     }
 
-    public function getFreight(): ?int
+    public function getFreight(): ?float
     {
         return $this->freight;
     }
 
-    public function setFreight(int $freight): self
+    public function setFreight(float $freight): self
     {
         $this->freight = $freight;
 
         return $this;
     }
 
-    public function getDiscount(): ?int
+    public function getDiscount(): ?float
     {
         return $this->discount;
     }
 
-    public function setDiscount(?int $discount): self
+    public function setDiscount(?float $discount): self
     {
         $this->discount = $discount;
 

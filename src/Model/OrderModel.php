@@ -361,9 +361,9 @@ class OrderModel extends Model
             $report = new ManualOrderReport;
             $report->setCustomerName($orderData['clientName']);
             $report->setCustomerCity($orderData['clientCity']);
-            $discount = (int) trim(str_replace('R$', '', $orderData['discount']));
+            $discount = (float) trim(str_replace('R$', '', $orderData['discount']));
             $report->setDiscount($discount);
-            $freight = (int) trim(str_replace('R$', '', $orderData['freight']));
+            $freight = (float) trim(str_replace('R$', '', $orderData['freight']));
             $report->setFreight($freight);
             $transporter = $orderData['transporter'] === '' ? null : $entityManager->getRepository(Transporter::class)->find($orderData['transporter']);
             $report->setTransporter($transporter);
@@ -373,8 +373,6 @@ class OrderModel extends Model
             $report->setComments($observation);
             $paymentType = $entityManager->getRepository(PaymentType::class)->find($orderData['formPg']);
             $report->setPaymentType($paymentType);
-            dump($transporter, (new StringConvertions)->moneyToFloat($orderData['discount']), $discount, $orderData['freight'], $freight);
-            die();
             foreach ($products as $product) {
                 $cart = $this->createManualCart($product, $report);
                 $entityManager->persist($cart);
@@ -394,9 +392,44 @@ class OrderModel extends Model
     {
         $cart = new ManualProductCart();
         $cart->setProductName($product['model']);
-        $cart->setProductPrice( (new StringConvertions())->moneyToFloat($product['price']) );
+        $cart->setProductPrice( (new StringConvertions())->moneyToFloat($product['money']) );
         $cart->setProductAmount( (int) $product['amount']);
         $cart->setManualOrderReport($report);
         return $cart;
+    }
+
+    public function closeManualOrder(ManualOrderReport $orderReport): self
+    {
+        $orderReport->setActive(false);
+        $this->em->merge($orderReport);
+        $this->em->flush();
+
+        return $this;
+    }
+
+    public function removeManualProductCart(array $cart): self
+    {
+        try {
+            foreach ($cart as $product) {
+                $this->em->remove($product);
+            }
+            $this->em->flush();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $this;
+    }
+
+    public function removeManualOrder(ManualOrderReport $object): self
+    {
+        try {
+            $this->em->remove($object);
+            $this->em->flush();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $this;
     }
 }

@@ -30,7 +30,7 @@ class Configuration
         $this->config = Yaml::parse(file_get_contents(__DIR__.'/system-config.yaml'));
     }
 
-    public function writeConfigurationFile(array $check, array $images): array
+    public function writeConfigurationFile(array $check, array $images): FlashResponse
     {
         $imagePaths = $this->uploadImages($images);
         if (!SimpleFileUpload::getStatus()) {
@@ -64,14 +64,13 @@ class Configuration
                     $this->writeSurvey($configValue);
                     break;
                 default:
-                    continue;
                     break;
             }
         }
         $yaml = Yaml::dump($this->writableConfig);
         file_put_contents(__DIR__.'/system-config.yaml', $yaml);
 
-        return FlashResponse::response(200, 'success', 'Configuração gravado com sucesso');
+        return new FlashResponse(200, 'success', 'Configuração gravada com sucesso');
         //return $this->writableConfig;
     }
 

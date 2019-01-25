@@ -19,8 +19,15 @@
                         </div>
                     </a>
                 </li>
+                <li class="noline d-none"> {# automatic reports #}
+                    {#<a href="/order/list?type=">#} <!-- href="/person/customer" -->
+                        <div class="d-flex align-items-center">
+                            <span class="mx-2 my-2 btn btn-outline-light">Lista de pedidos</span>
+                        </div>
+                    </a>
+                </li>
                 <li class="noline">
-                    <a href="/order/list?type="> <!-- href="/person/customer" -->
+                    <a href="/order/manual/list">
                         <div class="d-flex align-items-center">
                             <span class="mx-2 my-2 btn btn-outline-light">Lista de pedidos</span>
                         </div>
@@ -50,7 +57,7 @@
     {% endfor %}
     <div class="col p-3">
         {% if orders == [] %}
-            Não ha pedidos cadastrados no momento :(
+            <h3>Não ha pedidos cadastrados no momento. Você pode cadastralos clicando <a class="text-secondary" href="forms/order">aqui</a></h3>
         {% else %}
             <table class="table">
                 <thead>

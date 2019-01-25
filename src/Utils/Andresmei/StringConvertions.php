@@ -5,13 +5,11 @@ namespace App\Utils\Andresmei;
 
 class StringConvertions
 {
-    public function moneyToFloat(string $money): string
+    public function moneyToFloat(string $money): float
     {
-        $removePoint = str_replace('.', '', $money);
-        $commaToFloat = str_replace(',', '.', $removePoint);
+        $commaToFloat = str_replace(',', '.', $money);
         
-
-        return $commaToFloat;
+        return (float) $commaToFloat;
     }
 
     public function emptyToNull(string $emptyString): ?string

@@ -129,6 +129,8 @@ import './src/order/orderAction';
 import './src/order/manualOrder';
 import './src/order/totalPriceCalculator';
 import './src/order/autocompleteInputs';
+import './src/order/closeOrder';
+import './src/order/removeOrder';
 
 if (document.querySelector('.f-date')) {
 	var dateMask = new IMask(
