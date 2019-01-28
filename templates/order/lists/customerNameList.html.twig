@@ -1,0 +1,139 @@
+{% extends "index.html.twig" %}
+
+{% block content %}
+    <div class="bg-secondary" id="manual-list">
+        <div class="sidebar-sticky p-1">
+            <ul class="list-unstyled">
+                <li class="px-3">
+                    <span class="px-3 mx-3">&nbsp;</span></li>
+                <li class="noline text">
+                    <a href="/order/manual/list">
+                        <div class="d-flex align-items-center">
+                            <span class="mx-1 my-2">&nbsp;&nbsp;Ultimos Pedidos</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="noline text cursor-decoration">
+                    <a href="/order/manual/list?type=customerName">
+                        <div class="d-flex align-items-center">
+                            <span class="mx-1 my-2">&nbsp;&nbsp;Pedidos Por Cliente</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="noline">
+                    <a href="/order/manual/list?type=bydate">
+                        <div class="d-flex align-items-center">
+                            <span class="mx-1 my-2 disabled">&nbsp;&nbsp;Pedidos por data</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="p-4 col">
+        <h2>Relatorio de pedidos</h2>
+        <hr>
+        {% if lists is empty %}
+            <h3>Não ha pedidos cadastrados. Você pode cadastrar novos pedidos em <a class="text-secondary" href="/forms/order">cadastrar pedidos</a></h3> 
+        {% else %}
+
+            <div class="col">
+                <h3 id="typeOfList">Últimos pedidos</h3>
+                <div class="row" id=listItens>
+                    <div class="col">
+                        <h4><b>Nome</b></h4>
+                    </div>
+                    <div class="col">
+                        <h4><b>Cidade</b></h4>
+                    </div>
+                    <div class="col">
+                        <h4><b>Data</b></h4>
+                    </div>
+                    <div class="col">
+                        <h4><b>Form. pg.</b></h4>
+                    </div>
+                    <div class="col">
+                        <h4><b>Valor Total</b></h4>
+                    </div>
+                    <div class="col-3">
+                        <h4><b>Ações</b></h4>
+                    </div>
+                </div>
+                {% for list in lists %}
+                    {% if actualCustomerName is not defined or actualCustomerName != list.customerName %}
+                        <h3>{{ list.customerName }}</h3>
+                        <div class="row py-1 elRow">
+                            <div class="col"><h5>{{ list.customerName }}</h5></div>
+                            <div class="col"><h5>{{ list.customerCity }}</h5></div>
+                            <div class="col"><h5>{{ list.lastUpdate | date('d/m/Y') }}</h5></div>
+                            <div class="col"><h5>{{ list.paymentType }}</h5></div>
+                            <div class="col">
+                                {% set finalPrice = 0 %}
+                                {% for key, value in list.getManualProductCarts %}
+                                    {% set finalPrice = finalPrice + value.getProductPrice %}    
+                                {% endfor %}
+                                {% set finalPrice = finalPrice + list.freight - list.discount %}
+                                <h5>{{ finalPrice | number_format(2, ',', '.') }}</h5>
+                            </div>
+                            <div class="col-3">
+                                    <a class="badge badge-pill badge-primary" href="javascript:;" data-fancybox data-src="#viewManualOrder{{ list.getId }}">
+                                        Visualizar
+                                    </a>
+                                    <a class="badge badge-pill badge-light" href="">
+                                        Imprimir
+                                    </a>
+                                {% if list.active == true %} 
+                                    <a class="badge badge-pill badge-warning order-edit" href="">
+                                        Editar
+                                    </a>
+                                    <a class="badge badge-pill badge-danger order-close" href="/order/manual/{{list.getId}}">
+                                        Fechar
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% elseif actualCustomerName == list.customerName  %}
+                        <div class="row py-1 elRow">
+                            <div class="col"><h5>{{ list.customerName }}</h5></div>
+                            <div class="col"><h5>{{ list.customerCity }}</h5></div>
+                            <div class="col"><h5>{{ list.lastUpdate | date('d/m/Y') }}</h5></div>
+                            <div class="col"><h5>{{ list.paymentType }}</h5></div>
+                            <div class="col">
+                                {% set finalPrice = 0 %}
+                                {% for key, value in list.getManualProductCarts %}
+                                    {% set finalPrice = finalPrice + value.getProductPrice %}    
+                                {% endfor %}
+                                {% set finalPrice = finalPrice + list.freight - list.discount %}
+                                <h5>{{ finalPrice | number_format(2, ',', '.') }}</h5>
+                            </div>
+                            <div class="col-3">
+                                    <a class="badge badge-pill badge-primary" href="javascript:;" data-fancybox data-src="#viewManualOrder{{ list.getId }}">
+                                        Visualizar
+                                    </a>
+                                    <a class="badge badge-pill badge-light" href="">
+                                        Imprimir
+                                    </a>
+                                {% if list.active == true %} 
+                                    <a class="badge badge-pill badge-warning order-edit" href="">
+                                        Editar
+                                    </a>
+                                    <a class="badge badge-pill badge-danger order-close" href="/order/manual/{{list.getId}}">
+                                        Fechar
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>    
+                    {% endif %}
+                    {% set actualCustomerName = list.customerName %}
+                    
+                {% endfor %}
+            </div>
+
+        {% endif %}
+    </div>
+    
+    {% for order in lists %}
+        {% include '/order/pages/viewManualOrder.html.twig' with {'order' : order } %}
+    {% endfor %}
+
+{% endblock %}

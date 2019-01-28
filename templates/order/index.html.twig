@@ -56,16 +56,15 @@
         </script>
     {% endfor %}
     <div class="col p-3">
-        {% if orders == [] %}
+        {% if orders == [] and manualOrder == [] %}
             <h3>Não ha pedidos cadastrados no momento. Você pode cadastralos clicando <a class="text-secondary" href="forms/order">aqui</a></h3>
         {% else %}
             <table class="table">
                 <thead>
                 <th scope="col" class="text-center">Numero do Pedido</th>
                 <th scope="col" class="text-center">Cliente</th>
-                <th scope="col" class="text-center">Status do Pedido</th>
                 <th scope="col" class="text-center">Data Do Pedido</th>
-                <th scope="col">&nbsp;</th>
+                <th scope="col">Ações</th>
                 </thead>
                 <tbody id="orders">
                 {% for order in orders %}
@@ -110,11 +109,32 @@
                         </td>
                     </tr>
                 {% endfor %}
+                <tbody id="orders">
+                {% for order in manualOrder %}
+                    <tr>
+                        <td class="text-center">
+                            <i class="badge badge-pill badge-light">M</i> {{ order.getId }}
+                        </td>
+                        <td class="text-center">
+                            {{ order.getCustomerName }}
+                        </td>
+                        <td class="text-center">
+                            {{ order.getCreateDate | date('d/m/Y') }}
+                        </td>
+                        <td class="">
+                            <span href="javascript:;" data-fancybox data-src="#viewManualOrder{{ order.getId }}"
+                                  class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
+                        </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         {% endif %}
     </div>
     {% for order in orders %}
         {% include '/order/pages/viewOrder.html.twig' with {'order' : order } %}
+    {% endfor %}
+    {% for order in manualOrder %}
+        {% include '/order/pages/viewManualOrder.html.twig' with {'order' : order } %}
     {% endfor %}
 {% endblock %}

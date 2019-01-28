@@ -6,6 +6,8 @@ use Doctrine\Common\Persistence\AbstractManagerRegistry;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Yaml\Yaml;
 use App\Config\NonStaticConfig;
+use JMS\Serializer\SerializerBuilder;
+use JMS\Serializer\Metadata\ClassMetadata;
 
 /**
  * Service Container for models
@@ -33,10 +35,19 @@ abstract class Model
      */
     protected $settings;
 
+    /**
+     * Seralizator class
+     *
+     * @var ClassMetadata
+     * @var SerializerBuilder
+     */
+    protected $serializer;
+
     public function __construct(ObjectManager $entityManager)
     {
         $this->em = $entityManager;
         $this->config = Yaml::parse(__DIR__.'/../Config/system-config.yaml');
         $this->settings = new NonStaticConfig();
+        $this->serializer = SerializerBuilder::create()->build();
     }
 }

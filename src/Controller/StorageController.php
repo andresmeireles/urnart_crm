@@ -15,9 +15,9 @@ use App\Repository\FeedstockRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class StorageController extends Controller
+class StorageController extends AbstractController
 {
     /**
      * @Route("/storage", name="storage")
@@ -60,7 +60,7 @@ class StorageController extends Controller
      */
     public function feedstockAction(Request $request, ?int $productId, Crud $getter): Response
     {
-        $productId = $productId == null ? '' : (int) $productId;
+        $productId = $productId === null ? '' : $productId;
         $method = $request->server->get('REQUEST_METHOD');
         $model = new FeedstockModel($this->getDoctrine()->getManager());
         $entityManager = $this->getDoctrine()->getManager();
@@ -77,7 +77,7 @@ class StorageController extends Controller
                 throw new \Exception('Não é um número');
             }
 
-            $item = $entityManager->getRepository(Feedstock::class)->find($id);
+            $item = $entityManager->getRepository(Feedstock::class)->find($productId);
             try {
                 $entityManager->remove($item);
                 $entityManager->flush();
@@ -91,12 +91,12 @@ class StorageController extends Controller
         }
         
         if ($method == 'GET') {
-            $update = $this->getDoctrine()->getManager()->getRepository(Feedstock::class)->find($id);
+            $update = $this->getDoctrine()->getManager()->getRepository(Feedstock::class)->find($productId);
             $feedForm = $this->createForm(FeedstockForm::class, $update);
 
             return $this->render('storage/forms/feedstockForm.html.twig', [
                 'feedForm' => $feedForm->createView(),
-                'product' => $getter->getRegisterById('feedstock', $id),
+                'product' => $getter->getRegisterById('feedstock', $productId),
                 'unit' => $getter->get('unit'),
                 'departament' => $getter->get('departament'),
              ]);

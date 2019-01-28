@@ -21,7 +21,7 @@ use App\Entity\ManualOrderReport;
 use App\Entity\ManualProductCart;
 use App\Model\ListModel;
 use App\Model\OrderModel;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -37,7 +37,7 @@ use App\Utils\Andresmei\NestedArraySeparator;
  * @license  MIT <https://mit-license.org>
  * @link     https://bitbucket.org/andresmeireles/sysadmin
  */
-class OrderController extends Controller
+class OrderController extends AbstractController
 {
     /**
      * Redireciona para a pagina inicial dos pedidos
@@ -48,8 +48,10 @@ class OrderController extends Controller
     public function index(): Response
     {
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
+        $manualOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findAll();
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
+            'manualOrder' => $manualOrder,
         ]);
     }
 
@@ -321,17 +323,43 @@ class OrderController extends Controller
     /**
      * @Route("/order/manual/list", name="manualList")
      *
+     * @param   Request     $request
+     * @param   ListModel   $listModel
+     * @return  Response
+     */
+    public function manualListing(Request $request, ListModel $listModel): Response
+    {
+        $typeOfList = $request->query->get('type') ?? 'lastUpdate';
+        $lists = $typeOfList === 'bydate' ? '' : $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(
+            array(),
+           array($typeOfList => 'ASC')  
+        );
+
+        if (
+            $request->query->get('beginDate') !== null && 
+            $request->query->get('lastDate') !== null
+        ) 
+        {
+            $list = $listModel->getListByDate('ManualOrderReport', $request->query->get('beginDate'), $request->query->get('lastDate'));
+        }
+        
+        return $this->render('/order/lists/'. $typeOfList .'List.html.twig', [
+            'lists' => $lists
+        ]);
+    }
+
+    /**
+     * @Route("/order/manual/list/json", name="manualListJson")
+     *
      * @param Request $request
      * @param ListModel $listModel
      * @return Response
      */
-    public function manualListing(Request $request, ListModel $listModel): Response
+    public function manualListingJson(Request $request, ListModel $listModel): Response
     {
-        $lists = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findAll();
-        
-        return $this->render('/order/lists/manualList.html.twig', [
-            'lists' => $lists
-        ]);
+        $typeOfList = $request->query->get('type');
+        $jsonReturn = $listModel->getListOrderBy('ManualOrderReport', $typeOfList);
+        return new Response($jsonReturn);
     }
 
     /**

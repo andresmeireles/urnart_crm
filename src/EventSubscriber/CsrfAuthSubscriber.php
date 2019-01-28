@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -11,7 +11,7 @@ use Symfony\Component\Finder\Exception\AccessDeniedException;
 use App\Utils\Andresmei\CsrfToken;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
-class CsrfAuthSubscriber extends Controller implements EventSubscriberInterface
+class CsrfAuthSubscriber extends AbstractController implements EventSubscriberInterface
 {
     /**
      * @param FilterControllerEvent $event

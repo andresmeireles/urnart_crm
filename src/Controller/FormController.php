@@ -12,7 +12,7 @@ namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -34,7 +34,7 @@ use App\Entity\Transporter;
  * @license  MIT <https://mit-license.org>
  * @link     https://bitbucket.org/andresmeireles/sysadmin
  */
-class FormController extends Controller
+class FormController extends AbstractController
 {
     /**
      * Reireciona para pagina inicial da sessão de formulários

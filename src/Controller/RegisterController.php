@@ -6,13 +6,13 @@ use App\Config\Configuration;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Andresmei\SimpleFileUpload;
 use App\Utils\Generic\Crud;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
 
-class RegisterController extends Controller
+class RegisterController extends AbstractController
 {
     protected $logoDir = __DIR__.'/../../public/sys/logo';
 

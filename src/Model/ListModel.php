@@ -45,4 +45,31 @@ class ListModel extends Model
     {
         return $this->em->getRepository(Order::class)->findByStatusOrders($type);
     }
+
+    public function getJsonListOrderBy(string $repository, string $orderBy): string
+    {
+        $returnList = $this->em->getRepository('App\Entity\\'.$repository)->findBy(
+            array(),
+            array($orderBy => 'ASC')
+        );
+        $jsonResponse = $this->serializer->serialize($returnList, 'json');
+        
+        return $jsonResponse;
+    }
+
+    public function getListOrderBy(string $repository, string $orderBy): array
+    {        
+        $returnList = $this->em->getRepository('App\Entity\\'.$repository)->findBy(
+            array(),
+            array($orderBy => 'ASC')
+        );
+        
+        return $returnList;
+    }
+
+    public function getListByDate(string $repository, string $beginDate, string $lastDate)
+    {
+        $repo = 'App\Entity\\'.$repository;
+        
+    }
 }

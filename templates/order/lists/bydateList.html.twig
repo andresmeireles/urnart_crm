@@ -1,0 +1,67 @@
+{% extends "index.html.twig" %}
+
+{% block content %}
+    <div class="bg-secondary" id="manual-list">
+        <div class="sidebar-sticky p-1">
+            <ul class="list-unstyled">
+                <li class="px-3">
+                    <span class="px-3 mx-3">&nbsp;</span></li>
+                <li class="noline text">
+                    <a href="/order/manual/list">
+                        <div class="d-flex align-items-center">
+                            <span class="mx-1 my-2">&nbsp;&nbsp;Ultimos Pedidos</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="noline text cursor-decoration">
+                    <a href="/order/manual/list?type=customerName">
+                        <div class="d-flex align-items-center">
+                            <span class="mx-1 my-2">&nbsp;&nbsp;Pedidos Por Cliente</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="noline">
+                    <a href="/order/manual/list?type=bydate">
+                        <div class="d-flex align-items-center">
+                            <span class="mx-1 my-2 disabled">&nbsp;&nbsp;Pedidos por data</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+<div class="px-4 py-3 col">
+{{ app.request.server.get('REQUEST_URI') }}
+	<form action='{{ app.request.server.get('REQUEST_URI') }}' method="GET">
+		<div class="form-row">
+			<h3 class="col-md-12">Selecione datas para busca de pedidos</h3>
+			<div class="form-group col-md-6">	
+				<label class="sr-only" for="beginDate">Data de Inicio</label>
+						<div class="input-group mb-2">
+							<input type="text" class="form-control date-mask" id="beginDate" name="beginDate" placeholder="Data inicial">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+							</div>
+						</div>
+			</div>
+			<div class="form-group col-md-6">
+				<label class="sr-only" for="lastDate">Data Final</label>
+					<div class="input-group mb-2">
+							<input type="text" class="form-control date-mask" id="lastDate" name="lastDate" placeholder="Data Final">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+							</div>
+					</div>
+			</div>
+		</div>
+		<div class="form-group col-md-12">
+			<input type="submit" class="btn btn-primary btn-full btn-block" value="Filtrar">
+		</div>
+	</form>
+	<div class="text-center">
+		
+		<h2>Nenhum intervalo solucionado</h2>
+	</div>
+</div>
+
+{% endblock %}
