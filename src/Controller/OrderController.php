@@ -1,7 +1,7 @@
 <?php
 /**
  * OrderController
- *  
+ *
  * @category Controller
  * @package  App\Controller
  * @author   André Meireles <andre2meireles@gmail.com>
@@ -11,7 +11,6 @@
 namespace App\Controller;
 
 use App\Entity\Estado;
-use App\Entity\Municipio;
 use App\Entity\Order;
 use App\Entity\PaymentType;
 use App\Entity\PessoaJuridica;
@@ -21,16 +20,15 @@ use App\Entity\ManualOrderReport;
 use App\Entity\ManualProductCart;
 use App\Model\ListModel;
 use App\Model\OrderModel;
+use App\Utils\Andresmei\NestedArraySeparator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Utils\Andresmei\NestedArraySeparator;
 
 /**
  * Controller das paginas de pedidos
- * 
+ *
  * @category Controller
  * @package  App\Controller\OrderController
  * @author   André Meireles <andre2meireles@gmail.com>
@@ -41,9 +39,9 @@ class OrderController extends AbstractController
 {
     /**
      * Redireciona para a pagina inicial dos pedidos
-     * 
+     *
      * @Route("/order", name="order")
-     * 
+     *
      */
     public function index(): Response
     {
@@ -91,7 +89,7 @@ class OrderController extends AbstractController
 
     /**
      * Cria registro no banco de dados através do pedido manual.
-     * 
+     *
      * @Route("/order/createmanualorder", name="createManualOrder", methods="POST")
      *
      * @param OrderModel    $model
@@ -106,7 +104,7 @@ class OrderController extends AbstractController
             $result->getType(),
             $result->getMessage()
         );
-        
+
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -130,16 +128,10 @@ class OrderController extends AbstractController
         }
         $result = $model->createOrder($data, $arrData);
         if ($result['http_code'] === '400') {
-            $this->addFlash(
-                'error',
-                $result['message']
-            );
+            $this->addFlash('error', $result['message']);
             return $this->redirectToRoute('createOrder');
         }
-        $this->addFlash(
-            'success',
-            $result['message']
-        );
+        $this->addFlash('success', $result['message']);
         return $this->redirectToRoute('order');
     }
 
@@ -147,7 +139,7 @@ class OrderController extends AbstractController
      * @Route("/order/action/edit/{id}", methods="GET")
      *
      * @param string $orderId
-     * 
+     *
      * @return Response
      */
     public function redirectOrderActions(string $orderId): Response
@@ -174,7 +166,7 @@ class OrderController extends AbstractController
      * @Route("/order/action/edit/{id}", methods="POST")
      *
      * @param string $orderId
-     * 
+     *
      * @return Response
      * @throws \Exception
      */
@@ -191,17 +183,11 @@ class OrderController extends AbstractController
         }
         $result = $model->updateOrder($data, $arrData);
         if ($result['http_code'] === '400') {
-            $this->addFlash(
-                'error',
-                $result['message']
-            );
+            $this->addFlash('error', $result['message']);
             return $this->redirectToRoute('createOrder');
         }
         if ($result['http_code'] == '301') {
-            $this->addFlash(
-                'success',
-                "Pedido {$data['id']} atualizado com sucesso"
-            );
+            $this->addFlash('success', "Pedido {$data['id']} atualizado com sucesso");
         }
         return $this->redirectToRoute('order');
     }
@@ -217,32 +203,20 @@ class OrderController extends AbstractController
         $hash = $request->query->get('h') ?? null;
         $orderId = $request->query->get('i') ?? null;
         if (is_null($hash) || is_null($orderId)) {
-            $this->addFlash(
-              'error',
-              'Erro ao criar reserva'
-            );
+            $this->addFlash('error', 'Erro ao criar reserva');
             return $this->redirectToRoute('order');
         }
         $trueHash = hash('ripemd160', 'valido');
         if ($hash !== $trueHash) {
-          $this->addFlash(
-            'error',
-            "Erro... falta o hash ou ele está errado."
-          );
+          $this->addFlash('error', "Erro... falta o hash ou ele está errado.");
           return $this->redirectToRoute('order');
         }
         $result = $model->reserve($orderId);
         if ($result['http_code'] == 301) {
-          $this->addFlash(
-            'success',
-            $result['message']
-          );
+          $this->addFlash('success', $result['message']);
           return $this->redirectToRoute($request->headers->get('referer'));
         }
-        $this->addFlash(
-          $result['type'],
-          $result['message']
-        );
+        $this->addFlash( $result['type'], $result['message']);
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -297,7 +271,7 @@ class OrderController extends AbstractController
      * @Route("/order/action/print", methods="GET")
      *
      * @param Request    $request
-     * 
+     *
      * @return Response
      */
     public function showOrderToOrder(Request $request): Response
@@ -310,16 +284,16 @@ class OrderController extends AbstractController
                 'Alguma informação incosistente...'
             );
             $this->redirectToRoute('order');
-        }        
+        }
         return $this->render('order/printOrder/print.html.twig', [
             'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($orderId)
         ]);
     }
 
-    /********************
-     * MANUAL FUNCTIONS *
-     ********************/
-    
+    /**********************
+     ** MANUAL FUNCTIONS **
+     **********************/
+
     /**
      * @Route("/order/manual/list", name="manualList")
      *
@@ -332,17 +306,18 @@ class OrderController extends AbstractController
         $typeOfList = $request->query->get('type') ?? 'lastUpdate';
         $lists = $typeOfList === 'bydate' ? '' : $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(
             array(),
-           array($typeOfList => 'ASC')  
+           array($typeOfList => 'ASC')
         );
 
         if (
-            $request->query->get('beginDate') !== null && 
+            $request->query->get('beginDate') !== null ||
             $request->query->get('lastDate') !== null
-        ) 
+        )
         {
-            $list = $listModel->getListByDate('ManualOrderReport', $request->query->get('beginDate'), $request->query->get('lastDate'));
+            $lists = $listModel->getListByDate('ManualOrderReport', $request->query->get('beginDate'), $request->query->get('lastDate'));
+            $typeOfList = 'bydate';
         }
-        
+
         return $this->render('/order/lists/'. $typeOfList .'List.html.twig', [
             'lists' => $lists
         ]);
@@ -365,13 +340,12 @@ class OrderController extends AbstractController
     /**
      * @Route("/order/manual/{orderId<\d+>}", methods={"PUT"})
      *
-     * @param Request $request
-     * @param integer $orderId
+     * @param int $orderId
      * @param OrderModel $orderModel
      * @throws \Exception
      * @return Response
      */
-    public function closeManualOrder(Request $request, int $orderId, OrderModel $orderModel): Response
+    public function closeManualOrder(int $orderId, OrderModel $orderModel): Response
     {
         $order = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
         if (!$order instanceof ManualOrderreport) {
@@ -384,11 +358,10 @@ class OrderController extends AbstractController
     /**
      * @Route("/order/manual/{orderId<\d+>}", methods={"DELETE"})
      *
-     * @param Request $request
      * @param int $orderId
      * @return Response
      */
-    public function removeManualOrder(Request $request, int $orderId, OrderModel $orderModel): Response
+    public function removeManualOrder(int $orderId, OrderModel $orderModel): Response
     {
         $order = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
         $cart = $this->getDoctrine()->getRepository(ManualProductCart::class)->findBy(array(

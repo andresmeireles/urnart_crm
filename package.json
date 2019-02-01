@@ -29,6 +29,7 @@
         "noty": "^3.2.0-beta",
         "npm": "^6.1.0",
         "numeral": "^2.0.6",
+        "pickadate": "^3.5.6",
         "rot": "^0.1.0",
         "tablesorter": "^2.30.7",
         "vex-js": "^4.1.0"

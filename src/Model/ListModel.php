@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Model;
 
 use App\Entity\Order;
+use App\Utils\Andresmei\StringConvertions;
 
 class ListModel extends Model
 {
@@ -53,7 +54,7 @@ class ListModel extends Model
             array($orderBy => 'ASC')
         );
         $jsonResponse = $this->serializer->serialize($returnList, 'json');
-        
+
         return $jsonResponse;
     }
 
@@ -63,13 +64,53 @@ class ListModel extends Model
             array(),
             array($orderBy => 'ASC')
         );
-        
+
         return $returnList;
     }
 
-    public function getListByDate(string $repository, string $beginDate, string $lastDate)
+    /**
+     * Lista por data dados de um repositorio.
+     *
+     * @param string $repository
+     * @param string|null $beginDate
+     * @param string|null $lastDate
+     * @return array
+     */
+    public function getListByDate(string $repository, ?string $beginDate, ?string $lastDate): array
     {
         $repo = 'App\Entity\\'.$repository;
-        
+        $convertedBeginDate = (new StringConvertions())->strToDateString($beginDate);
+        $convertedLastDate = (new StringConvertions())->strToDateString($lastDate);
+        $queryBuilder = $this->em->createQueryBuilder();
+        $result = null;
+        if (is_null($convertedBeginDate) && is_null($convertedLastDate)) {
+            $result = $queryBuilder->select('u')->from($repo, 'u')->orderBy('u.id', 'ASC');
+        }
+
+        if (!is_null($convertedBeginDate) && !is_null($convertedLastDate)) {
+            $result = $queryBuilder->select('u')
+                                   ->from($repo, 'u')
+                                   ->where('u.createDate BETWEEN :begin AND :last')
+                                   ->setParameter('begin', $convertedBeginDate)
+                                   ->setParameter('last', $convertedLastDate)
+                                   ->orderBy('u.id', 'ASC');
+        }
+
+        if (is_null($convertedBeginDate) && !is_null($convertedLastDate)) {
+            $result = $queryBuilder->select('u')
+                                   ->from($repo, 'u')
+                                   ->where('u.createDate <= :date')
+                                   ->setParameter('date', $convertedLastDate)
+                                   ->orderBy('u.id', 'ASC');
+        }
+
+        if (!is_null($convertedBeginDate) && is_null($convertedLastDate)) {
+            $result = $queryBuilder->select('u')
+                                   ->from($repo, 'u')
+                                   ->where('u.createDate >= :date')
+                                   ->setParameter('date', $convertedBeginDate)
+                                   ->orderBy('u.id', 'ASC');
+        }
+        return $result->getQuery()->getResult();
     }
 }

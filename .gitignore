@@ -18,3 +18,4 @@ docker-composer.yml
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-pack ###
+/nbproject/private/

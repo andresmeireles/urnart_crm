@@ -32,13 +32,13 @@
     </div>
 <div class="px-4 py-3 col">
 {{ app.request.server.get('REQUEST_URI') }}
-	<form action='{{ app.request.server.get('REQUEST_URI') }}' method="GET">
+	<form method="GET">
 		<div class="form-row">
 			<h3 class="col-md-12">Selecione datas para busca de pedidos</h3>
 			<div class="form-group col-md-6">	
 				<label class="sr-only" for="beginDate">Data de Inicio</label>
 						<div class="input-group mb-2">
-							<input type="text" class="form-control date-mask" id="beginDate" name="beginDate" placeholder="Data inicial">
+							<input type="text" class="form-control date-mask no-keypress calendar-selector" id="beginDate" name="beginDate" placeholder="Data inicial" autocomplete="off">
 							<div class="input-group-prepend">
 								<div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
 							</div>
@@ -47,7 +47,7 @@
 			<div class="form-group col-md-6">
 				<label class="sr-only" for="lastDate">Data Final</label>
 					<div class="input-group mb-2">
-							<input type="text" class="form-control date-mask" id="lastDate" name="lastDate" placeholder="Data Final">
+							<input type="text" class="form-control date-mask no-keypress calendar-selector" id="lastDate" name="lastDate" placeholder="Data Final" autocomplete="off">
 							<div class="input-group-prepend">
 								<div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
 							</div>
@@ -59,8 +59,69 @@
 		</div>
 	</form>
 	<div class="text-center">
-		
-		<h2>Nenhum intervalo solucionado</h2>
+        <h3 id="typeOfList">Pedidos por data.</h3>
+        <div class="row" id="listItens">
+            <div class="col">
+                <h4><b>Data</b></h4>
+            </div>
+            <div class="col">
+                <h4><b>Nome</b></h4>
+            </div>
+            <div class="col">
+                <h4><b>Cidade</b></h4>
+            </div>
+            <div class="col">
+                <h4><b>Form. pg.</b></h4>
+            </div>
+            <div class="col">
+                <h4><b>Valor Total</b></h4>
+            </div>
+            <div class="col-3">
+                <h4><b>Ações</b></h4>
+            </div>
+        </div>
+        {% for list in lists %}
+
+            <div class="row py-1 elRow">
+                    <div class="col">
+                        <h5>{{ list.createDate | date('d/m/Y') }}</h5>
+                    </div>
+                    <div class="col">
+                        <h5>{{ list.customerName }}</h5>
+                    </div>
+                    <div class="col">
+                        <h5>{{ list.customerCity }}</h5>
+                    </div>
+                    <div class="col">
+                        <h5>{{ list.paymentType }}</h5>
+                    </div>
+                    <div class="col">
+                        {% set finalPrice = 0 %}
+                        {% for key, value in list.getManualProductCarts %}
+                            {% set finalPrice = finalPrice + value.getProductPrice %}    
+                        {% endfor %}
+                        {% set finalPrice = finalPrice + list.freight - list.discount %}
+                        <h5>{{ finalPrice | number_format(2, ',', '.') }}</h5>
+                    </div>
+                    <div class="col-3">
+                            <a class="badge badge-pill badge-primary" href="javascript:;" data-fancybox data-src="#viewManualOrder{{ list.getId }}">
+                                Visualizar
+                            </a>
+                            <a class="badge badge-pill badge-light" href="">
+                                Imprimir
+                            </a>
+                        {% if list.active == true %} 
+                            <a class="badge badge-pill badge-warning order-edit" href="">
+                                Editar
+                            </a>
+                            <a class="badge badge-pill badge-danger order-close" href="/order/manual/{{list.getId}}">
+                                Fechar
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+        {% endfor %}
 	</div>
 </div>
 

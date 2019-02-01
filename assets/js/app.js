@@ -1,3 +1,7 @@
+/**
+ * Import libs.
+ */
+
 require('bootstrap');
 require('imask');
 require('tablesorter');
@@ -121,6 +125,7 @@ import './src/helpers/numbersOnly';
 //Auto functions
 import './src/helpers/autoChange';
 import './src/helpers/autoClick';
+import './src/helpers/autoFocus';
 // helpers classes
 import './src/helpers/classes/noKeypress';
 

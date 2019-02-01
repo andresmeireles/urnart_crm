@@ -34,7 +34,7 @@
         <h2>Relatorio de pedidos</h2>
         <hr>
         {% if lists is empty %}
-            <h3>Não ha pedidos cadastrados. Você pode cadastrar novos pedidos em <a class="text-secondary" href="/forms/order">cadastrar pedidos</a></h3> 
+            <h3>Não ha pedidos cadastrados. Você pode cadastrar novos pedidos em <a class="text-secondary" href="/forms/order">cadastrar pedidos</a></h3>
         {% else %}
 
             <div class="col">
@@ -70,7 +70,7 @@
                             <div class="col">
                                 {% set finalPrice = 0 %}
                                 {% for key, value in list.getManualProductCarts %}
-                                    {% set finalPrice = finalPrice + value.getProductPrice %}    
+                                    {% set finalPrice = finalPrice + value.getProductPrice %}
                                 {% endfor %}
                                 {% set finalPrice = finalPrice + list.freight - list.discount %}
                                 <h5>{{ finalPrice | number_format(2, ',', '.') }}</h5>
@@ -82,7 +82,7 @@
                                     <a class="badge badge-pill badge-light" href="">
                                         Imprimir
                                     </a>
-                                {% if list.active == true %} 
+                                {% if list.active == true %}
                                     <a class="badge badge-pill badge-warning order-edit" href="">
                                         Editar
                                     </a>
@@ -101,7 +101,7 @@
                             <div class="col">
                                 {% set finalPrice = 0 %}
                                 {% for key, value in list.getManualProductCarts %}
-                                    {% set finalPrice = finalPrice + value.getProductPrice %}    
+                                    {% set finalPrice = finalPrice + value.getProductPrice %}
                                 {% endfor %}
                                 {% set finalPrice = finalPrice + list.freight - list.discount %}
                                 <h5>{{ finalPrice | number_format(2, ',', '.') }}</h5>
@@ -113,7 +113,7 @@
                                     <a class="badge badge-pill badge-light" href="">
                                         Imprimir
                                     </a>
-                                {% if list.active == true %} 
+                                {% if list.active == true %}
                                     <a class="badge badge-pill badge-warning order-edit" href="">
                                         Editar
                                     </a>
@@ -122,16 +122,16 @@
                                     </a>
                                 {% endif %}
                             </div>
-                        </div>    
+                        </div>
                     {% endif %}
                     {% set actualCustomerName = list.customerName %}
-                    
+
                 {% endfor %}
             </div>
 
         {% endif %}
     </div>
-    
+
     {% for order in lists %}
         {% include '/order/pages/viewManualOrder.html.twig' with {'order' : order } %}
     {% endfor %}
