@@ -12,8 +12,9 @@
       padding: 0;
    }
   table.table-bordered, thead, tr, th, tbody, td, tfoot{
-    border:1px solid black!important;
+    border: 3px solid black!important;
   }
+  
   #checklist th {
     font-size: 11px !important;
   }
@@ -27,13 +28,13 @@
     var tbodyProduction = document.querySelector('#production');
 
     if (items.length < 13 ) {
-      for (var c = items.length; c < 13; c++) {
+      for (var c = items.length; c < 12; c++) {
         tbodyFinanceiro.insertAdjacentHTML('beforeend', `<tr><td class="text-center">&nbsp;</td><td class="text-center">&nbsp;</td><td class="text-center">&nbsp;</td><td class="text-center">&nbsp;</td></tr>`)
       }
     }
 
-    if (prodItems.length < 15 ) { 
-      for (var c = prodItems.length; c < 15; c++) { 
+    if (prodItems.length < 17 ) { 
+      for (var c = prodItems.length; c < 16; c++) { 
         tbodyProduction.insertAdjacentHTML('beforeend', `<tr><td class="text-center">&nbsp;</td><td class="text-center" colspan=3>&nbsp;</td></tr>`)
       }
     }
@@ -45,6 +46,7 @@
 
 </script>
 {% set totalAmount = 0 %}
+{% set totalProductPrice = 0 %}
 <div id="page" class="row">
 <div id="half-page" class="col-md-6">
 <table class="table table-sm table-bordered">
@@ -58,9 +60,13 @@
     </tr>
     <tr>
       <th>Cliente:</th>
-      <th>{{ order.getCustomer }}</th>
+      <th>{{ order.getCustomerName }}</th>
       <th>Cidade:</th>
-      <th>{#{ order.getAllCustomerData.getMunicipio }}/{{ order.getAllCustomerData.getState.getUf }#}</th>
+      <th>
+          {% if order.getCustomerCity is defined %}
+            {{ order.getCustomerCity }}
+          {% endif %}
+      </th>
     </tr>
   </thead>
   <tbody id="financeiro">
@@ -68,25 +74,33 @@
       <th>Quantidade</th>
       <th colspan=3 class="text-center">Produtos</th>
     </tr>
-  {% for product in order.getProductCarts %}
-    {% if product.customPrice is not null %}
+  
+    {% if order.getProductCart is defined %}
+      {% set cart = order.getProductCarts %}}
+  {% else %}
+      {% set cart = order.getManualProductCarts %}
+  {% endif %}
+  
+  {% for product in cart %}
+    {% if product.customPrice is defined and product.customPrice != null %}
         {% set prodPrice = product.customPrice %}
     {% else %}
-        {% set prodPrice = product.getProduct.price %}
+        {% set prodPrice = product.getProductPrice %}
     {% endif %}
     <tr>
-      <td class="text-center">{{ product.amount }}</td>
-      <td class="text-center">{{ product.getProduct.getName }}</td>
+      <td class="text-center">{{ product.productAmount }}</td>
+      <td class="text-center">{{ product.getProductName }}</td>
       <td class="text-center"><span class="float-left">R$</span><span class="float-right">{{ prodPrice | number_format(2, ',', '.') }}</span></td>
-      <td class="text-center"><span class="float-left">R$</span><span class="float-right">{{ (prodPrice * product.amount) | number_format(2, ',', '.') }}</span></td>
+      <td class="text-center"><span class="float-left">R$</span><span class="float-right">{{ (prodPrice * product.getProductAmount) | number_format(2, ',', '.') }}</span></td>
   </tr>   
-    {% set totalAmount = totalAmount + product.amount %} 
+    {% set totalAmount = totalAmount + product.getProductAmount %} 
+    {% set totalProductPrice = totalProductPrice + (prodPrice * product.getProductAmount) %}
   {% endfor %}
   </tbody>
   <tfoot>
     <tr>
       <th colspan=2 class="text-right">Valor totoal produtoss</th>
-      <th colspan=2><span class="float-left">R$</span><span class="float-right">{{ order.totalPrice | number_format(2, ',', '.') }}</span></th>
+      <th colspan=2><span class="float-left">R$</span><span class="float-right">{{ totalProductPrice | number_format(2, ',', '.') }}</span></th>
     </tr>
     <tr>
       <th colspan=2 class="text-right">Desconto</th>
@@ -99,7 +113,7 @@
     <tr>
       <th class="text-center">{{ totalAmount }}</th>
       <th colspan=1 class="text-right">Total</th>
-      <th colspan=2><span class="float-left">R$</span><span class="float-right">{{ ((order.totalPrice + order. freight) - order.discount) | number_format(2, ',', '.') }}</span></span></th>
+      <th colspan=2><span class="float-left">R$</span><span class="float-right">{{ ((totalProductPrice + order. freight) - order.discount) | number_format(2, ',', '.') }}</span></span></th>
     </tr>
   </tfoot>
 </table>
@@ -118,15 +132,11 @@
   </tr>
   <tr>
     <th>&nbsp;</th>
-    <th>faturamento</th>
+    <th>Faturamento</th>
   </tr>
   <tr>
     <th>&nbsp;</th>
     <th>Nota Fiscal</th>
-  </tr>
-  <tr>
-    <th>&nbsp;</th>
-    <th>Lançamento de planilha de vendas</th>
   </tr>
   <tr>
     <th>&nbsp;</th>
@@ -148,9 +158,9 @@
     </tr>
     <tr>
       <th>Cliente:</th>
-      <th>{{ order.getCustomer }}</th>
+      <th>{{ order.getCustomerName }}</th>
       <th>Cidade:</th>
-      <th>{#{ order.getAllCustomerData.getMunicipio }}/{{ order.getAllCustomerData.getState.getUf }#}</th>
+      <th>{{ order.getCustomerCity }}</th>
     </tr>
   </thead>
   <tbody id='production'>
@@ -159,10 +169,10 @@
       <th colspan=3 class="text-center">Produtos</th>
     </tr>
   <tr>
-    {% for product in order.getProductCarts %}
+    {% for product in cart %}
         <tr>
-            <td class="text-center">{{ product.amount }}</td>
-            <td class="text-center" colspan=3>{{ product.getProduct.getName }}</td>
+            <td class="text-center">{{ product.getProductAmount }}</td>
+            <td class="text-center" colspan=3>{{ product.getProductName }}</td>
         </tr>
     {% endfor %}
   <tfoot>

@@ -278,6 +278,7 @@ class OrderController extends AbstractController
     {
         $hash = $request->query->get('h');
         $orderId = $request->query->get('i');
+        $printRepository = sprintf('App\Entity\%s', $request->query->get('r'));
         if (empty($hash) || empty($orderId)) {
             $this->addFlash(
                 'error',
@@ -286,7 +287,7 @@ class OrderController extends AbstractController
             $this->redirectToRoute('order');
         }
         return $this->render('order/printOrder/print.html.twig', [
-            'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($orderId)
+            'order' => $this->getDoctrine()->getManager()->getRepository($printRepository)->find($orderId)
         ]);
     }
 
