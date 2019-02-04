@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    if (document.querySelector('#automaticOrder') || document.querySelector('tbody#orders')) {
+    if (document.querySelector('#automaticOrder') || 
+        document.querySelector('tbody#orders') ||
+        document.querySelector('.printOrder')) 
+    {
         let disabledInputs = document.querySelectorAll('[autocp], [formCp]')
 
         for (let enabledInputs of disabledInputs) {

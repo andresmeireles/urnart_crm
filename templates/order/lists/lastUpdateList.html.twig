@@ -30,7 +30,7 @@
             </ul>
         </div>
     </div>
-    <div class="p-4 col">
+    <div class="p-4 col printOrder">
         <h2>Relatorio de pedidos</h2>
         <hr>
         {% if lists is empty %}
@@ -85,9 +85,7 @@
                             <a class="badge badge-pill badge-primary" href="javascript:;" data-fancybox data-src="#viewManualOrder{{ list.getId }}">
                                 Visualizar
                             </a>
-                            <a class="badge badge-pill badge-light" href="">
-                                Imprimir
-                            </a>
+                            <a print="h={{ 'valido' | makeHash }}&i={{ list.getId }}&r=ManualOrderReport" href="/order/action/print" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
                         {% if list.active == true %} 
                             <a class="badge badge-pill badge-warning order-edit" href="">
                                 Editar

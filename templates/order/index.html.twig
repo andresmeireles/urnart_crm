@@ -124,8 +124,7 @@
                         <td class="">
                             <span href="javascript:;" data-fancybox data-src="#viewManualOrder{{ order.getId }}"
                                   class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
-                            <a print="h={{ 'valido' | makeHash }}&i={{ order.getId }}&r=ManualOrderReport" href="/order/action/print"
-                                   class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
+                            <a print="h={{ 'valido' | makeHash }}&i={{ order.getId }}&r=ManualOrderReport" href="/order/action/print" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
                         </td>
                     </tr>
                 {% endfor %}

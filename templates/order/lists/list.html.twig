@@ -60,6 +60,6 @@
         </ul>
     </div>
 </div>
-	{% set list = '/order/lists/types/' ~ listType ~ '.html.twig' %}
-	{% include list with {'orders': order} %}
+{% set list = '/order/lists/types/' ~ listType ~ '.html.twig' %}
+    {% include list with {'orders': order} %}
 {% endblock %}
