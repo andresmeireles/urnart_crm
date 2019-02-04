@@ -76,10 +76,10 @@
     </tr>
   
     {% if order.getProductCart is defined %}
-      {% set cart = order.getProductCarts %}}
-  {% else %}
-      {% set cart = order.getManualProductCarts %}
-  {% endif %}
+        {% set cart = order.getProductCarts %}}
+    {% else %}
+        {% set cart = order.getManualProductCarts %}
+    {% endif %}
   
   {% for product in cart %}
     {% if product.customPrice is defined and product.customPrice != null %}

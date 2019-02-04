@@ -374,7 +374,7 @@ class OrderModel extends Model
             $paymentType = $entityManager->getRepository(PaymentType::class)->find($orderData['formPg']);
             $report->setPaymentType($paymentType);
             foreach ($products as $product) {
-                $cart = $this->createManualCart($product, $report);
+                $cart = $this->actionOnManualCart($product, $report);
                 $entityManager->persist($cart);
             }
             $entityManager->persist($report);
@@ -387,10 +387,56 @@ class OrderModel extends Model
 
         return new FlashResponse(200, 'success', 'Sucesso!');
     }
+    
+    /**
+     * Edit order by id in database.
+     * 
+     * @param array $orderData
+     * @param array $products
+     * @param int $orderId
+     * @throws \Exception
+     */
+    public function editManualOrder(array $orderData, array $products, int $orderId)
+    {
+        $entityManager = $this->em;
+        
+        $entityManager->getConnection()->beginTransaction();
+        
+        try {
+            $report = $entityManager->getRepository(ManualOrderReport::class)->find($orderId);
+            $report->setCustomerName($orderData['clientName']);
+            $report->setCustomerCity($orderData['clientCity']);
+            $discount = (float) trim(str_replace('R$', '', $orderData['discount']));
+            $report->setDiscount($discount);
+            $freight = (float) trim(str_replace('R$', '', $orderData['freight']));
+            $report->setFreight($freight);
+            $transporter = $orderData['transporter'] === '' ? null : $entityManager->getRepository(Transporter::class)->find($orderData['transporter']);
+            $report->setTransporter($transporter);
+            $port = $orderData['port'] === '' ? null : $orderData['port'];
+            $report->setPort($port);
+            $observation = $orderData['observation'] === '' ? null : $orderData['observation'];
+            $report->setComments($observation);
+            $paymentType = $entityManager->getRepository(PaymentType::class)->find($orderData['formPg']);
+            $report->setPaymentType($paymentType);
+            foreach ($products as $product) {
+                $cart = $this->actionOnManualCart($product, $report, $orderId);
+                $entityManager->merge($cart);
+            }
+            $entityManager->merge($report);
+            $entityManager->flush();
+            $entityManager->getConnection()->commit();
+        } catch (\Exception $e) {
+            $entityManager->getConnection()->rollback();
+            throw new \Exception($e->getMessage());
+        }
+    }
 
-    public function createManualCart(array $product, ManualOrderReport $report): ManualProductCart
+    public function actionOnManualCart(array $product, ManualOrderReport $report, ?int $orderId = null): ManualProductCart
     {
         $cart = new ManualProductCart();
+        if ($orderId !== null) {
+            $cart = $this->em->getRepository(ManualProductCart::class)->find($orderId);
+        }
         $cart->setProductName($product['model']);
         $cart->setProductPrice( (new StringConvertions())->moneyToFloat($product['money']) );
         $cart->setProductAmount( (int) $product['amount']);

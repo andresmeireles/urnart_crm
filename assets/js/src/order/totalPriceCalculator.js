@@ -14,6 +14,13 @@ document.addEventListener('blur', function (el) {
 
 }, true);
 
+if (document.querySelector('.manual-editing')) {
+    setTimeout( () => {
+        let element = document.querySelector('#amount');
+        element.dispatchEvent(new Event('blur'));
+    }, 1500);
+}
+
 const calculateAllPrices = (rows) => {
     //catch in a variable
     let primePrice = 0;
@@ -31,5 +38,6 @@ const calculateAllPrices = (rows) => {
         return false;
     }
     let finalPrice = primePrice + freight - discount;
-    document.querySelector('#finalPrice').innerHTML = finalPrice + ',00'; 
+    //document.querySelector('#finalPrice').innerHTML = finalPrice + ',00'; 
+    document.querySelector('#finalPrice').innerHTML = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(finalPrice); 
 }

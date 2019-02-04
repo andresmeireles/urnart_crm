@@ -72,26 +72,27 @@ if (document.querySelector('#manualOrder')) {
         }
 
     }, true);
+    
+}
 
-    const calculate = (row) => {
-        let preco = row.querySelector('#price'); 
-        let qnt = row.querySelector('#amount');
+const calculate = (row) => {
+    let preco = row.querySelector('#price');
+    let qnt = row.querySelector('#amount');
 
-        if (preco.value.trim().length === 0 || qnt.value.trim().length === 0) {
-            return false;
-        }
-
-        // remove unecessary symbols
-        let priceValue = strToMoney(preco.value);
-
-        let rowPrice = row.querySelector('#totalPrice');
-        if (!(preco.value.trim().length === 0) && (qnt.value === '0' || qnt.value.trim().length === 0)) {
-            qnt.value = 1;
-        }
-        rowPrice.value = parseFloat(priceValue) * parseFloat(qnt.value);
-
-        // Show values of currency
-        rowPrice.value = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(rowPrice.value);
-        return true;
+    if (preco.value.trim().length === 0 || qnt.value.trim().length === 0) {
+        return false;
     }
+
+    // remove unecessary symbols
+    let priceValue = strToMoney(preco.value);
+
+    let rowPrice = row.querySelector('#totalPrice');
+    if (!(preco.value.trim().length === 0) && (qnt.value === '0' || qnt.value.trim().length === 0)) {
+        qnt.value = 1;
+    }
+    rowPrice.value = parseFloat(priceValue) * parseFloat(qnt.value);
+
+    // Show values of currency
+    rowPrice.value = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(rowPrice.value);
+    return true;
 }

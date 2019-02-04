@@ -1,7 +1,7 @@
 $(function () {
-	var iNumber = 1;
+    var iNumber = 1;
 
-	if (document.querySelectorAll('button [remove-btn]').length == 1) {
+    if (document.querySelectorAll('button [remove-btn]').length == 1) {
         document.querySelector('[remove-btn]').setAttribute('disabled', '');
     }
 
@@ -24,17 +24,17 @@ $(function () {
             if (el.keyCode > 31 && (el.keyCode < 48 || el.keyCode > 57)) {
                 el.preventDefault();
                 return false;
-            } 
+            }
         }
     });
 
-     /**
+    /**
      * Remove elemento selecionado. 
      * Ação não funciona caso exista apenas um elemento.
      */
     document.addEventListener('click', function (el) {
         if (el.target.getAttribute('remove-btn')) {
-            if (document.querySelectorAll('#cloneableField').length == 1 ) {
+            if (document.querySelectorAll('#cloneableField').length == 1) {
                 return false
             }
 
@@ -44,7 +44,7 @@ $(function () {
                 document.querySelector('[remove-btn]').setAttribute('disabled', '');
             }
 
-            return true;	
+            return true;
         }
     });
 
@@ -53,10 +53,10 @@ $(function () {
      */
     document.addEventListener('click', function (el) {
         if (el.target.id == 'checkbox') {
-            if ( el.target.checked ) {
+            if (el.target.checked) {
                 el.target.parentNode.querySelector('#check').value = 1;
                 return true;
-            } 
+            }
             el.target.parentNode.querySelector('#check').value = 0;
         }
     });
@@ -64,28 +64,28 @@ $(function () {
     /**
      * Cria um novo elemento
      */
-	document.addEventListener('click', function (el) {
-		// le o click descobrindo se o attributo exite no elemento clicado
-		if (el.target.getAttribute('add-btn')) {
+    document.addEventListener('click', function (el) {
+        // le o click descobrindo se o attributo exite no elemento clicado
+        if (el.target.getAttribute('add-btn')) {
 
-			/**
-			 * Busca em #cloneable fields marcados com required em branco
-			 * caso esta aem branco bloqueia a criação de um novo campo
-			 */
-			for (var c=0; c < document.querySelectorAll('#cloneableField [required]').length; c++) {
-				if (document.querySelectorAll('#cloneableField [required]')[c].value == '') {
-					alert('Preencher campos antes de acrescentar novo registro')
-					return false
-				}
-			}
+            /**
+             * Busca em #cloneable fields marcados com required em branco
+             * caso esta aem branco bloqueia a criação de um novo campo
+             */
+            for (var c = 0; c < document.querySelectorAll('#cloneableField [required]').length; c++) {
+                if (document.querySelectorAll('#cloneableField [required]')[c].value == '') {
+                    alert('Preencher campos antes de acrescentar novo registro')
+                    return false
+                }
+            }
 
-			iNumber += 1
-			el.preventDefault()
+            iNumber += 1
+            el.preventDefault()
 
-			/**
-			 * Caso exista apenas um registo bloqueia o botão de remoção
-			 */
-            if (document.querySelectorAll('#cloneableField').length == 1 ) {
+            /**
+             * Caso exista apenas um registo bloqueia o botão de remoção
+             */
+            if (document.querySelectorAll('#cloneableField').length == 1) {
                 document.querySelector('[remove-btn]').removeAttribute('disabled')
             }
 
@@ -101,22 +101,23 @@ $(function () {
 
             // reseta todos os campos escrevedo um nome unico
             var cloneElInputs = cloneEl.querySelectorAll('input')
-           	for (var c=0; c < cloneElInputs.length; c++) {	
-           		var inputName = 'cloneableField'+ iNumber +'['+ cloneElInputs[c].getAttribute('id') +']'
-           		cloneElInputs[c].setAttribute('name', inputName)
-           		cloneElInputs[c].value = cloneElInputs[c].defaultValue
+            for (var c = 0; c < cloneElInputs.length; c++) {
+                var inputName = 'cloneableField' + iNumber + '[' + cloneElInputs[c].getAttribute('id') + ']'
+                cloneElInputs[c].setAttribute('name', inputName)
+                //cloneElInputs[c].value = cloneElInputs[c].defaultValue
+                cloneElInputs[c].value = ''
             }
-            
-			cloneEl.querySelector('[input-number]').value = iNumber
 
-			// cria o campo novo
+            cloneEl.querySelector('[input-number]').value = iNumber
+
+            // cria o campo novo
             node.after(cloneEl)
             checkMask(cloneEl)
             // poem o foco no novo campo
             cloneEl.querySelector('[type="text"]').focus()
 
             return true;
-		}
-	});
+        }
+    });
 
 });

@@ -88,27 +88,6 @@ class OrderController extends AbstractController
     }
 
     /**
-     * Cria registro no banco de dados através do pedido manual.
-     *
-     * @Route("/order/createmanualorder", name="createManualOrder", methods="POST")
-     *
-     * @param OrderModel    $model
-     * @param Request       $request
-     * @return Response
-     */
-    public function createManualOrder(OrderModel $model, Request $request): Response
-    {
-        $nestedArray = new NestedArraySeparator($request->request->all());
-        $result = $model->createManualReport($nestedArray->getSimpleArray(), $nestedArray->getArrayInArray());
-        $this->addFlash(
-            $result->getType(),
-            $result->getMessage()
-        );
-
-        return $this->redirect($request->headers->get('referer'));
-    }
-
-    /**
      * @Route("/order/create", methods="POST")
      *
      * @param OrderModel $model
@@ -336,6 +315,64 @@ class OrderController extends AbstractController
         $typeOfList = $request->query->get('type');
         $jsonReturn = $listModel->getListOrderBy('ManualOrderReport', $typeOfList);
         return new Response($jsonReturn);
+    }    
+
+    /**
+     * Cria registro no banco de dados através do pedido manual.
+     *
+     * @Route("/order/createmanualorder", name="createManualOrder", methods="POST")
+     *
+     * @param OrderModel    $model
+     * @param Request       $request
+     * @return Response
+     */
+    public function createManualOrder(OrderModel $model, Request $request): Response
+    {
+        $nestedArray = new NestedArraySeparator($request->request->all());
+        $result = $model->createManualReport($nestedArray->getSimpleArray(), $nestedArray->getArrayInArray());
+        $this->addFlash(
+            $result->getType(),
+            $result->getMessage()
+        );
+
+        return $this->redirect($request->headers->get('referer'));
+    }
+    
+    /**
+     * @Route("/order/manual/{orderId<\d+>}", methods={"POST"})
+     * 
+     * @param int $orderId
+     * @return Response
+     */
+    public function editManualOrder(Request $request, OrderModel $model, int $orderId): Response
+    {
+        $nestedArray = new NestedArraySeparator($request->request->all());
+        $result = $model->editManualOrder($nestedArray->getSimpleArray(), $nestedArray->getArrayInArray(), $orderId);
+        $this->addFlash(
+            $result->getType(),
+            $result->getMessage()
+        );
+        
+        return $this->redirect($request->headers->get('referer'));
+    }
+    
+    /**
+     * @Route("/order/manual/{orderId<\d+>}", methods={"GET"})
+     * 
+     * @param int $orderId
+     * @return Response
+     */
+    public function viewEditManualOrder(int $orderId): Response
+    {
+        $orderToEdit = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
+        $transporters = $this->getDoctrine()->getRepository(Transporter::class)->findAll();
+        $paymentType = $this->getDoctrine()->getRepository(PaymentType::class)->findAll();
+        
+        return $this->render('/order/pages/editManualOrder.html.twig', [
+            'order' => $orderToEdit,
+            'transporters' => $transporters,
+            'payments' => $paymentType
+        ]);
     }
 
     /**
