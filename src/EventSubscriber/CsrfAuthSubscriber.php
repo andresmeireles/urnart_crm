@@ -19,7 +19,7 @@ class CsrfAuthSubscriber extends AbstractController implements EventSubscriberIn
     public function onKernelController(FilterControllerEvent $event): void
     {
         $request = $event->getRequest();
-        if ($request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POSTI') {
             $session = $request->getSession();
             $tokenId = $session->get('csrfToken')->getCsrfTokenString();
             $tokenValue = $request->request->get('token');

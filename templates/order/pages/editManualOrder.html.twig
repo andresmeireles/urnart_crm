@@ -17,11 +17,12 @@
         </div>
         <hr>
           <form method="POST">
-           <div class="row">
-          <div class="col-md-12 my-1">
-            <input type="submit" class="btn btn-primary active btn-block btn-lg" id="send-form" value="Editar pedido {{ order.getId }}">
-          </div>
-        </div>
+            <div class="row">
+                {% include 'components/csrftoken.html.twig' %}
+                <div class="col-md-12 my-1">
+                    <input type="submit" class="btn btn-primary active btn-block btn-lg" id="send-form" value="Editar pedido {{ order.getId }}">
+                </div>
+            </div>
             <div class="row">
               <div class="col">
                 <fieldset class="border border-light my-1">
@@ -48,16 +49,16 @@
                         {% for product in order.getManualProductCarts %}
                           <div class="input-group my-1 w-100" id="cloneableField">
                             <div class="col-3">
-                              <input type="hidden" input-number='true' value="1">
+                              <input type="hidden" input-number='true' value="{{ loop.index }}">
                               <input type="text" class="form-control" name="cloneableField0[model]" id="model" placeholder="Urna" value="{{ product.getProductName }}" required="required"></div>
                             <div class="col">
                               <input type="hidden" name="cloneableField0[money]" id="money" converted-value="{{ product.getProductPrice }}" value="{{ product.getProductPrice }}">
-                              <input type="text" class="form-control numbers-only auto-float-convert-blur" id="price" placeholder="Preço" required="required" value="R$ {{ product.getProductPrice | number_format(2, ',', ',') }}">
+                              <input type="text" class="form-control numbers-only auto-float-convert-blur ignore-clone" id="price" placeholder="Preço" required="required" value="R$ {{ product.getProductPrice | number_format(2, ',', ',') }}">
                             </div>
                             <div class="col">
                               <input type="number" class="form-control col" name="cloneableField0[amount]" id="amount" placeholder="Qnt" required="required" value="{{ product.getProductAmount }}"></div>
                             <div class="col-3">
-                              <input type='text' class="form-control money-mask" id="totalPrice" value="R$ {{ (product.getProductAmount * product.ProductPrice) | number_format(2, ',', '.') }}"></div>  
+                              <input type='text' class="form-control money-mask ignore-clone" id="totalPrice" value="R$ {{ (product.getProductAmount * product.ProductPrice) | number_format(2, ',', '.') }}"></div>  
                             <button type="submit" class="btn btn-success" add-btn="true">
                               <span class="fas fa-fw fa-plus" add-btn="true"></span>
                             </button>
@@ -98,14 +99,14 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Seleciona a forma de pagamento</label>
-                        <input type="hidden" name="formPg" id="paymentType" value="">
+                        <input type="hidden" name="formPg" id="paymentType" value="{{ order.getPaymentType.getId }}">
                         <input type="text" class="form-control no-keypress" id="payment" autocp="payment" autocomplete="off" required="required" value="{{ order.getPaymentType.getName }}">
                         {#<small>Caso a opção seja putra seleciona outro</small>#}
                       </div>
                       <div class="form-group">
                         <label>Valor do frete</label>
                         <div class="form-group">
-                          <input type="hidden" converted-value="" name="freight">
+                          <input type="hidden" converted-value="" name="freight" value="{{ order.getFreight }}">
                           <input type="text" class="form-control numbers-float-only auto-float-convert-blur" id="freight" value="R$ {{ order.getFreight | number_format(2, ',', '.') }}"></div>
                       </div>
                       <div class="form-group">
@@ -124,7 +125,7 @@
                       <div class="form-group">
                         <label>Barco & Transportadora</label>
                         <div class="form-group">
-                          <input type="hidden" name="transporter" id="transporter-number" value="">
+                          <input type="hidden" name="transporter" id="transporter-number" value="{{ order.getDiscount }}">
                           <input type="text" class="form-control" autocp="transporter" id="transporter" value="{{ order.getTransporter == null ? '' : order.getTransporter.getName }}">
                         </div>
                       </div>
@@ -145,9 +146,7 @@
                   <legend class="px-1 bg-light">Observações</legend>
                   <div class="row m-1">
                     <div class="form-group col">
-                        <textarea class="form-control" value="escreve aqui" name="observation">
-                            {{ order.getComments }}
-                        </textarea>
+                        <textarea class="form-control" value="escreve aqui" name="observation">{{ order.getComments }}</textarea>
                     </div>
                   </div>
                 </fieldset>

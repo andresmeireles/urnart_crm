@@ -125,6 +125,14 @@
                             <span href="javascript:;" data-fancybox data-src="#viewManualOrder{{ order.getId }}"
                                   class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
                             <a print="h={{ 'valido' | makeHash }}&i={{ order.getId }}&r=ManualOrderReport" href="/order/action/print" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
+                            {% if order.active == true %}
+                                <a class="badge badge-pill badge-warning order-edit" href="">
+                                    Editar
+                                </a>
+                                <a class="badge badge-pill badge-danger order-close" href="/order/manual/{{order.getId}}">
+                                    Fechar
+                                </a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

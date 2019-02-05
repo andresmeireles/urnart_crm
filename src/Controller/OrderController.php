@@ -270,9 +270,9 @@ class OrderController extends AbstractController
         ]);
     }
 
-    /**********************
-     ** MANUAL FUNCTIONS **
-     **********************/
+    /************************
+     *** MANUAL FUNCTIONS ***
+     ************************/
 
     /**
      * @Route("/order/manual/list", name="manualList")
@@ -353,7 +353,7 @@ class OrderController extends AbstractController
             $result->getMessage()
         );
         
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirectToRoute('manualList');
     }
     
     /**

@@ -108,7 +108,7 @@
                             </a>
                             <a print="h={{ 'valido' | makeHash }}&i={{ list.getId }}&r=ManualOrderReport" href="/order/action/print" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
                         {% if list.active == true %} 
-                            <a class="badge badge-pill badge-warning order-edit" href="">
+                            <a class="badge badge-pill badge-warning order-edit" href="/order/manual/{{ list.getId }}">
                                 Editar
                             </a>
                             <a class="badge badge-pill badge-danger order-close" href="/order/manual/{{list.getId}}">

@@ -309,10 +309,7 @@ class OrderModel extends Model
         $removeOrder = $this->em->getRepository(Order::class)->find($orderId);
         $order = $removeOrder->getId();
         if (is_null($removeOrder)) {
-            return array(
-                'type' => 'error',
-                'message' => 'Erro interno'
-            );
+            return array('type' => 'error', 'message' => 'Erro interno');
         }
         $cartsToRemove = $removeOrder->getProductCarts();
         $this->em->getConnection()->beginTransaction();
@@ -323,17 +320,10 @@ class OrderModel extends Model
             $this->em->remove($removeOrder);
             $this->em->flush();
             $this->em->getConnection()->commit();
-            return array(
-                'http_code' => '200',
-                'type' => 'warning',
-                'message' => "Pedido {$orderId} removido com sucesso!",
-            );
+            return array('http_code' => '200', 'type' => 'warning', 'message' => "Pedido {$orderId} removido com sucesso!");
         } catch (\Exception $e) {
             $this->em->getConnection()->rollback();
-            return array(
-                'type' => 'danger',
-                'message' => "Erro ao remove pedido {$order}."
-            );
+            return array('type' => 'danger', 'message' => "Erro ao remove pedido {$order}.");
         }
     }
 
@@ -418,8 +408,12 @@ class OrderModel extends Model
             $report->setComments($observation);
             $paymentType = $entityManager->getRepository(PaymentType::class)->find($orderData['formPg']);
             $report->setPaymentType($paymentType);
+            
+            $removeCart = $entityManager->getRepository(ManualProductCart::class)->findBy(array('manualOrderReport' => $orderId));
+            $this->removeManualProductCart($removeCart);
+            
             foreach ($products as $product) {
-                $cart = $this->actionOnManualCart($product, $report, $orderId);
+                $cart = $this->actionOnManualCart($product, $report);
                 $entityManager->merge($cart);
             }
             $entityManager->merge($report);
@@ -429,14 +423,13 @@ class OrderModel extends Model
             $entityManager->getConnection()->rollback();
             throw new \Exception($e->getMessage());
         }
+        
+        return new FlashResponse(200, 'success', sprintf('Pedido %d alterado com sucesso.', $orderId));
     }
 
-    public function actionOnManualCart(array $product, ManualOrderReport $report, ?int $orderId = null): ManualProductCart
-    {
+    public function actionOnManualCart(array $product, ManualOrderReport $report): ManualProductCart
+    {        
         $cart = new ManualProductCart();
-        if ($orderId !== null) {
-            $cart = $this->em->getRepository(ManualProductCart::class)->find($orderId);
-        }
         $cart->setProductName($product['model']);
         $cart->setProductPrice( (new StringConvertions())->moneyToFloat($product['money']) );
         $cart->setProductAmount( (int) $product['amount']);

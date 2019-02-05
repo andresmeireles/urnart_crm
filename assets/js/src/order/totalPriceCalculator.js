@@ -16,9 +16,11 @@ document.addEventListener('blur', function (el) {
 
 if (document.querySelector('.manual-editing')) {
     setTimeout( () => {
-        let element = document.querySelector('#amount');
-        element.dispatchEvent(new Event('blur'));
-    }, 1500);
+        let element = document.querySelectorAll('#amount');
+        for(var blurElement of element) {
+            blurElement.dispatchEvent(new Event('blur'));            
+        }
+    }, 1000);
 }
 
 const calculateAllPrices = (rows) => {
