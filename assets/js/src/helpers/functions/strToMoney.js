@@ -1,5 +1,7 @@
 /**
  * Convert a specific string to money in operations tha require numbers
+ *
+ * @param str String para conversão.
  */
 module.exports = (str) => {
     if (str === '') {

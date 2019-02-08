@@ -5,9 +5,6 @@ namespace App\EventSubscriber;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Finder\Exception\AccessDeniedException;
 use App\Utils\Andresmei\CsrfToken;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
@@ -19,7 +16,7 @@ class CsrfAuthSubscriber extends AbstractController implements EventSubscriberIn
     public function onKernelController(FilterControllerEvent $event): void
     {
         $request = $event->getRequest();
-        if ($request->getMethod() == 'POSTI') {
+        if ($request->getMethod() == 'POST') {
             $session = $request->getSession();
             $tokenId = $session->get('csrfToken')->getCsrfTokenString();
             $tokenValue = $request->request->get('token');

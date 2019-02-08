@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Config\Configuration;
-use App\Utils\Andresmei\FlashResponse;
-use App\Utils\Andresmei\SimpleFileUpload;
 use App\Utils\Generic\Crud;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,8 +12,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class RegisterController extends AbstractController
 {
-    protected $logoDir = __DIR__.'/../../public/sys/logo';
-
     /**
      * @Route("/register", name="register")
      *
@@ -25,15 +21,7 @@ class RegisterController extends AbstractController
      */
     public function index(Crud $getter): Response
     {
-        return $this->render('register/index.html.twig', [
-            'departament' => $getter->get('departament'),
-            'unit' => $getter->get('unit'),
-            'state' => $getter->get('estado'),
-            'city' => $getter->get('municipio'),
-            'customer' => $getter->get('pessoaJuridica'),
-            'payType' => $getter->get('paymentType'),
-            'transporters' => $getter->get('transporter'),
-        ]);
+        return $this->render('register/index.html.twig');
     }
 
     /**

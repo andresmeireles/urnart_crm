@@ -18,7 +18,7 @@
         "@fortawesome/fontawesome-free": "^5.1.0",
         "axios": "^0.18.0",
         "balloon-css": "^0.5.0",
-        "bootstrap": "^4.1.1",
+        "bootstrap": "^4.2.1",
         "devbridge-autocomplete": "^1.4.9",
         "filepond": "^3.1.1",
         "imask": "^3.4.0",

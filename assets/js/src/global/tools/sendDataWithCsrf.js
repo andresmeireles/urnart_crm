@@ -1,5 +1,5 @@
 /**
- * SendDataWithCsrf
+ * sendDataWithCsrf
  * 
  * @param methodVerb        [string] Nome do verbo da requisição.
  * @param urlPath           [string] Rota para requisição.
@@ -7,7 +7,7 @@
  * @param csrfToken         [object] Objeto <input> com nome token e atributo value para ter valor atulizado
  * @param responseFunction  [string] Função de resposta
  */
-module.exports = function (methodVerb = 'POST', urlPath, dataInfo, csrfToken, responseFunction) {
+module.exports = function (methodVerb, urlPath, dataInfo = null, csrfToken, responseFunction = null) {
     axios({
         method: methodVerb,
         url: urlPath,
@@ -18,10 +18,13 @@ module.exports = function (methodVerb = 'POST', urlPath, dataInfo, csrfToken, re
     })
     .then(function (response) {
         csrfToken.value = response.headers.csrf;
+        if (responseFunction === null) {
+            return response;
+        }
         responseFunction(response);
     })
     .catch(function (error) {
-        console.log(error);
+        //console.log(error);
         throw Error(error);
     })
 }

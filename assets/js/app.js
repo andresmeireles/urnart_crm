@@ -1,3 +1,5 @@
+/* global global */
+
 /**
  * Import libs.
  */
@@ -24,7 +26,7 @@ numeralJs.register('locale', 'br', {
         billion: 'b',
         trillion: 't'
     },
-    ordinal : function (number) {
+    ordinal: function (number) {
         return number === 1 ? 'er' : 'ème';
     },
     currency: {
@@ -81,12 +83,13 @@ global.simpleDialog = require('./src/dialog/simpleDialog');
 global.customerTemplate = require('./src/register/templates/customerTemplate');
 
 /********** 
-* helpers *
-***********/
+ * helpers *
+ ***********/
 
 //functions
 global.isNullOrWhiteSpace = require('./src/helpers/isNullOrWhiteSpace');
 global.strToMoney = require('./src/helpers/functions/strToMoney');
+global.checkUndefined = require('./src/helpers/functions/checkUndefined');
 
 /****************
  * IMPORTS ******
@@ -108,6 +111,7 @@ import './src/register/registerEvents';
 import './src/register/customer';
 import './src/register/cloneFieldCustomer';
 import './src/register/config';
+import './src/register/loadAjax';
 
 // reports
 import './src/reports/survey';
@@ -138,11 +142,11 @@ import './src/order/closeOrder';
 import './src/order/removeOrder';
 
 if (document.querySelector('.f-date')) {
-	var dateMask = new IMask(
-		document.querySelector('.f-date'),
-		{
-			mask: Date,
-			lazy: false,
-		}
-	);
+    var dateMask = new IMask(
+            document.querySelector('.f-date'),
+            {
+                mask: Date,
+                lazy: false,
+            }
+    );
 }
