@@ -56,11 +56,10 @@ class OrderController extends AbstractController
     /**
      * @Route("/order/list", defaults={"type"="last"})
      *
-     * @param  string $type [type of list showed]
      * @param  Request $request
      * @return Response
      */
-    public function list(Request $request, ListModel $model, string $type = 'last'): Response
+    public function list(Request $request, ListModel $model): Response
     {
         $type = $request->query->get('type') == '' ? 'last' : $request->query->get('type');
         $order = $model->select($type);
@@ -315,7 +314,7 @@ class OrderController extends AbstractController
         $typeOfList = $request->query->get('type');
         $jsonReturn = $listModel->getListOrderBy('ManualOrderReport', $typeOfList);
         return new Response($jsonReturn);
-    }    
+    }
 
     /**
      * Cria registro no banco de dados através do pedido manual.
@@ -337,10 +336,10 @@ class OrderController extends AbstractController
 
         return $this->redirect($request->headers->get('referer'));
     }
-    
+
     /**
      * @Route("/order/manual/{orderId<\d+>}", methods={"POST"})
-     * 
+     *
      * @param int $orderId
      * @return Response
      */
@@ -352,22 +351,33 @@ class OrderController extends AbstractController
             $result->getType(),
             $result->getMessage()
         );
-        
+
         return $this->redirectToRoute('manualList');
     }
-    
+
     /**
      * @Route("/order/manual/{orderId<\d+>}", methods={"GET"})
-     * 
+     *
      * @param int $orderId
      * @return Response
      */
     public function viewEditManualOrder(int $orderId): Response
     {
         $orderToEdit = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
+        
+        if ($orderToEdit === null ) {
+            $this->addFlash('error', sprintf('Pedido n° <b>%d</b> não exite. Verique se pedido foi corretamente cadastrado.', $orderId));
+            return $this->redirectToRoute('order');
+        }
+
+        if (!$orderToEdit->getActive()) {
+            $this->addFlash('warning', sprintf('Pedido %d fechado não pode ser alterado. Fechado em %s', $orderToEdit->getId(), $orderToEdit->getLastUpdate()));
+            return $this->redirectToRoute('manualList');
+        }
+
         $transporters = $this->getDoctrine()->getRepository(Transporter::class)->findAll();
         $paymentType = $this->getDoctrine()->getRepository(PaymentType::class)->findAll();
-        
+
         return $this->render('/order/pages/editManualOrder.html.twig', [
             'order' => $orderToEdit,
             'transporters' => $transporters,

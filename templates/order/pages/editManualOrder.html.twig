@@ -49,14 +49,14 @@
                         {% for product in order.getManualProductCarts %}
                           <div class="input-group my-1 w-100" id="cloneableField">
                             <div class="col-3">
-                              <input type="hidden" input-number='true' value="{{ loop.index }}">
-                              <input type="text" class="form-control" name="cloneableField0[model]" id="model" placeholder="Urna" value="{{ product.getProductName }}" required="required"></div>
+                              <input type="hidden" input-number='true' value="{{ loop.index - 1 }}">
+                              <input type="text" class="form-control" name="cloneableField{{ loop.index - 1 }}[model]" id="model" placeholder="Urna" value="{{ product.getProductName }}" required="required"></div>
                             <div class="col">
-                              <input type="hidden" name="cloneableField0[money]" id="money" converted-value="{{ product.getProductPrice }}" value="{{ product.getProductPrice }}">
+                              <input type="hidden" name="cloneableField{{ loop.index - 1 }}[money]" id="money" converted-value="{{ product.getProductPrice }}" value="{{ product.getProductPrice }}">
                               <input type="text" class="form-control numbers-only auto-float-convert-blur ignore-clone" id="price" placeholder="Preço" required="required" value="R$ {{ product.getProductPrice | number_format(2, ',', ',') }}">
                             </div>
                             <div class="col">
-                              <input type="number" class="form-control col" name="cloneableField0[amount]" id="amount" placeholder="Qnt" required="required" value="{{ product.getProductAmount }}"></div>
+                              <input type="number" class="form-control col" name="cloneableField{{ loop.index - 1 }}[amount]" id="amount" placeholder="Qnt" required="required" value="{{ product.getProductAmount }}"></div>
                             <div class="col-3">
                               <input type='text' class="form-control money-mask ignore-clone" id="totalPrice" value="R$ {{ (product.getProductAmount * product.ProductPrice) | number_format(2, ',', '.') }}"></div>  
                             <button type="submit" class="btn btn-success" add-btn="true">
@@ -117,7 +117,7 @@
                               <input type="checkbox" toggle-disabled="discount" id="discountCheck" {{ order.getDiscount == null ? '' : 'checked' }}>
                             </div>
                           </div>
-                          <input type="hidden" name="discount" id="noDiscount" converted-value value="0">
+                          <input type="hidden" name="discount" id="noDiscount" converted-value value="{{ order.getDiscount }}">
                           <input type="text" class="form-control numbers-float-only auto-float-convert-blur" id="discount" value="R$ {{ order.getDiscount | number_format(2, ',', '.') }}">
                         </div>
                           <small class="form-text text-muted">Caso exista algum desconto marque a opção</small>
@@ -125,7 +125,7 @@
                       <div class="form-group">
                         <label>Barco & Transportadora</label>
                         <div class="form-group">
-                          <input type="hidden" name="transporter" id="transporter-number" value="{{ order.getDiscount }}">
+                          <input type="hidden" name="transporter" id="transporter-number" value="{{ order.getTransporter.getId ?? '' }}">
                           <input type="text" class="form-control" autocp="transporter" id="transporter" value="{{ order.getTransporter == null ? '' : order.getTransporter.getName }}">
                         </div>
                       </div>

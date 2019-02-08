@@ -111,12 +111,7 @@ $(function () {
             var cloneElInputs = cloneEl.querySelectorAll('input');
             for (var c = 0; c < cloneElInputs.length; c++) {
                 cloneElInputs[c].value = '';
-                if (cloneElInputs[c].hasAttribute('input-number')) {
-                    console.log(document.querySelectorAll('[input-number]')[document.querySelectorAll('[input-number]').length - 1]);
-                    cloneElInputs[c].value = value + 1;
-                    continue;
-                }
-                if (cloneElInputs[c].classList.contains('ignore-clone')) {
+                if (cloneElInputs[c].hasAttribute('input-number') || cloneElInputs[c].classList.contains('ignore-clone')) {
                     continue;
                 }
                 var inputName = 'cloneableField' + iNumber + '[' + cloneElInputs[c].getAttribute('id') + ']';

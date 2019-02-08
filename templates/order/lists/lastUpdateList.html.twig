@@ -76,7 +76,7 @@
                     <div class="col">
                         {% set finalPrice = 0 %}
                         {% for key, value in list.getManualProductCarts %}
-                            {% set finalPrice = finalPrice + value.getProductPrice %}    
+                            {% set finalPrice = finalPrice + (value.getProductPrice * value.getProductAmount) %}    
                         {% endfor %}
                         {% set finalPrice = finalPrice + list.freight - list.discount %}
                         <h5>{{ finalPrice | number_format(2, ',', '.') }}</h5>
@@ -87,7 +87,7 @@
                             </a>
                             <a print="h={{ 'valido' | makeHash }}&i={{ list.getId }}&r=ManualOrderReport" href="/order/action/print" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
                         {% if list.active == true %} 
-                            <a class="badge badge-pill badge-warning order-edit" href="">
+                            <a class="badge badge-pill badge-warning order-edit" href="/order/manual/{{list.getId}}">
                                 Editar
                             </a>
                             <a class="badge badge-pill badge-danger order-close" href="/order/manual/{{list.getId}}">
