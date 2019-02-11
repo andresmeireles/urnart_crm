@@ -53,7 +53,7 @@
                               <input type="text" class="form-control" name="cloneableField{{ loop.index - 1 }}[model]" id="model" placeholder="Urna" value="{{ product.getProductName }}" required="required"></div>
                             <div class="col">
                               <input type="hidden" name="cloneableField{{ loop.index - 1 }}[money]" id="money" converted-value="{{ product.getProductPrice }}" value="{{ product.getProductPrice }}">
-                              <input type="text" class="form-control numbers-only auto-float-convert-blur ignore-clone" id="price" placeholder="Preço" required="required" value="R$ {{ product.getProductPrice | number_format(2, ',', ',') }}">
+                              <input type="text" class="form-control numbers-only auto-float-convert-blur ignore-clone" id="price" placeholder="Preço" required="required" value="R$ {{ product.getProductPrice | number_format(2, ',', '.') }}">
                             </div>
                             <div class="col">
                               <input type="number" class="form-control col" name="cloneableField{{ loop.index - 1 }}[amount]" id="amount" placeholder="Qnt" required="required" value="{{ product.getProductAmount }}"></div>

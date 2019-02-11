@@ -43,6 +43,9 @@ vexjs.dialog.buttons.NO.text = 'Cancelar';
 
 const pond = require('filepond');
 
+import '@chenfengyuan/datepicker/dist/datepicker';
+import '@chenfengyuan/datepicker/i18n/datepicker.pt-BR';
+
 //globals
 global.$ = global.jQuery = $;
 global.axios = require('axios');
@@ -91,9 +94,9 @@ global.isNullOrWhiteSpace = require('./src/helpers/isNullOrWhiteSpace');
 global.strToMoney = require('./src/helpers/functions/strToMoney');
 global.checkUndefined = require('./src/helpers/functions/checkUndefined');
 
-/****************
- * IMPORTS ******
- ****************/
+/***********************
+ ******* IMPORTS *******
+ ***********************/
 
 import './src/sidebarAction.js';
 import './src/globals';

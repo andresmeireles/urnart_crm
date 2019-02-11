@@ -57,13 +57,13 @@
                                             <div class="form-control">{{ product.productName }}</div>
                                         </div>
                                         <div class="input-group col-md-3">
-                                            <div class="form-control">{{ product.productPrice | number_format(2, ',', '.') }}</div>
+                                            <div class="form-control">R$ {{ product.productPrice | number_format(2, ',', '.') }}</div>
                                         </div>
                                         <div class="input-group col-md-3">
                                             <div class="form-control">{{ product.productAmount }}</div>
                                         </div>
                                         <div class="input-group col-md-3">
-                                            <div class="form-control">{{ (product.productPrice * product.productAmount) | number_format(2, ',', '.') }}
+                                            <div class="form-control">R$ {{ (product.productPrice * product.productAmount) | number_format(2, ',', '.') }}
                                         </div>
                                         </div>
                                     </div>
@@ -87,14 +87,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-5">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <h4>Valor da(s) Parcela(s)</h4>
-                                        <h3>R$&nbsp;&nbsp;<span id="installmentPrice">0</span></h3>
+                                {#<div class="col-5">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <h4>Valor da(s) Parcela(s)</h4>
+                                            <h3>R$&nbsp;&nbsp;<span id="installmentPrice">0</span></h3>
                                         </div>
                                     </div>
-                                </div>
+                                </div>#}
                             </div>
                         </fieldset>
                     </div>

@@ -180,20 +180,28 @@ class OrderController extends AbstractController
     {
         $hash = $request->query->get('h') ?? null;
         $orderId = $request->query->get('i') ?? null;
+        
         if (is_null($hash) || is_null($orderId)) {
             $this->addFlash('error', 'Erro ao criar reserva');
             return $this->redirectToRoute('order');
         }
-        $trueHash = hash('ripemd160', 'valido');
-        if ($hash !== $trueHash) {
+        
+        if ($hash !== hash('ripemd160', 'valido')) {
           $this->addFlash('error', "Erro... falta o hash ou ele está errado.");
           return $this->redirectToRoute('order');
         }
+        
         $result = $model->reserve($orderId);
+        
+        if (!is_string($request->headers->get('referer'))) {
+            throw new \Exception('Link antigo não existe. Abortado');
+        }
+
         if ($result['http_code'] == 301) {
-          $this->addFlash('success', $result['message']);
+          $this->addFlash('success', $result['message']);  
           return $this->redirectToRoute($request->headers->get('referer'));
         }
+
         $this->addFlash( $result['type'], $result['message']);
         return $this->redirect($request->headers->get('referer'));
     }
@@ -298,7 +306,9 @@ class OrderController extends AbstractController
         }
 
         return $this->render('/order/lists/'. $typeOfList .'List.html.twig', [
-            'lists' => $lists
+            'lists' => $lists,
+            'beginDate' => $request->query->get('beginDate'),
+            'lastDate' => $request->query->get('lastDate')
         ]);
     }
 
@@ -333,6 +343,10 @@ class OrderController extends AbstractController
             $result->getType(),
             $result->getMessage()
         );
+
+        if (!is_string($request->headers->get('referer'))) {
+            throw new \Exception('Link antigo não existe. Abortado');
+        }
 
         return $this->redirect($request->headers->get('referer'));
     }

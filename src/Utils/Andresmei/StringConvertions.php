@@ -38,8 +38,13 @@ class StringConvertions
         }
 
         $converterTime = $this->convertStringToDate($dateString, '/');
+        $date = \DateTime::createFromFormat('m-d-Y', $converterTime);
 
-        return \DateTime::createFromFormat('m-d-Y', $converterTime)->format('Y-m-d');
+        if ($date instanceof \DateTime) {
+            return $date->format('Y-m-d');
+        }
+
+        throw new \Exception(sprintf('Conversão não foi possivel.'));
     }
 
     /**

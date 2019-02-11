@@ -58,7 +58,16 @@
 		</div>
 	</form>
 	<div class="text-center">
-        <h3 id="typeOfList">Pedidos por data.</h3>
+        {% if beginDate is empty and lastDate is empty %}
+
+        {% elseif beginDate is not empty and lastDate is not empty %}
+            <h3 id="typeOfList">Pedido no intervalo de {{ beginDate }} a {{ lastDate }}.</h3>
+        {% elseif beginDate is not empty and lastDate is empty %}
+            <h3 id="typeOfList">Pedidos a partir do dia {{ beginDate }}.</h3>
+        {% elseif beginDate is empty and lastDate is not empty %}
+            <h3 id="typeOfList">Pedidos até dia {{ lastDate }}.</h3>
+        {% endif %}
+        {% if beginDate is not null or lastDate is not null %}
         <div class="row" id="listItens">
             <div class="col">
                 <h4><b>Data</b></h4>
@@ -79,6 +88,12 @@
                 <h4><b>Ações</b></h4>
             </div>
         </div>
+        {% endif %}
+        
+        {% if lists is empty %} 
+            <h4>Não há pedidos deste intervalo.</h5> 
+        {% endif %}
+        
         {% for list in lists %}
 
             <div class="row py-1 elRow">

@@ -14,6 +14,7 @@
         "build": "encore production"
     },
     "dependencies": {
+        "@chenfengyuan/datepicker": "^1.0.6",
         "@fancyapps/fancybox": "^3.3.5",
         "@fortawesome/fontawesome-free": "^5.1.0",
         "axios": "^0.18.0",

@@ -5,10 +5,18 @@ namespace App\Model;
 
 use App\Entity\Order;
 use App\Utils\Andresmei\StringConvertions;
+use App\Utils\Exceptions\ListNotExistsException;
 
 class ListModel extends Model
 {
-    public function select(string $type)
+    /**
+     * [select description]
+     *
+     * @param   string  $type  [$type description]
+     *
+     * @return  array           [return description]
+     */
+    public function select(string $type): array
     {
         switch ($type) {
             case 'client':
@@ -27,26 +35,50 @@ class ListModel extends Model
                 return $this->getParsedStatusOrderData(2);
                 break;
             default:
-                return 'tipo de relatorio não existe';
+                throw new ListNotExistsException(sprintf('A lista %s não existe ou inserida incorretamente. Favor verificar a lista', $type));
                 break;
         }
     }
 
-    public function getParsedClientData()
+    /**
+     * Retorna pedidos por cliente.
+     *
+     * @return  array  App\Entity\Order.
+     */
+    public function getParsedClientData(): array
     {
         return $this->em->getRepository(Order::class)->findByClientGroup();
     }
 
-    public function getParsedLastOrderData()
+    /**
+     * Retorna ultimo pedido.
+     *
+     * @return  array  array App\Entity\Order.
+     */
+    public function getParsedLastOrderData(): array
     {
         return $this->em->getRepository(Order::class)->findByLastOrder();
     }
 
-    public function getParsedStatusOrderData(int $type = 0)
+    /**
+     * Retorna lista de elemetos de acordo com status.
+     *
+     * @param   int     $type  opções 0 ou 1 ou 2.
+     *
+     * @return  array         
+     */
+    public function getParsedStatusOrderData(int $type = 0): array
     {
         return $this->em->getRepository(Order::class)->findByStatusOrders($type);
     }
 
+    /**
+     * Retorna resultados em dada ordem em formato json.
+     *
+     * @param string $repository
+     * @param string $orderBy
+     * @return string
+     */
     public function getJsonListOrderBy(string $repository, string $orderBy): string
     {
         $returnList = $this->em->getRepository('App\Entity\\'.$repository)->findBy(
@@ -58,6 +90,13 @@ class ListModel extends Model
         return $jsonResponse;
     }
 
+    /**
+     * Lista resultados de repositorio dada a orderm.
+     *
+     * @param string $repository
+     * @param string $orderBy
+     * @return array
+     */
     public function getListOrderBy(string $repository, string $orderBy): array
     {        
         $returnList = $this->em->getRepository('App\Entity\\'.$repository)->findBy(
@@ -100,7 +139,7 @@ class ListModel extends Model
             $result = $queryBuilder->select('u')
                                    ->from($repo, 'u')
                                    ->where('u.createDate <= :date')
-                                   ->setParameter('date', $convertedLastDate)
+                                   ->setParameter('date', sprintf('%s 23:00:00', $convertedLastDate))
                                    ->orderBy('u.id', 'ASC');
         }
 
