@@ -1,3 +1,5 @@
+import { throws } from "assert";
+
 /* 
  * Funcções de click para busca de infromações no banco de dados.
  */
@@ -12,6 +14,7 @@ document.addEventListener('click', (el) => {
         
         simpleRequest(url, 'PATCH', null, (res) => {
             let data = res.data;
+            document.querySelector(`.${tableForConsult}`).innerHTML = '';
             for (let info of data) {
                 drawFunction(tableForConsult, info);
             }
@@ -20,20 +23,54 @@ document.addEventListener('click', (el) => {
     }
 });
 
+/**
+ * drawFunction => seleciona função de desenho da tabela.
+ * 
+ * @param {string} tableDataName nome da tabela a ser desenhada.
+ * @param {json} tableData dados a serem inclusos na tabela.
+ */
 const drawFunction = (tableDataName, tableData) => {
+    let tableBody = document.querySelector(`.${tableDataName}`);
+    let trEl = '';
+
     switch (tableDataName) {
         case 'pessoaJuridica':
-            customerDraw('pessoaJuridica', tableData);
+            trEl = customerDraw(tableData);
+            break;
+        case 'departament':
+        case 'unit':
+            trEl = departamentAndUnitDraw(tableData);
+            break;
+        case 'paymentType':
+            trEl = paymentTypeDraw(tableData);
+            break;
+        case 'transporter':
+            trEl = transporterDraw(tableData);
             break;
         default:
             console.log('não tem função meu amigo.');
-            break;
+            throw Error(`Não ha função para ação ${tableDataName.toUpperCase()}`);
     }
+
+    return tableBody.appendChild(trEl);
 };
 
-const customerDraw = (target, data) => {
-    let tableBody = document.querySelector(`.${target}`);
-    
+const removeButton = () => {
+    let removeBadge = document.createElement('i');
+    removeBadge.classList.add('badge', 'badge-danger', 'badge-pill', 'cursor-decoration');
+    let txt = document.createTextNode('remove');
+    removeBadge.appendChild(txt);
+
+    return removeBadge;
+};
+
+/**
+ * customerDraw => carrega dados da tabela de clientes.
+ * 
+ * @param {string} target tabela onde serão desenhados os elementos carregados do banco de dados
+ * @param {json} data dados a serem inclusas no desenho da tabela
+ */
+const customerDraw = (data) => {    
     let trEl = document.createElement('tr');
     
     let tdEl = document.createElement('td');
@@ -54,6 +91,63 @@ const customerDraw = (target, data) => {
     tdText = document.createTextNode(data.cnpj);
     tdEl.appendChild(tdText);
     trEl.appendChild(tdEl);
+
+    return trEl;
+};
+
+
+const departamentAndUnitDraw = (data) => {
+    let trEl = document.createElement('tr');
     
-    return tableBody.appendChild(trEl);
+    let tdEl = document.createElement('td');
+    let tdText = document.createTextNode(data.name);
+    tdEl.appendChild(tdText);
+    trEl.appendChild(tdEl);
+
+    tdEl = document.createElement('td');
+
+   /*  let removeBadge = document.createElement('i');
+    removeBadge.classList.add('badge', 'badge-danger', 'badge-pill', 'cursor-decoration');
+    let txt = document.createTextNode('remove');
+    removeBadge.appendChild(txt); */
+    let rmvBtn = removeButton();
+    tdEl.appendChild(rmvBtn);
+
+    trEl.appendChild(tdEl);
+
+    return trEl;
+};
+
+const paymentTypeDraw = (data) => {
+    let trEl = document.createElement('tr');
+
+    let tdEl = document.createElement('td');
+    let tdText = document.createTextNode(data.name);
+    tdEl.appendChild(tdText);
+    trEl.appendChild(tdEl);
+
+    let plotable = data.plot ? 'Sim' : 'Não';
+    tdEl = document.createElement('td');
+    tdText = document.createTextNode(plotable);
+    tdEl.appendChild(tdText);
+    trEl.appendChild(tdEl);
+
+    return trEl;
+};
+
+const transporterDraw = (data) => {
+    let trEl = document.createElement('tr');
+
+    let tdEl = document.createElement('td');
+    let tdText = document.createTextNode(data.name);
+    tdEl.appendChild(tdText);
+    trEl.appendChild(tdEl);
+
+    let port = data.port ? data.port : '';
+    tdEl = document.createElement('td');
+    tdText = document.createTextNode(port);
+    tdEl.appendChild(tdText);
+    trEl.appendChild(tdEl);
+
+    return trEl;
 };

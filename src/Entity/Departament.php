@@ -60,7 +60,7 @@ class Departament
         return $this;
     }
 
-    public function getProduct(): ?Product
+ /*    public function getProduct(): ?Product
     {
         return $this->product;
     }
@@ -70,7 +70,7 @@ class Departament
         $this->product = $product;
 
         return $this;
-    }
+    } */
 
     /**
      * @return Collection|Feedstock[]
