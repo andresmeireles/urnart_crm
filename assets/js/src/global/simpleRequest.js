@@ -14,7 +14,7 @@ module.exports = function (url, method, info = null, responseFunction = null, da
 		method: method,
 		url: url,
 		data: {
-			[dataName]: [info]
+			[dataName]: info
 		}
 	})
 	.then(function (response) {

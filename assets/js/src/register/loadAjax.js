@@ -39,13 +39,13 @@ const drawFunction = (tableDataName, tableData) => {
             break;
         case 'departament':
         case 'unit':
-            trEl = departamentAndUnitDraw(tableData);
+            trEl = departamentAndUnitDraw(tableData, tableDataName);
             break;
         case 'paymentType':
-            trEl = paymentTypeDraw(tableData);
+            trEl = paymentTypeDraw(tableData, tableDataName);
             break;
         case 'transporter':
-            trEl = transporterDraw(tableData);
+            trEl = transporterDraw(tableData, tableDataName);
             break;
         default:
             console.log('não tem função meu amigo.');
@@ -55,10 +55,12 @@ const drawFunction = (tableDataName, tableData) => {
     return tableBody.appendChild(trEl);
 };
 
-const removeButton = () => {
+const removeButton = (table, rowId) => {
     let removeBadge = document.createElement('i');
-    removeBadge.classList.add('badge', 'badge-danger', 'badge-pill', 'cursor-decoration');
+    removeBadge.classList.add('badge', 'badge-danger', 'badge-pill', 'cursor-decoration', 'remover');
     let txt = document.createTextNode('remove');
+    removeBadge.setAttribute('target-table', table);
+    removeBadge.setAttribute('row-id', rowId);
     removeBadge.appendChild(txt);
 
     return removeBadge;
@@ -96,7 +98,7 @@ const customerDraw = (data) => {
 };
 
 
-const departamentAndUnitDraw = (data) => {
+const departamentAndUnitDraw = (data, table) => {
     let trEl = document.createElement('tr');
     
     let tdEl = document.createElement('td');
@@ -105,20 +107,14 @@ const departamentAndUnitDraw = (data) => {
     trEl.appendChild(tdEl);
 
     tdEl = document.createElement('td');
-
-   /*  let removeBadge = document.createElement('i');
-    removeBadge.classList.add('badge', 'badge-danger', 'badge-pill', 'cursor-decoration');
-    let txt = document.createTextNode('remove');
-    removeBadge.appendChild(txt); */
-    let rmvBtn = removeButton();
+    let rmvBtn = removeButton(table, data.id);
     tdEl.appendChild(rmvBtn);
-
     trEl.appendChild(tdEl);
 
     return trEl;
 };
 
-const paymentTypeDraw = (data) => {
+const paymentTypeDraw = (data, table) => {
     let trEl = document.createElement('tr');
 
     let tdEl = document.createElement('td');
@@ -132,10 +128,15 @@ const paymentTypeDraw = (data) => {
     tdEl.appendChild(tdText);
     trEl.appendChild(tdEl);
 
+    tdEl = document.createElement('td');
+    let rmvBtn = removeButton(table, data.id);
+    tdEl.appendChild(rmvBtn);
+    trEl.appendChild(tdEl);
+
     return trEl;
 };
 
-const transporterDraw = (data) => {
+const transporterDraw = (data, table) => {
     let trEl = document.createElement('tr');
 
     let tdEl = document.createElement('td');
@@ -147,6 +148,11 @@ const transporterDraw = (data) => {
     tdEl = document.createElement('td');
     tdText = document.createTextNode(port);
     tdEl.appendChild(tdText);
+    trEl.appendChild(tdEl);
+
+    tdEl = document.createElement('td');
+    let rmvBtn = removeButton(table, data.id);
+    tdEl.appendChild(rmvBtn);
     trEl.appendChild(tdEl);
 
     return trEl;

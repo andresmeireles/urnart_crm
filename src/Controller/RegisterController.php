@@ -84,7 +84,7 @@ class RegisterController extends AbstractController
     }
 
     /**
-     * @Route("/register/remove/{entity}", methods={"POST", "DELETE"})
+     * @Route("/register/remove/{entity}", methods={"DELETE"})
      *
      * @param string $entity
      * @param Request $request
@@ -93,14 +93,13 @@ class RegisterController extends AbstractController
      */
     public function getGenericRemover(string $entity, Request $request, Crud $crud)
     {
-        $object = json_decode($request->getContent());
-        $id = $object->id;
-        $crud->remove($id, $entity);
+        $id = (json_decode($request->getContent()))->id;
+        $response = $crud->remove($id, $entity);
 
         return new Response(
-            $crud->getMessage(),
+            $response->getMessage(),
             Response::HTTP_OK,
-            array('type-message' => $crud->getTypeMessage())
+            array('type-message' => $response->getType())
         );
     }
 

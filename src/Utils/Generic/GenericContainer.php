@@ -9,7 +9,7 @@ abstract class GenericContainer
     /**
      * Entity Manager
      *
-     * @var = object
+     * @var EntityManagerInterface
      */
     protected $em;
 

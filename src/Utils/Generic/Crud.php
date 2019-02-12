@@ -5,23 +5,30 @@ use App\Utils\Generic\GenericContainer;
 use App\Utils\Generic\GenericSetter;
 use JMS\Serializer\SerializerBuilder;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use App\Utils\Andresmei\FlashResponse;
 
 class Crud extends GenericContainer
 {
     /**
      * Nome da entidade utilizada
      *
-     * @var [string]
+     * @var string
      */
     private $entity;
 
     /**
      * Mensagem de retorno da ação
      *
-     * @var [string]
+     * @var string
      */
     private $userMessage;
 
+    /**
+     * Tipo de retorno
+     *
+     * @var  string
+     */
     private $typeMessage = 'success';
 
     private $devMessage;
@@ -34,12 +41,21 @@ class Crud extends GenericContainer
         $this->entity = $className;
     }
 
-    public function remove(string $id, string $entity = null): void
+    public function remove(string $id, string $entity): FlashResponse
     {
         $this->setEntity($entity);
         $registry = $this->em->getRepository($this->entity)->find($id);
-        $this->em->remove($registry);
-        $this->commit('Erro na operação');
+
+        try {
+            $this->em->remove($registry);
+            $this->em->flush();
+        } catch (ForeignKeyConstraintViolationException $e) {
+            return new FlashResponse(200, 'danger', 'Item não pode ser removido pois está sendo utilizado em algum pedido.');    
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+        
+        return new FlashResponse(200, 'success', sprintf('Produto %d removido com sucesso!', $id));
     }
 
     public function commit($errorMessage = null): void
@@ -48,7 +64,7 @@ class Crud extends GenericContainer
             $this->em->flush();
             $this->userMessage = 'Operação feita com sucesso';
         } catch (\PDOException $e) {
-            throw new \PDOException();
+            throw new \PDOException($e->getMessage());
         }
     }
 

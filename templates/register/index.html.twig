@@ -50,7 +50,7 @@
                             <h5 class="card-title"><i class="fas fa-fw fa-boxes"></i>&nbsp;Departamentos</h5>
                             <p class="card-text">Cria departamentos da empresa.</p>
                             <a href="javascript:;" data-fancybox data-src="#add-departament" class="card-link text-primary">Criar</a>
-                            <a href="javascript:;" data-fancybox data-src="#departament" load-table="departament" data-table="departament" class="card-link text-primary">Visualizar e Editar</a>
+                            <a href="javascript:;" data-fancybox data-src="#departament" load-table="departament"  class="card-link text-primary">Visualizar e Editar</a>
                             <div id="departament" class="p-4" style="display: none">
                                 <table class="table table-striped table-bordered">
                                     <thead>
@@ -71,13 +71,14 @@
                             <h5 class="card-title"><i class="fas fa-fw fa-boxes"></i>&nbsp;Formas de Pagamento</h5>
                             <p class="card-text">Lista de tipos.</p>
                             <a href="javascript:;" data-fancybox data-src="#add-paymentType" class="card-link text-primary">Criar</a>
-                            <a href="javascript:;" data-fancybox data-src="#paymentType" load-table="paymentType" data-table="paymentType" class="card-link text-primary">Visualizar e Editar</a>
+                            <a href="javascript:;" data-fancybox data-src="#paymentType" load-table="paymentType" class="card-link text-primary">Visualizar e Editar</a>
                             <div id="paymentType" class="p-4" style="display: none">
                                 <table class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
                                             <th scope="col">Forma de Pagamento</th>
                                             <th scope="col">Parcelavel</th>
+                                            <th scope="col">Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody class="paymentType"></tbody>
@@ -120,6 +121,7 @@
                                         <tr>
                                             <th scope="col">Nome da Transportadora</th>
                                             <th scope="col">Nome Porto</th>
+                                            <th scope="col">Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody class="transporter"></tbody>
@@ -128,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="m-1"> {# cidades #}
+                {#<div class="m-1"> 
                     <div class="card" style="width: 14rem;">
                         <div class="card-body">
                             <h5 class="card-title"><i class="fas fa-fw fa-globe-americas"></i>&nbsp;Cidades</h5>
@@ -137,16 +139,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="m-1"> {# estados #}
+                <div class="m-1">
                     <div class="card" style="width: 14rem;">
                         <div class="card-body">
                             <h5 class="card-title"><i class="fas fa-fw fa-globe-americas"></i>&nbsp;Estados</h5>
                             <p class="card-text">Adiministrar estados para entregas.</p>
-                            {#<a href="#" data-action="add-" class="card-link text-primary">Criar</a>#}
+                            {#<a href="#" data-action="add-" class="card-link text-primary">Criar</a>
                             <a href="javascript:;" data-fancybox data-src="#estado" class="card-link text-primary">Visualizar</a>
                         </div>
                     </div>
-                </div>
+                </div> #}
             </div>
         </div>
 
