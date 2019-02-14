@@ -45,6 +45,22 @@ class ReportController extends AbstractController
     }
 
     /**
+     * Redirect to specific report page
+     *
+     * @Route("/report/{reportType}")
+     * 
+     * @param   string    $reportType  type of report to redirect
+     *
+     * @return  Response                report page
+     * @throws  \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function openReportPage(string $reportType): Response
+    {
+        $reportPage = sprintf('report/pages/%s.html.twig', $reportType);
+        return $this->render($reportPage);
+    }
+
+    /**
      * Cria pesquisa de satisfação
      *
      * @Route("/report/create/survey", name="createSurvey")
@@ -72,8 +88,6 @@ class ReportController extends AbstractController
         $data = $request->request->all();
         $customerId = $data['customerId'];
         $surveyReferenceDate = $data['surveyReferenceDate'];
-        dump($surveyReferenceDate);
-        die();
         unset($data['customerId']);
         unset($data['surveyReferenceDate']);
 
