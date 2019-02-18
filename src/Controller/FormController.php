@@ -90,10 +90,10 @@ class FormController extends AbstractController
      */
     public function printForm(Request $request, string $formName, Form $form): Response 
     {
-        if (empty($request->request->all())) {
+        if (empty($request->query->all())) {
             echo 'Nenhum dado enviado';
         }
-        $data = $request->request->all();
+        $data = $request->query->all();
         $result = $form->returnSelectedFromType('show', $formName, $data);
         return new Response($result['template']);
     }
