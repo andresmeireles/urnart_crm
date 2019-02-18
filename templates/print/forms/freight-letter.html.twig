@@ -357,17 +357,17 @@
                     </div>
                     <div class="r-1">À</div>
                     <div class="r-2">
-                        <span class="rf-right">R$ {{ clone.freight }}</span>
+                        {% set floatFreight = clone.freight | number_format(2, ',', '.') %}
+                        <span class="rf-right">R$ {{ floatFreight }}</span>
                         <span class="rf-left r-b-75">{{ clone.number }} - {{ clone.clientName }}</span>
                         <span class="rf-left r-b-75">{{ clone.clientCity }} - {{ clone.clientState }}</span>
                         <div class="rf-clear"></div>
                     </div>
                     <div class="r-3">
                         <p>
-                            {% set floatFreight = clone.freight | number_format(2, '.', ',') %}
                             {{ floatFreight }}
-                            Pagar ao portador o Valor de R$ {{ floatFreight | number_format(2, ',', '.') }}
-                            ({{ floatFreight | extense | upper }}) referente ao frete de urnas do pedido de
+                            Pagar ao portador o Valor de R$ {{ floatFreight }}
+                            ({{ clone.freight | extense | upper }}) referente ao frete de urnas do pedido de
                             número {{ clone.orderNumber }}, conforme combinado.
                         </p>
                     </div>
@@ -402,16 +402,15 @@
                     </div>
                     <div class="r-1">À</div>
                     <div class="r-2">
-                        <span class="rf-right">R$ {{ clone.freight }}</span>
+                        <span class="rf-right">R$ {{ floatFreight }}</span>
                         <span class="rf-left r-b-75">{{ clone.number }} - {{ clone.clientName }}</span>
                         <span class="rf-left r-b-75">{{ clone.clientCity }} - {{ clone.clientState }}</span>
                         <div class="rf-clear"></div>
                     </div>
                     <div class="r-3">
                         <p>
-                            {% set floatFreight = clone.freight | number_format(2, '.', ',') %}
-                            Pagar ao portador o Valor de R$ {{ floatFreight | number_format(2, ',', '.') }}
-                            ({{ floatFreight | extense | upper }}) referente ao frete de urnas do pedido de
+                            Pagar ao portador o Valor de R$ {{ floatFreight }}
+                            ({{ clone.freight | extense | upper }}) referente ao frete de urnas do pedido de
                             número {{ clone.orderNumber }}, conforme combinado.
                         </p>
                     </div>
