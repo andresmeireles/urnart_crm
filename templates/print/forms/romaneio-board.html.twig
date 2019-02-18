@@ -52,11 +52,11 @@
             <td class="center">{{ data.urnP }}</td>
             <td class="center no-border">{{ (data.urnG + data.urnM + data.urnP) }}</td>
         </tr>
-        {%  set number = number + 1 %}
-        {% set totalP = totalP + data.urnP %}
-        {% set totalM = totalM + data.urnM %}
-        {% set totalG = totalG + data.urnG %}
-        {% set total  = total + (data.urnG + data.urnM + data.urnP) %}
+            {% set number = number + 1 %}
+            {% set totalP = totalP + data.urnP %}
+            {% set totalM = totalM + data.urnM %}
+            {% set totalG = totalG + data.urnG %}
+            {% set total  = total + (data.urnG + data.urnM + data.urnP) %}
         {% endfor %}
         <tr class="space">
             <td>&nbsp;</td>

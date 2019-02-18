@@ -10,15 +10,28 @@ use App\Utils\Exceptions\BadRefererLinkException;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
+    /**
+     * Evento que define ações para exceções do php
+     *
+     * @param   GetResponseForExceptionEvent  $event  Objeto de evento
+     *
+     * @return  Response|ExceptionSubscriber                                [return description]
+     */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $exceptionClass = get_class($event->getException());
+
         $exception = $exceptionClass === 'Exception' ? $exceptionClass : substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
+        
+        if ($event->getRequest()->server->get('APP_ENV') === 'dev') {
+            $exception = $exceptionClass === 'Exception' || $exceptionClass === 'Twig_Error_Loader' ? $exceptionClass : substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
+        }
+
         $refererLink = $event->getRequest()->headers->get('referer');
         if (!is_string($refererLink)) {
             $refererLink = '/';
         }
-        dump($exception, $exceptionClass);
+        
         switch ($exception) {
             case 'AccessDeniedException':
             case 'FieldAlreadExistsException':
@@ -39,11 +52,12 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 ));
                 break;
             case 'Twig_Error_Loader':
-                die('Não existe essa pagina meu amiginho.');
+                //return new Response('Página não existe. Caminho incorreto.');
+                return new Response($this);
                 break;
             case 'BadRefererLinkException':
             default:
-                return;
+                return $this;
                 break;
         }
     }

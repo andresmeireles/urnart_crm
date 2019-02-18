@@ -11,6 +11,7 @@ use App\Config\NonStaticConfig;
 use App\Entity\Survey;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\MyDateTime;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 
 class ReportController extends AbstractController
 {

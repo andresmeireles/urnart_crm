@@ -9,15 +9,16 @@
           <hr> </div>
         <div class="row">
           <div class="col" id="type-form">
-            <form method="POST" id="formObject" action="/forms/{{ formName }}" target="_blank">
+            <form method="GET" id="formObject" action="/forms/{{ formName }}/print" target="_blank">
               <div class="row">
                 <div class="col-4">
                     <input type="submit" class="btn btn-primary col" value="Criar Romaneio">
                 </div>
+                
                 {% if config.getProperty('allow_survey') %}
                   <div class="col-4">
                       <a href="javasctipy:;" class="btn btn-danger col" id="createSurvey">Criar pesquisa de satisfação</a>
-                    {% include 'components/csrftoken.html.twig' %}
+                      {% include 'components/csrftoken.html.twig' %}
                   </div>                  
                 {% endif %}
                 <div class="col-4">

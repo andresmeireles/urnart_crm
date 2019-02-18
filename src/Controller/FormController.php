@@ -77,22 +77,19 @@ class FormController extends AbstractController
     }
 
     /**
-     * Cria e exporta arquivos pdf dos formulários.
+     * Cria e exporta arquivos para criação de formulários.
      *
-     * @param Request $request  objeto de requisição.
-     * @param string  $formName nome do formulário
-     *                usado como template.
-     * @param Form    $form     objeto de formulário customizado.
+     * @param Request $request      objeto de requisição.
+     * @param string  $formName     nome do formulário
+     *                              usado como template.
+     * @param Form    $form         objeto de formulário customizado.
      *
-     * @Route("/forms/{formName}", methods="POST")
+     * @Route("/forms/{formName}/print", methods={"GET"})
      *
      * @return Response
      */
-    public function printForm(
-        Request $request,
-        string $formName,
-        Form $form
-    ): Response {
+    public function printForm(Request $request, string $formName, Form $form): Response 
+    {
         if (empty($request->request->all())) {
             echo 'Nenhum dado enviado';
         }

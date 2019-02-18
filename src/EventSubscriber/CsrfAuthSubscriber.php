@@ -13,7 +13,7 @@ class CsrfAuthSubscriber extends AbstractController implements EventSubscriberIn
     /**
      * @param FilterControllerEvent $event
      */
-    public function onKernelController(FilterControllerEvent $event): void
+    public function onKernelController(FilterControllerEvent $event): self
     {
         $request = $event->getRequest();
         if ($request->getMethod() == 'POST') {
@@ -32,8 +32,8 @@ class CsrfAuthSubscriber extends AbstractController implements EventSubscriberIn
             foreach ($session->all() as $key => $value) {
                 $session->remove($key);
             }
-            return;
         }
+        return $this;
     }
 
     public static function getSubscribedEvents()
