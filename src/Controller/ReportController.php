@@ -52,13 +52,32 @@ class ReportController extends AbstractController
      * 
      * @param   string    $reportType  type of report to redirect
      *
-     * @return  Response                report page
-     * @throws  \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return  Response               report page
      */
     public function openReportPage(string $reportType): Response
     {
         $reportPage = sprintf('report/pages/%s.html.twig', $reportType);
-        return $this->render($reportPage);
+        $repository = sprintf('App\Entity\%s', ucfirst($reportType));
+        return $this->render($reportPage, [
+            'simpleView' => $this->getDoctrine()->getRepository($repository)->findAll()
+        ]);
+    }
+
+    /**
+     * Create some report registry.
+     * 
+     * @Route("/report/{pageType}/create")
+     *
+     * @param   Request   $request     Symfony Request object.
+     * @param   string    $pageType    type of page.
+     *
+     * @return  Response               rederized page.
+     */
+    public function createGenericReportRegistry(Request $request, string $pageType): Response
+    {
+        $data = $request->request->all();
+        dump($data);
+        die();
     }
 
     /**

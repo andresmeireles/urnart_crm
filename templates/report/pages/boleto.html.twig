@@ -1,0 +1,40 @@
+{% extends 'index.html.twig' %}
+
+{% block content %}
+    {% set listItens = [
+            {
+                link : 'create',
+                text : 'Criar Novo Titulo',
+                class: 'fancy-conversion'
+            },
+            { link: 'list', text: 'Listar Titulos' }, 
+            { link: 'makeReport', text: 'Criar Relátorios' }
+        ] %}
+        {% include "components/simpleBar.html.twig" with {'metalink' : 'report', 'pageType': 'boleto',  'barBackground' : 'secondary', 'listItens': listItens } %}
+    <div class="p-3 col" id="boleto-index">
+        <div>
+            <h2>Extrato simples de titulos.</h2>
+            <hr>
+        </div>
+        <div id="show-titles">
+            {% if simpleView is empty %}
+            
+                <h3>Não ha titulos registrados</h3>
+
+            {% else %}
+                
+            {% for sview in simpleView %}
+                <div class="col">
+                    <div class="col">{{ sview.boletoCustomerOwener }}</div>
+                    <div class="col">{{ sview.boletoNumber }}/{{ sview.boletoInstallment }}</div>
+                    <div class="col">{{ sview.boletoValue }}</div>
+                    <div class="col">{{ sview.boletoPaymentDate }}</div>
+                </div>
+            {% endfor %}
+            
+            {% endif %}
+        </div>
+    </div>
+
+    {% include "report/pages/boleto/create.html.twig" %}
+{% endblock %}

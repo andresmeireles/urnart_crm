@@ -41,6 +41,11 @@ class Boleto extends BaseEntity
      */
     private $BoletoPaymentDate;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $boletoValue;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +107,18 @@ class Boleto extends BaseEntity
     public function setBoletoPaymentDate(?\DateTimeInterface $BoletoPaymentDate): self
     {
         $this->BoletoPaymentDate = $BoletoPaymentDate;
+
+        return $this;
+    }
+
+    public function getBoletoValue(): ?float
+    {
+        return $this->boletoValue;
+    }
+
+    public function setBoletoValue(float $boletoValue): self
+    {
+        $this->boletoValue = $boletoValue;
 
         return $this;
     }

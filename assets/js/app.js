@@ -119,6 +119,8 @@ import './src/register/loadAjax';
 // reports
 import './src/reports/survey';
 import './src/reports/surveyClone';
+import './src/reports/boleto/boletoStartActions';
+import './src/reports/boleto/boletoSendAction';
 
 //global tools
 import './src/global/masks';

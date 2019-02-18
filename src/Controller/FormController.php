@@ -109,11 +109,8 @@ class FormController extends AbstractController
      *
      * @return Response
      */
-    public function sendPdfForm(
-        Request $request,
-        string $formName,
-        Form $form
-    ): Response {
+    public function sendPdfForm(Request $request, string $formName, Form $form): Response 
+    {
         if (empty($request->request->all())) {
             echo 'Nenhum dado enviado';
         }

@@ -3,8 +3,14 @@ document.addEventListener('focus', (el) => {
     if (el.target.classList.contains('calendar-selector')) {
         $(el.target).datepicker({
             format: 'dd/mm/yyyy',
-            language: 'pt-BR'
+            language: 'pt-BR',
+            zIndex: 99993,
+            autoHide: true
         });
     }
 
-}, true)
+    if (el.target.hasAttribute('auto-clear')) {
+        el.target.value = '';
+    }
+
+}, true);

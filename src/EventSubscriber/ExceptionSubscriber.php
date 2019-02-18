@@ -53,7 +53,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 break;
             case 'Twig_Error_Loader':
                 //return new Response('Página não existe. Caminho incorreto.');
-                return new Response($this);
+                return new Response('Deu ruim meu amigo.');
                 break;
             case 'BadRefererLinkException':
             default:

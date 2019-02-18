@@ -13,4 +13,4 @@ document.addEventListener('change', function (el) {
         return true;
     }
 
-}, true)
+}, true);
