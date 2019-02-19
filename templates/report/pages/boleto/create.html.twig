@@ -1,7 +1,7 @@
 <div id="create-boleto" class="p-2 col-md-10" style="display: none; bottom: 50px">
     <h3>Criar novo titulo.</h3>
     <hr>
-    <form id="newTitle" action="/report/boleto/create">
+    <form method="POST" id="newTitle" action="/report/boleto/create">
         <div class="form-group">
             <label for="inputCustomerName">Cliente</label>
             <input type="text" class="form-control" name="boletoCustomerOwner" placeholder="Nome do cliente">
@@ -30,7 +30,7 @@
         </div>
         <div class="form-group">
             {% include "components/csrftoken.html.twig" %}
-            <button type="submit" class="btn btn-success btn-block" table-target="#newTitle">Adicionar Titulo</button>
+            <button type="submit" class="btn btn-success btn-block">Adicionar Titulo</button>
         </div>
     </form>
 </div>

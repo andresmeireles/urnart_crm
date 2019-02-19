@@ -1,0 +1,43 @@
+{% extends "report/pages/boleto/templates/listTemplate.html.twig" %}
+
+{% block listOfResults %}
+    <div class="p-2 col">
+        <div>
+            <h2>Relatorios por {{ typeOfList }}</h2>
+            <hr>
+        </div>
+        <div id="show-titles" class="col">
+                {% if simpleView is empty %}
+                
+                    <h3>Não ha titulos registrados</h3>
+    
+                {% else %}
+                    <div class="row">
+                        <div class="col text-center font-weight-bold"><p><strong>Cliente Do Boleto</strong></p></div>
+                        <div class="col text-center font-weight-bold"><p><strong>Numero Do Titulo/Parcela</strong></p></div>
+                        <div class="col text-center font-weight-bold"><p><strong>Valor do Titulo</strong></p></div>
+                        <div class="col text-center font-weight-bold"><p><strong>Vencimento do Titulo</strong></p></div>
+                        <div class="col text-center font-weight-bold"><p><strong>Ações</strong></p></div>
+                    </div>
+                {% for sview in simpleView %}
+                    <div class="row" id="titulo{{ sview.id }}" target="/{{ metalink }}/{{ entity }}">
+                        <div class="d-none id-row">{{ sview.id }}</div>
+                        <div class="col text-center"><p>{{ sview.boletoCustomerOwner }}</p></div>
+                        <div class="col text-center"><p>{{ sview.boletoNumber }}/{{ sview.boletoInstallment }}</p></div>
+                        <div class="col text-center"><p>{{ sview.boletoValue }}</p></div>
+                        <div class="col text-center"><p>{{ sview.boletoVencimento | date('d/m/Y') }}</p></div>
+                        <div class="col text-center">
+                        <div class="badge badge-pill badge-light cursor-decoration mx-1" view target="#titulo{{ sview.id }}" data-fancybox data-src="#hidden-content{{ sview.id}}">Visualizar</div>
+                            <div class="col-md-10" id="hidden-content{{ sview.id}}" style="display:none">
+                                <div id="content{{ sview.id }}"></div>
+                            </div>
+                            <a href="/report/boleto/change/{{ sview.id }}" class="badge badge-pill badge-warning cursor-decoration" edit target="#titulo{{ sview.id }}">Editar</a>
+                            <div class="badge badge-pill badge-primary cursor-decoration" status-edit target="#titulo{{ sview.id }}">Status</div>
+                        </div>
+                    </div>
+                {% endfor %}
+                
+                {% endif %}
+            </div>    
+    </div>
+{% endblock %}

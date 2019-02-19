@@ -19,7 +19,7 @@ module.exports = function (url, method, info = null, responseFunction = null, da
 	})
 	.then(function (response) {
 		if (responseFunction === null) {
-                    return response.data;
+            return response.data;
 		}
 		responseFunction(response);
                 return;

@@ -16,9 +16,10 @@
 	    <small class="text-danger"><b>Esses pedidos não serão registrados no banco de dados nem contarão em relátorios</b></small>#}
         </div>
         <hr>
-          <form method="GET" action="/order/createmanualorder">
+          <form method="POST" action="/order/createmanualorder">
            <div class="row">
           <div class="col-md-12 my-1">
+            {% include "components/csrftoken.html.twig" %}
             <input type="submit" class="btn btn-primary active btn-block btn-lg" id="send-form" value="Criar pedido manual">
           </div>
         </div>

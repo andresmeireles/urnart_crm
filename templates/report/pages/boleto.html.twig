@@ -16,7 +16,7 @@
             <h2>Extrato simples de titulos.</h2>
             <hr>
         </div>
-        <div id="show-titles">
+        <div id="show-titles" class="col">
             {% if simpleView is empty %}
             
                 <h3>Não ha titulos registrados</h3>
@@ -24,11 +24,11 @@
             {% else %}
                 
             {% for sview in simpleView %}
-                <div class="col">
-                    <div class="col">{{ sview.boletoCustomerOwner }}</div>
-                    <div class="col">{{ sview.boletoNumber }}/{{ sview.boletoInstallment }}</div>
-                    <div class="col">{{ sview.boletoValue }}</div>
-                    <div class="col">{{ sview.boletoPaymentDate }}</div>
+                <div class="row">
+                    <div class="col"><p>{{ sview.boletoCustomerOwner }}</p></div>
+                    <div class="col"><p>{{ sview.boletoNumber }}/{{ sview.boletoInstallment }}</p></div>
+                    <div class="col"><p>{{ sview.boletoValue }}</p></div>
+                    <div class="col"><p>{{ sview.boletoVencimento | date('d/m/Y') }}</p></div>
                 </div>
             {% endfor %}
             

@@ -67,21 +67,93 @@ class ReportController extends AbstractController
     /**
      * Create some report registry. Give a json response.
      * 
-     * @Route("/report/{pageType}/create", methods="POST")
+     * @Route("/api/report/{pageType}/create", methods="POST")
      *
      * @param   Request   $request     Symfony Request object.
      * @param   string    $pageType    type of page.
      *
      * @return  Response               rederized page.
      */
+    public function createGenericReportRegistryAjax(Request $request, string $pageType, ReportModel $model): Response
+    {
+        $data = $request->request->all();
+        $result = $model->createGenericReport($pageType, $data);
+        return new Response($result->getMessage(), $result->getHttpCode(), [
+            'message-type' => $result->getType()
+        ]);
+    }
+
+    /**
+     * Create some report registry.
+     * 
+     * @Route("/report/{pageType}/create", methods="POST")
+     *
+     * @param   Request   $request     Symfony Request object.
+     * @param   string    $pageType    Type of page.
+     *
+     * @return  Response               Return to last referer page.
+     */
     public function createGenericReportRegistry(Request $request, string $pageType, ReportModel $model): Response
     {
         $data = $request->request->all();
-        $entity = sprintf('App\Entity\%s', ucwords($pageType));
-        $result = $model->createGenericReport($entity, $data);
-        return new Response($result->getMessage(), (int) $result->getHttpCode(), [
-            'message-type' => $result->getType()
+        $routeLink = $request->headers->get('referer');
+        
+        if (!is_string($routeLink)) {
+            $routeLink = '/';
+        }
+
+        $result = $model->createGenericReport($pageType, $data);
+        $this->addFlash($result->getType(), $result->getMessage());
+        return $this->redirect($routeLink);
+    }
+
+    /**
+     * Return registry type.
+     * 
+     * @Route("/report/{pageType}/list", methods="GET")
+     *
+     * @param   string    $pageType  Entity page.
+     *
+     * @return  Response             List of pages.
+     */
+    public function getGenericList(Request $request, string $pageType, ReportModel $model): Response
+    {
+        $typeOfList = $request->query->get('type') ?? 'last';
+        $listOfResults = $model->getGenericList($pageType, $typeOfList);
+        $templateFile = sprintf('report/pages/%s/lists.html.twig', $pageType);
+
+        return $this->render($templateFile, [
+            'typeOfList' => $listOfResults->typeOfList,
+            'simpleView' => $listOfResults->consultResults 
         ]);
+    }
+
+    public function viewEditGeneric(Request $request, string $entity, int $idConsult): Response
+    {
+        $fullQualifiedEntity = sprintf('App\Entity\%s', ucfirst($entity));
+        $registryToEdit = $this->getDoctrine()->getRepository($fullQualifiedEntity)->find($idConsult);
+        $template = sprintf('report/pages/%s/edit.html.twig', $entity);
+
+        return $this->render($template, [
+            'registry' => $registryToEdit
+        ]);
+    }
+
+    /**
+     * Get data from entity.
+     * 
+     * @Route("/api/report/{entity}/{consultId}")
+     *
+     * @param   string    $entity     Entity for consult.
+     * @param   int       $consultId  Id for consult.
+     *
+     * @return  Response              Single registry data.
+     */
+    public function getSingleDataGenericAjax(string $entity, int $consultId, ReportModel $model): Response
+    {
+        $entity = sprintf('App\Entity\%s', ucwords($entity));
+        $result = $model->serializedGenericConsult($entity, $consultId);
+        return new Response($result);
     }
 
     /**
@@ -117,5 +189,23 @@ class ReportController extends AbstractController
 
         $response = $surveyModel->saveData($data, $customerId, $surveyReferenceDate);
         return new Response($response->getMessage(), $response->getHttpCode());
+    }
+
+    /**
+     * Change status of Boleto. Specific function.
+     * 
+     * @Route("/report/boleto/status/{boletoId}")
+     *
+     * @param   ReportModel  $model     Report with change functions.
+     * @param   int          $boletoId  Boleto identification.
+     *
+     * @return  Response             Redirect to page.
+     */     
+    public function boletoChangeStatus(Request $request, int $boletoId, ReportModel $model): Response
+    {
+        $boletoStatus = $request->request->all();
+        dump($boletoStatus);
+        die();
+
     }
 }

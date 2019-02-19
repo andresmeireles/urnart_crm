@@ -1,4 +1,4 @@
-<div class="bg-{{ barBackground ? barBackground : 'secondary' }}">
+<div class="bg-{{ barBackground is defined ? barBackground : 'secondary' }}">
     <div class="sidebar-sticky p-1">
         <ul class="list-unstyled">
             <li class="px-3"><span class="px-3 mx-3">&nbsp;</span></li>
@@ -6,7 +6,7 @@
             {% for list in listItens %}
                 <li class="noline text">
                     <div class="d-flex align-items-center">
-                        <a href="{{ metalink }}/{{ pageType }}/{{ list.link }}" class="{{ list.class is defined ? list.class : '' }}">
+                        <a href="/{{ metalink }}/{{ pageType }}/{{ list.link }}" class="{{ list.class is defined ? list.class : '' }}">
                             <span class="mx-2 my-2 btn btn-outline-light"><b>{{ list.text }}</b></span>
                         </a>
                     </div>

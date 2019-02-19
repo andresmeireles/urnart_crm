@@ -13,6 +13,8 @@ require('devbridge-autocomplete');
 const $ = require('jquery');
 const fancybox = require('@fancyapps/fancybox');
 const noty = require('noty');
+const moment = require('moment');
+moment.locale('pt-br');
 
 const numeralJs = require('numeral');
 numeralJs.register('locale', 'br', {
@@ -55,6 +57,7 @@ global.noty = noty;
 global.numeral = numeralJs;
 global.vex = vexjs;
 global.filePond = pond;
+global.moment = moment;
 
 // root folder
 global.messageSend = require('./src/messageDispatcher');
@@ -63,20 +66,10 @@ global.insert = require('./src/globals');
 global.sendSimpleRequest = require('./src/sendSimpleRequest');
 
 // global folder
-global.simpleRequest = require('./src/global/simpleRequest');
 global.simpleRequestForm = require('./src/global/simpleRequestForm');
-global.checkMask = require('./src/global/checkMask');
 global.showDate = require('./src/global/showDate');
 global.genericSend = require('./src/global/genericSend');
 global.cloneFieldForm = require('./src/global/cloneFieldForm');
-global.getOptionText = require('./src/global/tools/getOptionText');
-global.sendFl = require('./src/global/tools/sendDataFormless');
-global.getFormLessData = require('./src/global/tools/sendDataFormless');
-global.notification = require('./src/global/tools/notification');
-global.sendDataWithCsrf = require('./src/global/tools/sendDataWithCsrf');
-
-// validations
-global.checkRequired = require('./src/global/validation/checkRequired');
 
 // dialogs folder
 global.defaultDialog = require('./src/dialog/defaultDialog');
@@ -85,14 +78,23 @@ global.simpleDialog = require('./src/dialog/simpleDialog');
 //register templates
 global.customerTemplate = require('./src/register/templates/customerTemplate');
 
-/********** 
- * helpers *
- ***********/
+/******************* 
+ ***** HELPERS *****
+ *******************/
 
 //functions
-global.isNullOrWhiteSpace = require('./src/helpers/isNullOrWhiteSpace');
+global.isNullOrWhiteSpace = require('./src/helpers/functions/isNullOrWhiteSpace');
 global.strToMoney = require('./src/helpers/functions/strToMoney');
 global.checkUndefined = require('./src/helpers/functions/checkUndefined');
+global.notification = require('./src/helpers/functions/notification');
+global.sendFl = require('./src/helpers/classes/sendDataFormless');
+global.getFormLessData = require('./src/helpers/classes/sendDataFormless');
+global.sendDataWithCsrf = require('./src/helpers/functions/sendDataWithCsrf');
+global.checkMask = require('./src/helpers/functions/checkMask');
+global.simpleRequest = require('./src/helpers/functions/simpleRequest');
+
+// validations
+global.checkRequired = require('./src/helpers/functions/checkRequired');
 
 /***********************
  ******* IMPORTS *******
@@ -121,22 +123,10 @@ import './src/reports/survey';
 import './src/reports/surveyClone';
 import './src/reports/boleto/boletoStartActions';
 import './src/reports/boleto/boletoSendAction';
+import './src/reports/boleto/viewBoleto';
 
 //global tools
 import './src/global/masks';
-import './src/global/tools/sorter';
-import './src/global/tools/progress';
-import './src/global/tools/disabledClick';
-import './src/global/tools/oneTimeClick';
-
-/* helpers functions and symbols */
-import './src/helpers/numbersOnly';
-//Auto functions
-import './src/helpers/autoChange';
-import './src/helpers/autoClick';
-import './src/helpers/autoFocus';
-// helpers classes
-import './src/helpers/classes/noKeypress';
 
 // order import
 import './src/order/orderAction';
@@ -145,6 +135,20 @@ import './src/order/totalPriceCalculator';
 import './src/order/autocompleteInputs';
 import './src/order/closeOrder';
 import './src/order/removeOrder';
+
+/*********************************************** 
+ ******** HELPERS FUNCTIONS AND SYMBOLS ********
+ ***********************************************/
+
+//auto classes
+import './src/helpers/classes/noKeypress';
+import './src/helpers/classes/sorter';
+import './src/helpers/classes/disabledClick';
+import './src/helpers/classes/oneTimeClick';
+import './src/helpers/classes/autoChange';
+import './src/helpers/classes/autoClick';
+import './src/helpers/classes/autoFocus';
+import './src/helpers/classes/numbersOnly';
 
 if (document.querySelector('.f-date')) {
     var dateMask = new IMask(

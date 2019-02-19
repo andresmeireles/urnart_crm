@@ -1,0 +1,16 @@
+{% extends "index.html.twig" %}
+
+{% block content %}
+
+{% set list = [
+    { link: 'list?type=last',   text: 'Últimos Pedidos' },
+    { link: 'list?type=client', text: 'Pedidos Por Cliente' },
+    { link: 'list?type=byDate', text: 'Pedidos Por Data' }
+] %}
+{% set entity = 'boleto' %}
+{% set metalink = 'report' %}
+{% include "components/simpleBar.html.twig" with {'metalink': metalink, 'pageType': entity, 'listItens': list } %}
+
+    {% block listOfResults %}{% endblock %}
+
+{% endblock %}
