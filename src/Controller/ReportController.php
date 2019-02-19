@@ -12,6 +12,7 @@ use App\Entity\Survey;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\MyDateTime;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use App\Model\ReportModel;
 
 class ReportController extends AbstractController
 {
@@ -64,20 +65,23 @@ class ReportController extends AbstractController
     }
 
     /**
-     * Create some report registry.
+     * Create some report registry. Give a json response.
      * 
-     * @Route("/report/{pageType}/create")
+     * @Route("/report/{pageType}/create", methods="POST")
      *
      * @param   Request   $request     Symfony Request object.
      * @param   string    $pageType    type of page.
      *
      * @return  Response               rederized page.
      */
-    public function createGenericReportRegistry(Request $request, string $pageType): Response
+    public function createGenericReportRegistry(Request $request, string $pageType, ReportModel $model): Response
     {
         $data = $request->request->all();
-        dump($data);
-        die();
+        $entity = sprintf('App\Entity\%s', ucwords($pageType));
+        $result = $model->createGenericReport($entity, $data);
+        return new Response($result->getMessage(), (int) $result->getHttpCode(), [
+            'message-type' => $result->getType()
+        ]);
     }
 
     /**

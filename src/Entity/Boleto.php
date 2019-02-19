@@ -19,32 +19,43 @@ class Boleto extends BaseEntity
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $BoletoCustomerOwner;
+    private $boletoCustomerOwner;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $BoletoNumber;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $BoletoVencimento;
+    private $boletoNumber;
 
     /**
      * @ORM\Column(type="smallint")
+     * 
+     * Status possíveis.
+     * 0 - Sem previsão
+     * 1 - Pago
+     * 2 - Pago em atraso
+     * 3 - Com previsão
      */
-    private $BoletoStatus;
+    private $boletoStatus = 0;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $BoletoPaymentDate;
+    private $boletoPaymentDate;
 
     /**
      * @ORM\Column(type="float")
      */
     private $boletoValue;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $boletoInstallment;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $boletoVencimento;
 
     public function getId(): ?int
     {
@@ -53,60 +64,48 @@ class Boleto extends BaseEntity
 
     public function getBoletoCustomerOwner(): ?string
     {
-        return $this->BoletoCustomerOwner;
+        return $this->boletoCustomerOwner;
     }
 
-    public function setBoletoCustomerOwner(string $BoletoCustomerOwner): self
+    public function setBoletoCustomerOwner(string $boletoCustomerOwner): self
     {
-        $this->BoletoCustomerOwner = $BoletoCustomerOwner;
+        $this->boletoCustomerOwner = $boletoCustomerOwner;
 
         return $this;
     }
 
     public function getBoletoNumber(): ?string
     {
-        return $this->BoletoNumber;
+        return $this->boletoNumber;
     }
 
-    public function setBoletoNumber(string $BoletoNumber): self
+    public function setBoletoNumber(string $boletoNumber): self
     {
-        $this->BoletoNumber = $BoletoNumber;
-
-        return $this;
-    }
-
-    public function getBoletoVencimento(): ?int
-    {
-        return $this->BoletoVencimento;
-    }
-
-    public function setBoletoVencimento(int $BoletoVencimento): self
-    {
-        $this->BoletoVencimento = $BoletoVencimento;
+        $this->boletoNumber = $boletoNumber;
 
         return $this;
     }
 
     public function getBoletoStatus(): ?int
     {
-        return $this->BoletoStatus;
+        return $this->boletoStatus;
     }
 
-    public function setBoletoStatus(int $BoletoStatus): self
+    public function setBoletoStatus(int $boletoStatus): self
     {
-        $this->BoletoStatus = $BoletoStatus;
+        $this->boletoStatus = $boletoStatus;
 
         return $this;
     }
 
     public function getBoletoPaymentDate(): ?\DateTimeInterface
     {
-        return $this->BoletoPaymentDate;
+        return $this->boletoPaymentDate;
     }
 
-    public function setBoletoPaymentDate(?\DateTimeInterface $BoletoPaymentDate): self
+    public function setBoletoPaymentDate(?\DateTimeInterface $boletoPaymentDate): self
     {
-        $this->BoletoPaymentDate = $BoletoPaymentDate;
+        $this->boletoPaymentDate = $boletoPaymentDate;
 
         return $this;
     }
@@ -119,6 +118,30 @@ class Boleto extends BaseEntity
     public function setBoletoValue(float $boletoValue): self
     {
         $this->boletoValue = $boletoValue;
+
+        return $this;
+    }
+
+    public function getBoletoInstallment(): ?int
+    {
+        return $this->boletoInstallment;
+    }
+
+    public function setBoletoInstallment(int $boletoInstallment): self
+    {
+        $this->boletoInstallment = $boletoInstallment;
+
+        return $this;
+    }
+
+    public function getBoletoVencimento(): ?\DateTimeInterface
+    {
+        return $this->boletoVencimento;
+    }
+
+    public function setBoletoVencimento(\DateTimeInterface $boletoVencimento): self
+    {
+        $this->boletoVencimento = $boletoVencimento;
 
         return $this;
     }

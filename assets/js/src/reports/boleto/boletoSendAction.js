@@ -10,7 +10,7 @@ if (document.querySelector('#newTitle')) {
             let linkAction = document.querySelector(element.target.getAttribute('table-target')).getAttribute('action');
 
             sendDataWithCsrf('POST', linkAction, formInfo, csrfToken, (el) => {
-                console.log(el);
+                
             });
         }
 
