@@ -13,6 +13,15 @@ O valor em int é enviado para uma tag com o attributo `converted-value`.
 `<input type="hidden" converted-value name="nomeDaTag">
  <input type="text" class="form-control numbers-float-only auto-float-convert-blur">`
 
+#### calendar-selector
+
+Inserindo a classe `calendar-selector` em uma tag input. Ao ter seu valor alterado esse valor será inserido em `input` e o valor sera convertido e posto de formatado em um campo com `id` que será procurado pelo valor _string_ no atributo `date-target`.
+
+##### Exemplo
+`<input type="hidden" id="converted-date">
+ <input type="text" class="form-control no-keypress calendar-selector" date-target="#converted-date" >`
+ **Para evitar bugs com estes campos é bom inserir a classe _no-keypress_ no mesmo input de _calendar-selector_**
+
 ## Auto Focus
 
 #### calendar-selector

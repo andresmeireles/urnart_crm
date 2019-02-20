@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BoletoRepository")
@@ -34,6 +35,7 @@ class Boleto extends BaseEntity
      * 1 - Pago
      * 2 - Pago em atraso
      * 3 - Com previsão
+     * 4 - Pagamento por conta.
      */
     private $boletoStatus = 0;
 
@@ -103,9 +105,15 @@ class Boleto extends BaseEntity
         return $this->boletoPaymentDate;
     }
 
-    public function setBoletoPaymentDate(?\DateTimeInterface $boletoPaymentDate): self
+    public function setBoletoPaymentDate(?string $boletoPaymentDate): self
     {
-        $this->boletoPaymentDate = $boletoPaymentDate;
+        $date = !is_null($boletoPaymentDate) ? new \DateTime($boletoPaymentDate) : $boletoPaymentDate;
+
+        if (!($date instanceOf \DateTime) and !is_null($date)) {
+            throw new InvalidParameterException(sprintf('Parametro [%s] não é valido. Valores reconhecidos são instancia de \DateTIme e null', $date));
+        } 
+
+        $this->boletoPaymentDate = $date;
 
         return $this;
     }
@@ -139,9 +147,22 @@ class Boleto extends BaseEntity
         return $this->boletoVencimento;
     }
 
-    public function setBoletoVencimento(\DateTimeInterface $boletoVencimento): self
+    /* public function setBoletoVencimento(\DateTimeInterface $boletoVencimento): self
     {
         $this->boletoVencimento = $boletoVencimento;
+
+        return $this;
+    } */
+
+    public function setBoletoVencimento(string $boletoVencimento): self
+    {
+        $date = new \DateTime($boletoVencimento);
+
+        if (!($date instanceOf \DateTime)) {
+            throw new InvalidParameterException(sprintf('Parametro [%s] não é valido. Preciso enviar instancia de \DateTime.', $date));
+        } 
+
+        $this->boletoVencimento = $date;
 
         return $this;
     }

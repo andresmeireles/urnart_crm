@@ -1,0 +1,50 @@
+{% extends "index.html.twig" %}
+
+{% block content %}
+    <div class="p-3 col">
+        <h3>Detalhes do titulo {{ registry.id }}</h3><hr>
+        <form method="POST">
+            <div class="row">
+                <div class="col form-row">
+                    <div class="form-group col-md-6">
+                        <label for="customerName">Cliente do Titulo</label>
+                        <input input type="text" class="form-control" name="boletoCustomerOwner" placeholder="Nome do cliente" required value="{{ registry.boletoCustomerOwner }}" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="tittleNumber">N° do Titulo</label>
+                        <input type="text" class="form-control" name="boletoNumber" placeholder="Identificador" required value="{{ registry.boletoNumber }}" />
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="installment">Numero da parcela</label>
+                        <input type="text" class="form-control numbers-only" name="boletoInstallment" placeholder="Numeros apenas" required value="{{ registry.boletoInstallment }}" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-row">
+                    <div class="form-group col">
+                        <label for="vencimento">Data de Vencimento</label>
+                        <input type="hidden" id="converted-date" name="boletoVencimento">
+                        <input type="text" class="form-control no-keypress calendar-selector" date-target="#converted-date" placeholder="Clique para Selecionar a Data Vencimento" autocomplete="off" required value="{{ registry.boletoVencimento | date('d/m/Y') }}" />
+                    </div>
+                    <div class="form-group col">
+                        <label for="price">Valor do Titulo</label>
+                        <input type="hidden" converted-value name="boletoValue" value="{{ registry.boletoValue | number_format(2, '.', ',') }}">
+                        <input type="text" class="form-control numbers-float-only auto-float-convert-blur" auto-clear placeholder="Valor" required value="R$ {{ registry.boletoValue | number_format(2, ',', '.')  }}" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-row col">
+                    <div class="col form-group">
+                        <button type="submit" class="btn btn-block btn-success">Alterar Titulo {{ registry.id }}</button>
+                    </div>
+                    <div class="col form-group">
+                        {% include "components/csrftoken.html.twig" %}
+                        <a href="/report/boleto/list?type=last" class="btn btn-block btn-danger">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

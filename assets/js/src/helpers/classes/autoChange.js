@@ -14,3 +14,11 @@ document.addEventListener('change', function (el) {
     }
 
 }, true);
+
+$('.calendar-selector').on('change', (element) => {
+    let dateInput = document.querySelector(element.target.getAttribute('date-target'));
+    let date = element.target.value;
+    let convertedDate = date.replace(new RegExp('/', 'g'), '-');
+    console.log(dateInput, date, convertedDate);
+    dateInput.value = convertedDate;
+});

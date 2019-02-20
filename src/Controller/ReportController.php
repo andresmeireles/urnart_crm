@@ -128,6 +128,17 @@ class ReportController extends AbstractController
         ]);
     }
 
+    /**
+     * Return edit view.
+     * 
+     * @Route("/report/{entity}/edit/{idConsult<\d+>}", methods="GET")
+     *
+     * @param   Request   $request    Symfony Request object.
+     * @param   string    $entity     Entity name.
+     * @param   int       $idConsult  Id to fetch data from database.
+     *
+     * @return  Response              Edit page.
+     */
     public function viewEditGeneric(Request $request, string $entity, int $idConsult): Response
     {
         $fullQualifiedEntity = sprintf('App\Entity\%s', ucfirst($entity));
@@ -137,6 +148,28 @@ class ReportController extends AbstractController
         return $this->render($template, [
             'registry' => $registryToEdit
         ]);
+    }
+
+    /**
+     * Return edit view.
+     * 
+     * @Route("/report/{entity}/edit/{idConsult<\d+>}", methods="POST")
+     *
+     * @param   Request   $request    Symfony Request object.
+     * @param   string    $entity     Entity name.
+     * @param   int       $idConsult  Id to fetch data from database.
+     *
+     * @return  Response              Edit page.
+     */
+    public function editRegisterGeneric(Request $request, string $entity, int $idConsult, ReportModel $model): Response
+    {
+        $data = $request->request->all();
+        $template = sprintf('report/pages/%s/edit.html.twig', $entity);
+        $result = $model->editRegistryGeneric($entity, $idConsult, $data);
+        
+        $this->addFlash($result->getType(), $result->getMessage());
+
+        return $this->redirect('/report/boleto/list');
     }
 
     /**
@@ -191,6 +224,10 @@ class ReportController extends AbstractController
         return new Response($response->getMessage(), $response->getHttpCode());
     }
 
+    /**************************************************** 
+    ************** SPECIFIC ENTITY METHODS **************
+    *****************************************************/
+
     /**
      * Change status of Boleto. Specific function.
      * 
@@ -203,9 +240,15 @@ class ReportController extends AbstractController
      */     
     public function boletoChangeStatus(Request $request, int $boletoId, ReportModel $model): Response
     {
-        $boletoStatus = $request->request->all();
-        dump($boletoStatus);
-        die();
+        $boletoData = $request->request->all();
+        $refererLink = $request->headers->get('referer');
+        if (!is_string($refererLink)) {
+            throw new \Exception('O caminho dado não é valido.', 1);
+        }
 
+        $result = $model->boletoChangeStatus($boletoId, $boletoData);
+        $this->addFlash($result->getType(), $result->getMessage());
+        
+        return $this->redirect($refererLink);
     }
 }

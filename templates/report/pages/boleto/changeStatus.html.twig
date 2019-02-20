@@ -1,0 +1,42 @@
+<div class="col-md-10" id="status{{ title.id }}" style="display: none">
+    <div class="col">
+        <h4>Alterar status do tilulo {{ title.boletoNumber }}/{{ title.boletoInstallment }}</h4>
+        <hr>
+        <form method="POST" action="/report/boleto/status/{{ title.id }}">
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="boletoStatus">Status do Boleto.</label>
+                    {% if title.boletoStatus == '1' %}
+                        <div class="form-control">Pago</div>
+                        <small class="text-danger">Boletos pagos não podem ter seu status alterado nem podem ser editados.</small>
+                        </div>
+                        <div class="form=group col">
+                            <label for="paymentDate">Data do Pagamento</label>
+                            <div class="form-control">{{ title.boletoPaymentDate | date('d/m/Y') }}</div>
+                        </div>
+                        </div>
+                    {% else %}
+                        <select class="form-control status-change" name="boletoStatus" id="date{{ title.id }}">
+                            <option value="0" {{ title.boletoStatus == 0 ? 'selected' : '' }}>Não Pago</option>
+                            <option value="1">Pago</option>
+                            <option value="2" {{ title.boletoStatus == 2 ? 'selected' : '' }}>Pagamento em Atraso</option>
+                            <option value="3" {{ title.boletoStatus == 3 ? 'selected' : '' }}>Pagamento Provisionado</option>
+                            <option value="4" {{ title.boletoStatus == 4 ? 'selected' : '' }}>Pagamento Por Conta</option>
+                        </select>
+                        </div>
+                        <div class="form-group col">
+                            <label for="paymentDate">Data de Pagamento</label>
+                            <input type="hidden" id="converted-date{{ title.id }}" name="boletoPaymentDate">
+                            <input type="text" class="form-control no-keypress calendar-selector" date-target="#converted-date{{ title.id }}" placeholder="Clique para selecionar data de pagamento" autocomplete="off" disabled>
+                        </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                {% include "components/csrftoken.html.twig" %}
+                                <button type="submit" class="btn btn-block btn-success">Alterar Status do titulo {{ title.boletoNumber }}/{{ title.boletoInstallment }}</button>
+                            </div>
+                        </div>
+                    {% endif %}
+        </form>
+    </div>
+</div>
