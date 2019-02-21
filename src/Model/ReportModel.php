@@ -189,4 +189,46 @@ class ReportModel extends Model
             sprintf('Titulo %s/%d teve seu staus atualizado com sucesso.', $boletoRegistry->getBoletoNumber(), $boletoRegistry->getBoletoInstallment())
         );
     }
+
+    /**
+     * Lista por data dados de um repositorio.
+     *
+     * @param   string|null $startDate
+     * @param   string|null $endingDate
+     * @return  StdResponse
+     */
+    public function generateBoletoChart(?string $startDate, ?string $endingDate): StdResponse
+    {
+        $resultData = $this->getGenericListByDate('Boleto', 'boletoVencimento', $startDate, $endingDate);
+        $data = [0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0];
+        $statusNames = ['Não pago', 'Pago', 'Pgto. Atrasado', 'Pgto. Provisionado', 'Pgto. por Conta'];
+        
+        foreach ($resultData as $value) {
+            switch ($value->getBoletoStatus()) {
+                case 0:
+                    $data[0] += 1;
+                    break;
+                case 1:
+                    $data[1] += 1;
+                    break;
+                case 2:
+                    $data[2] += 1;
+                    break;
+                case 3:
+                    $data[3] += 1;
+                    break;
+                case 4:
+                    $data[4] += 1;
+                    break;
+                default:
+                    throw new \Exception('Tem algo muito errado.');        
+            }
+        }
+
+        $response = new StdResponse();
+        $response->boletosStatusCount = $data;
+        $response->statusNames = $statusNames;
+
+        return $response;
+    }
 }

@@ -8,7 +8,7 @@
                 class: 'fancy-conversion'
             },
             { link: 'list', text: 'Listar Titulos' }, 
-            { link: 'makeReport', text: 'Criar Relátorios' }
+            { link: 'chart', text: 'Criar Relátorios', class: 'fancy-conversion' }
         ] %}
         {% include "components/simpleBar.html.twig" with {'metalink' : 'report', 'pageType': 'boleto',  'barBackground' : 'secondary', 'listItens': listItens } %}
     <div class="p-3 col" id="boleto-index">
@@ -37,4 +37,5 @@
     </div>
 
     {% include "report/pages/boleto/create.html.twig" %}
+    {% include "report/pages/boleto/chartDateInterval.html.twig" %}
 {% endblock %}

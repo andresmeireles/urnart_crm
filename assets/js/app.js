@@ -48,7 +48,8 @@ const pond = require('filepond');
 import '@chenfengyuan/datepicker/dist/datepicker';
 import '@chenfengyuan/datepicker/i18n/datepicker.pt-BR';
 
-const d3 = require("d3");
+import 'chart.js';
+import 'chartjs-plugin-labels';
 
 //globals
 global.$ = global.jQuery = $;
@@ -60,7 +61,6 @@ global.numeral = numeralJs;
 global.vex = vexjs;
 global.filePond = pond;
 global.moment = moment;
-global.d3 - d3;
 
 // root folder
 global.messageSend = require('./src/messageDispatcher');

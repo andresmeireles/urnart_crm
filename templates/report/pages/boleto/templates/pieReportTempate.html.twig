@@ -1,0 +1,97 @@
+{% include "headerTemplate.html.twig" %}
+{% block customStyle %}
+    <style>
+    @media print {
+        @page {
+        size: landscape;
+        }
+    }
+    </style>
+{% endblock %}
+{% include "components/print.html.twig" with {'timer': 2000} %}
+{% block body %}
+    {% if beginDate is empty and lastDate is empty %}
+        {% set reportName = 'Relatorio geral de titulos' %}
+    {% elseif beginDate is not empty and lastDate is empty %}
+        {% set reportName = 'Relatorio a partir do dia ' ~ beginDate %}
+    {% elseif beginDate is empty and lastDate is not empty %}
+        {% set reportName = 'Relatorio ate o dia ' ~ lastDate %}
+    {% else %}
+        {% set reportName = 'Relatorio de ' ~ beginDate ~ ' a ' ~ lastDate %}
+    {% endif %}
+
+    <div>
+        <div class="a4s">
+            <canvas height="auto" width="auto" id="draw"></canvas>
+        </div>
+    </div>
+  <script>
+        var ctx = document.querySelector('#draw').getContext('2d');
+        var info = {
+          datasets: [{
+              data: [
+                {{ statusCount['0'] }},
+                {{ statusCount['1'] }},
+                {{ statusCount['2'] }},
+                {{ statusCount['3'] }},
+                {{ statusCount['4'] }},
+              ],
+              backgroundColor: 'grey',
+            }],
+            labels: [
+                "{{ statusNames['0'] }}",
+                "{{ statusNames['1'] }}",
+                "{{ statusNames['2'] }}",
+                "{{ statusNames['3'] }}",
+                "{{ statusNames['4'] }}",
+            ]
+        };
+
+        var pluginValues = {
+            labels: [
+              {
+                render: 'value',
+                fontStyle: 'bold',
+                fontSize: 15,
+                fontColor: 'black'
+              },
+              {
+                render: 'percentage',
+                fontStyle: 'bolder',
+                fontSize: 18,
+                fontColor: 'black',
+                position: 'border'
+              },
+              {
+                render: 'label',
+                fontStyle: 'bold',
+                fontColor: 'black',
+                fontSize: 20,
+                position: 'outside'
+              }
+            ]
+          };
+
+        var boletoPiChart = new Chart(ctx, {
+          type: 'pie',
+          data: info,
+          options: {
+              responsive: true,
+              title: {
+                 display: true,
+                 text: "{{ reportName }}.",
+                 fontSize: 22,
+                 fontStyle: 'bold',
+                 lineHeight: 2
+              },
+              legend: {
+                display: false
+              },
+              tooltips: {
+                enabled: false
+              },
+              plugins: pluginValues
+            }
+        });
+  </script>
+{% endblock %}

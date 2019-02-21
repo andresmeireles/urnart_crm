@@ -251,4 +251,28 @@ class ReportController extends AbstractController
         
         return $this->redirect($refererLink);
     }
+
+    /**
+     * Redirect To chart generator page.
+     * 
+     * @Route("/report/boleto/chart", methods="GET")
+     *
+     * @param   Request      $request   Request model object.
+     * @param   ReportModel  $model     ReportModel for search function.
+     *
+     * @return  Response             Chart page.
+     */
+    public function createBoletoChartReport(Request $request, ReportModel $model): Response
+    {
+        $beginDate = $request->query->get('beginDate');
+        $lastDate = $request->query->get('lastDate');
+        $reportData = $model->generateBoletoChart($beginDate, $lastDate);
+
+        return $this->render('/report/pages/boleto/templates/pieReportTempate.html.twig', [
+            'statusCount' => $reportData->boletosStatusCount,
+            'statusNames' => $reportData->statusNames,
+            'beginDate' => $beginDate,
+            'lastDate' => $lastDate
+        ]);
+    }
 }

@@ -1,0 +1,28 @@
+<div id="chart-boleto" style="display: none">
+    <form method="GET" action="/report/boleto/chart" target="_blank">
+        <div class="form-row">
+            <h3 class="col-md-12">Selecione datas para criação de relátorio</h3>
+            <div class="form-group col-md-6">	
+                <label class="sr-only" for="beginDate">Data de Inicio</label>
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control date-mask no-keypress calendar-selector" id="beginDate" name="beginDate" placeholder="Data inicial" autocomplete="off">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                            </div>
+                        </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label class="sr-only" for="lastDate">Data Final</label>
+                    <div class="input-group mb-2">
+                            <input type="text" class="form-control date-mask no-keypress calendar-selector" id="lastDate" name="lastDate" placeholder="Data Final" autocomplete="off">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                            </div>
+                    </div>
+            </div>
+        </div>
+        <div class="form-group col-md-12">
+            <input type="submit" class="btn btn-primary btn-full btn-block" value="Criar Relatório">
+        </div>
+    </form>
+</div>

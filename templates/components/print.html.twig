@@ -1,5 +1,11 @@
 <script>
     setTimeout(function () {
         window.print()
-    }, 200)
+    }, 
+    {% if timer is defined %}
+        {{ timer }}
+    {% else %}
+        200
+    {% endif %}    
+    )
 </script>

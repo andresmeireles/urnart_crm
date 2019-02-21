@@ -6,9 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ asset('build/css/app.css') }}" type="text/css"></head>
   <title>{% block title %}{% endblock %}</title>
-
+  {% block customStyle %}{% endblock %}
   <body>
-  {% include 'components/notification.html.twig' %}
   {% block body %}{% endblock %}
   <script src="{{ asset('build/app.js') }}"></script>
   {% block customJS %}{% endblock %}
