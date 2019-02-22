@@ -271,6 +271,7 @@ class ReportController extends AbstractController
         return $this->render('/report/pages/boleto/templates/pieReportTempate.html.twig', [
             'statusCount' => $reportData->boletosStatusCount,
             'statusNames' => $reportData->statusNames,
+            'totalValue' => $reportData->totalValue,
             'beginDate' => $beginDate,
             'lastDate' => $lastDate
         ]);

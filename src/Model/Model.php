@@ -58,13 +58,15 @@ abstract class Model
      *
      * @param string        $repository
      * @param string        $dateField
+     * @param string|null   $selectFields Campo de seleção de campos, sempre usar a letra *u* por exemplo u.name
      * @param string|null   $beginDate
      * @param string|null   $lastDate
      * @return array
      */
-    public function getGenericListByDate(
+    protected function getGenericListByDate(
         string $repository, 
-        string $dateField = 'createDate', 
+        string $dateField = 'createDate',
+        ?string $selectFields = 'u', 
         ?string $beginDate, 
         ?string $lastDate): array
     {
@@ -73,34 +75,53 @@ abstract class Model
         $convertedLastDate = (new StringConvertions())->strToDateString($lastDate);
         $queryBuilder = $this->em->createQueryBuilder();
         $result = null;
+        $query = $queryBuilder->select($selectFields)->from($repo, 'u');
         if (is_null($convertedBeginDate) && is_null($convertedLastDate)) {
-            $result = $queryBuilder->select('u')->from($repo, 'u')->orderBy('u.id', 'ASC');
+            $result = $query->orderBy('u.id', 'ASC');
         }
 
         if (!is_null($convertedBeginDate) && !is_null($convertedLastDate)) {
-            $result = $queryBuilder->select('u')
-                                   ->from($repo, 'u')
-                                   ->where(sprintf('u.%s BETWEEN :begin AND :last', $dateField))
-                                   ->setParameter('begin', $convertedBeginDate)
-                                   ->setParameter('last', $convertedLastDate)
-                                   ->orderBy('u.id', 'ASC');
+            $result = $query->where(sprintf('u.%s BETWEEN :begin AND :last', $dateField))
+                            ->setParameter('begin', $convertedBeginDate)
+                            ->setParameter('last', $convertedLastDate)
+                            ->orderBy('u.id', 'ASC');
         }
 
         if (is_null($convertedBeginDate) && !is_null($convertedLastDate)) {
-            $result = $queryBuilder->select('u')
-                                   ->from($repo, 'u')
-                                   ->where(sprintf('u.%s <= :date', $dateField))
-                                   ->setParameter('date', sprintf('%s 23:00:00', $convertedLastDate))
-                                   ->orderBy('u.id', 'ASC');
+            $result = $query->where(sprintf('u.%s <= :date', $dateField))
+                            ->setParameter('date', sprintf('%s 23:00:00', $convertedLastDate))
+                            ->orderBy('u.id', 'ASC');
         }
 
         if (!is_null($convertedBeginDate) && is_null($convertedLastDate)) {
-            $result = $queryBuilder->select('u')
-                                   ->from($repo, 'u')
-                                   ->where(sprintf('u.%s >= :date', $dateField))
-                                   ->setParameter('date', $convertedBeginDate)
-                                   ->orderBy('u.id', 'ASC');
+            $result = $query->where(sprintf('u.%s >= :date', $dateField))
+                            ->setParameter('date', $convertedBeginDate)
+                            ->orderBy('u.id', 'ASC');
         }
         return $result->getQuery()->getResult();
     }
+
+    /**
+     * Dql consult helper
+     *
+     * @param   string  $dqlStringConsult  String with consult in DQL.
+     *
+     * @return  array                      Array with results.
+     */
+    protected function dqlConsult(string $dqlStringConsult): array
+    {
+        $query = $this->em->createQuery($dqlStringConsult);
+        $result = $query->execute();
+        return $result;
+    }
+
+    protected function sqlConsult(string $sqlConsult)
+    {
+        $query = $this->em->createNativeQuery($sqlConsult);
+        $result = $query->getResult();
+        return $result;
+    }
+
+    protected function getFile(string $path, ?string $fileName = null)
+    {}
 }

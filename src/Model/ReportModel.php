@@ -5,6 +5,8 @@ namespace App\Model;
 use App\Utils\Andresmei\FlashResponse;
 use App\Entity\Boleto;
 use App\Utils\Andresmei\StdResponse;
+use Symfony\Component\Yaml\Yaml;
+use App\Utils\Andresmei\FileFunctions;
 
 class ReportModel extends Model
 {
@@ -52,7 +54,7 @@ class ReportModel extends Model
 
             $httpCode = 200;
             $type = 'success';
-            $message = sprintf('Peido de %s numero %s/%d criado com sucesso!', $data['boletoCustomerOwner'], $data['boletoNumber'], $data['boletoInstallment']);
+            $message = sprintf('Titulo de %s numero %s/%d criado com sucesso!', $data['boletoCustomerOwner'], $data['boletoNumber'], $data['boletoInstallment']);
         } catch (\PDOException $e) {
             $this->em->getConnection()->rollback();
             $httpCode = 301;
@@ -199,12 +201,50 @@ class ReportModel extends Model
      */
     public function generateBoletoChart(?string $startDate, ?string $endingDate): StdResponse
     {
-        $resultData = $this->getGenericListByDate('Boleto', 'boletoVencimento', $startDate, $endingDate);
+        $reportName = empty($endingDate) ? (new FileFunctions)->getLastCreateFileFromFolder(__DIR__.'/../Utils/ReportFiles') : __DIR__.'/../Utils/ReportFiles/'.$endingDate.'.yaml';
+
+        if (file_exists($reportName)) {
+            $dataFile = file_get_contents($reportName);
+            $pastReportRegister = Yaml::parse( (string) $dataFile);
+        }
+
+        $resultData = $this->getGenericListByDate('Boleto', 'boletoVencimento', 'u.boletoStatus, u.id, u.boletoValue',$startDate, $endingDate);
+        $c = $resultData;
         $data = [0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0];
         $statusNames = ['Não pago', 'Pago', 'Pgto. Atrasado', 'Pgto. Provisionado', 'Pgto. por Conta'];
-        
-        foreach ($resultData as $value) {
-            switch ($value->getBoletoStatus()) {
+        $titlesPrices = 0;
+        $res = [];
+
+        if (isset($pastReportRegister)) {
+            foreach ($pastReportRegister as $key => $value) {
+                foreach ($value as $k => $v) {
+                    $resultData[] = $v;
+                    $res[] = $v;
+                }
+            }
+        }
+
+        $ovx = array_map(function ($arr) use ($c) {
+            
+            foreach ($c as $key => $value) {
+                if ($value['id'] === $arr['id']) {
+                    $c[$key] = $arr;
+                }
+            }
+
+            return $c;
+
+        }, $res);
+
+        foreach ($resultData as $key => $value) {
+            echo $value['id'].'<br>';
+        }
+
+        dump($resultData, $res, $ovx);
+        die();
+        foreach ($resultData as $key => $value) {
+            $titlesPrices += $value['boletoValue'];
+            switch ($value['boletoStatus']) {
                 case 0:
                     $data[0] += 1;
                     break;
@@ -228,7 +268,15 @@ class ReportModel extends Model
         $response = new StdResponse();
         $response->boletosStatusCount = $data;
         $response->statusNames = $statusNames;
+        $response->totalValue = $titlesPrices;
 
         return $response;
+    }
+
+    public function getNonPayedBoletosByDate(string $date): array
+    {
+        $consultString = sprintf('SELECT u FROM App\Entity\Boleto u WHERE u.boletoVencimento <  %s AND u.boletoStatus <> 1', "'{$date} %'");
+        $result = $this->dqlConsult($consultString);
+        return $result;
     }
 }

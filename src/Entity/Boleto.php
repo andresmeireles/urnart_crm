@@ -59,6 +59,16 @@ class Boleto extends BaseEntity
      */
     private $boletoVencimento;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $boletoProvisionamentoDate;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $boletoPorContaValue;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +101,27 @@ class Boleto extends BaseEntity
     public function getBoletoStatus(): ?int
     {
         return $this->boletoStatus;
+    }
+
+    public function getBoletoStatusExtense(): ?string
+    {
+        switch ($this->boletoStatus) {
+            case 0:
+                return 'Não Pago';       
+                break;
+            case 1:
+                return 'Pago';
+                break;
+            case 2;
+                return 'Pago em atraso';
+                break;
+            case 3:
+                return 'Pgto. Provisionado';
+                break;
+            case 4:
+                return 'Pgto. por Conta';
+                break;
+        }
     }
 
     public function setBoletoStatus(int $boletoStatus): self
@@ -163,6 +194,30 @@ class Boleto extends BaseEntity
         } 
 
         $this->boletoVencimento = $date;
+
+        return $this;
+    }
+
+    public function getBoletoProvisionamentoDate(): ?\DateTimeInterface
+    {
+        return $this->boletoProvisionamentoDate;
+    }
+
+    public function setBoletoProvisionamentoDate(?\DateTimeInterface $boletoProvisionamentoDate): self
+    {
+        $this->boletoProvisionamentoDate = $boletoProvisionamentoDate;
+
+        return $this;
+    }
+
+    public function getBoletoPorContaValue(): ?float
+    {
+        return $this->boletoPorContaValue;
+    }
+
+    public function setBoletoPorContaValue(?float $boletoPorContaValue): self
+    {
+        $this->boletoPorContaValue = $boletoPorContaValue;
 
         return $this;
     }

@@ -11,7 +11,7 @@
 {% include "components/print.html.twig" with {'timer': 2000} %}
 {% block body %}
     {% if beginDate is empty and lastDate is empty %}
-        {% set reportName = 'Relatorio geral de titulos' %}
+        {% set reportName = 'Relatorio geral de cobrança' %}
     {% elseif beginDate is not empty and lastDate is empty %}
         {% set reportName = 'Relatorio a partir do dia ' ~ beginDate %}
     {% elseif beginDate is empty and lastDate is not empty %}
@@ -23,6 +23,9 @@
     <div>
         <div class="a4s">
             <canvas height="auto" width="auto" id="draw"></canvas>
+        </div>
+        <div class="text-center">
+            <h2 class="font-weight-bold">Valor total da cobrança R$ {{ totalValue | number_format('2',',', '.') }}</h3>
         </div>
     </div>
   <script>
