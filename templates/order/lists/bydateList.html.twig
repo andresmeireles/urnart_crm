@@ -37,7 +37,8 @@
 			<div class="form-group col-md-6">	
 				<label class="sr-only" for="beginDate">Data de Inicio</label>
 						<div class="input-group mb-2">
-							<input type="text" class="form-control date-mask no-keypress calendar-selector" id="beginDate" name="beginDate" placeholder="Data inicial" autocomplete="off">
+                            <input type="hidden" id="beginDate" name="beginDate" />
+							<input type="text" class="form-control date-mask no-keypress calendar-selector"  placeholder="Data inicial" date-target="#beginDate" autocomplete="off">
 							<div class="input-group-prepend">
 								<div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
 							</div>
@@ -46,7 +47,8 @@
 			<div class="form-group col-md-6">
 				<label class="sr-only" for="lastDate">Data Final</label>
 					<div class="input-group mb-2">
-							<input type="text" class="form-control date-mask no-keypress calendar-selector" id="lastDate" name="lastDate" placeholder="Data Final" autocomplete="off">
+                            <input type="hidden" name="lastDate" id="lastDate" />
+							<input type="text" class="form-control date-mask no-keypress calendar-selector" id="lastDate"  placeholder="Data Final" autocomplete="off" date-target="#lastDate">
 							<div class="input-group-prepend">
 								<div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
 							</div>
@@ -61,11 +63,11 @@
         {% if beginDate is empty and lastDate is empty %}
 
         {% elseif beginDate is not empty and lastDate is not empty %}
-            <h3 id="typeOfList">Pedido no intervalo de {{ beginDate }} a {{ lastDate }}.</h3>
+            <h3 id="typeOfList">Pedido no intervalo de {{ beginDate | date('d/m/Y') }} a {{ lastDate | date('d/m/Y') }}.</h3>
         {% elseif beginDate is not empty and lastDate is empty %}
-            <h3 id="typeOfList">Pedidos a partir do dia {{ beginDate }}.</h3>
+            <h3 id="typeOfList">Pedidos a partir do dia {{ beginDate | date('d/m/Y') }}.</h3>
         {% elseif beginDate is empty and lastDate is not empty %}
-            <h3 id="typeOfList">Pedidos até dia {{ lastDate }}.</h3>
+            <h3 id="typeOfList">Pedidos até dia {{ lastDate | date('d/m/Y') }}.</h3>
         {% endif %}
         {% if beginDate is not null or lastDate is not null %}
         <div class="row" id="listItens">

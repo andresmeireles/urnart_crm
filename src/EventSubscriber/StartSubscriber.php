@@ -22,7 +22,8 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
             Config::start();
         }
         if (!array_key_exists('csrfToken', $session->all())) {
-            $csrfToken = $this->setTokens();
+            $today = new \DateTime('now');
+            $csrfToken = $this->setTokens($today);
             $session->set('csrfToken', $csrfToken);
         }
         return;

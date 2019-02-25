@@ -37,7 +37,7 @@ class StringConvertions
             return null;
         }
 
-        $converterTime = $this->convertStringToDate($dateString, '/');
+        $converterTime = $this->convertStringToDate($dateString, '-');
         $date = \DateTime::createFromFormat('m-d-Y', $converterTime);
 
         if ($date instanceof \DateTime) {

@@ -201,7 +201,9 @@ class ReportModel extends Model
      */
     public function generateBoletoChart(?string $startDate, ?string $endingDate): StdResponse
     {
-        $reportName = empty($endingDate) ? (new FileFunctions)->getLastCreateFileFromFolder(__DIR__.'/../Utils/ReportFiles') : __DIR__.'/../Utils/ReportFiles/'.$endingDate.'.yaml';
+        $path = __DIR__.'/../Utils/ReportFiles';
+
+        $reportName = empty($endingDate) ? (new FileFunctions)->getLastCreateFileFromFolder($path) : (new FileFunctions)->getFileByDate($path, $endingDate); 
 
         if (file_exists($reportName)) {
             $dataFile = file_get_contents($reportName);
@@ -210,7 +212,8 @@ class ReportModel extends Model
 
         $resultData = $this->getGenericListByDate('Boleto', 'boletoVencimento', 'u.boletoStatus, u.id, u.boletoValue',$startDate, $endingDate);
         $c = $resultData;
-        $data = [0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0];
+        //$data = [0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0];
+        $data = [0, 0, 0, 0, 0];
         $statusNames = ['Não pago', 'Pago', 'Pgto. Atrasado', 'Pgto. Provisionado', 'Pgto. por Conta'];
         $titlesPrices = 0;
         $res = [];
@@ -218,30 +221,21 @@ class ReportModel extends Model
         if (isset($pastReportRegister)) {
             foreach ($pastReportRegister as $key => $value) {
                 foreach ($value as $k => $v) {
-                    $resultData[] = $v;
                     $res[] = $v;
                 }
             }
         }
 
-        $ovx = array_map(function ($arr) use ($c) {
-            
+        foreach ($res as $r) {
             foreach ($c as $key => $value) {
-                if ($value['id'] === $arr['id']) {
-                    $c[$key] = $arr;
+                if ($r['id'] === $value['id']) {
+                    $resultData[$key] = $r;
+                    continue;
                 }
+                $resultData[$key] = $value;
             }
-
-            return $c;
-
-        }, $res);
-
-        foreach ($resultData as $key => $value) {
-            echo $value['id'].'<br>';
         }
 
-        dump($resultData, $res, $ovx);
-        die();
         foreach ($resultData as $key => $value) {
             $titlesPrices += $value['boletoValue'];
             switch ($value['boletoStatus']) {
