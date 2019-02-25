@@ -2,20 +2,19 @@
 
 namespace App\EventSubscriber;
 
-use App\Config\Config;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Config\Config;
 use App\Model\ReportModel;
 use App\Utils\Andresmei\CsrfToken;
 use App\Utils\Andresmei\StdResponse;
-use Symfony\Component\Yaml\Yaml;
-use APp\Utils\Andresmei\WriteBoletoReport;
+use App\Utils\Andresmei\WriteBoletoReport;
 
 class StartSubscriber extends AbstractController implements EventSubscriberInterface
 {
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event) 
     {
         $session = $event->getRequest()->getSession();
         if (!Config::getStatus()) {
@@ -38,6 +37,8 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
             $csrfToken = $this->setTokens($today);
             $session->set('csrfToken', $csrfToken);
         }
+
+        $this->checkIfFolderExists();
 
         $fileName = sprintf('Utils/ReportFiles/%s.yaml', $today->format('d-m-Y') );
 
@@ -86,6 +87,19 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
         $report->write($date, $response);
     }
     
+    private function checkIfFolderExists(): void
+    {
+        $folders = [
+            __DIR__.'/../Utils/ReportFiles'
+        ];
+
+        foreach ($folders as $folder) {
+            if (!file_exists($folder) && !is_dir($folder)) {
+                mkdir($folder, 0777);
+            }
+        }
+    }
+
     private function setTokens(\DateTimeInterface $date): CsrfToken
     {
         return new CsrfToken($date->format('d/m/Y H:m:s'));
