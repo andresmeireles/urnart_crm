@@ -90,12 +90,15 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
     private function checkIfFolderExists(): void
     {
         $folders = [
-            __DIR__.'/../Utils/ReportFiles'
+            __DIR__.'/../Utils/ReportFiles' => ['ignore' => true]
         ];
 
-        foreach ($folders as $folder) {
+        foreach ($folders as $folder => $ignore) {
             if (!file_exists($folder) && !is_dir($folder)) {
                 mkdir($folder, 0777);
+                if ($ignore['ignore'] !== false) {
+                    file_put_contents(sprintf('%s/.gitignore', $folder), '');
+                }
             }
         }
     }
