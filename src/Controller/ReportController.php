@@ -263,12 +263,12 @@ class ReportController extends AbstractController
      *
      * @return  Response                    Chart page.
      */
-    public function createBoletoChartReport(Request $request, string $reportName, ReportModel $model): Response
+    public function createBoletoReport(Request $request, string $reportName, ReportModel $model): Response
     {
         $beginDate = $request->query->get('beginDate');
         $lastDate = $request->query->get('lastDate');
 
-        $functionName = sprintf('genreateBoleto%s', ucwords($reportName));
+        $functionName = sprintf('generateBoleto%s', ucwords($reportName));
         $reportData = $model->$functionName($beginDate, $lastDate);
         $template = sprintf('/report/pages/boleto/templates/%s.html.twig', $reportName);
 

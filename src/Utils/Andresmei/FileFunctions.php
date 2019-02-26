@@ -76,6 +76,6 @@ class FileFunctions
             }
         }
 
-        return null
+        return null;
     }
 }

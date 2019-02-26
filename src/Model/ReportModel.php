@@ -265,6 +265,8 @@ class ReportModel extends Model
     {
         $pastReportFile = $this->getReportFile(__DIR__.'/../Utils/ReportFile', $endingDate);
 
+        //$reportResults = $this->getGenericListByDate('Boleto', 'boletoVencimento', 'u.boletoCustomerOwner, u.boletoStatus, ')
+
         $response = new StdResponse;
 
         return $response;
