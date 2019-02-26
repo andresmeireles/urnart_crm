@@ -61,6 +61,7 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
     {
         $model = new ReportModel($controller->getDoctrine()->getManager());
         $titulos = $model->getNonPayedBoletosByDate($date->format('Y-m-d'));
+        
         $response = new StdResponse();
 
         foreach ($titulos as $titulo) {
@@ -82,7 +83,6 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
                     break;
             }
         }
-
         $report = new WriteBoletoReport();
         $report->write($date, $response);
     }

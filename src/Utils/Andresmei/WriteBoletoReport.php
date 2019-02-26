@@ -24,6 +24,7 @@ class WriteBoletoReport
         $res['atrasado'] = $this->writeArray($data->atrasado ?? null);
         $res['provisionado'] = $this->writeArray($data->provisionado ?? null, 'provisionado');
         $res['porConta'] = $this->writeArray($data->conta ?? null, 'conta');
+
         file_put_contents(__DIR__.'/../ReportFiles/'.$date->format('d-m-Y').'.yaml', Yaml::dump($res));
     }
 
@@ -37,13 +38,13 @@ class WriteBoletoReport
 
         switch ($action) {
             case 'provisionado':
-                $result[] = $this->writeProvisionado($titles);
+                $result = $this->writeProvisionado($titles);
                 break;
             case 'conta':
-                $result[] = $this->writeConta($titles);
+                $result = $this->writeConta($titles);
                 break;
             default:
-                $result[] = $this->normalAction($titles);
+                $result = $this->normalAction($titles);
                 break;
         }
         return $result;
@@ -53,11 +54,13 @@ class WriteBoletoReport
     {
         $result = [];
 
-        foreach ($titles as $title) {
-            $result['id'] = $title->getId();
-            $result['boletoCustomerOwner'] = $title->getBoletoCustomerOwner();
-            $result['boletoStatus'] = $title->getBoletoStatus();
-            $result['boletoValue'] = number_format($title->getBoletoValue(), 2, '.', '');
+        foreach ($titles as $key => $title) {
+            $result[$key]['boletoCustomerOwner'] = $title->getBoletoCustomerOwner();
+            $result[$key]['boletoVencimento'] = $title->getBoletoVencimento();
+            $result[$key]['boletoNumber'] = $title->getBoletoNumber();
+            $result[$key]['boletoInstallment'] = $title->getBoletoInstallment();
+            $result[$key]['boletoStatus'] = $title->getBoletoStatus();
+            $result[$key]['boletoValue'] = number_format($title->getBoletoValue(), 2, '.', '');
         }
 
         return $result;
@@ -67,12 +70,14 @@ class WriteBoletoReport
     {
         $result = [];
 
-        foreach ($titles as $title) {
-            $result['id'] = $title->getId();
-            $result['boletoCustomerOwner'] = $title->getBoletoCustomerOwner();
-            $result['boletoStatus'] = $title->getBoletoStatus();
-            $result['boletoPrevisionamentoDate'] = $title->getBoletoProvisionamentoDate();
-            $result['boletoValue'] = number_format($title->getBoletoValue(), 2, '.', '');
+        foreach ($titles as $key => $title) {
+            $result[$key]['boletoCustomerOwner'] = $title->getBoletoCustomerOwner();
+            $result[$key]['boletoStatus'] = $title->getBoletoStatus();
+            $result[$key]['boletoVencimento'] = $title->getBoletoVencimento();
+            $result[$key]['boletoNumber'] = $title->getBoletoNumber();
+            $result[$key]['boletoInstallment'] = $title->getBoletoInstallment();
+            $result[$key]['boletoPrevisionamentoDate'] = $title->getBoletoProvisionamentoDate();
+            $result[$key]['boletoValue'] = number_format($title->getBoletoValue(), 2, '.', '');
         }
 
         return $result;
@@ -81,13 +86,15 @@ class WriteBoletoReport
     private function writeConta(array $titles): array
     {
         $result = [];
-        foreach ($titles as $title) {
-            $result['id'] = $title->getId();
-            $result['boletoCustomerOwner'] = $title->getBoletoCustomerOwner();
-            $result['boletoStatus'] = $title->getBoletoStatus();
-            $result['boletoPrevisionamentoDate'] = $title->getBoletoProvisionamentoDate() ?? '';
-            $result['boletoPorContaValue'] = $title->getBoletoPorContaValue() ?? null;
-            $result['boletoValue'] = number_format($title->getBoletoValue(), 2, '.', '');
+        foreach ($titles as $key => $title) {
+            $result[$key]['boletoCustomerOwner'] = $title->getBoletoCustomerOwner();
+            $result[$key]['boletoStatus'] = $title->getBoletoStatus();
+            $result[$key]['boletoVencimento'] = $title->getBoletoVencimento();
+            $result[$key]['boletoNumber'] = $title->getBoletoNumber();
+            $result[$key]['boletoInstallment'] = $title->getBoletoInstallment();
+            $result[$key]['boletoPrevisionamentoDate'] = $title->getBoletoProvisionamentoDate() ?? '';
+            $result[$key]['boletoPorContaValue'] = $title->getBoletoPorContaValue() ?? null;
+            $result[$key]['boletoValue'] = number_format($title->getBoletoValue(), 2, '.', '');
         }
 
         return $result;
