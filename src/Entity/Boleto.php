@@ -65,9 +65,9 @@ class Boleto extends BaseEntity
     private $boletoProvisionamentoDate;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="array", nullable=true)
      */
-    private $boletoPorContaValue;
+    private $boletoPorContaStatus = [];
 
     public function getId(): ?int
     {
@@ -210,14 +210,14 @@ class Boleto extends BaseEntity
         return $this;
     }
 
-    public function getBoletoPorContaValue(): ?float
+    public function getBoletoPorContaStatus(): ?array
     {
-        return $this->boletoPorContaValue;
+        return $this->boletoPorContaStatus;
     }
 
-    public function setBoletoPorContaValue(?float $boletoPorContaValue): self
+    public function setBoletoPorContaStatus(?array $boletoPorContaStatus): self
     {
-        $this->boletoPorContaValue = $boletoPorContaValue;
+        $this->boletoPorContaStatus = $boletoPorContaStatus;
 
         return $this;
     }

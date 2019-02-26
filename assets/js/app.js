@@ -127,6 +127,7 @@ import './src/reports/surveyClone';
 import './src/reports/boleto/boletoStartActions';
 import './src/reports/boleto/boletoSendAction';
 import './src/reports/boleto/viewBoleto';
+import './src/reports/boleto/boletoChangeStatus';
 
 //global tools
 import './src/global/masks';

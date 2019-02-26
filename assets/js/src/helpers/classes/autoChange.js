@@ -5,8 +5,8 @@ document.addEventListener('change', function (el) {
 
     if (el.target.classList.contains('auto-float-convert-blur')) {
         let inputField = el.target;
-        let removeComma = inputField.value.replace('.', '');
-        let newValue = strToMoney(removeComma.replace(',', '.'));
+        let removeFloatPoint = inputField.value.replace('.', '');
+        let newValue = strToMoney(removeFloatPoint.replace(',', '.'));
         el.target.closest('div').querySelector('[converted-value]').value = newValue;
         let value = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(newValue);
         inputField.value = value;

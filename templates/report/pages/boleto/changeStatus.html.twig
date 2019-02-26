@@ -31,6 +31,19 @@
                         </div>
                         </div>
                         <div class="form-row">
+                            {% if condition %}
+                                
+                            {% endif %}
+                            <div class="form-group col">
+                                <input type="hidden" id="porContaMoney-date{{ title.id }}" name="porContaValue" converted-value />
+                                <input type="hidden" class="form-control numbers-float-only auto-float-convert-blur"  auto-clear id="porContaValue-date{{ title.id }}" placeholder="valor dado por conta" />
+                            </div>
+                            <div class="form-group col">
+                                <input type="hidden" name="porContaDate" id="porContaDate-date{{ title.id }}" />
+                                <input type="hidden" class="form-control no-keypress calendar-selector" id="hiddenDate-date{{ title.id }}" date-target="#porContaDate-date{{ title.id }}" placeholder="Clique para selecionar data de pagamento" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group col">
                                 {% include "components/csrftoken.html.twig" %}
                                 <button type="submit" class="btn btn-block btn-success">Alterar Status do titulo {{ title.boletoNumber }}/{{ title.boletoInstallment }}</button>

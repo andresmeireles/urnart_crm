@@ -16,22 +16,4 @@ if (document.querySelector('#boleto')) {
 
     });
 
-    document.addEventListener('change', (el) => {
-
-        if (el.target.classList.contains('status-change')) {
-            let partId = el.target.id;
-            let dateInput = document.querySelector(`[date-target="#converted-${partId}"]`);
-            dateInput.removeAttribute('disabled');
-            let hiddenDateInput = document.querySelector(`#converted-${partId}`);
-            hiddenDateInput.value = '';
-            
-            if (el.target.value === '1') {
-                dateInput.setAttribute('required', '');
-            } else {
-                dateInput.removeAttribute('required');
-            }
-        }
-
-    }, true);
-
 }

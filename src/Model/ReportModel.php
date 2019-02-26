@@ -7,6 +7,7 @@ use App\Entity\Boleto;
 use App\Utils\Andresmei\StdResponse;
 use Symfony\Component\Yaml\Yaml;
 use App\Utils\Andresmei\FileFunctions;
+use App\Utils\Exceptions\CustomException;
 
 class ReportModel extends Model
 {
@@ -173,9 +174,34 @@ class ReportModel extends Model
             $status = (int) $boletoData['boletoStatus'];
             $boletoRegistry->setBoletoStatus($status);
 
-            if ($status === 1) {
+            if ($status === 1 || $status === 2) {
                 $boletoRegistry->setBoletoPaymentDate($boletoData['boletoPaymentDate']);
                 $boletoRegistry->setActive(false);
+            }
+
+            if ($status === 3) { //Pagamento Provisionado
+                $boletoRegistry->setBoletoProvisionamentoDate($boletoData['boletoProvisionamentoDate']);
+            }
+
+            if ($status === 4) { //Pagamento Por Conta
+                                
+                if ($boletoData['porContaValue'] > $boletoRegistry->getBoletoValue()) {
+                    throw new CustomException(sprintf(
+                        'Erro no valor da parcela: Valor de R$ %s maior que R$ %s do valor total do titulo %s/%s', 
+                        number_format($boletoData['porContaValue'], 2, '.', ','), 
+                        number_format($boletoRegistry->getBoletoValue(), 2, ',', '.'),
+                        $boletoRegistry->getBoletoNumber(),
+                        $boletoRegistry->getBoletoInstallment()
+                    ));
+                }
+
+                $porContaArray[] = array(
+                    'stausDate' => (new \DateTime('now'))->format('d/m/Y'),
+                    'porContaValue' => $boletoData['porContaValue'],
+                    'porContaDate' => $boletoData['porContaDate']
+                );
+
+                $boletoRegistry->setBoletoPorContaStatus($porContaArray);
             }
 
             $entityManager->merge($boletoRegistry);
