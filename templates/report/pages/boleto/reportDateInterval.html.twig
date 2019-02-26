@@ -5,8 +5,8 @@
             <div class="form-group col-md-6">	
                 <label class="sr-only" for="beginDate">Data de Inicio</label>
                         <div class="input-group mb-2">
-                            <input type="hidden" name="beginDate" id="chart-begin-date" />
-                            <input type="text" class="form-control date-mask no-keypress calendar-selector auto-clear" date-target="#chart-begin-date" placeholder="Data inicial" autocomplete="off">
+                            <input type="hidden" name="beginDate" id="chart-begin-date{{ item.link }}" />
+                            <input type="text" class="form-control date-mask no-keypress calendar-selector auto-clear" date-target="#chart-begin-date{{ item.link }}" placeholder="Data inicial" autocomplete="off">
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                             </div>
@@ -15,8 +15,8 @@
             <div class="form-group col-md-6">
                 <label class="sr-only" for="lastDate">Data Final</label>
                     <div class="input-group mb-2">
-                            <input type="hidden" id="chart-last-date" name="lastDate" />
-                            <input type="text" class="form-control date-mask no-keypress calendar-selector auto-clear" date-target="#chart-last-date" placeholder="Data Final" autocomplete="off">
+                            <input type="hidden" id="chart-last-date{{ item.link }}" name="lastDate" />
+                            <input type="text" class="form-control date-mask no-keypress calendar-selector auto-clear" date-target="#chart-last-date{{ item.link }}" placeholder="Data Final" autocomplete="off">
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                             </div>

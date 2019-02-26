@@ -271,11 +271,12 @@ class ReportController extends AbstractController
         $functionName = sprintf('generateBoleto%s', ucwords($reportName));
         $reportData = $model->$functionName($beginDate, $lastDate);
         $template = sprintf('/report/pages/boleto/templates/%s.html.twig', $reportName);
-
+        
         return $this->render($template, [
             'statusCount' => $reportData->boletosStatusCount,
             'statusNames' => $reportData->statusNames,
             'totalValue' => $reportData->totalValue,
+            'payedValue' => $reportData->boletoPayedValue,
             'beginDate' => $beginDate,
             'lastDate' => $lastDate
         ]);

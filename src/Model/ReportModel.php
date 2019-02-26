@@ -209,6 +209,7 @@ class ReportModel extends Model
         $data = [0, 0, 0, 0, 0];
         $statusNames = ['Não pago', 'Pago', 'Pgto. Atrasado', 'Pgto. Provisionado', 'Pgto. por Conta'];
         $titlesPrices = 0;
+        $payedValue = 0;
         $res = [];
 
         if (!is_null($pastReportRegister)) {
@@ -234,10 +235,10 @@ class ReportModel extends Model
             switch ($value['boletoStatus']) {
                 case 0:
                     $data[0] += 1;
-                    
                     break;
-                case 1:
+                case 1: //pago
                     $data[1] += 1;
+                    $payedValue += $value['boletoValue'];
                     break;
                 case 2:
                     $data[2] += 1;
@@ -256,6 +257,7 @@ class ReportModel extends Model
         $response = new StdResponse();
         $response->boletosStatusCount = $data;
         $response->statusNames = $statusNames;
+        $response->boletoPayedValue = $payedValue;
         $response->totalValue = $titlesPrices;
 
         return $response;
@@ -265,7 +267,27 @@ class ReportModel extends Model
     {
         $pastReportFile = $this->getReportFile(__DIR__.'/../Utils/ReportFile', $endingDate);
 
-        //$reportResults = $this->getGenericListByDate('Boleto', 'boletoVencimento', 'u.boletoCustomerOwner, u.boletoStatus, ')
+        $reportResults = $this->getGenericListByDate('Boleto', 'boletoVencimento', 'u.boletoCustomerOwner, u.boletoStatus, u.boletoValue, u.boletoVencimento', $startDate, $endingDate);
+        $c = $reportResults;
+        $pastResponse = array();
+
+        if (!is_null($pastReportFile)) {
+            foreach ($reportResults as $key => $value) {
+                foreach ($value as $k => $v) {
+                    $pastResponse[] = $v;
+                }
+            }
+        }
+
+        foreach ($pastResponse as $r) {
+            foreach ($c as $key => $value) {
+                if ($r['id'] === $value['id']) {
+                    $reportResults[$key] = $r;
+                    continue;
+                }
+                $reportResults[$key] = $value;
+            }
+        }
 
         $response = new StdResponse;
 
@@ -285,7 +307,7 @@ class ReportModel extends Model
 
         $reportName = empty($date) ? (new FileFunctions)->getLastCreateFileFromFolder($path) : (new FileFunctions)->getFileByDate($path, $date); 
 
-        if (file_exists($reportName)) {
+        if (!is_null($reportName) && file_exists($reportName)) {
             $dataFile = file_get_contents($reportName);
             $response = Yaml::parse( (string) $dataFile);
         }

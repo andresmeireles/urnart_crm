@@ -13,11 +13,11 @@
     {% if beginDate is empty and lastDate is empty %}
         {% set reportName = 'Relatorio geral de cobrança' %}
     {% elseif beginDate is not empty and lastDate is empty %}
-        {% set reportName = 'Relatorio a partir do dia ' ~ beginDate %}
+        {% set reportName = 'Relatorio a partir do dia ' ~ beginDate | date('d/m/Y') %}
     {% elseif beginDate is empty and lastDate is not empty %}
-        {% set reportName = 'Relatorio ate o dia ' ~ lastDate %}
+        {% set reportName = 'Relatorio ate o dia ' ~ lastDate | date('d/m/Y') %}
     {% else %}
-        {% set reportName = 'Relatorio de ' ~ beginDate ~ ' a ' ~ lastDate %}
+        {% set reportName = 'Relatorio de ' ~ beginDate | date('d/m/Y') ~ ' a ' ~ lastDate | date('d/m/Y') %}
     {% endif %}
 
     <div>
@@ -25,7 +25,13 @@
             <canvas height="auto" width="auto" id="draw"></canvas>
         </div>
         <div class="text-center">
-            <h2 class="font-weight-bold">Valor total da cobrança R$ {{ totalValue | number_format('2',',', '.') }}</h3>
+            <h3 class="font-weight-bold">Valor total da cobrança R$ {{ totalValue | number_format('2',',', '.') }}</h3>
+        </div>
+        <div class="text-center">
+            <h3 class="font-weight-bold">Valor recebido da cobrança R$ {{ payedValue | number_format('2',',', '.') }}</h3>
+        </div>
+        <div class="text-center">
+            <h3 class="font-weight-bold">Titulos do relatorio {{ statusCount['0'] + statusCount['1'] + statusCount['2'] + statusCount['3'] + statusCount['4'] }}</h3>
         </div>
     </div>
   <script>
