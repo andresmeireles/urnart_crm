@@ -199,16 +199,9 @@ class ReportModel extends Model
      * @param   string|null $endingDate
      * @return  StdResponse
      */
-    public function generateBoletoChart(?string $startDate, ?string $endingDate): StdResponse
+    public function generateBoletoPieChart(?string $startDate, ?string $endingDate): StdResponse
     {
-        $path = __DIR__.'/../Utils/ReportFiles';
-
-        $reportName = empty($endingDate) ? (new FileFunctions)->getLastCreateFileFromFolder($path) : (new FileFunctions)->getFileByDate($path, $endingDate); 
-
-        if (file_exists($reportName)) {
-            $dataFile = file_get_contents($reportName);
-            $pastReportRegister = Yaml::parse( (string) $dataFile);
-        }
+        $pastReportRegister = $this->getReportFile(__DIR__.'/../Utils/ReportFile', $endingDate);
 
         $resultData = $this->getGenericListByDate('Boleto', 'boletoVencimento', 'u.boletoStatus, u.id, u.boletoValue',$startDate, $endingDate);
         $c = $resultData;
@@ -218,7 +211,7 @@ class ReportModel extends Model
         $titlesPrices = 0;
         $res = [];
 
-        if (isset($pastReportRegister)) {
+        if (!is_null($pastReportRegister)) {
             foreach ($pastReportRegister as $key => $value) {
                 foreach ($value as $k => $v) {
                     $res[] = $v;
@@ -241,6 +234,7 @@ class ReportModel extends Model
             switch ($value['boletoStatus']) {
                 case 0:
                     $data[0] += 1;
+                    
                     break;
                 case 1:
                     $data[1] += 1;
@@ -267,10 +261,33 @@ class ReportModel extends Model
         return $response;
     }
 
+    public function generateBoletoListReport(?string $startDate, ?string $endingDate): StdResponse
+    {
+        $pastReportFile = $this->getReportFile(__DIR__.'/../Utils/ReportFile', $endingDate);
+
+        $response = new StdResponse;
+
+        return $response;
+    }
+
     public function getNonPayedBoletosByDate(string $date): array
     {
         $consultString = sprintf('SELECT u FROM App\Entity\Boleto u WHERE u.boletoVencimento <  %s AND u.boletoStatus <> 1', "'{$date} %'");
         $result = $this->dqlConsult($consultString);
         return $result;
+    }
+
+    private function getReportFile(string $path, ?string $date): ?array
+    {
+        $response = null;
+
+        $reportName = empty($date) ? (new FileFunctions)->getLastCreateFileFromFolder($path) : (new FileFunctions)->getFileByDate($path, $date); 
+
+        if (file_exists($reportName)) {
+            $dataFile = file_get_contents($reportName);
+            $response = Yaml::parse( (string) $dataFile);
+        }
+
+        return $response;
     }
 }

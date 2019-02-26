@@ -255,20 +255,24 @@ class ReportController extends AbstractController
     /**
      * Redirect To chart generator page.
      * 
-     * @Route("/report/boleto/chart", methods="GET")
+     * @Route("/report/boleto/reportCreator/{reportName}", methods="GET")
      *
-     * @param   Request      $request   Request model object.
-     * @param   ReportModel  $model     ReportModel for search function.
+     * @param   Request      $request       Request model object.
+     * @param   string       $reportName    Name of report.
+     * @param   ReportModel  $model         ReportModel for search function.
      *
-     * @return  Response             Chart page.
+     * @return  Response                    Chart page.
      */
-    public function createBoletoChartReport(Request $request, ReportModel $model): Response
+    public function createBoletoChartReport(Request $request, string $reportName, ReportModel $model): Response
     {
         $beginDate = $request->query->get('beginDate');
         $lastDate = $request->query->get('lastDate');
-        $reportData = $model->generateBoletoChart($beginDate, $lastDate);
 
-        return $this->render('/report/pages/boleto/templates/pieReportTempate.html.twig', [
+        $functionName = sprintf('genreateBoleto%s', ucwords($reportName));
+        $reportData = $model->$functionName($beginDate, $lastDate);
+        $template = sprintf('/report/pages/boleto/templates/%s.html.twig', $reportName);
+
+        return $this->render($template, [
             'statusCount' => $reportData->boletosStatusCount,
             'statusNames' => $reportData->statusNames,
             'totalValue' => $reportData->totalValue,

@@ -1,0 +1,20 @@
+{% include "headerTemplate.html.twig" %}
+{% include "components/print.html.twig" with {'timer': 2000} %}
+{% block body %}
+    {% if beginDate is empty and lastDate is empty %}
+        {% set reportName = 'Lista geral de cobrança' %}
+    {% elseif beginDate is not empty and lastDate is empty %}
+        {% set reportName = 'Lista de cobrança a partir do dia ' ~ beginDate %}
+    {% elseif beginDate is empty and lastDate is not empty %}
+        {% set reportName = 'Lista de cobrança ate o dia ' ~ lastDate %}
+    {% else %}
+        {% set reportName = 'Lista de cobrança de ' ~ beginDate ~ ' a ' ~ lastDate %}
+    {% endif %}
+
+    <h4>{{ reportName }}</h4>
+
+    <div class="p-2">
+
+    </div>
+
+{% endblock %}

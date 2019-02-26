@@ -52,7 +52,7 @@ class FileFunctions
      *
      * @return  string         Caminho do arquivo
      */
-    public function getFileByDate(string $path, string $date): string
+    public function getFileByDate(string $path, string $date): ?string
     {
         $fileFullPath = sprintf('%s/%s.yaml', $path, $date);
 
@@ -64,7 +64,7 @@ class FileFunctions
     }
 
 
-    public function getAproximatementLastEditedFile(string $path, string $date): string
+    public function getAproximatementLastEditedFile(string $path, string $date): ?string
     {
         $files = $this->getFilesFromFolder($path);
         arsort($files); // put array in highest value for the lowest.
@@ -75,5 +75,7 @@ class FileFunctions
                 return $key;
             }
         }
+
+        return null
     }
 }
