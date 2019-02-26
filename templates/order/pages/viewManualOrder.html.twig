@@ -141,7 +141,7 @@
                                             {% if order.transporter is null %}
                                                 NÃO CADASTRADO
                                             {% else %}
-                                                {{ order.transporter.getName }}
+                                                {{ order.transporter }}
                                             {% endif %}
                                             </div>
                                         </div>
@@ -153,7 +153,7 @@
                                                 {% if order.transporter is null %}
                                                     NÃO CADASTRADO
                                                 {% else %}
-                                                    {{ order.transporter.getPort }}
+                                                    {{ order.port }}
                                                 {% endif %}
                                             </div>
                                         </div>

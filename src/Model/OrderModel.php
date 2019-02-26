@@ -355,8 +355,7 @@ class OrderModel extends Model
             $report->setDiscount($discount);
             $freight = (float) trim(str_replace('R$', '', $orderData['freight']));
             $report->setFreight($freight);
-            $transporter = $orderData['transporter'] === '' ? null : $entityManager->getRepository(Transporter::class)->find($orderData['transporter']);
-            $report->setTransporter($transporter);
+            $report->setTransporter($orderData['transporter']);
             $port = $orderData['port'] === '' ? null : $orderData['port'];
             $report->setPort($port);
             $observation = $orderData['observation'] === '' ? null : $orderData['observation'];
@@ -400,8 +399,7 @@ class OrderModel extends Model
             $report->setDiscount($discount);
             $freight = (float) trim(str_replace('R$', '', $orderData['freight']));
             $report->setFreight($freight);
-            $transporter = $orderData['transporter'] === '' ? null : $entityManager->getRepository(Transporter::class)->find($orderData['transporter']);
-            $report->setTransporter($transporter);
+            $report->setTransporter($orderData['transporter']);
             $port = $orderData['port'] === '' ? null : $orderData['port'];
             $report->setPort($port);
             $observation = $orderData['observation'] === '' ? null : $orderData['observation'];

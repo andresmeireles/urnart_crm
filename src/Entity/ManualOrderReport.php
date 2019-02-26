@@ -45,7 +45,7 @@ class ManualOrderReport extends BaseEntity
     private $discount;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Transporter")
+     * @ORM\Column(type="string", length=255)
      */
     private $transporter;
 
@@ -135,12 +135,12 @@ class ManualOrderReport extends BaseEntity
         return $this;
     }
 
-    public function getTransporter(): ?Transporter
+    public function getTransporter(): ?string
     {
         return $this->transporter;
     }
 
-    public function setTransporter(?Transporter $transporter): self
+    public function setTransporter(?string $transporter): self
     {
         $this->transporter = $transporter;
 

@@ -135,8 +135,7 @@
                       <div class="form-group">
                         <label>Barco & Transportadora</label>
                         <div class="form-group">
-                          <input type="hidden" name="transporter" id="transporter-number" value="{{ order.getTransporter.getId ?? '' }}">
-                          <input type="text" class="form-control" autocp="transporter" id="transporter" value="{{ order.getTransporter == null ? '' : order.getTransporter.getName }}">
+                          <input type="text" name="transporter" class="form-control" autocp="transporter" id="transporter" value="{{ order.getTransporter == null ? '' : order.getTransporter }}">
                         </div>
                       </div>
                       <div class="form-group">
