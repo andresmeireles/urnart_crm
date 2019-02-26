@@ -10,15 +10,76 @@
     {% else %}
         {% set reportName = 'Lista de cobrança de ' ~ beginDate ~ ' a ' ~ lastDate %}
     {% endif %}
+    {% set total = 0 %}
+    <div class="container">
+        <h1 class="font-weight-bold">{{ reportName }}</h1>
 
-    <h4>{{ reportName }}</h4>
-
-    <div class="p-2">
-        {% for item in items %}
+        <div class="p-2">
+            {% for key, value in statusCount %}
+            {% set total = total + (value| length) %}
+            <div class="col py-2">
+                <div class="row">
+                    <h3 class="font-weight-bold">{{ key }}</h3>
+                </div>
+                <div class="row">
+                    <div class="col h4 font-weight-bold">
+                        Cliente
+                    </div>
+                    <div class="col h4 font-weight-bold">
+                        Data de Vencimento
+                    </div>
+                    <div class="col h4 font-weight-bold">
+                        Valor do boleto
+                    </div>
+                    <div class="col h4 font-weight-bold">
+                        {% if key == 'Pago' %}
+                            Data de Pagamento
+                        {% elseif key == 'Pgto. Provisionado' %}
+                            Data de Previsão
+                        {% endif %}
+                    </div>
+                </div>
+                {% for v in value %}
+                    <div class="row">
+                        <div class="col h5">
+                            {{ v['boletoCustomerOwner'] }}
+                        </div>
+                         <div class="col h5">
+                            {{ v['boletoVencimento'].date | date('d/m/Y') }}
+                        </div>
+                        <div class="col h5">
+                                R$ {{ v['boletoValue'] | number_format('2', ',', '.') }}
+                        </div>
+                        <div class="col h5">
+                            {% if v['boletoPaymentDate'].date is defined %}
+                                {{ v['boletoPaymentDate'].date | date('d/m/Y') }}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            <hr>
             <div class="row">
-                
+                <div class="col h5 font-weight-bold">N° Titulos = {{ value | length }}</div>
+                <div class="col h5 font-weight-bold">
+                {% if key == 'Pago' %}
+                    Total cobrança
+                {% endif %}    
+                </div>
+                <div class="col h5 font-weight-bold">
+                {% if key == 'Pago' %}
+                    R$ {{ payedValue | number_format('2', ',', '.') }}
+                {% endif %}
+                </div>
+                <div class="col h5">&nbsp;</div>
             </div>
-        {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <h3 class="font-weight-bold">Valor da cobrança no interlavo R$ {{ totalValue | number_format('2',',', '.') }}</h3>
+        </div>
+        <div class="text-center">
+            <h3 class="font-weight-bold">Numero de titulos averiguados no intervalo {{ total }}</h3>
+        </div>
     </div>
-
 {% endblock %}

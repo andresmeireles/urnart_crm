@@ -267,9 +267,12 @@ class ReportModel extends Model
     {
         $pastReportFile = $this->getReportFile(__DIR__.'/../Utils/ReportFile', $endingDate);
 
-        $reportResults = $this->getGenericListByDate('Boleto', 'boletoVencimento', 'u.boletoCustomerOwner, u.boletoStatus, u.boletoValue, u.boletoVencimento', $startDate, $endingDate);
+        $reportResults = $this->getGenericListByDate('Boleto', 'boletoVencimento', 'u.boletoCustomerOwner, u.boletoStatus, u.boletoValue, u.boletoVencimento, u.boletoPaymentDate', $startDate, $endingDate);
         $c = $reportResults;
         $pastResponse = array();
+        $totalValue = 0;
+        $paymentValue = 0;
+        $data = [];
 
         if (!is_null($pastReportFile)) {
             foreach ($reportResults as $key => $value) {
@@ -289,8 +292,34 @@ class ReportModel extends Model
             }
         }
 
-        $response = new StdResponse;
+        foreach ($reportResults as $key => $value) {
+            $totalValue += $value['boletoValue'];
+            switch ($value['boletoStatus']) {
+                case 0:
+                    $data['Atrasado'][] = $reportResults[$key];
+                    break;
+                case 1: //pago
+                    $data['Pago'][] = $reportResults[$key];
+                    $paymentValue += $value['boletoValue'];
+                    break;
+                case 2:
+                    $data['Pgto. Atrasado'][] = $reportResults[$key];
+                    break;
+                case 3:
+                    $data['Pgto. Provisionado'][] = $reportResults[$key];
+                    break;
+                case 4:
+                    $data['Pgto. Por Conta'][] = $reportResults[$key];
+                    break;
+                default:
+                    throw new \Exception('Tem algo muito errado.');        
+            }
+        }
 
+        $response = new StdResponse;
+        $response->boletosStatusCount = $data;
+        $response->totalValue = $totalValue;
+        $response->boletoPayedValue = $paymentValue;
         return $response;
     }
 

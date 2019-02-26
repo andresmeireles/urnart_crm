@@ -274,7 +274,7 @@ class ReportController extends AbstractController
         
         return $this->render($template, [
             'statusCount' => $reportData->boletosStatusCount,
-            'statusNames' => $reportData->statusNames,
+            'statusNames' => $reportData->statusNames ?? '',
             'totalValue' => $reportData->totalValue,
             'payedValue' => $reportData->boletoPayedValue,
             'beginDate' => $beginDate,
