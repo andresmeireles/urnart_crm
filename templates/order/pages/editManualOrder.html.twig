@@ -46,6 +46,7 @@
                     <div class="col-md-12" id="tag">
                       
                         {% set totalProductsPrice = 0 %}
+                        {% set totalAmount = 0 %}
                         {% for product in order.getManualProductCarts %}
                           <div class="input-group my-1 w-100" id="cloneableField">
                             <div class="col-3">
@@ -66,6 +67,7 @@
                               <i class="fas fa-fw fa-times" remove-btn="true"></i>
                             </button>
                           </div>
+                          {% set totalAmount = totalAmount + product.getProductAmount %}
                           {% set totalProductsPrice = totalProductsPrice + (product.getProductAmount * product.ProductPrice) %}
                       {% endfor %}
                       
@@ -75,7 +77,7 @@
                 <fieldset class="my-1 border border-light">
                   <legend class="px-1 bg-light">Valor total</legend>
                   <div class="row m-1">
-                    <div class="col-12">
+                    <div class="col-7">
                       <div class="form-group">
                         <div class="input-group">
                           <h3>Total Produtos&nbsp;</h3>
@@ -86,6 +88,14 @@
                           <h3>Valor Final &nbsp;</h3>
                           <h3>R$&nbsp;&nbsp;</h3>
                           <h3><span id="finalPrice">0,00</span></h3>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <h4>Total de Urna(s): &nbsp;</h4>
+                          <h4><span id="finalAmount">{{ totalAmount }}</span></h4>
                         </div>
                       </div>
                     </div>
