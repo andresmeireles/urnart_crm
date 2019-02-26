@@ -7,7 +7,6 @@ if (document.querySelector('#show-titles')) {
             let startLink = rowData.getAttribute('target');
             let idConsult = parseInt(rowData.querySelector('.id-row').innerText)
             simpleRequest(`/api${startLink}/${idConsult}`, 'GET', null, (response) => {
-                console.log(response);
                 drawBoletoView(response.data, `content${idConsult}`);
             })
         }
@@ -16,7 +15,6 @@ if (document.querySelector('#show-titles')) {
 
     const drawBoletoView = (data, idContainer) => {
         let greatContainer = document.querySelector(`#${idContainer}`);
-        console.log(greatContainer);
         greatContainer.innerHTML = '';
 
         let register = `

@@ -4,16 +4,25 @@
 
 {% block body %}
 <style>
-  @media print{@page {size: landscape}}
+  @media print{
+    @page { 
+        size: landscape;
+        margin: 0.2cm 0.2cm 0.2cm 0.2cm;
+      }
+  }
   textarea { resize: none}
   * { 
       font-family: Arial, Helvetica, "Times New Roman", Times Verdana;
-      font-size: 12px;
-      margin: 0;
+      font-size: 11px;
+      margin: 0 auto;
       padding: 0;
    }
   table.table-bordered, thead, tr, th, tbody, td, tfoot{
     border: 3px solid black!important;
+  }
+
+  .p-10 {
+    font-size: 12px !important;
   }
   
   #checklist th {
@@ -121,7 +130,13 @@
     </tr>
   </tfoot>
 </table>
-<div class="col-md-12 form-inline">
+<div class="col font-weight-bold h5">
+  Transportadora = {{ order.getTransporter.getName }}
+</div>
+<div class="col font-weight-bold h5">
+  Porto = {{ order.getport }}
+</div>
+<div class="col-md-12 form-inline py-0">
   <span class="mx-2"><b>OBS:</b></span><div class="form-control col">{{ order.comments }}</div>
 </div>
 <br>

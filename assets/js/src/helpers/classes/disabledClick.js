@@ -4,6 +4,5 @@ if (document.querySelector('.disabledClick')) {
 			alert('para ai');
 			el.preventDefault();
 			return false;
-			console.log(el);
 	}, true);
 }

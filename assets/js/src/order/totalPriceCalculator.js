@@ -26,12 +26,14 @@ if (document.querySelector('.manual-editing')) {
 const calculateAllPrices = (rows) => {
     //catch in a variable
     let primePrice = 0;
+    let primeAmount = 0;
     let freight = Number(strToMoney(document.querySelector('#freight').value));
     let discount = Number(strToMoney(document.querySelector('#discount').value));
     rows.forEach( (el) => {
         let price   = strToMoney(el.querySelector('#price').value);
         let amount  = el.querySelector('#amount').value;
         primePrice += (price * amount);
+        primeAmount += isNaN(parseInt(amount)) ? 0 : parseInt(amount);
         let displayableResult = Intl.NumberFormat('pt-BR').format(primePrice) + ',00';
         document.querySelector('#allProductsPrice').innerHTML = displayableResult;
     });
@@ -40,6 +42,6 @@ const calculateAllPrices = (rows) => {
         return false;
     }
     let finalPrice = primePrice + freight - discount;
-    //document.querySelector('#finalPrice').innerHTML = finalPrice + ',00'; 
-    document.querySelector('#finalPrice').innerHTML = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(finalPrice); 
+    document.querySelector('#finalPrice').innerHTML = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(finalPrice);
+    document.querySelector('#finalAmount').innerHTML = primeAmount; 
 }

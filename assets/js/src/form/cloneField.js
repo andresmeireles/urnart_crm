@@ -113,7 +113,6 @@ $(function () {
                 cloneElInputs[c].value = '';
                 if (cloneElInputs[c].hasAttribute('input-number') ) {
                     let newValue = parseInt(document.querySelectorAll('[input-number]')[document.querySelectorAll('[input-number]').length - 1].value) + 1;
-                    console.log(newValue);
                     iNumber = newValue;
                     cloneElInputs[c].value = newValue;
                     cloneElInputs[c].setAttribute('value', newValue);
