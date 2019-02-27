@@ -27,13 +27,12 @@
   </header>
   <div class="container-fluid">
     <div class="row">
-      <div class="bg-primary">
-      <div class="sidebar-sticky p-1">
+      <div class="sidebar-sticky bg-primary col-md-2 p-1" id="collapsible-sidebar">
         <ul class="list-unstyled" id="menus">
           <li class="my-1">
             <div class="my-1">
               <img src="/caes-e-gatos-1.jpg" style="width: 45px; height:40px" class="rounded-circle">
-              <span class="float-right my-1">&nbsp;&nbsp;Nome do amiginho</span>
+              <span class="text-right my-1">&nbsp;&nbsp;Nome do usuario</span>
             </div>
           </li>
           <li class="noline text">
@@ -110,7 +109,6 @@
           </li>
         </ul>
       </div>
-    </div>
       <div class="col" id="content">
         <div id='message'></div>
         {% include 'components/notification.html.twig' %}
