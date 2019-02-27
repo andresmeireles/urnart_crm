@@ -1,5 +1,7 @@
 {% extends 'index.html.twig' %}
 
+{% block title %}Estoque de materias primas{% endblock %}
+
 {% block content %}
     <div class="py-4 col-md-12" id="add">
         <form method="POST" action="/storage/feedstockAction/update/{{ product.getId }}" id="form-add">
