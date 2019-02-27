@@ -30,17 +30,33 @@
                             <input type="text" class="form-control no-keypress calendar-selector" date-target="#converted-date{{ title.id }}" placeholder="Clique para selecionar data de pagamento" autocomplete="off" disabled>
                         </div>
                         </div>
+                        {% if title.getBoletoPorContaStatus is not same as(null) %}
+                            <div class="form-row">
+                                {% for status in title.getBoletoPorContaStatus %}
+                                    <div class="form-group col">
+                                        <label for="porContaValue">Valor Dado Por Conta</label>
+                                        <div class="form-group h4">&nbsp;R$ {{ status.porContaValue | number_format(2, ',', '.') }}</div>
+                                        <small class="text-danger">Esses pedidos valores não podem ser alterados</small>
+                                    </div>
+                                    <div class="form-group col">
+                                        <label for="porContaValue">Data do pagamento por conta</label>
+                                        <div class="form-group h4">&nbsp;{{ status.porContaDate | date('d/m/Y') }}</div>
+                                    </div>
+                                    <div class="form-group col">
+                                        <label for="porContaValue">Data deste pagemento</label>
+                                        <div class="form-group h4">&nbsp;{{ status.statusDate }}</div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                         <div class="form-row">
-                            {% if condition %}
-                                
-                            {% endif %}
                             <div class="form-group col">
                                 <input type="hidden" id="porContaMoney-date{{ title.id }}" name="porContaValue" converted-value />
-                                <input type="hidden" class="form-control numbers-float-only auto-float-convert-blur"  auto-clear id="porContaValue-date{{ title.id }}" placeholder="valor dado por conta" />
+                                <input type="{{ title.getBoletoStatus == 4 ? 'text' : 'hidden' }}" class="form-control numbers-float-only auto-float-convert-blur"  auto-clear id="porContaValue-date{{ title.id }}" placeholder="valor dado por conta" />
                             </div>
                             <div class="form-group col">
                                 <input type="hidden" name="porContaDate" id="porContaDate-date{{ title.id }}" />
-                                <input type="hidden" class="form-control no-keypress calendar-selector" id="hiddenDate-date{{ title.id }}" date-target="#porContaDate-date{{ title.id }}" placeholder="Clique para selecionar data de pagamento" autocomplete="off" />
+                                <input type="{{ title.getBoletoStatus == 4 ? 'text' : 'hidden' }}" class="form-control no-keypress calendar-selector" id="hiddenDate-date{{ title.id }}" date-target="#porContaDate-date{{ title.id }}" placeholder="Clique para selecionar data de pagamento" autocomplete="off" />
                             </div>
                         </div>
                         <div class="form-row">

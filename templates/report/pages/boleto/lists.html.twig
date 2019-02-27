@@ -24,9 +24,9 @@
                         <div class="d-none id-row">{{ sview.id }}</div>
                         <div class="col text-center"><p>{{ sview.boletoCustomerOwner }}</p></div>
                         <div class="col text-center"><p>{{ sview.boletoNumber }}/{{ sview.boletoInstallment }}</p></div>
-                        <div class="col text-center"><p>{{ sview.boletoValue }}</p></div>
+                        <div class="col text-center"><span class="float-left">R$&nbsp;&nbsp;</span><span class="text-right">{{ sview.boletoValue | number_format(2, ',', '.') }}</span></div>
                         <div class="col text-center"><p>{{ sview.boletoVencimento | date('d/m/Y') }}</p></div>
-                        <div class="col text-center">
+                        <div class="col text-left">
                         <div class="badge badge-pill badge-light cursor-decoration mx-1" view target="#titulo{{ sview.id }}" data-fancybox data-src="#hidden-content{{ sview.id}}">Visualizar</div>
                             <div class="col-md-10" id="hidden-content{{ sview.id}}" style="display:none">
                                 <div id="content{{ sview.id }}"></div>

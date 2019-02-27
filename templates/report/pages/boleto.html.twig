@@ -28,7 +28,7 @@
                 <div class="row">
                     <div class="col"><p>{{ sview.boletoCustomerOwner }}</p></div>
                     <div class="col"><p>{{ sview.boletoNumber }}/{{ sview.boletoInstallment }}</p></div>
-                    <div class="col"><p>{{ sview.boletoValue }}</p></div>
+                    <div class="col"><p>{{ sview.boletoValue | number_format(2, ',', '.') }}</p></div>
                     <div class="col"><p>{{ sview.boletoVencimento | date('d/m/Y') }}</p></div>
                 </div>
             {% endfor %}

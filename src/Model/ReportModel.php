@@ -196,7 +196,7 @@ class ReportModel extends Model
                 }
 
                 $porContaArray[] = array(
-                    'stausDate' => (new \DateTime('now'))->format('d/m/Y'),
+                    'statusDate' => (new \DateTime('now'))->format('d/m/Y'),
                     'porContaValue' => $boletoData['porContaValue'],
                     'porContaDate' => $boletoData['porContaDate']
                 );
