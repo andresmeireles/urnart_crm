@@ -56,10 +56,10 @@ class WriteBoletoReport
 
         foreach ($titles as $key => $title) {
             $result[$key]['boletoCustomerOwner'] = $title->getBoletoCustomerOwner();
+            $result[$key]['boletoStatus'] = $title->getBoletoStatus();
             $result[$key]['boletoVencimento'] = $title->getBoletoVencimento();
             $result[$key]['boletoNumber'] = $title->getBoletoNumber();
             $result[$key]['boletoInstallment'] = $title->getBoletoInstallment();
-            $result[$key]['boletoStatus'] = $title->getBoletoStatus();
             $result[$key]['boletoValue'] = number_format($title->getBoletoValue(), 2, '.', '');
         }
 
@@ -92,8 +92,7 @@ class WriteBoletoReport
             $result[$key]['boletoVencimento'] = $title->getBoletoVencimento();
             $result[$key]['boletoNumber'] = $title->getBoletoNumber();
             $result[$key]['boletoInstallment'] = $title->getBoletoInstallment();
-            $result[$key]['boletoPrevisionamentoDate'] = $title->getBoletoProvisionamentoDate() ?? '';
-            $result[$key]['boletoPorContaValue'] = $title->getBoletoPorContaValue() ?? null;
+            $result[$key]['boletoPorContaStatus'] = $title->getBoletoPorContaStatus();
             $result[$key]['boletoValue'] = number_format($title->getBoletoValue(), 2, '.', '');
         }
 
