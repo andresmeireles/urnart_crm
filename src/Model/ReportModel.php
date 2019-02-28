@@ -100,7 +100,7 @@ class ReportModel extends Model
             throw new \PDOException($e->getMessage(), $e->getCode());
         }
 
-        return new FlashResponse(200, 'success', sprintf('Item %s atualizado com sucesso.', $entityToEdit->getId()));
+        return new FlashResponse(200, 'success', sprintf('Titulo %s/%s atualizado com sucesso.', $entityToEdit->getBoletoNumber(), $entityToEdit->getBoletoInstallment()));
     }
     
     public function getGenericList(string $entity, string $typeOfOrder): StdResponse

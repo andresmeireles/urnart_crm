@@ -15,8 +15,8 @@
     
                 {% else %}
                     <div class="row">
-                        <div class="col text-center font-weight-bold"><p><strong>Cliente Do Boleto</strong></p></div>
-                        <div class="col text-center font-weight-bold"><p><strong>Numero Do Titulo/Parcela</strong></p></div>
+                        <div class="col text-center font-weight-bold"><p><strong>N°/Parcela</strong></p></div>
+                        <div class="col font-weight-bold"><p><strong>Cliente Do Boleto</strong></p></div>
                         <div class="col text-center font-weight-bold"><p><strong>Valor do Titulo</strong></p></div>
                         <div class="col text-center font-weight-bold"><p><strong>Vencimento do Titulo</strong></p></div>
                         <div class="col text-center font-weight-bold"><p><strong>Ações</strong></p></div>
@@ -24,8 +24,8 @@
                 {% for sview in simpleView %}
                     <div class="row" id="titulo{{ sview.id }}" target="/{{ metalink }}/{{ entity }}">
                         <div class="d-none id-row">{{ sview.id }}</div>
-                        <div class="col text-center"><p>{{ sview.boletoCustomerOwner }}</p></div>
                         <div class="col text-center"><p>{{ sview.boletoNumber }}/{{ sview.boletoInstallment }}</p></div>
+                        <div class="col"><p>{{ sview.boletoCustomerOwner }}</p></div>
                         <div class="col text-center"><span class="float-left">R$&nbsp;&nbsp;</span><span class="text-right">{{ sview.boletoValue | number_format(2, ',', '.') }}</span></div>
                         <div class="col text-center"><p>{{ sview.boletoVencimento | date('d/m/Y') }}</p></div>
                         <div class="col text-left">
