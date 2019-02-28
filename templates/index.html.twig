@@ -1,6 +1,12 @@
 {% extends 'headerTemplate.html.twig' %}
 
 {% block body %}
+  <style>
+    .xof {
+      max-width: 250px !important;
+      width: 250px !important;
+    }
+  </style>
   <header>
     <nav class="navbar top-navbar navbar-expand-md bg-dark navbar-dark">
       <div class="navbar-header">
@@ -27,7 +33,7 @@
   </header>
   <div class="container-fluid">
     <div class="row">
-      <div class="sidebar-sticky bg-primary col-md-2 p-1" id="collapsible-sidebar">
+      <div class="sidebar-sticky bg-primary sidebar-fixed-width p-1" id="collapsible-sidebar">
         <ul class="list-unstyled" id="menus">
           <li class="my-1">
             <div class="my-1">

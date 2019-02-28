@@ -11,12 +11,12 @@ $(function () {
 
 	const hide = (el, div) => {
 		div.classList.add('col-md-0');
-		div.classList.remove('col-md-2');
+		div.classList.remove('sidebar-fixed-width');
 		el.classList.add('hide-content');
 	}
 
 	const show = (el, div) => {
-		div.classList.add('col-md-2');
+		div.classList.add('sidebar-fixed-width');
 		div.classList.remove('col-md-0');
 		el.classList.remove('hide-content');
 	}
