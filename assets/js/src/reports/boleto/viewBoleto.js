@@ -57,6 +57,18 @@ if (document.querySelector('#show-titles')) {
                         <div class="form-control">${ typeof data.boleto_payment_date === 'undefined' ? 'PEDIDO NÂO PAGO' : moment(data.boleto_payment_date).format('L') }</div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col form-row">
+                    <div class="form-group col">
+                        <label for="status">Data de criação</label>
+                        <div><p class="form-control">${ moment(data.create_date).format('L') }</p></div>
+                    </div>
+                    <div class="form-group col">
+                        <label for="paymentDate">Data da ultima modificação</label>
+                        <div class="form-control">${ moment(data.create_date).format('L') === moment(data.last_update).format('L') ? 'ALTERAÇÂO NÃO FEITA' : moment(data.last_update).format('L') }</div>
+                    </div>
+                </div>
             </div>`
 
             greatContainer.innerHTML = register;

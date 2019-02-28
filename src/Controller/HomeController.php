@@ -44,7 +44,7 @@ class HomeController extends AbstractController
      * hot reload csrf token - test
      *
      * @Route("/changeCsrf")
-     * 
+     *
      * @return Response
      */
     public function changeCsrf(SessionInterface $session)
@@ -55,10 +55,20 @@ class HomeController extends AbstractController
     }
 
     /**
+    * @Route("/financeiro")
+    *
+    * @return Response  Symofny response object.
+    */
+    public function underConstruct(): Response
+    {
+        return new Response('Está pagina ainda está em contrução. Por favor volte a pagina.');
+    }
+
+    /**
      * Simple greeting
      *
      * @Route("/greeting/{name}", defaults={"name"=null})
-     * 
+     *
      * @param string $name
      * @return Response
      */

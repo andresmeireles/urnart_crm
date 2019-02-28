@@ -81,6 +81,7 @@ class Boleto extends BaseEntity
 
     public function setBoletoCustomerOwner(string $boletoCustomerOwner): self
     {
+        $this->setLastUpdate();
         $this->boletoCustomerOwner = $boletoCustomerOwner;
 
         return $this;
@@ -93,6 +94,7 @@ class Boleto extends BaseEntity
 
     public function setBoletoNumber(string $boletoNumber): self
     {
+        $this->setLastUpdate();
         $this->boletoNumber = $boletoNumber;
 
         return $this;
@@ -126,6 +128,7 @@ class Boleto extends BaseEntity
 
     public function setBoletoStatus(int $boletoStatus): self
     {
+        $this->setLastUpdate();
         $this->boletoStatus = $boletoStatus;
 
         return $this;
@@ -138,6 +141,7 @@ class Boleto extends BaseEntity
 
     public function setBoletoPaymentDate(?string $boletoPaymentDate): self
     {
+        $this->setLastUpdate();
         $date = !is_null($boletoPaymentDate) ? new \DateTime($boletoPaymentDate) : $boletoPaymentDate;
 
         if (!($date instanceOf \DateTime) and !is_null($date)) {
@@ -156,6 +160,7 @@ class Boleto extends BaseEntity
 
     public function setBoletoValue(float $boletoValue): self
     {
+        $this->setLastUpdate();
         $this->boletoValue = $boletoValue;
 
         return $this;
@@ -168,6 +173,7 @@ class Boleto extends BaseEntity
 
     public function setBoletoInstallment(int $boletoInstallment): self
     {
+        $this->setLastUpdate();
         $this->boletoInstallment = $boletoInstallment;
 
         return $this;
@@ -187,6 +193,7 @@ class Boleto extends BaseEntity
 
     public function setBoletoVencimento(string $boletoVencimento): self
     {
+        $this->setLastUpdate();
         $date = new \DateTime($boletoVencimento);
 
         if (!($date instanceOf \DateTime)) {
@@ -205,6 +212,7 @@ class Boleto extends BaseEntity
 
     public function setBoletoProvisionamentoDate(?\DateTimeInterface $boletoProvisionamentoDate): self
     {
+        $this->setLastUpdate();
         $this->boletoProvisionamentoDate = $boletoProvisionamentoDate;
 
         return $this;
@@ -217,6 +225,7 @@ class Boleto extends BaseEntity
 
     public function setBoletoPorContaStatus(?array $boletoPorContaStatus): self
     {
+        $this->setLastUpdate();
         $this->boletoPorContaStatus = $boletoPorContaStatus;
 
         return $this;

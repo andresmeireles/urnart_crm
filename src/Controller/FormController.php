@@ -68,11 +68,11 @@ class FormController extends AbstractController
             if ($formName === 'order') {
                 $requestData['products'] = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
                 $requestData['payments'] = $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll();
-                $requestData['transporters'] = $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll();    
+                $requestData['transporters'] = $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll();
             }
             return $this->render('form/'.$formName.'Form.html.twig', $requestData);
         }
-        
+
         throw new \Exception('Page not found');
     }
 
@@ -88,7 +88,7 @@ class FormController extends AbstractController
      *
      * @return Response
      */
-    public function printForm(Request $request, string $formName, Form $form): Response 
+    public function printForm(Request $request, string $formName, Form $form): Response
     {
         if (empty($request->query->all())) {
             echo 'Nenhum dado enviado';
@@ -109,7 +109,7 @@ class FormController extends AbstractController
      *
      * @return Response
      */
-    public function sendPdfForm(Request $request, string $formName, Form $form): Response 
+    public function sendPdfForm(Request $request, string $formName, Form $form): Response
     {
         if (empty($request->request->all())) {
             echo 'Nenhum dado enviado';
@@ -125,16 +125,13 @@ class FormController extends AbstractController
         }
 
         // send message
-        $this->addFlash(
-            $result['type'],
-            'Sucesso!'
-        );
+        $this->addFlash($result['type'], 'Sucesso!');
 
         // send file to download
         $response =  new BinaryFileResponse($file);
         $response->trustXSendfileTypeHeader();
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
- 
+
         return $response;
         //return $this->file($file); <-- Alternativa mais simples :)
     }
