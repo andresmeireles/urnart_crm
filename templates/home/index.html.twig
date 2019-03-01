@@ -3,25 +3,34 @@
 {% block title %}Inicio{% endblock %}
 
 {% block content %}
+
+		{%  
+			set data = {
+				chartId: 'number',
+				titles: ['boletos', 'pedidos'],
+				label: 'Quantidade',
+				datas: [200, 300],
+				titleText: '# titulos e pedidos de 2019'
+			}
+		%}
+		{%  
+			set data2 = {
+				chartId: 'value',
+				titles: ['boletos', 'pedidos'],
+				label: 'Quantidade',
+				datas: [16250.00, 330000.00],
+				titleText: 'valores de pedidos e titulos de 2019'
+			}
+		%}
+
 <div class="p-4 col">
-	<p class="randomString">Random string</p>
-	<p><small class="rlx"></small></p>
-	{% include 'components/csrftoken.html.twig' %}
-	<button class="btn btn-primary btn-lg change-token">Alterar csrftoken</button>
-	<div class="col">
-	{#<a href="https://google.com/google.jpg" data-fancybox data-caption="Caption for single image">
-		<img src="https://google.com/google.jpg">
-	</a>#}
+	<div class="row">
+		<div class="col-md-6">
+			{% include "components/simpleHorizontalBarChart.html.twig" with {'data': data} %}
+		</div>
+		<div class="col-md-6">
+			{% include "components/simpleHorizontalBarChart.html.twig" with {'data': data2} %}
+		</div>
 	</div>
-	<canvas id="chart"></canvas>
-	<script>
-	document.querySelector('.change-token').addEventListener('click', function (el) {
-		el.preventDefault();
-		var csrfToken = document.querySelector('.token')
-		sendDataWithCsrf('POST', '/changeCsrf', null, csrfToken, function (response) {
-			document.querySelector('.randomString').innerText = response.data;
-		});
-	});
-	</script>
 </div>
 {% endblock %}

@@ -1,0 +1,49 @@
+<canvas id="{{ data.chartId }}"></canvas>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => 
+{    let canvas = document.querySelector('#{{ data.chartId }}').getContext('2d');
+
+    let datasetData = {
+        labels: [{% for title in data.titles %}'{{ title }}',{% endfor %}],
+        datasets: [
+            {
+                label: '{{ data.label }}',
+                backgroundColor: 'rgba(255, 255, 125, 0.7)',//random color
+                //borderColor: '', //random color
+                borderWidth: 1,
+                data: [{% for data in data.datas %} {{ data }},{% endfor %}]   
+            }
+        ]
+    };
+    
+    let opt = 
+    {
+        barPercentage: 1.0,
+        categoryPercentage: 1.0,
+        responsive: true,
+        legend: {
+            position: 'right'
+        },
+        title: {
+            display: true,
+            text: '{{ data.titleText }}',
+            fontSize: 23
+        },
+        scales: {
+            xAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    stepSize: 90 // fazer por varaivel
+                }
+            }]
+        }
+    };
+
+    let simpleChart = new Chart(canvas, {
+        type: 'horizontalBar', // variable
+        data: datasetData,
+        options: opt
+    });
+});
+</script>
