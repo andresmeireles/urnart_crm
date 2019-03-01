@@ -110,15 +110,21 @@ class ReportModel extends Model
         
         switch ($typeOfOrder) {
             case 'last':
-                $list = 'Ultimos Titulos';
+                $list = 'Ultimos Títulos';
                 $order = array('createDate' => 'ASC');
                 break;
             case 'client':
-                $list = 'Titulos por cliente';
+                $list = 'Títulos por cliente';
                 if ($entity === 'boleto') {
                     $order = array('boletoCustomerOwner' => 'ASC');
                 }
                 break;
+            case 'byDate':
+            case 'beginDate':
+                $responseObject = new StdResponse();
+                $responseObject->typeOfList = 'Busca de títulos por data';
+                $responseObject->consultResults = null;   
+                return $responseObject;     
             default:
                 throw new \BadMethodCallException(sprintf('Order %s não é um parametro valido. Favor enviar parametro válido', $order));
                 break;
@@ -187,7 +193,7 @@ class ReportModel extends Model
                                 
                 if ($boletoData['porContaValue'] > $boletoRegistry->getBoletoValue()) {
                     throw new CustomException(sprintf(
-                        'Erro no valor da parcela: Valor de R$ %s maior que R$ %s do valor total do titulo %s/%s', 
+                        'Erro no valor da parcela: Valor de R$ %s maior que R$ %s do valor total do título %s/%s', 
                         number_format($boletoData['porContaValue'], 2, '.', ','), 
                         number_format($boletoRegistry->getBoletoValue(), 2, ',', '.'),
                         $boletoRegistry->getBoletoNumber(),
@@ -289,11 +295,27 @@ class ReportModel extends Model
         return $response;
     }
 
+    /**
+     * Return required fields from databse by start and ending date, if has.
+     *
+     * @param   string       $entity          Entity for search.
+     * @param   string       $whereField      fields to WHERE condition.
+     * @param   string|null  $requiredFields  Fields required to return.
+     * @param   string|null  $startDate       Start consult date.
+     * @param   string|null  $endingDate      Ending cosult date.
+     *
+     * @return  array                         Array with results of consult.
+     */
+    public function searchByDate(string $entity, string $whereField, ?string $requiredFields, ?string $startDate, ?string $endingDate): array
+    {
+        return $this->getGenericListByDate($entity, $whereField, $requiredFields, $startDate, $endingDate);
+    }
+
     public function generateBoletoListReport(?string $startDate, ?string $endingDate): StdResponse
     {
         $pastReportFile = $this->getReportFile(__DIR__.'/../Utils/ReportFile', $endingDate);
 
-        $reportResults = $this->getGenericListByDate('Boleto', 'boletoVencimento', 'u.boletoCustomerOwner, u.boletoStatus, u.boletoValue, u.boletoVencimento, u.boletoPaymentDate', $startDate, $endingDate);
+        $reportResults = $this->searchByDate('Boleto', 'boletoVencimento', 'u.boletoCustomerOwner, u.boletoStatus, u.boletoValue, u.boletoVencimento, u.boletoPaymentDate', $startDate, $endingDate);
         $c = $reportResults;
         $pastResponse = array();
         $totalValue = 0;

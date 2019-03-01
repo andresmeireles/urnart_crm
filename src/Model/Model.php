@@ -121,7 +121,4 @@ abstract class Model
         $result = $query->getResult();
         return $result;
     }
-
-    protected function getFile(string $path, ?string $fileName = null)
-    {}
 }

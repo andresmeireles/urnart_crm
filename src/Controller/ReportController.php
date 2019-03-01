@@ -119,12 +119,22 @@ class ReportController extends AbstractController
     public function getGenericList(Request $request, string $pageType, ReportModel $model): Response
     {
         $typeOfList = $request->query->get('type') ?? 'last';
+
+        $beginDate = $request->query->get('beginDate');
+        $lastDate = $request->query->get('lastDate');
+
+        if (!is_null($beginDate) || !is_null($lastDate)) {
+            $byDateResults = $model->searchByDate(ucwords($pageType), 'boletoVencimento', 'u', $beginDate, $lastDate);
+        }
+
         $listOfResults = $model->getGenericList($pageType, $typeOfList);
         $templateFile = sprintf('report/pages/%s/lists.html.twig', $pageType);
 
         return $this->render($templateFile, [
             'typeOfList' => $listOfResults->typeOfList,
-            'simpleView' => $listOfResults->consultResults 
+            'simpleView' => $listOfResults->consultResults ?? $byDateResults ?? array(),
+            'beginDate' => $beginDate ?? null,
+            'lastDate' => $lastDate ?? null
         ]);
     }
 

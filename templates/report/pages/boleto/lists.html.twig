@@ -1,27 +1,87 @@
 {% extends "report/pages/boleto/templates/listTemplate.html.twig" %}
 
-{% block title %}Lista de titulos{% endblock %}
+{% block title %}Lista de títulos{% endblock %}
 
 {% block listOfResults %}
+    {% set clientName = '' %}
     <div class="p-2 col" id="boleto">
         <div>
             <h2>Relatorios por {{ typeOfList }}</h2>
             <hr>
         </div>
         <div id="show-titles" class="col">
+
+                {% if app.request.query.get('type') is same as('byDate') or app.request.query.get('type') is same as('beginDate') %}
+                    <form method="GET">
+                        <input type="hidden" name="type" value="byDate" />
+                        <div class="form-row">
+                            <h3 class="col-md-12">Selecione datas para busca de títulos</h3>
+                            <div class="form-group col-md-6">	
+                                <label class="sr-only" for="beginDate">Data de Inicio</label>
+                                        <div class="input-group mb-2">
+                                            <input type="hidden" id="beginDate" name="beginDate" />
+                                            <input type="text" class="form-control date-mask no-keypress calendar-selector"  placeholder="Data inicial" date-target="#beginDate" autocomplete="off">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                            </div>
+                                        </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="sr-only" for="lastDate">Data Final</label>
+                                    <div class="input-group mb-2">
+                                            <input type="hidden" name="lastDate" id="lastDate" />
+                                            <input type="text" class="form-control date-mask no-keypress calendar-selector" id="lastDate"  placeholder="Data Final" autocomplete="off" date-target="#lastDate">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                            </div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <input type="submit" class="btn btn-primary btn-full btn-block" value="Filtrar">
+                        </div>
+                    </form>
+                {% endif %}
+
                 {% if simpleView is empty %}
                 
-                    <h3>Não ha titulos registrados</h3>
+                    <h3 class="text-center">Não ha títulos registrados</h3>
     
                 {% else %}
+
+                    {% if app.request.query.get('type') is same as('byDate') %}
+
+                        {% if beginDate is empty and lastDate is empty %}
+                            <h3 class="text-center">Relatorio geral</h3>
+                        {% elseif beginDate is not empty and lastDate is not empty %}
+                            <h3 class="text-center" id="typeOfList">Pedido no intervalo de {{ beginDate | date('d/m/Y') }} a {{ lastDate | date('d/m/Y') }}.</h3>
+                        {% elseif beginDate is not empty and lastDate is empty %}
+                            <h3 class="text-center" id="typeOfList">Pedidos a partir do dia {{ beginDate | date('d/m/Y') }}.</h3>
+                        {% elseif beginDate is empty and lastDate is not empty %}
+                            <h3 class="text-center" id="typeOfList">Pedidos até dia {{ lastDate | date('d/m/Y') }}.</h3>
+                        {% endif %}
+
+                    {% endif %}
+
                     <div class="row">
                         <div class="col text-center font-weight-bold"><p><strong>N°/Parcela</strong></p></div>
                         <div class="col font-weight-bold"><p><strong>Cliente Do Boleto</strong></p></div>
-                        <div class="col text-center font-weight-bold"><p><strong>Valor do Titulo</strong></p></div>
-                        <div class="col text-center font-weight-bold"><p><strong>Vencimento do Titulo</strong></p></div>
+                        <div class="col text-center font-weight-bold"><p><strong>Valor do Título</strong></p></div>
+                        <div class="col text-center font-weight-bold"><p><strong>Vencimento do Título</strong></p></div>
                         <div class="col text-center font-weight-bold"><p><strong>Ações</strong></p></div>
                     </div>
                 {% for sview in simpleView %}
+
+                    {% if app.request.query.get('type') is same as('client') %}
+
+                        {% if clientName is not same as(sview.boletoCustomerOwner) %}
+                            <hr>
+                            <h3 class="font-weight-bold">&nbsp;&nbsp;&nbsp;{{ sview.boletoCustomerOwner }}</h3>
+                            <hr>
+                            {% set clientName = sview.boletoCustomerOwner %}
+                        {% endif %}
+
+                    {% endif %}
                     <div class="row" id="titulo{{ sview.id }}" target="/{{ metalink }}/{{ entity }}">
                         <div class="d-none id-row">{{ sview.id }}</div>
                         <div class="col text-center"><p>{{ sview.boletoNumber }}/{{ sview.boletoInstallment }}</p></div>
@@ -41,6 +101,7 @@
                             {% include "/report/pages/boleto/changeStatus.html.twig" with { 'title' : sview } %}
                         </div>
                     </div>
+
                 {% endfor %}
                 
                 {% endif %}

@@ -1,5 +1,5 @@
 <div id="create-boleto" class="p-2 col-md-10" style="display: none; bottom: 50px">
-    <h3>Criar novo titulo.</h3>
+    <h3>Criar novo título.</h3>
     <hr>
     <form method="POST" id="newTitle" action="/report/boleto/create">
         <div class="form-group">
@@ -8,7 +8,7 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-8">
-                <label for="boletoIdNumber">Identificador do Titulo</label>
+                <label for="boletoIdNumber">Identificador do Título</label>
                 <input type="text" class="form-control" name="boletoNumber" placeholder="Identificador" required>
             </div>
             <div class="form-group col-md-4">
@@ -18,12 +18,12 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="boletoPriceValue">Valor do titulo</label>
+                <label for="boletoPriceValue">Valor do título</label>
                 <input type="hidden" converted-value name="boletoValue">
                 <input type="text" class="form-control numbers-float-only auto-float-convert-blur" auto-clear placeholder="Valor" required>
             </div>
             <div class="form-group col-md-6">
-                <label for="">Data de Vencimento do Titulo</label>
+                <label for="">Data de Vencimento do Título</label>
                 {# <input type="hidden" name="boletoVencimento" id="boletoVencimento"> #}
                 <input type="hidden" id="converted-date" name="boletoVencimento">
                 <input type="text" class="form-control no-keypress calendar-selector" date-target="#converted-date" placeholder="Clique para Selecionar a Data Vencimento" autocomplete="off" required>
@@ -31,7 +31,7 @@
         </div>
         <div class="form-group">
             {% include "components/csrftoken.html.twig" %}
-            <button type="submit" class="btn btn-success btn-block">Adicionar Titulo</button>
+            <button type="submit" class="btn btn-success btn-block">Adicionar Título</button>
         </div>
     </form>
 </div>

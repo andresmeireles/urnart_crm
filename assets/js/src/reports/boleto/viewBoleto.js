@@ -17,7 +17,7 @@ if (document.querySelector('#show-titles')) {
         let greatContainer = document.querySelector(`#${idContainer}`);
         greatContainer.innerHTML = '';
         let register = `
-            <h3>Detalhes do titulo ${data.id}</h3><hr>
+            <h3>Detalhes do título ${data.id}</h3><hr>
             <div class="row">
             <div class="col form-row">
                 <div class="form-group col-md-6">
