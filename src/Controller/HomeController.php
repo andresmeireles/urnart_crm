@@ -13,8 +13,9 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Utils\Andresmei\CsrfToken;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Model\ListModel;
+use App\Entity\ManualOrderReport;
 
 /**
  * Classe do controller home
@@ -35,9 +36,27 @@ class HomeController extends AbstractController
      *
      * @return Response
      */
-    public function index()
+    public function index(ListModel $model)
     {
-        return $this->render('home/index.html.twig');
+        //chart
+        $boletoValue = 0.0;
+        $boletoData = $model->dqlConsult('SELECT u.boletoValue FROM App\Entity\Boleto u');
+        $boletoAmount = count($boletoData);
+        foreach ($boletoData as $key) {
+            $boletoValue += $key['boletoValue'];
+        }
+
+        $orderValue = 0.0;
+        $orderData = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findAll();
+        $orderAmount = count($orderData);
+        foreach ($orderData as $key) {
+            $orderValue += $key->getOrderFinalPrice();
+        }
+
+        return $this->render('home/index.html.twig', [
+            'values' => array($boletoValue, $orderValue),
+            'amount' => array($boletoAmount, $orderAmount)
+        ]);
     }
 
     /**

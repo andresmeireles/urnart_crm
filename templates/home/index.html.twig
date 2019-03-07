@@ -9,8 +9,9 @@
 				chartId: 'number',
 				titles: ['boletos', 'pedidos'],
 				label: 'Quantidade',
-				datas: [200, 300],
-				titleText: '# titulos e pedidos de 2019'
+				datas: [{% for a in amount %}{{ a }},{% endfor %}],
+				titleText: '# titulos e pedidos de 2019',
+				step: 85
 			}
 		%}
 		{%  
@@ -18,7 +19,7 @@
 				chartId: 'value',
 				titles: ['boletos', 'pedidos'],
 				label: 'Quantidade',
-				datas: [16250.00, 330000.00],
+				datas: [{% for v in values %}{{ v }},{% endfor %}],
 				titleText: 'valores de pedidos e titulos de 2019'
 			}
 		%}

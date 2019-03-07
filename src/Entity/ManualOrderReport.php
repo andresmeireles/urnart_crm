@@ -201,4 +201,15 @@ class ManualOrderReport extends BaseEntity
 
         return $this;
     }
+
+    public function getOrderFinalPrice(): float
+    {
+        $cartValue = 0;
+        foreach ($this->getManualProductCarts() as $key) {
+            $cartValue += ($key->getProductPrice() * $key->getProductAmount());
+        }
+
+        $finalValue = ($cartValue + $this->getFreight()) - $this->getDiscount();
+        return $finalValue;
+    }
 }

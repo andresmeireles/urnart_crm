@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 namespace App\Model;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\AbstractManagerRegistry;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Yaml\Yaml;
 use App\Config\NonStaticConfig;
@@ -18,6 +18,7 @@ abstract class Model
     /**
      * Entity Manger
      *
+     * @var ManagerRegistry
      * @var Connection
      * @var ObjectManager
      */
@@ -108,14 +109,14 @@ abstract class Model
      *
      * @return  array                      Array with results.
      */
-    protected function dqlConsult(string $dqlStringConsult): array
+    public function dqlConsult(string $dqlStringConsult): array
     {
         $query = $this->em->createQuery($dqlStringConsult);
         $result = $query->execute();
         return $result;
     }
 
-    protected function sqlConsult(string $sqlConsult)
+    public function sqlConsult(string $sqlConsult)
     {
         $query = $this->em->createNativeQuery($sqlConsult);
         $result = $query->getResult();

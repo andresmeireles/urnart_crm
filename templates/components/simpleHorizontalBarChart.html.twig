@@ -17,13 +17,12 @@ document.addEventListener('DOMContentLoaded', () =>
         ]
     };
     
-    let opt = 
-    {
+    let opt = {
         barPercentage: 1.0,
-        categoryPercentage: 1.0,
+        categoryPercentage: 0.2,
         responsive: true,
         legend: {
-            position: 'right'
+            position: 'bottom'
         },
         title: {
             display: true,
@@ -31,17 +30,23 @@ document.addEventListener('DOMContentLoaded', () =>
             fontSize: 23
         },
         scales: {
-            xAxes: [{
+            yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    stepSize: 90 // fazer por varaivel
+                    stepSize: {{ data.step is defined ? data.step : 0 }}, // fazer por varaivel
+                    stacked: true
                 }
             }]
+        },
+        plugins: {
+            labels: {
+                render: 'value'
+            }
         }
     };
 
     let simpleChart = new Chart(canvas, {
-        type: 'horizontalBar', // variable
+        type: 'bar', // variable
         data: datasetData,
         options: opt
     });
