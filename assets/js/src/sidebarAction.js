@@ -23,11 +23,13 @@ $(function () {
 
 	var menuButton = document.querySelector('#hideMenusNames');
 
-	menuButton.addEventListener('click', function () {
-		var el = document.querySelectorAll('#menus li span');
-		let div = document.querySelector('#collapsible-sidebar');
-		for (var i = 0; i < el.length; i++) {
-			toggle(el[i], div);
-		}
-	});
+	if (document.querySelector('#hideMenuNames')) {
+		menuButton.addEventListener('click', function () {
+			var el = document.querySelectorAll('#menus li span');
+			let div = document.querySelector('#collapsible-sidebar');
+			for (var i = 0; i < el.length; i++) {
+				toggle(el[i], div);
+			}
+		});
+	}
 });

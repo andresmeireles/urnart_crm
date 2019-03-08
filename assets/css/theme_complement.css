@@ -1,3 +1,9 @@
+/** fill page */
+.fill-page {
+	min-height: 100%;
+	min-width: 100%;
+}
+
 /** vex z-index */
 .vex-overlay {
 	z-index: 99997 !important;
