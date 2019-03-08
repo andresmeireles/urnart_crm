@@ -3,28 +3,42 @@
 {% block title %}Inicio{% endblock %}
 
 {% block content %}
-
-		{%  
-			set data = {
-				chartId: 'number',
-				titles: ['boletos', 'pedidos'],
-				label: 'Quantidade',
-				datas: [{% for a in amount %}{{ a }},{% endfor %}],
-				titleText: '# titulos e pedidos de 2019',
-				step: 85
-			}
-		%}
-		{%  
-			set data2 = {
-				chartId: 'value',
-				titles: ['boletos', 'pedidos'],
-				label: 'Quantidade',
-				datas: [{% for v in values %}{{ v }},{% endfor %}],
-				titleText: 'valores de pedidos e titulos de 2019'
-			}
-		%}
+	{% set data1 = '' %}
+	{% set dataStep1 = 0 %}
+	{% for a in amount %}
+		{% set data1 = data1 ~ a ~ ',' %}
+		{% set dataStep1 = dataStep1 + a %}
+	{% endfor %}
+	{% set data2 = '' %}
+	{% set dataStep2 = 0 %}
+	{% for v in values %}
+		{% set data2 = data2 ~ v ~ ',' %}
+		{% set dataStep2 = dataStep2 + v %}
+	{% endfor %}
+	{%  
+		set data = {
+			chartId: 'number',
+			titles: ['boletos', 'pedidos'],
+			label: 'Quantidade',
+			datas: [data1],
+			titleText: '# titulos e pedidos de 2019',
+			step: dataStep1 / ( amount | length )
+		}
+	%}
+	{%  
+		set data2 = {
+			chartId: 'value',
+			titles: ['boletos', 'pedidos'],
+			label: 'Quantidade',
+			datas: [data2],
+			titleText: 'valores de pedidos e titulos de 2019',
+			setp: dataStep2 / ( values | length )
+		}
+	%}
 
 <div class="p-4 col">
+	<h1 class="text-center">Resumo do dia {{ 'now' | date('d/m/Y') }}</h1>
+	<hr>
 	<div class="row">
 		<div class="col-md-6">
 			{% include "components/simpleHorizontalBarChart.html.twig" with {'data': data} %}
