@@ -48,6 +48,14 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
 
         return;
     }
+    
+    public static function getSubscribedEvents()
+    {
+        return [
+            'kernel.request' => 'onKernelRequest',
+            'kernel.controller' => 'onKernelController'
+        ];
+    }
 
     /**
      * [writeDaylyBoletoRegister description]
@@ -106,13 +114,5 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
     private function setTokens(\DateTimeInterface $date): CsrfToken
     {
         return new CsrfToken($date->format('d/m/Y H:m:s'));
-    }
-    
-    public static function getSubscribedEvents()
-    {
-        return [
-            'kernel.request' => 'onKernelRequest',
-            'kernel.controller' => 'onKernelController'
-        ];
     }
 }

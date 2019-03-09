@@ -18,9 +18,9 @@ class ExceptionSubscriber implements EventSubscriberInterface
      * @return  Response|ExceptionSubscriber                                [return description]
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
-    {
+    { 
         $exceptionClass = get_class($event->getException());
-
+        
         $exception = $exceptionClass === 'Exception' ? $exceptionClass : substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
         
         if ($event->getRequest()->server->get('APP_ENV') === 'dev') {
@@ -31,13 +31,12 @@ class ExceptionSubscriber implements EventSubscriberInterface
         if (!is_string($refererLink)) {
             $refererLink = '/';
         }
-        
         switch ($exception) {
             case 'AccessDeniedException':
             case 'FieldAlreadExistsException':
             case 'CustomException':
+            case 'CustomUserMessageAuthenticationException';
                 $this->triggerFlashMessage($event, $event->getException()->getMessage(), 'error');
-
                 return $event->setResponse(new RedirectResponse($refererLink));
                 break;
             case 'UniqueConstraintViolationException':

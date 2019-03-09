@@ -19,12 +19,13 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $user = new User();
-
+        $user->setEmail('fred@ninja');
         $user->setPassword($this->passwordEncoder->encodePassword(
             $user,
-            'flushPass'
+            '123'
         ));
         
+        $manager->persist($user);
         $manager->flush();
     }
 }

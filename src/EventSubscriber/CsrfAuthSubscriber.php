@@ -4,16 +4,18 @@ namespace App\EventSubscriber;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use App\Utils\Andresmei\CsrfToken;
+//use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use App\Utils\Andresmei\CsrfToken;
 
 class CsrfAuthSubscriber extends AbstractController implements EventSubscriberInterface
 {
     /**
      * @param FilterControllerEvent $event
      */
-    public function onKernelController(FilterControllerEvent $event): self
+    //public function onKernelController(FilterControllerEvent $event): self
+    public function onKernelRequest(GetResponseEvent $event): self
     {
         $request = $event->getRequest();
         if ($request->getMethod() == 'POST') {
@@ -39,7 +41,8 @@ class CsrfAuthSubscriber extends AbstractController implements EventSubscriberIn
     public static function getSubscribedEvents()
     {
         return [
-           'kernel.controller'  => 'onKernelController',
+           //'kernel.controller'  => 'onKernelController',
+           'kernel.request' => ['onKernelRequest', 8] // alta prioridade para ver o checkar no login
         ];
     }
 }
