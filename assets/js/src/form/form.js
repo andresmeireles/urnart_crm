@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		document.addEventListener('click', (el) => {
 			if (el.target.type === 'radio') {
 				let formType = el.target.getAttribute('form-name');
-				if (formType === 'travel') {
+				if (formType === 'travel/print') {
 					document.getElementById('driverNameFiled').style.display = 'block';
 					document.getElementById('driverName').setAttribute('required', 'required');
 				} else {
