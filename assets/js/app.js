@@ -103,6 +103,9 @@ global.checkRequired = require('./src/helpers/functions/checkRequired');
  ******* IMPORTS *******
  ***********************/
 
+// ADMIN
+import './src/admin/resetProfileImage';
+
 import './src/sidebarAction.js';
 import './src/globals';
 

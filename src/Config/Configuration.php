@@ -129,22 +129,22 @@ class Configuration
         }
     }
 
-    public function writeImageAsync(array $images): array
+    public function writeImageAsync(array $images): FlashResponse
     {
         foreach ($images as $name => $image) {
             SimpleFileUpload::uploadLogoImage($image);
             self::$imageNameAndPath[$name] = SimpleFileUpload::getFilePath();
         }
 
-        return FlashResponse::response(200, 'success', 'Imagens enviadas com sucesso, para finalizar aperte para finalizar alterações aparete em salvar');
+        return new FlashResponse(200, 'success', 'Imagens enviadas com sucesso, para finalizar aperte para finalizar alterações aparete em salvar');
     }
 
-    public function resetLogoImage()
+    public function resetLogoImage(): FlashResponse
     {
         $yaml = $this->config;
         $yaml['logo_image_path'] = 'sys/logo_img/logo.png';
         $yaml = Yaml::dump($yaml);
         file_put_contents(__DIR__.'/system-config.yaml', $yaml);
-        return FlashResponse::response(200, 'success', 'Imagem resetada com sucesso :)');
+        return new FlashResponse(200, 'success', 'Imagem resetada com sucesso :)');
     }
 }

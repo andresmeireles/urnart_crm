@@ -18,10 +18,26 @@ class AdminController extends AbstractController
      */
     public function index()
     {
-        /** @var \App\Entity\User */
-        $user = $this->getUser();
-
         return $this->render('admin/index.html.twig');
+    }
+
+    /**
+     * @Route("/admin/edit", name="useredit", methods="GET") 
+     */
+    public function viewEdit(): Response
+    {
+        return $this->render('admin/index.html.twig', [
+            'edit' => true
+        ]);
+    }
+
+    /**
+     * @Route("/admin/edit", methods="POST")
+     */
+    public function editUser(Request $request)
+    {
+        dump($request->request->all());
+        die();
     }
 
     /**

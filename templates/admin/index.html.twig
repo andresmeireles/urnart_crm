@@ -1,37 +1,84 @@
 {% extends "index.html.twig" %}
 
+{% block title %}Informações de {{ app.user.userNickname }}{% endblock %}
+
 {% block content %}
-<div class="px-4 py-3 col">
+
+<div class="px-4 py-3 col">   
+{% if edit is defined %}
+    <form method="POST" id="editUserData">
+        {% include "components/csrftoken.html.twig" %}
+        <div class="col">
+            <h2>Alterar os dados de {{ app.user.userNickname }}</h2>
+            <hr>
+        </div>
+        <div class="form-row">
+            <div class="col-md-4">
+                <div class="form-group col-md-8 mx-auto text-center">
+                    <img class="img-fluid rounded-circle" src="/caes-e-gatos-1.jpg" alt="user image" />
+                    <a href="javascript:;" class="btn btn-warning my-2" id="resetUserProfileImage">Resetar imagem</a>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group col">
+                    <label for="userNickname" class="h4">Nome do usuário</label>
+                    <input type="text" class="form-control" name="userNickname" placeholder="Nome do usuário." value="{{ app.user.userNickname }}" />
+                </div>
+                <div class="form-group col">
+                    <label for="email" class="h4">Email do usuário</label>
+                    <input type="email" class="form-control" name="email" placeholder="Email do usuário." value="{{ app.user.email }}" />
+                </div>
+                <div class="form-group col">
+                    <label for="profilePick" class="h4">Selecione uma imagem de perfil.</label>
+                    <div class="custom-file">
+                        <input type="hidden" name="profileImage" id="profileImage">
+                        <input type="file" class="custom-file-input cursor-decoration" id="customFile" />
+                        <label class="custom-file-label cursor-decoration" id="uploadFileName" for="customFile">Selecione um arquivo</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="form-row">
+            <input type="submit" class="btn btn-success btn-block btn-lg" value="Atualizar meus dados." />
+        </div>
+    </form>
+{% endif %}
+
+{% if edit is not defined %}
     <div class="col">
-        <h2>Alterar os dados de {{ app.user.userNickname }}</h2>
+        <h2>Dados de {{ app.user.userNickname }}</h2>
         <hr>
     </div>
     <div class="form-row">
-        <div class="form-group col-6">
-            <label for="userNickname">Nome do usuário</label>
-            <input type="text" class="form-control" name="userNickname" placeholder="Nome do usuário." />
+        <div class="col-md-4">
+            <div class="form-group col text-center">
+                <img class="img-fluid rounded-circle" src="/caes-e-gatos-1.jpg" alt="user image" />
+            </div>
         </div>
-        <div class="form-group col-6">
-            <label for="email">Email do usuário</label>
-            <input type="email" class="form-control" name="email" placeholder="Email do usuário." />
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col">
-            <label for="password">Alterar senha</label>
-            <input type="text" class="form-control" name="password" placeholder="Senha">
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-2">
-            <img class="img-fluid rounded-circle" src="/caes-e-gatos-1.jpg" alt="user image" />
-        </div>
-        <div class="form-group col mx-5 my-3">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input cursor-decoration" id="customFile" lang="es">
-                <label class="custom-file-label cursor-decoration" for="customFile">Selecione um arquivo</label>
+        <div class="col-md-8 my-5">
+            <div class="form-group col">
+                <label for="userNickname" class="h4 font-weight-bold">Nome do usuário</label>
+                <div class="h5">{{ app.user.userNickname }}</div>
+            </div>
+            <div class="form-group col">
+                <label for="email" class="h4 font-weight-bold">Email do usuário</label>
+                <div class="h5">{{ app.user.email }}</div>
+            </div>
+            <hr>
+            <div class="col">
+                <div class="form-row">
+                    <div class="col">
+                        <a href="admin/edit" class="btn btn-success btn-block btn-lg">Alterar dados</a>
+                    </div>
+                    <div class="col">
+                        <a href="admin/password" class="btn btn-success btn-block btn-lg">Alterar senha</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+{% endif %}
+</div>    
+
 {% endblock %}

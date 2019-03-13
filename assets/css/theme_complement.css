@@ -38,6 +38,10 @@
     margin: 5px;
 }
 
+.custom-file-input ~ .custom-file-label::after {
+	content: "Selecionar";
+}
+
 a .noline{text-decoration: none !important;}
 .noline a:hover {text-decoration: none !important;
 	color: white;        
@@ -54,11 +58,6 @@ a .noline{text-decoration: none !important;}
 	height: 100%;
 	overflow: auto;
 }
-
-$custom-file-text: (
-  en: "Browse",
-  es: "Elegir"
-);
 
 .f-box {
 	position: absolute;
