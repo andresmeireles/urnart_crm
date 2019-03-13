@@ -9,9 +9,9 @@
             <div class="p-5 bg-light col-md-6 mx-auto">
                 <form method="post">
                     {% include "components/notification.html.twig" %}
-
+                    
                     {% if error %}
-                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {# <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div> #}
                     {% endif %}
 
                     <div class="text-center"><img class="img-fluid rounded col-md-6 py-3" src="logo-t.png" /></div>

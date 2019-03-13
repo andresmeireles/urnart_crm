@@ -55,6 +55,11 @@ a .noline{text-decoration: none !important;}
 	overflow: auto;
 }
 
+$custom-file-text: (
+  en: "Browse",
+  es: "Elegir"
+);
+
 .f-box {
 	position: absolute;
     top: 0;

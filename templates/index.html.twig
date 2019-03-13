@@ -24,7 +24,7 @@
       <div class="navbar-collapse text-center justify-content-end">
         <ul class="navbar-nav d-none d-sm-block">
           <li class="nav-item text-right">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/logout">
               <i class="fas fw fa-sign-out-alt fa-lg"></i> Sair</a>
           </li>
         </ul>
@@ -39,7 +39,7 @@
           <li class="my-1">
             <div class="my-1">
               <img src="/caes-e-gatos-1.jpg" style="width: 45px; height:40px" class="rounded-circle">
-              <span class="text-right my-1">&nbsp;&nbsp;Nome do usuario</span>
+              <a href="/admin"><span class="text-right my-1">&nbsp;&nbsp;{{ app.user.userNickname ?? 'Nome do usuario' }}</span></a>
             </div>
           </li>
           <li class="noline text">

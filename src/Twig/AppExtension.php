@@ -15,6 +15,7 @@ class AppExtension extends AbstractExtension
             new TwigFilter('makeHash', array($this, 'makeHash')),
             new TwigFilter('extense', array($this, 'extense')),
             new TwigFilter('strToArray', array($this, 'strToArray')),
+            new TwigFilter('die', array($this, 'dieFunc'))
         );
     }
 
@@ -53,5 +54,10 @@ class AppExtension extends AbstractExtension
             $array[$answerQuestion[0]] = $answerQuestion[1];
         }
         return $array;
+    }
+
+    public function dieFunc(): void
+    {
+        die();
     }
 }

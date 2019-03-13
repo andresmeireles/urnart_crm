@@ -1,0 +1,37 @@
+{% extends "index.html.twig" %}
+
+{% block content %}
+<div class="px-4 py-3 col">
+    <div class="col">
+        <h2>Alterar os dados de {{ app.user.userNickname }}</h2>
+        <hr>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-6">
+            <label for="userNickname">Nome do usuário</label>
+            <input type="text" class="form-control" name="userNickname" placeholder="Nome do usuário." />
+        </div>
+        <div class="form-group col-6">
+            <label for="email">Email do usuário</label>
+            <input type="email" class="form-control" name="email" placeholder="Email do usuário." />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col">
+            <label for="password">Alterar senha</label>
+            <input type="text" class="form-control" name="password" placeholder="Senha">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <img class="img-fluid rounded-circle" src="/caes-e-gatos-1.jpg" alt="user image" />
+        </div>
+        <div class="form-group col mx-5 my-3">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input cursor-decoration" id="customFile" lang="es">
+                <label class="custom-file-label cursor-decoration" for="customFile">Selecione um arquivo</label>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

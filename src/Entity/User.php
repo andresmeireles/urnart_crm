@@ -14,28 +14,54 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * 
+     * @var int
      */
     private $id;
 
     /**
+     * @ORM\Column(type="string")
+     *
+     * @var  string $userNickname Nome do usuário.
+     */
+    private $userNickname;
+
+    /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * 
+     * @var string $email Email do usuário.
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * 
+     * @var array $roles Permissões do usuário.
      */
     private $roles = [];
 
     /**
-     * @var string The hashed password
      * @ORM\Column(type="string")
+     * 
+     * @var string $password The hashed password
      */
     private $password;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUserNickname(): ?string
+    {
+        return $this->userNickname;
+    }
+
+    public function setUserNickname(string $userNickname): self 
+    {
+        $this->userNickname = $userNickname;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -57,7 +83,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     /**

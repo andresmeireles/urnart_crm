@@ -33,9 +33,10 @@ class ExceptionSubscriber implements EventSubscriberInterface
         }
         switch ($exception) {
             case 'AccessDeniedException':
-            case 'FieldAlreadExistsException':
+            case 'AccessDeniedHttpException':
             case 'CustomException':
-            case 'CustomUserMessageAuthenticationException';
+            case 'CustomUserMessageAuthenticationException':
+            case 'FieldAlreadExistsException':
                 $this->triggerFlashMessage($event, $event->getException()->getMessage(), 'error');
                 return $event->setResponse(new RedirectResponse($refererLink));
                 break;

@@ -1,7 +1,7 @@
 {% for label, messages in app.flashes %}
     <script>
         {% for message in messages %}
-            setTimeout( () => {
+            setTimeout(() => {
                 var notify = new noty({
                     text: "{{ message }}",
                     layout: 'topCenter',
@@ -13,7 +13,24 @@
                     }
                 }).show()
                 notify.setTimeout(2500)
-            }, 1000)
-        {% endfor %}
-     </script>
+            }, 1000){% endfor %}
+    </script>
 {% endfor %}
+
+{% if error is defined and error != null %}
+    <script>
+        setTimeout(() => {
+            var notify = new noty({
+                text: "{{ error.messageKey|trans(error.messageData, 'security') }}",
+                layout: 'topCenter',
+                type: "error",
+                theme: 'bootstrap-v4',
+                animation: {
+                    open: 'animated fadeInUp', // Animate.css class names
+                    close: 'animated fadeOutDown' // Animate.css class names
+                }
+            }).show()
+            notify.setTimeout(2500)
+        }, 1000)
+    </script>
+{% endif %}
