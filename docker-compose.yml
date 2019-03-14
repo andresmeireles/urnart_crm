@@ -5,22 +5,22 @@ version: "3.1"
 services:
 
     mariadb:
-      image: mariadb:10.1
-      container_name: sf-mariadb
+      image: mariadb:10.4
+      container_name: syadmin-mariadb
       working_dir: /application
       volumes:
         - .:/application
       environment:
-        - MYSQL_ROOT_PASSWORD=root
-        - MYSQL_DATABASE=dev_sysadmin
-        - MYSQL_USER=user
+        - MYSQL_ROOT_PASSWORD=123
+        - MYSQL_DATABASE=sysadmin
+        - MYSQL_USER=fred
         - MYSQL_PASSWORD=123
       ports:
         - "8003:3306"
 
     webserver:
       image: nginx:alpine
-      container_name: sf-webserver
+      container_name: syadmin-webserver
       working_dir: /application
       volumes:
           - .:/application
@@ -30,9 +30,9 @@ services:
 
     php-fpm:
       build: phpdocker/php-fpm
-      container_name: sf-php-fpm
+      container_name: syadmin-php-fpm
       working_dir: /application
       volumes:
         - .:/application
-        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.3/fpm/conf.d/99-overrides.ini
 

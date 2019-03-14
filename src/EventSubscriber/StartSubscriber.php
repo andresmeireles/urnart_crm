@@ -14,29 +14,9 @@ use App\Utils\Andresmei\WriteBoletoReport;
 
 class StartSubscriber extends AbstractController implements EventSubscriberInterface
 {
-    public function onKernelRequest(GetResponseEvent $event) 
-    {
-        $session = $event->getRequest()->getSession();
-        if (!Config::getStatus()) {
-            Config::start();
-        }
-        if (!array_key_exists('csrfToken', $session->all())) {
-            $today = new \DateTime('now');
-            $csrfToken = $this->setTokens($today);
-            $session->set('csrfToken', $csrfToken);
-        }
-        return;
-    }
-
     public function onKernelController(FilterControllerEvent $event)
     {
-        $session = $event->getRequest()->getSession();
         $today = new \DateTime('now');
-
-        if (!array_key_exists('csrfToken', $session->all())) {
-            $csrfToken = $this->setTokens($today);
-            $session->set('csrfToken', $csrfToken);
-        }
 
         $this->checkIfFolderExists();
 
@@ -52,7 +32,6 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
     public static function getSubscribedEvents()
     {
         return [
-            'kernel.request' => 'onKernelRequest',
             'kernel.controller' => 'onKernelController'
         ];
     }
@@ -109,10 +88,5 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
                 }
             }
         }
-    }
-
-    private function setTokens(\DateTimeInterface $date): CsrfToken
-    {
-        return new CsrfToken($date->format('d/m/Y H:m:s'));
     }
 }
