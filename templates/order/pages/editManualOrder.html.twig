@@ -18,7 +18,7 @@
         <hr>
           <form method="POST">
             <div class="row">
-                {% include 'components/csrftoken.html.twig' %}
+                {% include 'components/csrfToken.html.twig' with {'tokenText': 'formOrder'} %}
                 <div class="col-md-12 my-1">
                     <input type="submit" class="btn btn-primary active btn-block btn-lg" id="send-form" value="Editar pedido {{ order.getId }}">
                 </div>

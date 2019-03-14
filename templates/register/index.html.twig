@@ -4,14 +4,14 @@
 
     {% block content %}
         {% include '/components/notification.html.twig' %}
-        {% include '/components/csrftoken.html.twig' %}
+        {% include 'components/csrfToken.html.twig' with { 'tokenText': 'register' } %}
         <div class="custom-alert-message" role="alert" id="alert-message"></div>
         <div class="p-3">
-            <div class="row">
+            <div class="col">
                 <h1>Registros</h1>
                 <hr>
             </div>
-            <div class="row">
+            <div class="row col">
                 <div class="m-1">
                     <div class="card" style="width: 14rem;">
                         <div class="card-body">
@@ -51,6 +51,23 @@
                             <p class="card-text">Cria departamentos da empresa.</p>
                             <a href="javascript:;" data-fancybox data-src="#add-departament" class="card-link text-primary">Criar</a>
                             <a href="javascript:;" data-fancybox data-src="#departament" load-table="departament"  class="card-link text-primary">Visualizar e Editar</a>
+
+                            {% include "components/windowPopup.html.twig" with {
+                                'el' : {
+                                    'name': 'add_departament',
+                                    'metadata': 'departament',
+                                    fields : {
+                                        row: true,
+                                        'name': 'reload',
+                                        class: ['form-control', 'text-center'],
+                                    }
+                                }
+                            } %}
+
+                            <div id="add-departament" class="p-4" style="display: none">
+                                Não há nada aqui ainda, mas logo logo vai ter algo :)
+                            </div>
+
                             <div id="departament" class="p-4" style="display: none">
                                 <table class="table table-striped table-bordered">
                                     <thead>
@@ -62,6 +79,7 @@
                                     <tbody class="departament"></tbody>
                                 </table>
                             </div>
+                            
                         </div>
                     </div>
                 </div>

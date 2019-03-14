@@ -20,11 +20,11 @@
           <hr> </div>
         <div class="row">
           <div class="col">
-            <form method="GET" action="/forms/{{ formName }}/print"">
+            <form method="GET" action="/forms/{{ formName }}/print">
               <div class="row">
                 <div class="col">
                   <input type="submit" class="btn btn-primary btn-block" value="Criar Autorização de Retirada" id="send-form">
-                  {% include 'components/csrftoken.html.twig' %}
+                  {% include 'components/csrfToken.html.twig' with { 'tokenText': 'form' } %}
                 </div>
               </div>
                   <div class="my-1">

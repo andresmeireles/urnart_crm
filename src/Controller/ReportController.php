@@ -6,13 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Model\SurveyModel;
 use App\Config\NonStaticConfig;
 use App\Entity\Survey;
+use App\Model\ReportModel;
+use App\Model\SurveyModel;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\MyDateTime;
-use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
-use App\Model\ReportModel;
+use App\Utils\Exceptions\CustomException;
+use App\Utils\Andresmei\CsrfTokenVarification;
 
 class ReportController extends AbstractController
 {
@@ -76,6 +77,10 @@ class ReportController extends AbstractController
      */
     public function createGenericReportRegistryAjax(Request $request, string $pageType, ReportModel $model): Response
     {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Algo deu muito errado :(');
+        }
+        
         $data = $request->request->all();
         $result = $model->createGenericReport($pageType, $data);
         return new Response($result->getMessage(), $result->getHttpCode(), [
@@ -95,9 +100,13 @@ class ReportController extends AbstractController
      */
     public function createGenericReportRegistry(Request $request, string $pageType, ReportModel $model): Response
     {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Algo deu muito errado :(');
+        }
+
         $data = $request->request->all();
         $routeLink = $request->headers->get('referer');
-        
+
         if (!is_string($routeLink)) {
             $routeLink = '/';
         }
@@ -149,7 +158,7 @@ class ReportController extends AbstractController
      *
      * @return  Response              Edit page.
      */
-    public function viewEditGeneric(Request $request, string $entity, int $idConsult): Response
+    public function viewEditGeneric(string $entity, int $idConsult): Response
     {
         $fullQualifiedEntity = sprintf('App\Entity\%s', ucfirst($entity));
         $registryToEdit = $this->getDoctrine()->getRepository($fullQualifiedEntity)->find($idConsult);
@@ -173,10 +182,13 @@ class ReportController extends AbstractController
      */
     public function editRegisterGeneric(Request $request, string $entity, int $idConsult, ReportModel $model): Response
     {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Algo deu muito errado :(');
+        }
+
         $data = $request->request->all();
-        $template = sprintf('report/pages/%s/edit.html.twig', $entity);
         $result = $model->editRegistryGeneric($entity, $idConsult, $data);
-        
+
         $this->addFlash($result->getType(), $result->getMessage());
 
         return $this->redirect('/report/boleto/list');
@@ -224,6 +236,10 @@ class ReportController extends AbstractController
      */
     public function sendSurveys(Request $request, SurveyModel $surveyModel): Response
     {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Algo deu muito errado :(');
+        }
+
         $data = $request->request->all();
         $customerId = $data['customerId'];
         $surveyReferenceDate = $data['surveyReferenceDate'];
@@ -241,15 +257,19 @@ class ReportController extends AbstractController
     /**
      * Change status of Boleto. Specific function.
      * 
-     * @Route("/report/boleto/status/{boletoId}")
+     * @Route("/report/boleto/status/{boletoId}", methods="POST")
      *
      * @param   ReportModel  $model     Report with change functions.
      * @param   int          $boletoId  Boleto identification.
      *
      * @return  Response             Redirect to page.
-     */     
+     */
     public function boletoChangeStatus(Request $request, int $boletoId, ReportModel $model): Response
     {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Algo deu muito errado :(');
+        }
+
         $boletoData = $request->request->all();
         $refererLink = $request->headers->get('referer');
         if (!is_string($refererLink)) {
@@ -258,7 +278,7 @@ class ReportController extends AbstractController
 
         $result = $model->boletoChangeStatus($boletoId, $boletoData);
         $this->addFlash($result->getType(), $result->getMessage());
-        
+
         return $this->redirect($refererLink);
     }
 
@@ -281,7 +301,7 @@ class ReportController extends AbstractController
         $functionName = sprintf('generateBoleto%s', ucwords($reportName));
         $reportData = $model->$functionName($beginDate, $lastDate);
         $template = sprintf('/report/pages/boleto/templates/%s.html.twig', $reportName);
-        
+
         return $this->render($template, [
             'statusCount' => $reportData->boletosStatusCount,
             'statusNames' => $reportData->statusNames ?? '',

@@ -9,11 +9,11 @@
           <hr> </div>
         <div class="row">
           <div class="col">
-            <form method="GET" action="/forms/{{ formName }}/print"" target="_blank">
+            <form method="GET" action="/forms/{{ formName }}/print" target="_blank">
               <div class="row">
                 <div class="col-md-8">
                   <input type="submit" class="btn btn-primary btn-block" id="send-form" value="Criar Recibo"> </div>
-                  {% include 'components/csrftoken.html.twig' %}
+                  {% include 'components/csrfToken.html.twig' with { 'tokenText': 'form' } %}
                 <div class="col-md-4">
                   <a class="btn btn-secondary btn-block" href="/forms/{{ formName }}">Novo</a>
                 </div>

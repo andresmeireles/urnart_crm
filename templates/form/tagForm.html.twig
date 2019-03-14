@@ -15,10 +15,10 @@
     </div>
   </div>
   <hr>
-  <form method="GET" action="/forms/{{ formName }}/print"" id="action-form" target="_blank" onsubmit="setTimeout(function () {history.go(), 3000})">
+  <form method="GET" action="/forms/{{ formName }}/print" id="action-form" target="_blank" onsubmit="setTimeout(function () {history.go(), 3000})">
     <div class="py-2">
       <div class="row">
-        {% include 'components/csrftoken.html.twig' %}
+        {% include 'components/csrfToken.html.twig' with { 'tokenText': 'form' } %}
         <div class="col-md-6">
           <input type="submit" class="btn btn-primary btn-block btn-lg" id="send-form" value="Criar etiquetas" />
         </div>

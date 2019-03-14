@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
-use App\Config\Configuration;
 use App\Utils\Generic\Crud;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Config\Configuration;
+use Symfony\Component\Yaml\Yaml;
+use App\Utils\Exceptions\CustomException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RegisterController extends AbstractController
 {
@@ -63,6 +64,10 @@ class RegisterController extends AbstractController
      */
     public function getRegisterWithSimpleCriteria(string $entity, Request $request, Crud $getter)
     {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Algo deu muito errado :(');
+        }
+
         $criteria = (array) json_decode($request->getContent());
         $result = $getter->getWithSimpleCriteriaJson($entity, $criteria);
         return new Response($result, Response::HTTP_OK);
@@ -127,6 +132,10 @@ class RegisterController extends AbstractController
      */
     public function writeConfiguration(Request $request, Configuration $config): Response
     {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Algo deu muito errado :(');
+        }
+
         $images = $request->files->get('images');
         $result = $config->writeConfFile($request->request->all(), $images);
 

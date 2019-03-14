@@ -6,12 +6,13 @@ use App\Entity\Phone;
 use App\Entity\Estado;
 use App\Entity\Address;
 use App\Entity\Municipio;
+use App\Model\PersonModel;
+use App\Utils\Generic\Crud;
 use App\Entity\PessoaFisica;
 use App\Entity\Proprietario;
 use App\Entity\PessoaJuridica;
-use App\Model\PersonModel;
-use App\Utils\Generic\Crud;
 use Respect\Validation\Validator as v;
+use App\Utils\Exceptions\CustomException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,6 +61,10 @@ class PersonController extends AbstractController
      */
     public function persist(PersonModel $model, Request $request)
     {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Algo deu muito errado :(');
+        }
+        
         $data = $request->request->all();
         $result = $model->persist($data);
         $this->addFlash(
@@ -74,6 +79,10 @@ class PersonController extends AbstractController
      */
     public function action($personId, Request $request): Response
     {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Algo deu muito errado :(');
+        }
+        
         $entityManager = $this->getDoctrine()->getManager();
 
         //start transaction

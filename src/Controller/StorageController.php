@@ -109,9 +109,9 @@ class StorageController extends AbstractController
     /**
      * @Route("/storage/feedstockAction/update/{id}", methods="POST")
      *
-     * @param Feedstock $model
-     * @param Request   $request
-     * @param int       $productId
+     * @param FeedstockModel    $model
+     * @param Request           $request
+     * @param int               $productId
      * @return Response
      */
     public function updateFeedStock(FeedstockModel $model, Request $request, int $productId): Response

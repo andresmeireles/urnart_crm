@@ -1,6 +1,6 @@
 <?php
 
-namespace Security;
+namespace App\Security;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -95,5 +95,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     protected function getLoginUrl()
     {
         return $this->urlGenerator->generate('app_login');
+    }
+
+    public function checkCsrfToken($credentials): bool
+    {
+        $token = new CsrfToken('authenticate', $credentials);
+        if (!$this->csrfTokenManager->isTokenValid($token)) {
+            throw new InvalidCsrfTokenException();
+        }
+        return true;
     }
 }

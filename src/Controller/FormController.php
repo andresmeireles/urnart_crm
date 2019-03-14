@@ -10,20 +10,21 @@
  */
 namespace App\Controller;
 
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\Filesystem\Filesystem;
-use App\Utils\Andresmei\Form;
 use App\Config\Config;
-use App\Config\NonStaticConfig;
 use App\Entity\Product;
 use App\Entity\PaymentType;
 use App\Entity\Transporter;
+use App\Utils\Andresmei\Form;
+use App\Config\NonStaticConfig;
+use App\Utils\Exceptions\CustomException;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Controller das paginas de formulário
@@ -111,6 +112,10 @@ class FormController extends AbstractController
      */
     public function sendPdfForm(Request $request, string $formName, Form $form): Response
     {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Algo deu muito errado :(');
+        }
+        
         if (empty($request->request->all())) {
             echo 'Nenhum dado enviado';
         }

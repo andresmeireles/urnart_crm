@@ -10,21 +10,22 @@
  */
 namespace App\Controller;
 
-use App\Entity\Estado;
 use App\Entity\Order;
-use App\Entity\PaymentType;
-use App\Entity\PessoaJuridica;
+use App\Entity\Estado;
 use App\Entity\Product;
-use App\Entity\Transporter;
-use App\Entity\ManualOrderReport;
-use App\Entity\ManualProductCart;
 use App\Model\ListModel;
 use App\Model\OrderModel;
+use App\Entity\PaymentType;
+use App\Entity\Transporter;
+use App\Entity\PessoaJuridica;
+use App\Entity\ManualOrderReport;
+use App\Entity\ManualProductCart;
+use App\Utils\Exceptions\CustomException;
 use App\Utils\Andresmei\NestedArraySeparator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Controller das paginas de pedidos
@@ -96,6 +97,10 @@ class OrderController extends AbstractController
      */
     public function createOrder(OrderModel $model, Request $request): Response
     {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Algo deu muito errado :(');
+        }
+        
         $data = $request->request->all();
         $arrData = array();
         foreach($data as $key => $value) {
@@ -150,6 +155,10 @@ class OrderController extends AbstractController
      */
     public function updateOrder(OrderModel $model, Request $request, string  $orderId): Response
     {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Algo deu muito errado :(');
+        }
+
         $data = $request->request->all();
         $data['id'] = $orderId;
         $arrData = array();
@@ -337,6 +346,10 @@ class OrderController extends AbstractController
      */
     public function createManualOrder(OrderModel $model, Request $request): Response
     {
+        if (!$this->isCsrfTokenValid('formOrder', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Token incorreto.');
+        }
+
         $nestedArray = new NestedArraySeparator($request->request->all());
         $result = $model->createManualReport($nestedArray->getSimpleArray(), $nestedArray->getArrayInArray());
         $this->addFlash(
@@ -344,11 +357,7 @@ class OrderController extends AbstractController
             $result->getMessage()
         );
 
-        if (!is_string($request->headers->get('referer'))) {
-            throw new \Exception('Link antigo não existe. Abortado');
-        }
-
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirect('/order');
     }
 
     /**
@@ -359,6 +368,10 @@ class OrderController extends AbstractController
      */
     public function editManualOrder(Request $request, OrderModel $model, int $orderId): Response
     {
+        if (!$this->isCsrfTokenValid('formOrder', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Token incorreto.');
+        }
+
         $nestedArray = new NestedArraySeparator($request->request->all());
         $result = $model->editManualOrder($nestedArray->getSimpleArray(), $nestedArray->getArrayInArray(), $orderId);
         $this->addFlash(

@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use App\Utils\Exceptions\BadRefererLinkException;
+use App\Config\NonStaticConfig;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
@@ -19,6 +19,10 @@ class ExceptionSubscriber implements EventSubscriberInterface
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     { 
+        if ((new NonStaticConfig())->env === 'dev') {
+            return $this;
+        }
+
         $exceptionClass = get_class($event->getException());
         
         $exception = $exceptionClass === 'Exception' ? $exceptionClass : substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));

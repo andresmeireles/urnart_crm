@@ -16,6 +16,8 @@ final class NonStaticConfig
      */
     private $config;
 
+    public $env = 'dev';
+
     public function __construct()
     {
         $fileString = (string) file_get_contents(__DIR__.'/system-config.yaml');

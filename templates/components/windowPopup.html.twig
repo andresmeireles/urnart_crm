@@ -1,0 +1,18 @@
+<div id="{{ el.name }}" style="display: none">
+    <form action="/report/{{ el.metadata }}" method="POST">
+        {% for item in el.fields %}
+            {% if item.row is defined and item.row is same as(true) %}<div class="form-row">{% endif %}
+            <div class="form-group">
+            <pre>
+                {{ dump(item) }}
+            </pre>
+                <input type="{{ item.type is defined ? item.type : 'text' }}" name="{{ item.name }}" placeholder="{{ item.placeholder is defined ? item.placeholder : '' }}" 
+            </div> 
+            {% if item.row is defined and item.row is same as(true) %} </div> {% endif %}
+        {% endfor %} 
+            <div class="form-group">
+                <input type="submit" class="btn btn-success btn-block" value="Enviar" />
+            </div> 
+    </form>
+</div>
+                        

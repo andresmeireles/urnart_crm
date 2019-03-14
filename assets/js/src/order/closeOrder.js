@@ -14,12 +14,12 @@ if (document.querySelector('#manual-list')) {
                 function () {
                     simpleRequest(route, 'PUT', null, function () {   
                         setTimeout(() => {
+                            el.target.closest('.elRow').querySelector('.order-edit').remove();
+                            el.target.remove();
                             notification(
                                 `Pedido ${orderId} fechado com sucesso`,
                                 'success'
                             )
-                            el.target.closest('.elRow').querySelector('.order-edit').remove();
-                            el.target.remove();
                         }, 500);
                     });      
                 }

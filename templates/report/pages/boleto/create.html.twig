@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="form-group">
-            {% include "components/csrftoken.html.twig" %}
+            {% include "components/csrfToken.html.twig" with {'tokenText': 'autenticateBoleto'} %}
             <button type="submit" class="btn btn-success btn-block">Adicionar Título</button>
         </div>
     </form>

@@ -9,14 +9,14 @@
           <hr> </div>
         <div class="row">
           <div class="col">
-            <form method="GET" action="/forms/{{ formName }}/print"" target="_blank">
+            <form method="GET" action="/forms/{{ formName }}/print" target="_blank">
               <div class="row">
                 <div class="col-8 col-md-8">
                   <input type="submit" class="btn btn-primary btn-block" id="send-form" value="Criar Carta Frete">
-                  {% include 'components/csrftoken.html.twig' %}
+                  {% include 'components/csrfToken.html.twig' with { 'tokenText': 'form' } %}
                 </div>
                 <div class="col-md-4">
-                  <button class="btn btn-secondary btn-block" onclick="location.reload()">Novo</button>
+                  <a class="btn btn-secondary btn-block" href="/forms/freight-letter">Novo</a>
                 </div>
               </div>
               <div class="row py-2">

@@ -18,7 +18,7 @@
                 {% if config.getProperty('allow_survey') %}
                   <div class="col-4">
                       <a href="javasctipy:;" class="btn btn-danger col" id="createSurvey">Criar pesquisa de satisfação</a>
-                      {% include 'components/csrftoken.html.twig' %}
+                      {% include 'components/csrfToken.html.twig' with { 'tokenText': 'form' } %}
                   </div>                  
                 {% endif %}
                 <div class="col-4">

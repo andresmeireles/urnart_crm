@@ -10,11 +10,11 @@
 	</div>
 	<div class="row">
 		<div class="col" id="type-form">
-			<form method="GET" action="/forms/{{ formName }}/print"" target="_blank">
+			<form method="GET" action="/forms/{{ formName }}/print" target="_blank">
 				<div class="row">
 					<div class="col-md-6">
 						<input type="submit" class="btn btn-primary btn-block" value="Criar">
-						{% include 'components/csrftoken.html.twig' %}
+						{% include 'components/csrfToken.html.twig' with {'tokenText': 'form'} %}
                         {#<input type="button" id="exportPdf" name="remand" class="btn btn-light btn-block" value="Exportar pdf">#}
 					</div>
 					<div class="col-md-6">

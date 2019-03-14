@@ -61,7 +61,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col">
-                                {% include "components/csrftoken.html.twig" %}
+                                {% include "components/csrfToken.html.twig" with { "tokenText" : "autenticateBoleto" } %}
                                 <button type="submit" class="btn btn-block btn-success">Alterar Status do titulo {{ title.boletoNumber }}/{{ title.boletoInstallment }}</button>
                             </div>
                         </div>

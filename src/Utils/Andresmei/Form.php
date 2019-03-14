@@ -8,6 +8,7 @@ use Twig\Environment;
 use App\Utils\GenericContainer;
 use App\Utils\Exceptions\BinaryNotFoundException;
 use App\Config\Config;
+use App\Config\NonStaticConfig;
 
 class Form extends GenericContainer
 {
@@ -31,8 +32,11 @@ class Form extends GenericContainer
     protected $parsedFile;
     protected $config;
 
-    public function __construct(EntityManagerInterface $entityManager, Environment $twig)
+    protected $nonStaticConfig;
+
+    public function __construct(EntityManagerInterface $entityManager, Environment $twig, NonStaticConfig $config)
     {
+        $this->nonStaticConfig = $config;
         parent::__construct($entityManager, $twig);
     }
 
@@ -119,7 +123,7 @@ class Form extends GenericContainer
         $this->parsedFile = $this->twig->render($file, array(
             'data' => $data,
             'prod' => $clonedFields,
-            'logo' => Config::getProperty('logo_image_path'),
+            'logo' => $this->nonStaticConfig->getProperty('logo_image_path'),
         ));
     }
 }

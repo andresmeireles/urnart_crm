@@ -42,7 +42,7 @@
                         <button type="submit" class="btn btn-block btn-success">Alterar Titulo {{ registry.id }}</button>
                     </div>
                     <div class="col form-group">
-                        {% include "components/csrftoken.html.twig" %}
+                        {% include "components/csrfToken.html.twig" with { "tokenText" : "autenticateBoleto" } %}
                         <a href="/report/boleto/list?type=last" class="btn btn-block btn-danger">Cancelar</a>
                     </div>
                 </div>
