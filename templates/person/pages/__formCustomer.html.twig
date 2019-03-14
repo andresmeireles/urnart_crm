@@ -183,7 +183,7 @@
             </div>
             <div class="card-footer text-muted text-center">
                 <!-- <input type="submit" class="btn btn-secondary w-50" send="/person/add/person" target="customer-form" value="Adicionar"> -->
-                {% include 'components/csrftoken.html.twig' %}
+                {% include 'components/csrfToken.html.twig' with {'tokenText': 'overload'} %}
                 <input type="submit" class="btn btn-secondary w-50" target="customer-form" value="Adicionar">
         </div>
     </div>

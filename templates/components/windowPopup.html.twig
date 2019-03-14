@@ -1,23 +1,44 @@
-<div id="{{ el.name }}" style="display: none">
-    <form action="/report/{{ el.metadata }}" method="POST">
+<div id="{{ el.name }}" class="{% if el.class is defined %}{% for class in el.class %}{{ class ~ ' ' }}{% endfor %}{% endif %}" style="display: none">
+    <h2>{{ el.title ?? '' }}</h2>
+    <hr>
+    <form action="/{{ el.metapage }}/add/{{ el.metadata }}" method="POST">
         {% for item in el.fields %}
-            {% for row in item %}
-                <div class="form-row">
-                    {% for r in row %}
-                        <div class="form-group">
-                            <input  type="{{ r.type }}" 
-                                    name="{{ r.name }}" 
-                                    placeholder="{{ r.placeholder is defined ? r.placeholder : '' }}"
-                                    class="{% for class in r.class %}{{ class ~ ' ' }}{% endfor %}" 
-                            />         
-                        </div>                         
-                    {% endfor %}
+            <div class="form-row">
+            {% for r in item %}
+                <div class="form-group col mx-1">
+                <label for="name">{{ r.label ?? '' }}&nbsp;</label>
+                {% if r.type is same as('select') %}
+                    <select name="{{ r.name }}" 
+                            class="{% for class in r.class %}{{ class ~ ' ' }}{% endfor %}"
+                            {% if r.required is defined and r.required is same as(true) %}
+                                required
+                            {% endif %}
+                    >
+                        <option selected disabled>Selecione um valor</option>
+                        {% for k, v in r.values %}
+                            <option value="{{ k }}">{{ v }}</option>
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <input  type="{{ r.type }}" 
+                            name="{{ r.name }}" 
+                            placeholder="{{ r.placeholder is defined ? r.placeholder : '' }}"
+                            class="{% for class in r.class %}{{ class ~ ' ' }}{% endfor %}" 
+                            {% if r.required is defined and r.required is same as(true) %}
+                                required=""
+                            {% endif %}
+                            {% if r.autocomplete is defined and r.required is same as(true) %}
+                                autocomplete="{{r.autocomplete}}"
+                            {% endif %}
+                    />         
+                {% endif %}
                 </div>
             {% endfor %}
+            </div>
         {% endfor %} 
-            <div class="form-group">
-                <input type="submit" class="btn btn-success btn-block" value="Enviar" />
-            </div> 
+        <div class="form-group">
+            <button type="submit" class="btn btn-success btn-block disable-on-submit">Enviar</button>
+        </div> 
     </form>
 </div>
                         

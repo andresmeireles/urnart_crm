@@ -72,17 +72,21 @@
                             {% include "components/windowPopup.html.twig" with {
                                 'el' : {
                                     'name': 'add-departament',
+                                    title: 'Cadastrar departamento',
+                                    metapage: 'register',
                                     'metadata': 'departament',
                                     'fields' : {
                                             0:[ 
                                                 {
+                                                    label: 'Nome do departamento',
                                                     type: 'text',
-                                                    row: true,
-                                                    name: 'reload',
+                                                    name: 'departamento',
                                                     placeholder: 'Nome do departamento',
-                                                    class: ['form-control', 'text-center'],
+                                                    class: ['form-control'],
+                                                    required: true,
+                                                    autocomplete: 'off'
                                                 }
-                                            ]
+                                            ],
                                         }
                                     }
                                 }
@@ -116,6 +120,41 @@
                                 <a href="javascript:;" data-fancybox data-src="#paymentType" load-table="paymentType" class="card-link text-primary">Visualizar e Editar</a>
                             </div>
 
+                            {% include "components/windowPopup.html.twig" with {
+                                'el' : {
+                                    'name': 'add-paymentType',
+                                    title: 'Cadastrar forma de pagamento',
+                                    'class': ['col-md-6'],
+                                    metapage: 'register',
+                                    'metadata': 'paymentType',
+                                    'fields' : {
+                                            0:[ 
+                                                {
+                                                    label: 'Nome da forma de pagamento',
+                                                    type: 'text',
+                                                    name: 'name',
+                                                    placeholder: 'Tipo de pagamento',
+                                                    class: ['form-control', 'col-md-10', 'required'],
+                                                    'required': true,
+                                                    'autocomplete': 'off'
+                                                },
+                                                {
+                                                    'label': 'É parcelável',
+                                                    type: 'select',
+                                                    name: 'plot',
+                                                    class: ['form-control'],
+                                                    required: true,
+                                                    values: {
+                                                        0: 'Não',
+                                                        1: 'Sim'
+                                                    }
+                                                }
+                                            ],
+                                        }
+                                    }
+                                }
+                            %}
+
                             <div id="paymentType" class="p-4" style="display: none">
                                 <table class="table table-striped table-bordered">
                                     <thead>
@@ -128,6 +167,7 @@
                                     <tbody class="paymentType"></tbody>
                                 </table>
                             </div>
+
                         </div>
                     </div>
                 </div>

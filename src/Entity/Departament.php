@@ -60,6 +60,18 @@ class Departament
         return $this;
     }
 
+    public function getDepartamento(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setDepartamento(string $name): self
+    {
+        $this->name = mb_strtolower($name);
+
+        return $this;
+    }
+
  /*    public function getProduct(): ?Product
     {
         return $this->product;

@@ -155,6 +155,7 @@ import './src/helpers/classes/oneTimeClick';
 import './src/helpers/classes/autoChange';
 import './src/helpers/classes/autoClick';
 import './src/helpers/classes/autoFocus';
+import './src/helpers/classes/autoSubmit';
 import './src/helpers/classes/numbersOnly';
 
 if (document.querySelector('.f-date')) {
