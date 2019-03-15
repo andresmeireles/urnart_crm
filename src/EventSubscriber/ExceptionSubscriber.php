@@ -19,10 +19,6 @@ class ExceptionSubscriber implements EventSubscriberInterface
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     { 
-        if ((new NonStaticConfig())->env === 'dev') {
-            return $this;
-        }
-
         $exceptionClass = get_class($event->getException());
         
         $exception = $exceptionClass === 'Exception' ? $exceptionClass : substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
@@ -41,20 +37,33 @@ class ExceptionSubscriber implements EventSubscriberInterface
             case 'CustomException':
             case 'CustomUserMessageAuthenticationException':
             case 'FieldAlreadExistsException':
+            if ((new NonStaticConfig())->env === 'dev') {
+                return $this;
+            }
                 $this->triggerFlashMessage($event, $event->getException()->getMessage(), 'error');
                 return $event->setResponse(new RedirectResponse($refererLink));
                 break;
             case 'UniqueConstraintViolationException':
             case 'ForeignKeyConstraintViolationException':
+            if ((new NonStaticConfig())->env === 'dev') {
+                return $this;
+            }
                 $this->triggerFlashMessage($event, 'Item ja está cadastrado em algum registro e não pode ser removido. COD::400', 'error');
                 return $event->setResponse(new RedirectResponse($refererLink));
                 break;
             case 'Exception':
+            if ((new NonStaticConfig())->env === 'dev') {
+                return $this;
+            }
                 return $event->setResponse(new Response(
                     $event->getException()->getMessage(),
                     301,
                     array('type' => 'ninja')
                 ));
+                break;
+            case 'UserNotLoggedException':
+                $this->triggerFlashMessage($event, $event->getException()->getMessage(), 'error');
+                return $event->setResponse(new RedirectResponse('/login'));
                 break;
             case 'Twig_Error_Loader':
                 //return new Response('Página não existe. Caminho incorreto.');

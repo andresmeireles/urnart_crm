@@ -3,14 +3,12 @@
 namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Config\Config;
 use App\Model\ReportModel;
-use App\Utils\Andresmei\CsrfToken;
 use App\Utils\Andresmei\StdResponse;
 use App\Utils\Andresmei\WriteBoletoReport;
+use App\Utils\Exceptions\UserNotLoggedException;
 
 class StartSubscriber extends AbstractController implements EventSubscriberInterface
 {
@@ -26,6 +24,20 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
             $this->writeDaylyBoletoRegister($today, $this);
         }
 
+        $action = $event->getController()[1];
+        
+        if ($action === 'toolbarAction' || $action === 'login')
+        {
+            return;
+        }
+        
+        if ($action !== 'login') {
+            if (!is_null($this->getUser())) {
+                return;
+            } 
+            throw new UserNotLoggedException('Para acessar está pagina você precisa está logado.');
+            echo $this->getUser() === null ? 'sem usuario cadastrado' : $this->getUser()->getUserName();
+        }
         return;
     }
     
