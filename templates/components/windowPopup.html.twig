@@ -11,7 +11,7 @@
                     <select name="{{ r.name }}" 
                             class="{% for class in r.class %}{{ class ~ ' ' }}{% endfor %}"
                             {% if r.required is defined and r.required is same as(true) %}
-                                required
+                                required=""
                             {% endif %}
                     >
                         <option selected disabled>Selecione um valor</option>

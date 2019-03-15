@@ -149,16 +149,16 @@ class RegisterController extends AbstractController
      */
     public function writeConfiguration(Request $request, Configuration $config): Response
     {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
-            throw new CustomException('Algo deu muito errado :(');
+        if (!$this->isCsrfTokenValid('configuration', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Token incorreto ou não enviado.');
         }
 
         $images = $request->files->get('images');
         $result = $config->writeConfFile($request->request->all(), $images);
 
         $this->addFlash(
-            $result['type'],
-            $result['message']
+            $result->getType(),
+            $result->getMessage()
         );
 
         return $this->redirectToRoute('config');

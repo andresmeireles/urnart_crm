@@ -6,6 +6,7 @@ namespace App\Config;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Andresmei\SimpleFileUpload;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class Configuration
 {
@@ -27,14 +28,17 @@ class Configuration
 
     public function __construct()
     {
-        $this->config = Yaml::parse(file_get_contents(__DIR__.'/system-config.yaml'));
+        if (!file_exists(__DIR__.'/system-config.yaml')) {
+            throw new FileNotFoundException('Arquivo procurado não encontrado.');
+        }
+        $this->config = Yaml::parse( (string) file_get_contents(__DIR__.'/system-config.yaml'));
     }
 
     public function writeConfigurationFile(array $check, array $images): FlashResponse
     {
         $imagePaths = $this->uploadImages($images);
         if (!SimpleFileUpload::getStatus()) {
-            return FlashResponse::response(400, 'warning', SimpleFileUpload::getMessage());
+            return new FlashResponse(400, 'warning', SimpleFileUpload::getMessage());
         }
 
         $this->writeChecks($check);
@@ -43,10 +47,10 @@ class Configuration
         $yaml = Yaml::dump($this->writableConfig);
         file_put_contents(__DIR__.'/system-config.yaml', $yaml);
 
-        return FlashResponse::response(200, 'success', 'Configuração gravado com sucesso');
+        return new FlashResponse(200, 'success', 'Configuração gravado com sucesso');
     }
 
-    public function writeConfFile(array $config, array $image): array
+    public function writeConfFile(array $config, array $image): FlashResponse
     {
         foreach ($config as $keyConfig => $configValue) {
             switch ($keyConfig) {
@@ -54,7 +58,7 @@ class Configuration
                     $imagePath = $this->uploadImages($image);
                     $this->writeImages($image, $imagePath);
                     if (!SimpleFileUpload::getStatus()) {
-                        return FlashResponse::response(400, 'warning', SimpleFileUpload::getMessage());
+                        return new FlashResponse(400, 'warning', SimpleFileUpload::getMessage());
                     }
                     break;
                 case 'check':
@@ -88,7 +92,7 @@ class Configuration
                 }
                 $surveyQuestions[$key] = $value;
             }        
-            $this->writableConfig[$options] = $surveyQuestions;    
+            $this->writableConfig[$options] = $surveyQuestions ?? '';    
         }
     }
 

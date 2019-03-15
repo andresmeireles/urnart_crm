@@ -6,6 +6,7 @@ namespace App\Config;
 use Symfony\Component\Yaml\Yaml;
 use App\Config\NotLoadedConfigException;
 use App\Config\NotFoundParameterException;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 final class NonStaticConfig
 {
@@ -20,8 +21,10 @@ final class NonStaticConfig
 
     public function __construct()
     {
-        $fileString = (string) file_get_contents(__DIR__.'/system-config.yaml');
-        $this->config = Yaml::parse($fileString);
+        if (!file_exists(__DIR__.'/system-config.yaml')) {
+            throw new FileNotFoundException('Arquivo não enconrado.');
+        }
+        $this->config = Yaml::parse((string) file_get_contents(__DIR__.'/system-config.yaml'));
     }
 
     /**

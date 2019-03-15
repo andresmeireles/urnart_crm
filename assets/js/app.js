@@ -103,6 +103,9 @@ global.checkRequired = require('./src/helpers/functions/checkRequired');
  ******* IMPORTS *******
  ***********************/
 
+// GLOBAL IMPORT
+import './src/logoutAction';
+
 // ADMIN
 import './src/admin/resetProfileImage';
 

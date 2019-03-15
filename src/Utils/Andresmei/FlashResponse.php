@@ -24,22 +24,22 @@ class FlashResponse
      *
      * @var string
      */
-    protected $message = 'Sucesso';
+    protected $message;
 
     /**
      * Retorna aray com parametros para flash message do symfony
      *
-     * @param  int    $http_code codigo HTTP
-     * @param  string $type      Tipo de responsta, success, warning, error etc...
-     * @param  string $message   Corpo da messagem
+     * @param  int          $http_code codigo HTTP
+     * @param  string       $type      Tipo de responsta, success, warning, error etc...
+     * @param  string|null  $message   Corpo da messagem
      * 
      * @return array
      */
-    public function __construct(int $http_code, string $type, string $message)
+    public function __construct(int $http_code, string $type, ?string $message)
     {
         $this->http_code = $http_code;
         $this->type = $type;
-        $this->message = $message; 
+        $this->message = $message ?? 'sucesso'; 
         $this->nonStaticResponse($http_code, $type, $message);
     }
 
