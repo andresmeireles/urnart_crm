@@ -4,6 +4,11 @@
 	min-width: 100%;
 }
 
+/** put element in bottom */
+.ct-fixed-bottom {
+	bottom: 0%;
+}
+
 /** vex z-index */
 .vex-overlay {
 	z-index: 99997 !important;

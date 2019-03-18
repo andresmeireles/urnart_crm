@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="px-4 py-3 col">   
+<div class="px-4 py-3 col" id="admin">   
     <div class="col">
         <h2>Alterar permissões de usuários</h2>
         <hr>
@@ -12,36 +12,34 @@
     <div class="col">
         {% set roleList = [
             { k: 'ROLE_ADMIN', v: 'Administrador' }, 
-            { k: 'ROLE_SUPER_USER', v: 'Super usuario' }, 
-            { k: 'ROLE_USER', v: 'Usuario' }, 
-            { k: 'ROLE_NINJA', v: 'ninja' }, 
-            { k: 'ROLE_MASTER_MACHINE', v: 'Maquina Mestre' }, 
-            { k: 'ROLE_MEGALOMANIAC', v: 'Megalomaniaco' }, 
-            { k: 'ROLE_OVERLOAD', v: 'Carregador' }, 
-            { k: 'ROLE_DEV', v: 'Dev' }, 
-            { k: 'ROLE_MASTER_USER_OF_GALAXY', v: 'Mestre das Galaxias' }
+            { k: 'ROLE_SUPER_USER', v: 'Super usuario' }
         ] %}
         
         {% for user in users %}
+        <form method="POST" id="permission{{ user.id }}">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{ user.userName }}</h5>
-                        <div class="form-row">
-                            {% for role in roleList %}
-                            <div class="col-auto my-1">
-                                <div class="custom-control custom-checkbox mr-sm-2">
-                                    <input type="checkbox" class="custom-control-input" name="userRoles[]" value="{{ role.k }}" {% if role.k in user.roles %}checked=""{% endif %} />
-                                    <label class="custom-control-label" for="role">{{ role.v }}</label>
-                                </div>
+                        <h5 class="card-title font-weight-bold">{{ user.userName }}</h5>
+                        <div class="card-text my-2">
+                            <div class="form-row mx-1">
+                                {% for role in roleList %}
+                                    <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="hidden" name="name" value="{{ user.userName }}" />
+                                        <input type="hidden" name="identification" value="{{ user.id }}" />
+                                        <input type="checkbox" class="custom-control-input" id="customCheck{{ loop.index }}"  value="{{ role.k }}" name="user_role[]" {% if role.k in user.roles %}checked=""{% endif %} />
+                                        <label class="custom-control-label" for="customCheck{{ loop.index }}">{{ role.v }}</label>
+                                    </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
-                            <a href="#" class="btn btn-primary my-2">Alterar permissões do usuário</a>
                         </div>
+                        <button type="submit" form-target="permission{{ user.id }}" class="btn btn-success">Alterar permissões</button>
                     </div>
                 </div>
             </div>
+        </form>
         {% endfor %}
+            
     </div>
 </div>    
 

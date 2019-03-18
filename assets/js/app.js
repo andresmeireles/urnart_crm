@@ -107,7 +107,10 @@ global.checkRequired = require('./src/helpers/functions/checkRequired');
 import './src/logoutAction';
 
 // ADMIN
-import './src/admin/resetProfileImage';
+import './src/admin/permissions';
+
+// PROFILE
+import './src/profile/resetProfileImage';
 
 import './src/sidebarAction.js';
 import './src/globals';

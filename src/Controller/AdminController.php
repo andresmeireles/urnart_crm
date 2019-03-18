@@ -27,25 +27,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/edit", name="useredit", methods="GET") 
+     * @Route("/api/admin/permission", methods="POST")
      */
-    public function viewEdit(): Response
+    public function editPermissions(Request $request): Response
     {
-        return $this->render('admin/index.html.twig', [
-            'edit' => true
-        ]);
-    }
-
-    /**
-     * @Route("/admin/edit", methods="POST")
-     */
-    public function editUser(Request $request)
-    {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
-            throw new CustomException('Token incorreto ou inexistente :(');
-        }
-        
-        dump($request->request->all());
+        dump($request);
         die();
     }
 
