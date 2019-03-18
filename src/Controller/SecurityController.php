@@ -14,7 +14,7 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // redirect if user is loged
+        // redirect if user is logged
         if (!is_null($this->getUSer())) {
             $this->addFlash('warning', sprintf('%s... você já está logado truta, continue navegando em paz :)', $this->getUser()->getUserNickname()));
             return $this->redirectToRoute('index');

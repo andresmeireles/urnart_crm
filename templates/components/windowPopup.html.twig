@@ -6,7 +6,7 @@
             <div class="form-row">
             {% for r in item %}
                 <div class="form-group col mx-1">
-                <label for="name">{{ r.label ?? '' }}&nbsp;</label>
+                <label for="name" {{ r.required is defined and r.required is same as(true) ? 'class="required"' : '' }}>{{ r.label ?? '' }}&nbsp;</label>
                 {% if r.type is same as('select') %}
                     <select name="{{ r.name }}" 
                             class="{% for class in r.class %}{{ class ~ ' ' }}{% endfor %}"

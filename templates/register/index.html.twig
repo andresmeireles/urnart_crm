@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 m-1">
+                <div class="col-md-12 m-1"> {# departamentos #}
                     <div class="card">
                         <div class="card-body row">
                             <div class="col-md-1 mx-1">
@@ -184,6 +184,29 @@
                                 <a href="javascript:;" data-fancybox data-src="#unit" load-table="unit" class="card-link text-primary">Visualizar e Editar</a>
                             </div>
 
+                            {% include "components/windowPopup.html.twig" with {
+                                'el': {
+                                    name: 'add-unit',
+                                    title: 'Cadastrar unidade',
+                                    class: ['col-md-6'],
+                                    metapage: 'register',
+                                    metadata: 'unit',
+                                    fields: {
+                                        0: [
+                                            {
+                                                label: 'Nome da unidade',
+                                                type: 'text',
+                                                name: 'name',
+                                                placeholder: 'Nome da unidade',
+                                                'class': ['form-control', 'col', 'required'],
+                                                'required': true,
+                                                autocomplete: 'on'
+                                            }
+                                        ]
+                                    }
+                                }
+                            } %}
+
                             <div id="unit" class="p-4" style="display: none">
                                 <table class="table table-striped table-bordered">
                                     <thead>
@@ -211,6 +234,40 @@
                                 <a href="javascript:;" data-fancybox data-src="#add-transporter" class="card-link text-primary">Criar</a>
                                 <a href="javascript:;"data-fancybox data-src="#transporter" load-table="transporter" class="card-link text-primary">Visualizar e Editar</a>
                             </div>
+
+                            {% include "components/windowPopup.html.twig" with {
+                                'el': {
+                                    name: 'add-transporter',
+                                    title: 'Cadastrar transportadora e porto',
+                                    class: ['col-md-6'],
+                                    metapage: 'register',
+                                    metadata: 'transporter',
+                                    fields: {
+                                        0: [
+                                            {
+                                                label: 'Nome da transportadora',
+                                                type: 'text',
+                                                name: 'name',
+                                                placeholder: 'Nome da unidade',
+                                                'class': ['form-control', 'col', 'required'],
+                                                'required': true,
+                                                autocomplete: 'on'
+                                            }
+                                        ],
+                                        1: [
+                                            {
+                                                label: 'Nome do porto',
+                                                name: 'port',
+                                                type: 'text',
+                                                placeholder: 'Nome do porto',
+                                                class: ['form-control', 'col'],
+                                                required: false,
+                                                autocomplete: 'off'                                                
+                                            }
+                                        ]
+                                    }
+                                }
+                            } %}
 
                             <div id="transporter" class="p-2" style="display: none">
                                 <table class="table table-striped table-bordered">

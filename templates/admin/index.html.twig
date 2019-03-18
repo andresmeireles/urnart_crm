@@ -1,84 +1,48 @@
 {% extends "index.html.twig" %}
 
-{% block title %}Informações de {{ app.user.userNickname }}{% endblock %}
+{% block title %}Permissões{% endblock %}
 
 {% block content %}
 
 <div class="px-4 py-3 col">   
-{% if edit is defined %}
-    <form method="POST" id="editUserData">
-        {% include "components/csrftoken.html.twig" %}
-        <div class="col">
-            <h2>Alterar os dados de {{ app.user.userNickname }}</h2>
-            <hr>
-        </div>
-        <div class="form-row">
-            <div class="col-md-4">
-                <div class="form-group col-md-8 mx-auto text-center">
-                    <img class="img-fluid rounded-circle" src="/caes-e-gatos-1.jpg" alt="user image" />
-                    <a href="javascript:;" class="btn btn-warning my-2" id="resetUserProfileImage">Resetar imagem</a>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="form-group col">
-                    <label for="userNickname" class="h4">Nome do usuário</label>
-                    <input type="text" class="form-control" name="userNickname" placeholder="Nome do usuário." value="{{ app.user.userNickname }}" />
-                </div>
-                <div class="form-group col">
-                    <label for="email" class="h4">Email do usuário</label>
-                    <input type="email" class="form-control" name="email" placeholder="Email do usuário." value="{{ app.user.email }}" />
-                </div>
-                <div class="form-group col">
-                    <label for="profilePick" class="h4">Selecione uma imagem de perfil.</label>
-                    <div class="custom-file">
-                        <input type="hidden" name="profileImage" id="profileImage">
-                        <input type="file" class="custom-file-input cursor-decoration" id="customFile" />
-                        <label class="custom-file-label cursor-decoration" id="uploadFileName" for="customFile">Selecione um arquivo</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr>
-        <div class="form-row">
-            <input type="submit" class="btn btn-success btn-block btn-lg" value="Atualizar meus dados." />
-        </div>
-    </form>
-{% endif %}
-
-{% if edit is not defined %}
     <div class="col">
-        <h2>Dados de {{ app.user.userNickname }}</h2>
+        <h2>Alterar permissões de usuários</h2>
         <hr>
     </div>
-    <div class="form-row">
-        <div class="col-md-4">
-            <div class="form-group col text-center">
-                <img class="img-fluid rounded-circle" src="/caes-e-gatos-1.jpg" alt="user image" />
-            </div>
-        </div>
-        <div class="col-md-8 my-5">
-            <div class="form-group col">
-                <label for="userNickname" class="h4 font-weight-bold">Nome do usuário</label>
-                <div class="h5">{{ app.user.userNickname }}</div>
-            </div>
-            <div class="form-group col">
-                <label for="email" class="h4 font-weight-bold">Email do usuário</label>
-                <div class="h5">{{ app.user.email }}</div>
-            </div>
-            <hr>
+    <div class="col">
+        {% set roleList = [
+            { k: 'ROLE_ADMIN', v: 'Administrador' }, 
+            { k: 'ROLE_SUPER_USER', v: 'Super usuario' }, 
+            { k: 'ROLE_USER', v: 'Usuario' }, 
+            { k: 'ROLE_NINJA', v: 'ninja' }, 
+            { k: 'ROLE_MASTER_MACHINE', v: 'Maquina Mestre' }, 
+            { k: 'ROLE_MEGALOMANIAC', v: 'Megalomaniaco' }, 
+            { k: 'ROLE_OVERLOAD', v: 'Carregador' }, 
+            { k: 'ROLE_DEV', v: 'Dev' }, 
+            { k: 'ROLE_MASTER_USER_OF_GALAXY', v: 'Mestre das Galaxias' }
+        ] %}
+        
+        {% for user in users %}
             <div class="col">
-                <div class="form-row">
-                    <div class="col">
-                        <a href="admin/edit" class="btn btn-success btn-block btn-lg">Alterar dados</a>
-                    </div>
-                    <div class="col">
-                        <a href="admin/password" class="btn btn-success btn-block btn-lg">Alterar senha</a>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ user.userName }}</h5>
+                        <div class="form-row">
+                            {% for role in roleList %}
+                            <div class="col-auto my-1">
+                                <div class="custom-control custom-checkbox mr-sm-2">
+                                    <input type="checkbox" class="custom-control-input" name="userRoles[]" value="{{ role.k }}" {% if role.k in user.roles %}checked=""{% endif %} />
+                                    <label class="custom-control-label" for="role">{{ role.v }}</label>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <a href="#" class="btn btn-primary my-2">Alterar permissões do usuário</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endfor %}
     </div>
-{% endif %}
 </div>    
 
 {% endblock %}

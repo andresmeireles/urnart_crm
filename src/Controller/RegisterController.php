@@ -2,25 +2,24 @@
 
 namespace App\Controller;
 
-use App\Utils\Generic\Crud;
-use App\Config\Configuration;
 use Symfony\Component\Yaml\Yaml;
-use App\Utils\Exceptions\CustomException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Utils\Generic\Crud;
+use App\Utils\Exceptions\CustomException;
+use App\Config\Configuration;
 
 class RegisterController extends AbstractController
 {
     /**
      * @Route("/register", name="register")
-     *
-     * @param Crud $getter
      * 
      * @return Response
      */
-    public function index(Crud $getter): Response
+    public function index(): Response
     {
         return $this->render('register/index.html.twig');
     }
@@ -132,6 +131,8 @@ class RegisterController extends AbstractController
      */
     public function configuration(): Response
     {
+        //$this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Usuario não autorizado a acessar pagina');
+
         $config = Yaml::parse((string) file_get_contents(__DIR__.'/../Config/system-config.yaml'));
         $draw = Yaml::parse((string) file_get_contents(__DIR__.'/../Config/draw-form.yaml'));
         return $this->render('/register/configuration/index.html.twig', [

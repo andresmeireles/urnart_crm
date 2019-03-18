@@ -56,10 +56,6 @@ class ExceptionSubscriber implements EventSubscriberInterface
                     array('type' => 'ninja')
                 ));
                 break;
-            case 'UserNotLoggedException':
-                $this->triggerFlashMessage($event, $event->getException()->getMessage(), 'error');
-                return $event->setResponse(new RedirectResponse('/login'));
-                break;
             case 'Twig_Error_Loader':
                 //return new Response('Página não existe. Caminho incorreto.');
                 return new Response('Deu ruim meu amigo.');

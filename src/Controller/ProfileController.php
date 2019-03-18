@@ -5,39 +5,35 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Utils\Exceptions\CustomException;
-use App\Entity\User;
 
 /**
  * @IsGranted("ROLE_USER")
  */
-class AdminController extends AbstractController
+class ProfileController extends AbstractController
 {
     /**
-     * @Route("/admin", name="admin")
+     * @Route("/profile", name="profile")
      */
     public function index()
     {
-        $user = $this->getDoctrine()->getRepository(User::class)->findAll();
-        return $this->render('admin/index.html.twig', [
-            'users' => $user
-        ]);
+        return $this->render('profile/index.html.twig');
     }
 
     /**
-     * @Route("/admin/edit", name="useredit", methods="GET") 
+     * @Route("/profile/edit", name="useredit", methods="GET") 
      */
     public function viewEdit(): Response
     {
-        return $this->render('admin/index.html.twig', [
+        return $this->render('profile/index.html.twig', [
             'edit' => true
         ]);
     }
 
     /**
-     * @Route("/admin/edit", methods="POST")
+     * @Route("/profile/edit", methods="POST")
      */
     public function editUser(Request $request)
     {
