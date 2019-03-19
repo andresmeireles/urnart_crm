@@ -41,6 +41,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
             case 'CustomException':
             case 'CustomUserMessageAuthenticationException':
             case 'FieldAlreadExistsException':
+            case 'InvalidCsrfTokenException':
                 $this->triggerFlashMessage($event, $event->getException()->getMessage(), 'error');
                 return $event->setResponse(new RedirectResponse($refererLink));
                 break;

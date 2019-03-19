@@ -18,8 +18,6 @@ abstract class Model
     /**
      * Entity Manger
      *
-     * @var ManagerRegistry
-     * @var Connection
      * @var ObjectManager
      */
     protected $em;

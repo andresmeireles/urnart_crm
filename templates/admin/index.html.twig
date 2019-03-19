@@ -1,46 +1,26 @@
 {% extends "index.html.twig" %}
-
-{% block title %}Permissões{% endblock %}
-
+{% block title %}Admin{% endblock %}
 {% block content %}
-
-<div class="px-4 py-3 col" id="admin">   
-    <div class="col">
-        <h2>Alterar permissões de usuários</h2>
-        <hr>
-    </div>
-    <div class="col">
-        {% set roleList = [
-            { k: 'ROLE_ADMIN', v: 'Administrador' }, 
-            { k: 'ROLE_SUPER_USER', v: 'Super usuario' }
-        ] %}
-        
-        {% for user in users %}
-        <form method="POST" id="permission{{ user.id }}">
-            <div class="col">
+    <div class="px-4 py-3 col" id="admin">
+        <div class="col">
+            <h2>Configurações administrativas</h2>
+        <hr></div>
+        <div class="col">
+            <div class="col-md-12 m-1">
                 <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title font-weight-bold">{{ user.userName }}</h5>
-                        <div class="card-text my-2">
-                            <div class="form-row mx-1">
-                                {% for role in roleList %}
-                                    <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input type="hidden" name="name" value="{{ user.userName }}" />
-                                        <input type="hidden" name="identification" value="{{ user.id }}" />
-                                        <input type="checkbox" class="custom-control-input" id="customCheck{{ loop.index }}"  value="{{ role.k }}" name="user_role[]" {% if role.k in user.roles %}checked=""{% endif %} />
-                                        <label class="custom-control-label" for="customCheck{{ loop.index }}">{{ role.v }}</label>
-                                    </div>
-                                {% endfor %}
-                            </div>
+                    <div class="card-body row">
+                        <div class="col-md-1 mx-1">
+                            <i class="fas fa-user fa-4x"></i>
                         </div>
-                        <button type="submit" form-target="permission{{ user.id }}" class="btn btn-success">Alterar permissões</button>
+                        <div class="col">
+                            <h5 class="card-title">Usuários</h5>
+                            <p class="card-text">Cria e edita os atuais usuários do sistema.</p>
+                            <a class="card-link text-primary" href="/admin/user">Visualizar</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </form>
-        {% endfor %}
-            
+        </div>
     </div>
-</div>    
 
 {% endblock %}
