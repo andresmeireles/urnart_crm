@@ -1,6 +1,6 @@
-if ( document.querySelector('#admin') ) {
+if (document.querySelector('#admin')) {
 
-    /* document.addEventListener('click', (el) => {
+    document.addEventListener('click', (el) => {
         
         if (el.target.hasAttribute('form-target')) {
             el.preventDefault();
@@ -16,6 +16,6 @@ if ( document.querySelector('#admin') ) {
             }, 'data');
         }
 
-    }); */
+    });
 
 }

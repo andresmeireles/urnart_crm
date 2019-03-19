@@ -7,7 +7,7 @@
         "php": "^7.2",
         "ext-iconv": "*",
         "h4cc/wkhtmltopdf-amd64": "^0.12.4",
-        "jms/serializer": "^1.12",
+        "jms/serializer": "^2.2",
         "respect/validation": "^1.1",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/asset": "^4.0",
@@ -24,6 +24,7 @@
         "symfony/webpack-encore-pack": "^1.0",
         "symfony/yaml": "^4.0",
         "twig/extensions": "^1.5",
+        "vich/uploader-bundle": "^1.9",
         "wgenial/numeroporextenso": "^2.0"
     },
     "require-dev": {

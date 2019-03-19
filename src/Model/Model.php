@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 namespace App\Model;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Yaml\Yaml;
@@ -19,6 +18,7 @@ abstract class Model
      * Entity Manger
      *
      * @var ObjectManager
+     * @var Connection
      */
     protected $em;
 
