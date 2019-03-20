@@ -98,11 +98,23 @@ class AdminController extends AbstractController
         $this->isCsrfTokenValid('add_user', $request->request->get('_csrf_token'));
         $request->request->remove('_csrf_token');
 
+        $file = $request->files->get('profileImage');
         $data = $request->request->all();
-        $result = $model->addUser($data, $encoder);
+        $result = $model->addUser($data, $file, $encoder);
 
         $this->addFlash($result->getType(), $result->getMessage());
 
         return $this->redirectToRoute('user_page');
+    }
+
+    /**
+     * ISSO SERÁ APAGADO
+     * @Route("/showuser", methods="GET", name="showuser")
+     */
+    public function showUser(): Response
+    {
+        return $this->render('admin/pages/user/x.html.twig', array(
+            'users' => $this->getDoctrine()->getRepository(User::class)->findAll()
+        ));
     }
 }

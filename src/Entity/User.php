@@ -4,11 +4,14 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @Vich\Uploadable
  */
-class User implements UserInterface
+class User extends BaseEntity implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -46,6 +49,19 @@ class User implements UserInterface
      * @var string $password The hashed password
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * 
+     * @var string|null $profileImage Name of image. Possible hashed.
+     */
+    private $profileImage;
+
+    /**
+     * @Vich\UploadableField(mapping="user_prodile_images", fileNameProperty="profileImage")
+     * @var File|null
+     */
+    private $profileImageFile;
 
     public function getId(): ?int
     {
@@ -120,6 +136,34 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getProfileImageFile(): ?File
+    {
+        return $this->profileImageFile;
+    }
+
+    public function setProfileImageFile(?File $imageFile = null): self
+    {
+        $this->profileImageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            $this->setLastUpdate();
+        }
+        
+        return $this;
+    }
+
+    public function getProfileImage(): ?string
+    {
+        return $this->profileImage;
+    }
+
+    public function setProfileImage(?string $image): self
+    {
+        $this->profileImage = $image;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */
@@ -136,5 +180,24 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /** Para não criar conflito com o vich uploader é nescessário sobreescrever os metodos serizalização e unserialização */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->email,
+            $this->password,
+        ) = unserialize($serialized);
     }
 }

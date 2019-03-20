@@ -6,8 +6,8 @@
 
 <div class="px-4 py-3 col">   
 {% if edit is defined %}
-    <form method="POST" id="editUserData">
-        {% include "components/csrftoken.html.twig" %}
+    <form method="POST" id="editUserData" enctype="multipart/form-data">
+        {% include "components/csrfToken.html.twig" with {'tokenText': 'profile_update'} %}
         <div class="col">
             <h2>Alterar os dados de {{ app.user.userNickname }}</h2>
             <hr>
@@ -15,8 +15,8 @@
         <div class="form-row">
             <div class="col-md-4">
                 <div class="form-group col-md-8 mx-auto text-center">
-                    <img class="img-fluid rounded-circle" src="/caes-e-gatos-1.jpg" alt="user image" />
-                    <a href="javascript:;" class="btn btn-warning my-2" id="resetUserProfileImage">Resetar imagem</a>
+                    <img class="img-fluid rounded-circle" src="{{ app.user.profileImage is not same as(null) ? vich_uploader_asset(app.user, 'profileImageFile') : '/defaultImage.jpg' }}" alt="user image" />
+                    {# for future ajax <a href="javascript:;" class="btn btn-warning my-2" id="resetUserProfileImage">Resetar imagem</a>#}
                 </div>
             </div>
             <div class="col-md-8">
@@ -31,8 +31,9 @@
                 <div class="form-group col">
                     <label for="profilePick" class="h4">Selecione uma imagem de perfil.</label>
                     <div class="custom-file">
+                        <input type="hidden" name="identificator" value="{{ app.user.id }}" />
                         <input type="hidden" name="profileImage" id="profileImage">
-                        <input type="file" class="custom-file-input cursor-decoration" id="customFile" />
+                        <input type="file" class="custom-file-input cursor-decoration" name="profileImage" id="customFile" />
                         <label class="custom-file-label cursor-decoration" id="uploadFileName" for="customFile">Selecione um arquivo</label>
                     </div>
                 </div>
@@ -53,7 +54,10 @@
     <div class="form-row">
         <div class="col-md-4">
             <div class="form-group col text-center">
-                <img class="img-fluid rounded-circle" src="/caes-e-gatos-1.jpg" alt="user image" />
+                <img class="img-fluid rounded-circle" src="{{ app.user.profileImage is not same as(null) ? vich_uploader_asset(app.user, 'profileImageFile') : '/defaultImage.jpg' }}" alt="user image" />
+                <form method="POST" action="/profile/reset">
+                    <input type="submit" class="btn btn-warning my-3 text-dark" value="Resetar imagem" />
+                <form>
             </div>
         </div>
         <div class="col-md-8 my-5">

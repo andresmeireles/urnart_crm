@@ -1,0 +1,20 @@
+{% extends "index.html.twig" %}
+
+{% block content %}
+<div class="col p-5">
+    {% for user in users %}
+        <div class="col-md-12 my-2">
+            <div class="card">
+                <div class="card-body">
+                    <p>ID - {{ user.id }}</p>
+                    <p>Apelido - {{ user.userNickname }}</p>
+                    <p>Email - {{ user.email }}</p>
+                    <p>Senha - {{ user.password }}</p>
+                    <p>Caminho da Imagem - {{ user.profileImage }}</p>
+                    <p>Imagem - <img class="col-md-1" src="{{ vich_uploader_asset(user, 'profileImageFile') }}" alt="Ibagem" /></p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

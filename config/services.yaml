@@ -3,6 +3,9 @@
 parameters:
     locale: 'en'
 
+    # vich uploader parameters
+    app.path.user_profile_images: /uploads/images/profile
+
 services:
     # default configuration for services in *this* file
     _defaults:

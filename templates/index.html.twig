@@ -37,8 +37,8 @@
       <div class="sidebar-sticky p-1">
         <ul class="list-unstyled" id="menus">
           <li class="my-1">
-            <div class="my-1">
-              <img src="/caes-e-gatos-1.jpg" style="width: 45px; height:40px" class="rounded-circle">
+            <div class="my-1"> 
+              <img src="{{ app.user.profileImage is not same as(null) ? vich_uploader_asset(app.user, 'profileImageFile') : '/defaultImage.jpg' }}" style="width: 45px; height:40px" class="rounded-circle">
               <a href="/profile"><span class="text-right my-1">&nbsp;&nbsp;{{ app.user.userNickname ?? 'Nome do usuario' }}</span></a>
             </div>
           </li>

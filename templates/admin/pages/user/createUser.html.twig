@@ -6,12 +6,12 @@
             <h2>Criar novo usuario</h2><hr>
         </div>
         <div class="col">
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                     <div class="form-row">
                         <div class="col">
                             <div class="form-group">
                                 <label for="userNickname" class="required">Nome do usuario</label>
-                                <input type="text" name="userNickName" class="form-control" placeholder="Nome para identificação" required>
+                                <input type="text" name="userNickname" class="form-control" placeholder="Nome para identificação" required>
                             </div>
                         </div>
                         <div class="col">
@@ -39,8 +39,8 @@
                         <div class="col">
                             <label>Imagem do perfil</label>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="customFileLang">
-                                <label class="custom-file-label ct-image-picker" for="customFileLang">Selecionar arquivo</label>
+                                <input type="file" class="custom-file-input ct-image-picker" name="profileImage" id="customFileLang">
+                                <label class="custom-file-label uploadFileName" image-name="customFileLang" for="customFileLang">Selecionar arquivo</label>
                             </div>
                         </div>
                     </div>

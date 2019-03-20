@@ -108,6 +108,7 @@ import './src/logoutAction';
 
 // ADMIN
 import './src/admin/permissions';
+import './src/admin/userActions';
 
 // PROFILE
 import './src/profile/resetProfileImage';
@@ -163,6 +164,7 @@ import './src/helpers/classes/autoClick';
 import './src/helpers/classes/autoFocus';
 import './src/helpers/classes/autoSubmit';
 import './src/helpers/classes/numbersOnly';
+import './src/helpers/classes/images';
 
 if (document.querySelector('.f-date')) {
     var dateMask = new IMask(
