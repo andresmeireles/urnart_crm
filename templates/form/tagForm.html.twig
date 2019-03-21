@@ -1,6 +1,6 @@
 {% extends 'index.html.twig' %}
 
-{% block tittle %}Etiqetas Manual{% endblock %}
+{% block title %}Etiqetas Manual{% endblock %}
 
 {% block content %}
   <div class="px-4 w-100">
@@ -15,10 +15,9 @@
     </div>
   </div>
   <hr>
-  <form method="GET" action="/forms/{{ formName }}/print" id="action-form" target="_blank" onsubmit="setTimeout(function () {history.go(), 3000})">
+  <form method="GET" action="/forms/{{ formName }}/print" id="action-form" target="_blank" />
     <div class="py-2">
       <div class="row">
-        {% include 'components/csrfToken.html.twig' with { 'tokenText': 'form' } %}
         <div class="col-md-6">
           <input type="submit" class="btn btn-primary btn-block btn-lg" id="send-form" value="Criar etiquetas" />
         </div>
@@ -39,7 +38,7 @@
             <div class="input-group my-1 w-100" id="cloneableField">
               <div class="col">
                 <input type="hidden" input-number="true" name="cloneableField0[row]" id="row" value="1">
-                <input type="text" class="form-control mr-3 my-1 w-100" name="cloneableField0[name]" id="name" placeholder="Nome" required /></div>
+                <input type="text" class="form-control mr-3 my-1 w-100" name="cloneableField0[name]" id="name" placeholder="Nome" autocomplete="off" required /></div>
                 <div class="col-md-2">
                   <input class="form-control mr-3 my-1 w-100" name="cloneableField0[city]" placeholder="Cidade" id="city" />
                 </div>

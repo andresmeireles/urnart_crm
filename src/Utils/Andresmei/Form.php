@@ -3,11 +3,9 @@
 namespace App\Utils\Andresmei;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 use App\Utils\GenericContainer;
 use App\Utils\Exceptions\BinaryNotFoundException;
-use App\Config\Config;
 use App\Config\NonStaticConfig;
 
 class Form extends GenericContainer
@@ -54,6 +52,8 @@ class Form extends GenericContainer
         if (!is_dir($dir)) {
             throw new \Exception("{$dir} não é um diretorio.");
         }
+
+        return $this;
     }
 
     public function show(string $formName, array $data): array
@@ -85,6 +85,8 @@ class Form extends GenericContainer
         if ($result === 1) {
             throw new \Exception('Conversão não ocorrida.');
         }
+        unset($result);
+        unset($opt);
         unlink($htmlReportFile);
         return array(
             'pdf_path' => $pdfDir,

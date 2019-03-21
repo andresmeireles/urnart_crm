@@ -106,20 +106,17 @@ class FormController extends AbstractController
      * @param string  $formName Nome for fomulário usado como template
      * @param Form    $form     Objeto de manipulação do Fourmulário
      *
-     * @Route("/forms/{formName}/pdf", methods="POST")
+     * @Route("/forms/{formName}/print/pdf", methods={"POST","GET"})
      *
      * @return Response
      */
     public function sendPdfForm(Request $request, string $formName, Form $form): Response
     {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
-            throw new CustomException('Algo deu muito errado :(');
-        }
+        $data = $request->query->all();
         
-        if (empty($request->request->all())) {
-            echo 'Nenhum dado enviado';
+        if (empty($data)) {
+            throw new \Exception('Nenhum dado enviado');
         }
-        $data = $request->request->all();
         $result = $form->returnSelectedFromType('pdf', $formName, $data);
 
         //check if file exists
