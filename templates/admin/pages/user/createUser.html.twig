@@ -1,7 +1,7 @@
 {% extends "index.html.twig" %}
 {% block title %}Criar novo usuario.{% endblock %}
 {% block content %}
-    <div class="col px-3 py-4">
+    <div class="col px-3 py-4" id="addUser">
         <div class="col">
             <h2>Criar novo usuario</h2><hr>
         </div>
@@ -26,12 +26,24 @@
                             <div class="form-group">
                                 <label for="password" class="required">Senha</label>
                                 <input type="password" name="password" class="form-control" id="pass" placeholder="senha com 8 digitos minimos" required>
+                                <div class="invalid-feedback">
+                                    Senha muito curta.
+                                </div>
+                                <div class="valid-feedback">
+                                    Senha com tamanho compativel!
+                                </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label for="password" class="requried">Repetir senha</label>
                                 <input type="password" name="retype" class="form-control" id="repass" placeholder="repita a senha" required>
+                                <div class="invalid-feedback">
+                                    Senha não confere.
+                                </div>
+                                <div class="valid-feedback">
+                                    Senha compativel!
+                                </div>
                             </div>
                         </div>
                     </div>

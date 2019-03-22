@@ -17,7 +17,7 @@ final class NonStaticConfig
      */
     private $config;
 
-    public $env = 'dev';
+    public $env = false;
 
     public function __construct()
     {
