@@ -20,8 +20,8 @@ class UserModel extends Model
 
         try {
             // check if password is the same
-            if (array_key_exists('password', $data) && $data['password'] !== $data['retype']) {
-                throw new NotSamePasswordException();
+            if (array_key_exists('password', $data)) {
+                $this->passwordVerification($data['password'], $data['retype']);
             }
 
             $user =  $insert ? new User() : $entityManager->getRepository(User::class)->find($data['identificator']);
@@ -112,5 +112,18 @@ class UserModel extends Model
         $entityManager->flush();
 
         return new FlashResponse(200, 'success', sprintf('Permissões de %s alterados com sucesso', $user->getUserName()));
+    }
+
+    private function passwordVerification(string $pass1, string $pass2): self
+    {
+        if ($pass1 !== $pass2) {
+            throw new NotSamePasswordException();
+        }
+
+        if (strlen($pass1) < 8) {
+            throw new \Exception("Senha não atende os parametros requisitados. Senha precisa ter no minímo 8 digitos.");
+        }
+
+        return $this;
     }
 }

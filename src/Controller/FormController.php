@@ -85,16 +85,16 @@ class FormController extends AbstractController
      *                              usado como template.
      * @param Form    $form         objeto de formulário customizado.
      *
-     * @Route("/forms/{formName}/print", methods={"GET"})
+     * @Route("/forms/{formName}/print", methods={"GET", "POST"})
      *
      * @return Response
      */
     public function printForm(Request $request, string $formName, Form $form): Response
     {
-        if (empty($request->query->all())) {
+        $data = $request->query->all();
+        if (empty($data)) {
             echo 'Nenhum dado enviado';
         }
-        $data = $request->query->all();
         $result = $form->returnSelectedFromType('show', $formName, $data);
         return new Response($result['template']);
     }
@@ -106,13 +106,13 @@ class FormController extends AbstractController
      * @param string  $formName Nome for fomulário usado como template
      * @param Form    $form     Objeto de manipulação do Fourmulário
      *
-     * @Route("/forms/{formName}/print/pdf", methods={"POST","GET"})
+     * @Route("/forms/{formName}/print/pdf", methods={"POST"})
      *
      * @return Response
      */
     public function sendPdfForm(Request $request, string $formName, Form $form): Response
     {
-        $data = $request->query->all();
+        $data = $request->request->all();
         
         if (empty($data)) {
             throw new \Exception('Nenhum dado enviado');
@@ -131,6 +131,7 @@ class FormController extends AbstractController
 
         // send file to download
         $response =  new BinaryFileResponse($file);
+        //$response->trustXSendfileTypeHeader();
         $response->trustXSendfileTypeHeader();
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
 

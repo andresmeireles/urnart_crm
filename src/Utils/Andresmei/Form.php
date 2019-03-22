@@ -43,7 +43,8 @@ class Form extends GenericContainer
         if (!in_array($type, $this->allowedTypes)) {
             throw new \Exception(sprintf('Tipo %s não é um tipo valido', $type));
         }
-        $result = $this->$type($formName, $data);
+        $template = $type === 'pdf' ? sprintf('%sPdf', $formName) : $formName;
+        $result = $this->$type($template, $data);
         return $result;
     }
 
