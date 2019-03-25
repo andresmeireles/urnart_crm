@@ -25,7 +25,9 @@ class ExceptionSubscriber implements EventSubscriberInterface
         
         $exceptionClass = get_class($event->getException());
         
-        $exception = $exceptionClass === 'Exception' ? $exceptionClass : substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
+        $exception = $exceptionClass === 'Exception' ?
+                        $exceptionClass :
+                        substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
         
         if ($event->getRequest()->server->get('APP_ENV') === 'dev') {
             $exception = $exceptionClass === 'Exception' || $exceptionClass === 'Twig_Error_Loader' ? $exceptionClass : substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));

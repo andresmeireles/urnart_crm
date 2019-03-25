@@ -1,0 +1,47 @@
+{% extends "index.html.twig" %}
+{% block title %}Alterar senha{% endblock %}
+{% block content %}
+    <div class="col px-4 py-3" id="passFunc">
+        <div class="col">
+            <h2>Alterar senha</h2>
+            <hr>
+        </div>
+        <div class="col">
+            <form method="POST">
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="oldPass">Senha atual</label>
+                        <input type="password" name="oldpass" id="oldpass" class="form-control" placeholder="Insira a senha atual." value="{{ oldPass }}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="oldPass">Nova senha</label>
+                        <input type="password" name="pass" id="pass" class="form-control" placeholder="Insira nova senha." value="{{ pass }}">
+                        <div class="invalid-feedback">
+                            Senha muito curta.
+                        </div>
+                        <div class="valid-feedback">
+                            Senha com tamanho compativel!
+                        </div>
+                    </div>
+                    <div class="form-group col">
+                        <label for="oldPass">Confirmar senha</label>
+                        <input type="password" name="retype" id="repass" class="form-control" placeholder="Confirme a nova senha inserida." value="{{ retype }}" />
+                        <div class="invalid-feedback">
+                            Senha não confere.
+                        </div>
+                        <div class="valid-feedback">
+                            Senha compativel!
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row my-2">
+                    <div class="form-group col">
+                        <input type="submit" class="btn btn-success btn-block" value="Alterar senha">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

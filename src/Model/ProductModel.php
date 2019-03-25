@@ -13,10 +13,10 @@ class ProductModel extends Model
      * Execuca ação de inserir dados no banco de dados, atravez de uma chamada a função runAction
      *
      * @param array $data
-     * @return array
+     * @return FlashResponse
      * @throws \Exception
      */
-    public function insert(array $data): array
+    public function insert(array $data): FlashResponse
     {
         $result = $this->runAction($data, null, 'insert');
         return $result;
@@ -27,10 +27,10 @@ class ProductModel extends Model
      *
      * @param array $data
      * @param integer $productId
-     * @return array
+     * @return FlashResponse
      * @throws \Exception
      */
-    public function update(array $data, int $productId): array
+    public function update(array $data, int $productId): FlashResponse
     {
         $result = $this->runAction($data, $productId, 'update');
         return $result;
@@ -49,7 +49,7 @@ class ProductModel extends Model
 
         return array(
             'http_code' => 200,
-            'message' => "Produto {$product->getName()} removido com sucesso!"
+            'message' => sprintf("Produto %s removido com sucesso!", $product->getName())
         );
     }
 
@@ -59,10 +59,10 @@ class ProductModel extends Model
      * @param array $data
      * @param integer $id
      * @param string $unclearType
-     * @return array
+     * @return FlashResponse
      * @throws \Exception
      */
-    public function runAction(array $data, int $id = null, string $unclearType): array
+    public function runAction(array $data, int $id = null, string $unclearType): FlashResponse
     {
         if (
             \is_null($data['name']) ||
@@ -70,10 +70,7 @@ class ProductModel extends Model
             \is_null($data['minStock']) ||
             \is_null($data['price'])
         ) {
-            return array(
-                'http_code' => 203,
-                'message' => 'Deu erro meu amiginho'
-            );
+            return new FlashResponse(203, 'success','Deu erro meu amiginho');
         }
 
         $type = strtolower($unclearType);
@@ -83,7 +80,7 @@ class ProductModel extends Model
         );
 
         if (!in_array($type, $allowParameters)) {
-            throw new \Exception("Operaçao {$type} não suportada, operações suportadas: INSERT e UPDATE");
+            throw new \Exception(sprintf("Operaçao %s não suportada, operações suportadas: INSERT e UPDATE", $type));
         }
 
         $this->em->getConnection()->beginTransaction();
@@ -93,7 +90,7 @@ class ProductModel extends Model
             if ($type === 'insert') {
                 $result = $this->em->getRepository(Product::class)->findOneBy(array('name' => $name));
                 if (!is_null($result)) {
-                    return FlashResponse::response(400, 'warning', 'Produto com nome igual já cadastrado');
+                    return new FlashResponse(400, 'warning', 'Produto com nome igual já cadastrado');
                 }
             }
             $productInventory = new ProductInventory();
@@ -103,7 +100,6 @@ class ProductModel extends Model
             }
 
             $product->setName($name);
-            $description = htmlentities($data['description'], ENT_QUOTES, 'UTF-8');
             
             $price = (float) $data['price'];
             $product->setPrice($price);
@@ -127,11 +123,7 @@ class ProductModel extends Model
             }
             $this->em->flush();
             $this->em->getConnection()->commit();
-            return array(
-                'http_code' => 200,
-                'type' => 'success',
-                'message' => 'Sucesso'
-            );
+            return new FlashResponse(200, 'success', 'Sucesso');
         } catch (\Exception $e) {
             throw new \Exception("Erro: {$e->getMessage()}. Arquivo: {$e->getFile()}. Linha: {$e->getLine()}");
             $this->em->getConnection()->rollback();
@@ -139,14 +131,12 @@ class ProductModel extends Model
     }
 
     /**
-     * @param object $data
+     * @param array $data
      * 
      * @return array
      */
-    public function productIn(object $data): array
+    public function productIn(array $data): array
     {
-        $date = $data->date;
-        unset($data->date);
         $this->em->getConnection()->beginTransaction();
         try {
             foreach ($data as $info) {

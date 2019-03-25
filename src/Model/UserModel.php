@@ -12,8 +12,22 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UserModel extends Model
 {
-    public function runUserAction(array $data, ?UploadedFile $file, ?UserPasswordEncoderInterface $encoder = null, bool $insert = true): FlashResponse
-    {
+    /**
+     * Ação faz ação na tabela user do banco de dados
+     *
+     * @param array                             $data    Dados para alteração
+     * @param UploadedFile|null                 $file    Instancia de UploadFile
+     * @param UserPasswordEncoderInterface|null $encoder Endoder do password
+     * @param bool                              $insert  Tipo de inserção
+     *
+     * @return FlashResponse                              Objeto de resposta
+     */
+    public function runUserAction(
+        array $data,
+        ?UploadedFile $file,
+        ?UserPasswordEncoderInterface $encoder = null,
+        bool $insert = true
+    ): FlashResponse {
         $entityManager = $this->em;
 
         $entityManager->getConnection()->beginTransaction();
@@ -54,6 +68,15 @@ class UserModel extends Model
         return new FlashResponse(200, 'success', 'Alteração das informações feita com sucesso!');
     }
 
+    /**
+     * Alias to runUser action with add command
+     *
+     * @param array                        $data    Dados do usuario
+     * @param UploadedFile|null            $file    Arquivo da imagem
+     * @param UserPasswordEncoderInterface $encoder Encoder de senha
+     *
+     * @return FlashResponse                           [return description]
+     */
     public function addUser(array $data, ?UploadedFile $file, UserPasswordEncoderInterface $encoder): FlashResponse
     {
         return $this->runUserAction($data, $file, $encoder);
@@ -64,7 +87,48 @@ class UserModel extends Model
         return $this->runUserAction($data, $file, null, false);
     }
 
-    public function uploadProfileImage(User $user, UploadedFile $imageFile)
+    /**
+     * Altera senha do usuario.
+     *
+     * @param   User                          $user     Objeto contendo informações do usuario.
+     * @param   array                         $data     Informações para alterar senhas
+     * @param   UserPasswordEncoderInterface  $encoder  Encoder de para senha
+     *
+     * @return  FlashResponse
+     */
+    public function changePassword(User $user, array $data, UserPasswordEncoderInterface $encoder): FlashResponse
+    {
+        $oldTypedPass = $data['oldpass'];
+        $newPass = $data['pass'];
+        $retype = $data['retype'];
+
+        if (!$encoder->isPasswordValid($user, $oldTypedPass)) {
+            return new FlashResponse(200, 'error', 'Senha atual incorreta');
+        }
+
+        if ($oldTypedPass === $newPass) {
+            return new FlashResponse(200, 'error', 'Para alterar senha insira uma senha diferente da anterior.');
+        }
+
+        $this->passwordVerification($newPass, $retype);
+
+        $user->setPassword($encoder->encodePassword($user, $newPass));
+        
+        $this->em->merge($user);
+        $this->em->flush();
+
+        return new FlashResponse(200, 'success', 'Senha alterada com sucesso!');
+    }
+
+    /**
+     * Upload profile image using vich upload system
+     *
+     * @param User         $user      User entity
+     * @param UploadedFile $imageFile File to upload.
+     *
+     * @return UserModel
+     */
+    public function uploadProfileImage(User $user, UploadedFile $imageFile): self
     {
         $entityManager = $this->em;
 
@@ -74,6 +138,8 @@ class UserModel extends Model
 
         $entityManager->persist($user);
         $entityManager->flush();
+
+        return $this;
     }
 
     public function resetProfileImage(string $profileImagesFolder, User $user): FlashResponse
@@ -97,10 +163,9 @@ class UserModel extends Model
     {
         $entityManager = $this->em;
 
-        $user = $this->em->getRepository(User::class)->findOneBy(array(
-            'id' => $userId,
-            'email' => $userName
-        ));
+        $user = $this->em->getRepository(User::class)->findOneBy(
+            array('id' => $userId, 'email' => $userName)
+        );
 
         if (null === $user) {
             throw new UsernameNotFoundException(sprintf('Usuario %s não encontrado ou não existe', $userName));

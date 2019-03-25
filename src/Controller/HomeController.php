@@ -49,6 +49,7 @@ class HomeController extends AbstractController
         $orderValue = 0.0;
         $orderData = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findAll();
         $orderAmount = count($orderData);
+        /** @var ManualOrderReport $key */
         foreach ($orderData as $key) {
             $orderValue += $key->getOrderFinalPrice();
         }
@@ -57,20 +58,6 @@ class HomeController extends AbstractController
             'values' => array($boletoValue, $orderValue),
             'amount' => array($boletoAmount, $orderAmount)
         ]);
-    }
-
-    /**
-     * hot reload csrf token - test
-     *
-     * @Route("/changeCsrf")
-     *
-     * @return Response
-     */
-    public function changeCsrf(SessionInterface $session)
-    {
-        $change = new \DateTime('now');
-        $string = password_hash($change->format('s'), PASSWORD_DEFAULT);
-        return new Response($string, Response::HTTP_OK, array('csrf' => $session->get('csrfToken')));
     }
 
     /**
@@ -88,10 +75,10 @@ class HomeController extends AbstractController
      *
      * @Route("/greeting/{name}", defaults={"name"=null})
      *
-     * @param string $name
+     * @param string|null $name
      * @return Response
      */
-    public function greeting(string $name = null): Response
+    public function greeting(?string $name = 'meu amigo'): Response
     {
         return new Response(sprintf('Olá %s', $name));
     }

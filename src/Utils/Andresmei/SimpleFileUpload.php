@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Utils\Andresmei;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class SimpleFileUpload
@@ -66,6 +67,10 @@ class SimpleFileUpload
         self::$status = true;
 
         return true;
+    }
+
+    public function uploadFile(File $fileToUpload, ?string $uploadPath)
+    {
     }
 
     public static function getStatus(): bool

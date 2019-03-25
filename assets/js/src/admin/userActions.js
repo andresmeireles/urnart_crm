@@ -1,4 +1,4 @@
-if (document.querySelector('#addUser')) {
+if (document.querySelector('#addUser') || document.querySelector('#passFunc')) {
 
     document.addEventListener('change', (el) => {
         let pass1 = document.querySelector('#pass');
@@ -42,7 +42,7 @@ const samePassVerification = (p1, p2) => {
  * @returns {Boolean} true or false
  */
 const lengthPass = (pass) => {
-    if (pass.length > 8) {
+    if (pass.length >= 8) {
         return true; 
     }
 
