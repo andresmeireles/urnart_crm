@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Exceptions\NotSamePasswordException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Filesystem\Filesystem;
 
 class UserModel extends Model
 {
@@ -30,8 +31,6 @@ class UserModel extends Model
     ): FlashResponse {
         $entityManager = $this->em;
 
-        $entityManager->getConnection()->beginTransaction();
-
         try {
             // check if password is the same
             if (array_key_exists('password', $data)) {
@@ -43,7 +42,8 @@ class UserModel extends Model
             $user->setUserNickname($data['userNickname']);
 
             if (null !== $encoder) {
-                $user->setPassword($encoder->encodePassword($user, $data['password']));
+                $password = $encoder->encodePassword($user, $data['password']);
+                $user->setPassword($password);
             }
 
             //image
@@ -55,15 +55,14 @@ class UserModel extends Model
             }
 
             $entityManager->persist($user);
-            $entityManager->flush();
-            $entityManager->getConnection()->commit();
+
         } catch (UniqueConstraintViolationException $e) {
-            $entityManager->getConnection()->rollback();
             throw new \Exception('Email já cadastrado.');
         } catch (\PDOException $e) {
-            $entityManager->getConnection()->rollback();
             throw new \Exception($e->getMessage());
         }
+
+        $entityManager->flush();
 
         return new FlashResponse(200, 'success', 'Alteração das informações feita com sucesso!');
     }

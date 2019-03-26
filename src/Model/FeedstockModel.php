@@ -12,9 +12,9 @@ class FeedstockModel extends Model
     /**
      * Função que persiste e atualiza produtos do inventário
      *
-     * @param array $data = Array associativo com dados a serem incluidos ou atualizados.
-     * @param string $type = Tipo de operação. INSERT inseri no banco de dados. UPDATE atualiza o produto no banco de dados.
-     * @param string $id = Caso a TYPE [$type] for UPDATE, ID do produto.
+     * @param array  $data Array associativo com dados a serem incluidos ou atualizados.
+     * @param string $type [INSERT] inseri no banco de dados. [UPDATE] atualiza o produto no banco de dados.
+     * @param int    $id   Caso a TYPE [$type] for UPDATE, ID do produto.
      * @return void
      */
     public function persist(array $data, string $type = 'insert', ?int $id = null)
@@ -81,8 +81,9 @@ class FeedstockModel extends Model
     /**
      * Um wrapper para função PERSIST com atributos predefinidos
      *
-     * @param array $data
-     * @param integer $id
+     * @param array   $data
+     * @param integer $productId
+     * 
      * @return void
      */
     public function update(array $data, int $productId)

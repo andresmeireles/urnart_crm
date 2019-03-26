@@ -1,36 +1,27 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use App\Model\ListModel;
-use PHPUnit\Framework\TestCase;
-use App\Controller\HomeController;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class HomeControllerTest extends TestCase
+class HomeControllerTest extends WebTestCase
 {
-    public function testGreeting()
-    {
-        $greet = new HomeController();
-        $prop = 'ninja';
-        $result = $greet->greeting($prop);
-
-        $this->assertEquals(new Response(sprintf('Olá %s', $prop ?? 'meu amigo')), $result);
-    }
-
     public function testIndex()
     {
-        $index = new HomeController();
-        $objectManager = $this->createMock(ObjectManager::class);
-        $objectManager->expects($this->any())
-            ->method('getRepository')
-            ->willReturn($employeeRepository);
-            
-        $model = new ListModel($objectManager);
-        $result = $index->index($model);
+        $client = static::createClient();
+        $client->request('GET', '/home');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
 
-        $this->assertEquals(new Response(), $result);
+    public function testFinanceiro()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/');
+        //$this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('h1.text-center')->count()
+        );
     }
 }
