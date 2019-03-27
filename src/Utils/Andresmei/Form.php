@@ -68,20 +68,23 @@ class Form extends GenericContainer
     /**
      * Recebe parametros para criação de html e conversão para pdf.
      *
-     * @param string $formName => Nome do formulario
-     * @param array $data => informações do formulário
-     * @return array => array associativo com parametros [pdf_path] com caminho do pdf gerado e [type] com tipo de mensagem
+     * @param string $formName Nome do formulario
+     * @param array  $data informações do formulário
+     *
+     * @return array array associativo com parametros [pdf_path] com caminho do pdf gerado e [type] com tipo de mensagem
      */
     public function pdf(string $formName, array $data): array
     {
-        
         exec('wkhtmltopdf --version', $opt, $result);
         if ($result === 1) {
-            throw new BinaryNotFoundException('wkhtmltopdf não esta instaldado no sistama ou não está no PATH do sistema operacional.');
+            throw new BinaryNotFoundException(
+                'wkhtmltopdf não esta instaldado no sistama ou não está no PATH do sistema operacional.'
+            );
         }
         $this->setParsedFile($formName, $data);
 
-        if (!file_exists(__DIR__.'/../../../public/reportBuilder') && !is_dir(__DIR__.'/../../../public/reportBuilder')) {
+        if (!file_exists(__DIR__.'/../../../public/reportBuilder') &&
+            !is_dir(__DIR__.'/../../../public/reportBuilder')) {
             mkdir(__DIR__.'/../../../public/reportBuilder');
             file_put_contents(__DIR__.'/../../../public/reportBuilder/.gitignore', '/*');
         }

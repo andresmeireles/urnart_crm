@@ -32,14 +32,14 @@ class FlashResponse
      * @param  int          $http_code codigo HTTP
      * @param  string       $type      Tipo de responsta, success, warning, error etc...
      * @param  string|null  $message   Corpo da messagem
-     * 
+     *
      * @return array
      */
     public function __construct(int $http_code, string $type, ?string $message)
     {
         $this->http_code = $http_code;
         $this->type = $type;
-        $this->message = $message ?? 'sucesso'; 
+        $this->message = $message ?? 'sucesso';
         $this->nonStaticResponse($http_code, $type, $message);
     }
 
@@ -49,7 +49,7 @@ class FlashResponse
      * @param  int|null    $http_code codigo HTTP
      * @param  string|null $type      Tipo de responsta, success, warning, error etc...
      * @param  string|null $message   Corpo da messagem
-     * 
+     *
      * @return array
      */
     public function nonStaticResponse(int $http_code = null, string $type = null, string $message = null): array

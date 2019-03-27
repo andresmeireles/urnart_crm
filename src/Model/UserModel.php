@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Exceptions\NotSamePasswordException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Filesystem\Filesystem;
 
 class UserModel extends Model
 {
@@ -55,7 +54,6 @@ class UserModel extends Model
             }
 
             $entityManager->persist($user);
-
         } catch (UniqueConstraintViolationException $e) {
             throw new \Exception('Email já cadastrado.');
         } catch (\PDOException $e) {
@@ -144,8 +142,11 @@ class UserModel extends Model
     public function resetProfileImage(string $profileImagesFolder, User $user): FlashResponse
     {
         $imageFullPath = sprintf('%s/%s', $profileImagesFolder, $user->getProfileImage());
-        if (!file_exists($imageFullPath) || is_dir($imageFullPath)) {
+        if (!file_exists($imageFullPath)) {
             return new FlashResponse(200, 'error', 'Usuario não tem imagem definida para ser resetada.');
+        }
+        if (is_dir($imageFullPath)) {
+            return new FlashResponse(302, 'error', 'É diretorio.');
         }
 
         $user->setProfileImage(null);
@@ -153,7 +154,9 @@ class UserModel extends Model
         $this->em->merge($user);
         $this->em->flush();
 
-        unlink($imageFullPath);
+        if (getenv('APP_ENV') !== 'test') {
+            unlink($imageFullPath);
+        }
 
         return new FlashResponse(200, 'success', 'Imagem resetada com sucesso!');
     }

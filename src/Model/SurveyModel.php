@@ -65,36 +65,35 @@ class SurveyModel extends Model implements ModelInterface
      * Recieve assoeiative array with data, return results by dates
      *
      * @param array $surveyBruteData
-     * 
+     *
      * @return array
      */
     public function getSurveyData(array $surveyBruteData): array
-    { 
+    {
         $cleanSurveyData = array();
         foreach ($surveyBruteData as $key => $value) {
-                if (!array_key_exists($value->getSurveyReferenceDate(), $cleanSurveyData)) {
-                    $cleanSurveyData[$value->getSurveyReferenceDate()] = array();
-                }
+            if (!array_key_exists($value->getSurveyReferenceDate(), $cleanSurveyData)) {
+                $cleanSurveyData[$value->getSurveyReferenceDate()] = array();
+            }
 
-                $cleanSurveyData[$value->getSurveyReferenceDate()] += array(
-                    $value->getCustomerName() => array(
-                        'id' => $value->getId(),
-                        'answer' => $value->getAnswer()
-                    )
-                );
-            
+            $cleanSurveyData[$value->getSurveyReferenceDate()] += array(
+                $value->getCustomerName() => array(
+                    'id' => $value->getId(),
+                    'answer' => $value->getAnswer()
+                )
+            );
         }
+
         return $cleanSurveyData;
     }
 
-    private function writeResult(array $customerData): string 
+    private function writeResult(array $customerData): string
     {
         $questionary = $this->settings->getProperty('survey_question');
         $resultString = array();
-        $chupon = '{"Qual seu nome, meu amiginho?":"a","Qual seu grau de escolaridade":"nenhuma","You know what syncron summon is, you brat!?":"sim"}';
         foreach ($customerData as $key => $value) {
             $text = $questionary[$key]['text'];
-            $resultString[$text] = $value; 
+            $resultString[$text] = $value;
         }
         $answerString = (string) json_encode($resultString);
         return $answerString;

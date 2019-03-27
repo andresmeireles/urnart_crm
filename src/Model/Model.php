@@ -63,12 +63,12 @@ abstract class Model
      * @return array
      */
     protected function getGenericListByDate(
-        string $repository, 
+        string $repository,
         string $dateField = 'createDate',
-        ?string $selectFields = 'u', 
-        ?string $beginDate, 
-        ?string $lastDate): array
-    {
+        ?string $selectFields = 'u',
+        ?string $beginDate = null,
+        ?string $lastDate = null
+    ): array {
         $repo = 'App\Entity\\'.$repository;
         $convertedBeginDate = (new StringConvertions())->strToDateString($beginDate);
         $convertedLastDate = (new StringConvertions())->strToDateString($lastDate);

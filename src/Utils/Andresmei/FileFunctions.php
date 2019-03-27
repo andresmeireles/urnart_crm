@@ -29,9 +29,9 @@ class FileFunctions
     /**
      * Get last modified file of a folder.
      *
-     * @param   string  $path  Path of folder. 
+     * @param string $path Path of folder.
      *
-     * @return  string         Return the name of the last modified file.
+     * @return string Return the name of the last modified file.
      */
     public function getLastCreateFileFromFolder(string $path): string
     {
@@ -77,10 +77,5 @@ class FileFunctions
         }
 
         return null;
-    }
-
-    public function fileExists()
-    {
-        
     }
 }

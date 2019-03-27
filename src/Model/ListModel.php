@@ -63,9 +63,9 @@ class ListModel extends Model
     /**
      * Retorna lista de elemetos de acordo com status.
      *
-     * @param   int     $type  opções 0 ou 1 ou 2.
+     * @param int $type  opções 0 ou 1 ou 2.
      *
-     * @return  array         
+     * @return array
      */
     public function getParsedStatusOrderData(int $type = 0): array
     {
@@ -98,7 +98,7 @@ class ListModel extends Model
      * @return array
      */
     public function getListOrderBy(string $repository, string $orderBy): array
-    {        
+    {
         $returnList = $this->em->getRepository('App\Entity\\'.$repository)->findBy(
             array(),
             array($orderBy => 'ASC')

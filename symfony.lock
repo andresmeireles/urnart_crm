@@ -140,6 +140,9 @@
     "jms/serializer": {
         "version": "2.2.0"
     },
+    "mikey179/vfsstream": {
+        "version": "v1.6.5"
+    },
     "monolog/monolog": {
         "version": "1.23.0"
     },

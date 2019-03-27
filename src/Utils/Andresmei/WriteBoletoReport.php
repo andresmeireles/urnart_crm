@@ -6,7 +6,6 @@ namespace App\Utils\Andresmei;
 use App\Utils\Andresmei\StdResponse;
 use Symfony\Component\Yaml\Yaml;
 
-
 class WriteBoletoReport
 {
     /**
@@ -98,5 +97,4 @@ class WriteBoletoReport
 
         return $result;
     }
-    
 }

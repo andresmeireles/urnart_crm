@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Utils\Andresmei;
 
-class ObjectResponse 
+class ObjectResponse
 {
     /**
      * Response HTTP code
@@ -37,7 +37,7 @@ class ObjectResponse
      * Get response HTTP code
      *
      * @return  int
-     */ 
+     */
     public function getHttpCode(): int
     {
         return $this->httpCode;
@@ -47,7 +47,7 @@ class ObjectResponse
      * Get response message for requisition
      *
      * @return  string
-     */ 
+     */
     public function getMessage(): string
     {
         return $this->message;
@@ -57,7 +57,7 @@ class ObjectResponse
      * Get for notifications, type of response [success, warning, danger] to decorate the notification css
      *
      * @return  string
-     */ 
+     */
     public function getResponseType(): string
     {
         return $this->responseType;

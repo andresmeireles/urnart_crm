@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Model;
 
 use App\Utils\Andresmei\FlashResponse;
@@ -14,8 +16,8 @@ class ReportModel extends Model
     /**
      * Select the create function and do the action.
      *
-     * @param string    $entity
-     * @param array     $data
+     * @param string $entity
+     * @param array  $data
      * @return FlashResponse
      */
     public function createGenericReport(string $entity, array $data): FlashResponse
@@ -27,7 +29,10 @@ class ReportModel extends Model
                 $flashResult = $this->createBoletoRegistry($data);
                 break;
             default:
-                $flashResult = new FlashResponse(301, 'warning', sprintf('Impossível prosseguir, relátorio relacionado a %s não existe.', $entity));
+                $flashResult = new FlashResponse(301, 'warning', sprintf(
+                    'Impossível prosseguir, relátorio relacionado a %s não existe.',
+                    $entity
+                ));
                 break;
         }
 
@@ -55,7 +60,12 @@ class ReportModel extends Model
 
             $httpCode = 200;
             $type = 'success';
-            $message = sprintf('Titulo de %s numero %s/%d criado com sucesso!', $data['boletoCustomerOwner'], $data['boletoNumber'], $data['boletoInstallment']);
+            $message = sprintf(
+                'Titulo de %s numero %s/%d criado com sucesso!',
+                $data['boletoCustomerOwner'],
+                $data['boletoNumber'],
+                $data['boletoInstallment']
+            );
         } catch (\PDOException $e) {
             $this->em->getConnection()->rollback();
             $httpCode = 301;
@@ -82,7 +92,7 @@ class ReportModel extends Model
                     continue;
                 }
 
-                if (strpos($value, '.') !== false ) {
+                if (strpos($value, '.') !== false) {
                     $value = (float) $value;
                 }
 
@@ -100,7 +110,11 @@ class ReportModel extends Model
             throw new \PDOException($e->getMessage(), $e->getCode());
         }
 
-        return new FlashResponse(200, 'success', sprintf('Titulo %s/%s atualizado com sucesso.', $entityToEdit->getBoletoNumber(), $entityToEdit->getBoletoInstallment()));
+        return new FlashResponse(200, 'success', sprintf(
+            'Titulo %s/%s atualizado com sucesso.',
+            $entityToEdit->getBoletoNumber(),
+            $entityToEdit->getBoletoInstallment()
+        ));
     }
     
     public function getGenericList(string $entity, string $typeOfOrder): StdResponse
@@ -123,10 +137,13 @@ class ReportModel extends Model
             case 'beginDate':
                 $responseObject = new StdResponse();
                 $responseObject->typeOfList = 'Busca de títulos por data';
-                $responseObject->consultResults = null;   
-                return $responseObject;     
+                $responseObject->consultResults = null;
+                return $responseObject;
             default:
-                throw new \BadMethodCallException(sprintf('Order %s não é um parametro valido. Favor enviar parametro válido', $order));
+                throw new \BadMethodCallException(sprintf(
+                    'Order %s não é um parametro valido. Favor enviar parametro válido',
+                    $order
+                ));
                 break;
         }
 
@@ -134,7 +151,7 @@ class ReportModel extends Model
 
         $returnObject = new StdResponse;
         $returnObject->typeOfList = $list;
-        $returnObject->consultResults = $this->em->getRepository($entity)->findBy(array(), $order); 
+        $returnObject->consultResults = $this->em->getRepository($entity)->findBy(array(), $order);
 
         return $returnObject;
     }
@@ -142,10 +159,10 @@ class ReportModel extends Model
     /**
      * Return a serializaed register from database.
      *
-     * @param   string  $entity     Entity that will be consulted.      
-     * @param   int     $consultId  Id to consult registry.
+     * @param string $entity    Entidade para consultar.
+     * @param int    $consultId Id to consult registry.
      *
-     * @return  string              Json string.
+     * @return string
      */
     public function serializedGenericConsult(string $entity, int $consultId): string
     {
@@ -154,7 +171,7 @@ class ReportModel extends Model
         return $jsonResult;
     }
 
-    /**************************************************** 
+    /****************************************************
     ************** SPECIFIC ENTITY METHODS **************
     *****************************************************/
 
@@ -189,12 +206,11 @@ class ReportModel extends Model
                 $boletoRegistry->setBoletoProvisionamentoDate($boletoData['boletoProvisionamentoDate']);
             }
 
-            if ($status === 4) { //Pagamento Por Conta
-                                
+            if ($status === 4) {//Pagamento Por Conta
                 if ($boletoData['porContaValue'] > $boletoRegistry->getBoletoValue()) {
                     throw new CustomException(sprintf(
-                        'Erro no valor da parcela: Valor de R$ %s maior que R$ %s do valor total do título %s/%s', 
-                        number_format($boletoData['porContaValue'], 2, '.', ','), 
+                        'Erro no valor da parcela: Valor de R$ %s maior que R$ %s do valor total do título %s/%s',
+                        number_format($boletoData['porContaValue'], 2, '.', ','),
                         number_format($boletoRegistry->getBoletoValue(), 2, ',', '.'),
                         $boletoRegistry->getBoletoNumber(),
                         $boletoRegistry->getBoletoInstallment()
@@ -212,15 +228,18 @@ class ReportModel extends Model
 
             $entityManager->merge($boletoRegistry);
             $entityManager->flush();
-
         } catch (\PDOException $e) {
             throw new \PDOException(sprintf('Error Processing Request. %s', $e->getMessage()), 1);
         }
 
         return new FlashResponse(
-            200, 
-            'success', 
-            sprintf('Titulo %s/%d teve seu staus atualizado com sucesso.', $boletoRegistry->getBoletoNumber(), $boletoRegistry->getBoletoInstallment())
+            200,
+            'success',
+            sprintf(
+                'Titulo %s/%d teve seu staus atualizado com sucesso.',
+                $boletoRegistry->getBoletoNumber(),
+                $boletoRegistry->getBoletoInstallment()
+            )
         );
     }
 
@@ -235,7 +254,13 @@ class ReportModel extends Model
     {
         $pastReportRegister = $this->getReportFile(__DIR__.'/../Utils/ReportFile', $endingDate);
 
-        $resultData = $this->getGenericListByDate('Boleto', 'boletoVencimento', 'u.boletoStatus, u.id, u.boletoValue',$startDate, $endingDate);
+        $resultData = $this->getGenericListByDate(
+            'Boleto',
+            'boletoVencimento',
+            'u.boletoStatus, u.id,u.boletoValue',
+            $startDate,
+            $endingDate
+        );
         $c = $resultData;
         //$data = [0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0];
         $data = [0, 0, 0, 0, 0];
@@ -282,7 +307,7 @@ class ReportModel extends Model
                     $data[4] += 1;
                     break;
                 default:
-                    throw new \Exception('Tem algo muito errado.');        
+                    throw new \Exception('Tem algo muito errado.');
             }
         }
 
@@ -306,8 +331,13 @@ class ReportModel extends Model
      *
      * @return  array                         Array with results of consult.
      */
-    public function searchByDate(string $entity, string $whereField, ?string $requiredFields, ?string $startDate, ?string $endingDate): array
-    {
+    public function searchByDate(
+        string $entity,
+        string $whereField,
+        ?string $requiredFields,
+        ?string $startDate,
+        ?string $endingDate
+    ): array {
         return $this->getGenericListByDate($entity, $whereField, $requiredFields, $startDate, $endingDate);
     }
 
@@ -315,7 +345,13 @@ class ReportModel extends Model
     {
         $pastReportFile = $this->getReportFile(__DIR__.'/../Utils/ReportFile', $endingDate);
 
-        $reportResults = $this->searchByDate('Boleto', 'boletoVencimento', 'u.boletoCustomerOwner, u.boletoStatus, u.boletoValue, u.boletoVencimento, u.boletoPaymentDate', $startDate, $endingDate);
+        $reportResults = $this->searchByDate(
+            'Boleto',
+            'boletoVencimento',
+            'u.boletoCustomerOwner, u.boletoStatus, u.boletoValue, u.boletoVencimento, u.boletoPaymentDate',
+            $startDate,
+            $endingDate
+        );
         $c = $reportResults;
         $pastResponse = array();
         $totalValue = 0;
@@ -360,7 +396,7 @@ class ReportModel extends Model
                     $data['Pgto. Por Conta'][] = $reportResults[$key];
                     break;
                 default:
-                    throw new \Exception('Tem algo muito errado.');        
+                    throw new \Exception('Tem algo muito errado.');
             }
         }
 
@@ -373,7 +409,10 @@ class ReportModel extends Model
 
     public function getNonPayedBoletosByDate(string $date): array
     {
-        $consultString = sprintf('SELECT u FROM App\Entity\Boleto u WHERE u.boletoVencimento <  %s AND u.boletoStatus <> 1', "'{$date} %'");
+        $consultString = sprintf(
+            'SELECT u FROM App\Entity\Boleto u WHERE u.boletoVencimento <  %s AND u.boletoStatus <> 1',
+            "'{$date} %'"
+        );
         $result = $this->dqlConsult($consultString);
         return $result;
     }
@@ -382,11 +421,13 @@ class ReportModel extends Model
     {
         $response = null;
 
-        $reportName = empty($date) ? (new FileFunctions)->getLastCreateFileFromFolder($path) : (new FileFunctions)->getFileByDate($path, $date); 
+        $reportName = empty($date) ?
+            (new FileFunctions)->getLastCreateFileFromFolder($path) :
+            (new FileFunctions)->getFileByDate($path, $date);
 
         if (!is_null($reportName) && file_exists($reportName)) {
             $dataFile = file_get_contents($reportName);
-            $response = Yaml::parse( (string) $dataFile);
+            $response = Yaml::parse((string) $dataFile);
         }
 
         return $response;

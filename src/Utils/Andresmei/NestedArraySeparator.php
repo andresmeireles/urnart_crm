@@ -19,7 +19,7 @@ class NestedArraySeparator
      */
     private $arrayInArray;
 
-    function __construct(array $nestedArray)
+    public function __construct(array $nestedArray)
     {
         foreach ($nestedArray as $key => $value) {
             if (!is_array($value)) {

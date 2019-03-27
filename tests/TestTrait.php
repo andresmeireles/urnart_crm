@@ -17,6 +17,7 @@ trait TestTrait
     public function getTestManager(Object $entity = null)
     {
         $objectManager = $this->createMock(ObjectManager::class);
+        
         $objectManager->expects($this->any())
             ->method('getRepository')
             ->willReturn($this->getTestRepository($entity));

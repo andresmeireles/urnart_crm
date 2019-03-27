@@ -64,13 +64,12 @@ class ProductModel extends Model
      */
     public function runAction(array $data, int $id = null, string $unclearType): FlashResponse
     {
-        if (
-            \is_null($data['name']) ||
+        if (\is_null($data['name']) ||
             \is_null($data['maxStock']) ||
             \is_null($data['minStock']) ||
             \is_null($data['price'])
         ) {
-            return new FlashResponse(203, 'success','Deu erro meu amiginho');
+            return new FlashResponse(203, 'success', 'Deu erro meu amiginho');
         }
 
         $type = strtolower($unclearType);
@@ -132,7 +131,7 @@ class ProductModel extends Model
 
     /**
      * @param array $data
-     * 
+     *
      * @return array
      */
     public function productIn(array $data): array

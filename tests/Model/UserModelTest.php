@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Tests\Model;
@@ -15,15 +14,27 @@ class UserModelTest extends TestCase
 {
     use TestTrait;
 
+    private $fileExists;
+    private $isDir;
+
+    protected function setUp()
+    {
+        $this->fileExists = $this->getMockBuilder(\stdClass::class)
+            ->setMethods(['file_exists'])
+            ->getMock();
+        $this->isDir = $this->getMockBuilder(\stdClass::class)
+            ->setMethods(['is_dir'])
+            ->getMock();
+    }
+
     public function testAddUser()
     {
         $em = $this->getTestManager();
         $encoder = $this->getTestEncoder();
         $model = new UserModel($em);
-        
         $image = tempnam(sys_get_temp_dir(), 'upl');
-        imagepng(imagecreatetruecolor(10,10), $image);
-        $file = new UploadedFile($image, 'fake_image.png'); 
+        imagepng(imagecreatetruecolor(10, 10), $image);
+        $file = new UploadedFile($image, 'fake_image.png');
         $data = array(
             'email' => 'andre2meireles@gmail.com',
             'password' => '12345678',
@@ -81,8 +92,23 @@ class UserModelTest extends TestCase
     public function testResetProfileImage()
     {
         $model = new UserModel($this->getTestManager());
+        /** @var User $user */
+        $user = $this->getTestUser();
+        $user->setProfileImage('test.jpg');
+                
+        $user->expects($this->any())
+            ->method('getProfileImage')
+            ->willReturn('test.jpg');
+        
+        $this->fileExists->expects($this->any())
+            ->willReturn(true)
+            ->method('file_exists');
 
-        $result = $model->resetProfileImage('xof', $this->getTestUser());
+        $this->isDir->expects($this->any())
+            ->willReturn(false)
+            ->method('is_dir');
+
+        $result = $model->resetProfileImage(__DIR__.'/../../public/uploads/images/profile', $user);
 
         $this->assertEquals(new FlashResponse(200, 'success', 'Imagem resetada com sucesso!'), $result);
     }

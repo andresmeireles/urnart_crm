@@ -55,7 +55,10 @@ class FeedstockModel extends Model
 
             $vendors = $data['otherVendors'] ?? '';
 
-            isset($data['otherVendors']) ? array_unshift($vendors, $data['mainVendor']) : $vendors = (array)$data['mainVendor'];
+            isset($data['otherVendors']) ?
+                array_unshift($vendors, $data['mainVendor']) :
+                $vendors = (array)$data['mainVendor'];
+                
             $feedstock->setVendors($vendors);
 
             $departament = $this->em->getRepository(Departament::class)->find($data['departament']);
@@ -74,7 +77,14 @@ class FeedstockModel extends Model
             $this->em->getConnection()->commit();
         } catch (\Exception $e) {
             $this->em->getConnection()->rollback();
-            throw new \Exception("Erro - " . $e->getMessage() . '. Arquivo - ' . $e->getFile() . '. Linha - ' . $e->getLine());
+            throw new \Exception(
+                sprintf(
+                    'Erro - %s. Arquivo - %s. Linha - %s.',
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                )
+            );
         }
     }
 
@@ -83,7 +93,7 @@ class FeedstockModel extends Model
      *
      * @param array   $data
      * @param integer $productId
-     * 
+     *
      * @return void
      */
     public function update(array $data, int $productId)

@@ -17,7 +17,7 @@ class User extends BaseEntity implements UserInterface, \Serializable
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * 
+     *
      * @var int
      */
     private $id;
@@ -31,28 +31,28 @@ class User extends BaseEntity implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * 
+     *
      * @var string $email Email do usuário.
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     * 
+     *
      * @var array $roles Permissões do usuário.
      */
     private $roles = [];
 
     /**
      * @ORM\Column(type="string")
-     * 
+     *
      * @var string $password The hashed password
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * 
+     *
      * @var string|null $profileImage Name of image. Possible hashed.
      */
     private $profileImage;
@@ -73,7 +73,7 @@ class User extends BaseEntity implements UserInterface, \Serializable
         return $this->userNickname;
     }
 
-    public function setUserNickname(string $userNickname): self 
+    public function setUserNickname(string $userNickname): self
     {
         $this->userNickname = $userNickname;
 
@@ -182,7 +182,11 @@ class User extends BaseEntity implements UserInterface, \Serializable
         // $this->plainPassword = null;
     }
 
-    /** Para não criar conflito com o vich uploader é nescessário sobreescrever os metodos serizalização e unserialização */
+    /**
+     * Para não criar conflito com o vich uploader é
+     * nescessário sobreescrever os metodos serizalização
+     * e unserialização
+     */
     public function serialize()
     {
         return serialize(array(

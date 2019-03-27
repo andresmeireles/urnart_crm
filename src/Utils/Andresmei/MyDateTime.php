@@ -3,10 +3,10 @@
 namespace App\Utils\Andresmei;
 
 final class MyDateTime extends \DateTime
-{ 
+{
     public function __construct(string $date = 'now')
     {
-        parent::__construct($date);  
+        parent::__construct($date);
     }
 
     public function getDayOfTheWeek()
@@ -15,7 +15,7 @@ final class MyDateTime extends \DateTime
             throw new \Exception('Data informada não é valida');
         }
 
-        return date('w', strtotime($this->format('d-m-Y') ));
+        return date('w', strtotime($this->format('d-m-Y')));
     }
     
     public function getNameOfDayOfTheWeek()

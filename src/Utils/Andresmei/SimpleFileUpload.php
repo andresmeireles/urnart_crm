@@ -52,11 +52,20 @@ class SimpleFileUpload
             return true;
         }
 
+        if (null === $file->getClientMimeType()) {
+            throw new \Exception('Formato não envidado', 1);
+        }
+
         if (!self::checkImage($file->getClientMimeType()) && !self::checkFileSize($file->getSize())) {
             return false;
         }
         self::clearFolder();
         $uploadPath = self::$logoDir.'/custom/'.$file->getClientOriginalName();
+
+        if (!is_string($file->getRealPath())) {
+            throw new \Exception("Path não enviado ou não existe", 1);
+        }
+
         $uploadFile = move_uploaded_file($file->getRealPath(), $uploadPath);
         if (!$uploadFile) {
             self::$message = 'Erro ao enviar imagem.';

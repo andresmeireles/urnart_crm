@@ -27,11 +27,11 @@ class StringConvertions
 
     /**
      * Transforma uma string em uma data pre-definida pelo sistema
-     * 
+     *
      * @param string|null $dateString
      * @return string|null
      */
-    public function strToDateString(?string $dateString): ?string 
+    public function strToDateString(?string $dateString): ?string
     {
         if ($dateString === null || $dateString === '') {
             return null;
@@ -56,7 +56,7 @@ class StringConvertions
      * @return string
      */
     public function convertStringToDate(string $string, string $delimiter, string $type = 'POR'): string
-    { 
+    {
         switch (strtoupper($type)) {
             case 'POR':
                 $date = explode($delimiter, $string);
@@ -64,8 +64,10 @@ class StringConvertions
                 $month = (int) $date[1];
                 $year = (int) $date[2];
                 if (!checkdate($month, $day, $year)) {
-                    throw new BadCredentialsException(sprintf('Data informada DIA = %s, MES = %s, ANO = %s não é valida.', $day, $month, $year));
-                }        
+                    throw new BadCredentialsException(
+                        sprintf('Data informada DIA = %s, MES = %s, ANO = %s não é valida.', $day, $month, $year)
+                    );
+                }
                 return "{$month}-{$day}-{$year}";
                 break;
             default:
