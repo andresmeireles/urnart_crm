@@ -19,7 +19,7 @@ img{vertical-align:middle;border-style:none;}
 .display-2{font-size:5.5rem;font-weight:300;line-height:1.2;}
 .display-3{font-size:4.5rem;font-weight:300;line-height:1.2;}
 .display-4{font-size:3.5rem;font-weight:300;line-height:1.2;}
-hr{margin-top:1.5rem;margin-bottom:1.5rem;border:0;border-top:1px solid rgba(0, 0, 0, 0.1);}
+.hr{margin-top:1.5rem;margin-bottom:1.5rem;border:0;border-top:1px solid rgba(0, 0, 0, 0.4);}
 .row{display:flex;flex-wrap:wrap;margin-right:-15px;margin-left:-15px;}
 .col-2, .col-3,.col{position:relative;width:100%;min-height:1px;padding-right:15px;padding-left:15px;}
 .col{flex-basis:0;flex-grow:1;max-width:100%;}
@@ -72,7 +72,7 @@ body{height:100%;}
                     <span class="h3">VOL. {{ data.check != 0 ? (data.amount/2) | round(0, 'ceil') : data.amount }}</span>
                 </div>
         </div>
-        <hr class="{{pageJump}}">
+        <hr class="hr {{pageJump}}">
         {% endfor %}
     {% endfor %}
 </div> {# end of full-page #}
