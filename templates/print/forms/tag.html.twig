@@ -41,11 +41,11 @@ body{height:100%;}
         {% set logo =  ('/pdf' in app.request.server.get('REQUEST_URI')) ? '../'~logo : asset(logo) %}
         {% set pageJump = '' %}
         {% set itemCount = itemCount + 1 %}
-        {% if itemCount is same as(7) %}
+        {% if itemCount is same as(8) %}
           {% set itemCount = 0 %}
           {% set pageJump = 'break' %}
         {% endif %}
-        <div class="row py-1">
+        <div class="row">
 
                 <div class="col-2">
                     <img class="col" src="{{ logo }}">
@@ -54,8 +54,8 @@ body{height:100%;}
                 <div class="col">
                     {% if data.city == '' %}
                         {% set fontsize = 'h1' %}
-                    {% elseif data | length > 27 %}
-                        {% set fontsize = 'h1' %}
+                    {% elseif data.name | length > 19 %}
+                        {% set fontsize = 'h3' %}
                     {% else %}
                         {% set fontsize = 'h2' %}
                     {% endif %}
