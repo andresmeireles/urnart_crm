@@ -6,6 +6,9 @@ parameters:
     # vich uploader parameters
     app.path.user_profile_images: /uploads/images/profile
 
+    #reports
+    app.path.romaneio_report: ../src/Utils/ReportFiles/FormReports/Romaneio
+
 services:
     # default configuration for services in *this* file
     _defaults:

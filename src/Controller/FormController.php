@@ -22,6 +22,8 @@ use App\Entity\PaymentType;
 use App\Entity\Transporter;
 use App\Utils\Andresmei\Form;
 use App\Config\NonStaticConfig;
+use Symfony\Component\Yaml\Yaml;
+use App\Model\FormModel;
 
 /**
  * Controller das paginas de formulário
@@ -47,34 +49,6 @@ class FormController extends AbstractController
     }
 
     /**
-     * Redireciona para o template de formulário requisitado
-     *
-     * @param string $formName Nome do furomulario usado para template
-     *
-     * @Route("/forms/{formName}", methods={"GET"})
-     *
-     * @return Response
-     */
-    public function findFormTemplate(string $formName): Response
-    {
-        $fileNamePath = __DIR__.'/../../templates/form/'.$formName.'Form.html.twig';
-        if (file_exists($fileNamePath)) {
-            $requestData = [
-                'formName' => $formName,
-                'config' => new NonStaticConfig
-            ];
-            if ($formName === 'order') {
-                $requestData['products'] = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
-                $requestData['payments'] = $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll();
-                $requestData['transporters'] = $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll();
-            }
-            return $this->render('form/'.$formName.'Form.html.twig', $requestData);
-        }
-
-        throw new \Exception('Page not found');
-    }
-
-    /**
      * Cria e exporta arquivos para criação de formulários.
      *
      * @param Request $request      objeto de requisição.
@@ -89,11 +63,38 @@ class FormController extends AbstractController
     public function printForm(Request $request, string $formName, Form $form): Response
     {
         $data = $request->query->all();
+
+        if ($request->query->get('save')) {
+            $data['formName'] = $formName;
+            return $this->redirectToRoute('save_report', $data);
+        }
+
         if (empty($data)) {
             echo 'Nenhum dado enviado';
         }
         $result = $form->returnSelectedFromType('show', $formName, $data);
         return new Response($result['template']);
+    }
+
+    /**
+     * @Route("/forms/save", methods="GET", name="save_report")
+     *
+     * @param   Request   $request  [$data description]
+     * @param   FormModel $model    [$model description]
+     *
+     * @return  Response              [return description]
+     */
+    public function saveFunction(Request $request, FormModel $model): Response
+    {
+        $data = $request->query->all();
+        $formName = $request->query->get('formName');
+        $parameterName = sprintf('app.path.%s_report', $formName);
+        $path = $this->getParameter($parameterName);
+        $rootDir = $this->getParameter('kernel.root_dir');
+        $reportPath = sprintf('%s/%s', $rootDir, $path);
+        $result = $model->saveReport($data, $reportPath);
+
+        return new Response('deu certo.');
     }
 
     /**
@@ -134,5 +135,33 @@ class FormController extends AbstractController
 
         return $response;
         //return $this->file($file); <-- Alternativa mais simples :)
+    }
+
+    /**
+     * Redireciona para o template de formulário requisitado
+     *
+     * @param string $formName Nome do furomulario usado para template
+     *
+     * @Route("/forms/{formName}", methods={"GET"})
+     *
+     * @return Response
+     */
+    public function findFormTemplate(string $formName): Response
+    {
+        $fileNamePath = __DIR__.'/../../templates/form/'.$formName.'Form.html.twig';
+        if (file_exists($fileNamePath)) {
+            $requestData = [
+                'formName' => $formName,
+                'config' => new NonStaticConfig
+            ];
+            if ($formName === 'order') {
+                $requestData['products'] = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
+                $requestData['payments'] = $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll();
+                $requestData['transporters'] = $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll();
+            }
+            return $this->render('form/'.$formName.'Form.html.twig', $requestData);
+        }
+
+        throw new \Exception('Page not found');
     }
 }

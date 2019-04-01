@@ -78,4 +78,9 @@ class FileFunctions
 
         return null;
     }
+
+    public function writeFileInFolder()
+    {
+        
+    }
 }
