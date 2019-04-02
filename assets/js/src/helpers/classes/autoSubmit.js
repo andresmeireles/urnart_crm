@@ -16,7 +16,7 @@ document.addEventListener('submit', (el) => {
         i.setAttribute('disabled', '');
         setTimeout(() => {
             i.removeAttribute('disabled')
-        }, 2000);
+        }, 5000);
     }
 
 }, true);

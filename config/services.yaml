@@ -7,6 +7,7 @@ parameters:
     app.path.user_profile_images: /uploads/images/profile
 
     #reports
+    app.path.report_folder: Utils/ReportFiles/FormReports
     app.path.romaneio_report: ../src/Utils/ReportFiles/FormReports/Romaneio
 
 services:

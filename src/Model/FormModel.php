@@ -14,6 +14,7 @@ class FormModel
         unset($data['save']);
         $data['created'] = (new \DateTime('now', new \DateTimeZone('America/Sao_Paulo')))->format('d-m-Y h:m:s');
         $name = md5((string) rand());
+        $data['name'] = $name;
         $filesystem = new Filesystem();
         $fileData = Yaml::dump($data);
         $fullPath = sprintf('%s/%s.yaml', $path, $name);

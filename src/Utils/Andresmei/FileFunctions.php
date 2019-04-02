@@ -11,7 +11,7 @@ class FileFunctions
      *
      * @param   string  $path  Path of folder.
      *
-     * @return  array          List with the files of folder and respective last modified date.
+     * @return  array          
      */
     public function getFilesFromFolder(string $path): array
     {

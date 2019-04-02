@@ -24,6 +24,8 @@ use App\Utils\Andresmei\Form;
 use App\Config\NonStaticConfig;
 use Symfony\Component\Yaml\Yaml;
 use App\Model\FormModel;
+use App\Utils\Andresmei\FileFunctions;
+use App\Utils\Andresmei\NestedArraySeparator;
 
 /**
  * Controller das paginas de formulário
@@ -46,6 +48,35 @@ class FormController extends AbstractController
     public function index()
     {
         return $this->render('form/index.html.twig');
+    }
+
+    /**
+     * @Route("/forms/view", methods="GET")
+     *
+     * @return  Response
+     */
+    public function viewSaveReports(Request $request, FileFunctions $fileFunc): Response
+    {
+        $repoType = $request->query->get('type');
+        $reportFolder = sprintf(
+            '%s/%s/%s',
+            $this->getParameter('kernel.root_dir'),
+            $this->getParameter('app.path.report_folder'),
+            ucwords($repoType)
+        );
+
+        $files = $fileFunc->getFilesFromFolder($reportFolder);
+        $reports = array();
+        foreach ($files as $key => $value) {
+            $arrayFile = file_get_contents($key);
+            if (is_string($arrayFile)) {
+                $reports[] = Yaml::parse($arrayFile);
+            }
+        }
+        return $this->render("form/saveReports.html.twig", [
+            'reports' => $reports,
+            'type' => $repoType
+        ]);
     }
 
     /**
@@ -146,18 +177,41 @@ class FormController extends AbstractController
      *
      * @return Response
      */
-    public function findFormTemplate(string $formName): Response
+    public function findFormTemplate(Request $request, string $formName): Response
     {
         $fileNamePath = __DIR__.'/../../templates/form/'.$formName.'Form.html.twig';
         if (file_exists($fileNamePath)) {
+            if (null !== $request->query->get('repofile')) {
+                $reportFolder = sprintf(
+                    '%s/%s/%s/%s.yaml',
+                    $this->getParameter('kernel.root_dir'),
+                    $this->getParameter('app.path.report_folder'),
+                    ucwords($formName),
+                    $request->query->get('repofile')
+                );
+                if (!is_string(file_get_contents($reportFolder))) {
+                    throw new \Exception("Arquivo incorreto");
+                }
+                $reportData = Yaml::parse(file_get_contents($reportFolder));
+                $formAllData = new NestedArraySeparator($reportData);
+            }
+
             $requestData = [
                 'formName' => $formName,
-                'config' => new NonStaticConfig
+                'config' => new NonStaticConfig,
+                'formFill' => isset($formAllData) ? $formAllData->getArrayInArray() : null,
+                'formData' => isset($formAllData) ? $formAllData->getSimpleArray() : null
             ];
             if ($formName === 'order') {
                 $requestData['products'] = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
-                $requestData['payments'] = $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll();
-                $requestData['transporters'] = $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll();
+                $requestData['payments'] = $this->getDoctrine()
+                                                ->getManager()
+                                                ->getRepository(PaymentType::class)
+                                                ->findAll();
+                $requestData['transporters'] = $this->getDoctrine()
+                                                    ->getManager()
+                                                    ->getRepository(Transporter::class)
+                                                    ->findAll();
             }
             return $this->render('form/'.$formName.'Form.html.twig', $requestData);
         }
