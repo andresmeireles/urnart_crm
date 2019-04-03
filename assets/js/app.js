@@ -116,11 +116,13 @@ import "./src/profile/resetProfileImage";
 import "./src/sidebarAction.js";
 import "./src/globals";
 
+//FORM
 import "./src/form/createFormModal.js";
 import "./src/form/cloneField.js";
 import "./src/form/form.js";
 import "./src/form/pdfSend";
 import "./src/form/triggerMultipleForms";
+import "./src/form/saveButton";
 
 import "./src/storage/feedstock";
 import "./src/storage/feedStockActions";

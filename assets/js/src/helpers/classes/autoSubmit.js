@@ -13,10 +13,16 @@ document.addEventListener('submit', (el) => {
     let submitButtons = document.querySelectorAll('.disable-on-submit');
 
     for (let i of submitButtons) {
+        i.removeAttribute('type');
+        setTimeout(() => {
+            i.setAttribute('type', 'submit');
+        }, 5000);
+    }
+    /* for (let i of submitButtons) {
         i.setAttribute('disabled', '');
         setTimeout(() => {
             i.removeAttribute('disabled')
         }, 5000);
-    }
+    } */
 
 }, true);
