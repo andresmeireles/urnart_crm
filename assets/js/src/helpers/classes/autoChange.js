@@ -10,7 +10,23 @@ document.addEventListener('change', function (el) {
         el.target.closest('div').querySelector('[converted-value]').value = newValue;
         let value = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(newValue);
         inputField.value = value;
-        return true;
+        //return this;
+    }
+
+    if (el.target.classList.contains('sum')) {
+        let div = el.target.closest('div');
+        let attName = div.querySelector('[sum-target]').getAttribute('sum-target');
+        let selector = `[sum-target="${attName}"]`;
+        let elToSum = document.querySelectorAll(selector);
+        let sum = 0;
+        for (let el of elToSum) {
+            let number = parseFloat(el.value);
+            sum += number;
+        }
+
+        let val = Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(sum);
+
+        document.querySelector(attName).innerHTML = val;
     }
 
 }, true);

@@ -1,0 +1,104 @@
+{% extends "index.html.twig" %}
+{% block title %}Relatório de viagem{% endblock %}
+{% block content %}
+    <div class="col py-3">
+        <div class="col">
+            <h2>Relatório de viagem</h2>
+            <p>Todos os campos são obrigatorios de ser preenchidos</p>
+            <hr>
+        </div>
+        <div class="col">
+            <form>
+                <div class="form-row col">
+                    <div class="form-group col">
+                        <label for="driver-name">Nome do motorista</label>
+                        <input type="text" name="driver-name" class="form-control" placeholder="Nome" required>
+                    </div>
+                </div>
+                <fieldset>
+                    <legend>Datas</legend>
+                    <div class="form-row col">
+                        <div class="form-group col">
+                            <label for="dt-out">Saida</label>
+                            <input type="hidden" id="dt-out" name="dt-out">
+                            <input type="text" class="form-control calendar-selector" data-target="#dt-out" placeholder="Data de saída">
+                        </div>
+                        <div class="form-group col">
+                            <label for="dt-in">Chegada</label>
+                            <input type="hidden" id="dt-in" name="dt-in">
+                            <input type="text" class="form-control calendar-selector" data-target="#dt-in" placeholder="Data de chegada">
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Quilometragem</legend>
+                    <div class="form-row col">
+                        <div class="form-group col">
+                            <label for="km-out">KM Saida</label>
+                            <input type="hidden" id="km-out" name="km-out">
+                            <input type="text" class="form-control calendar-selector" data-target="#km-out" placeholder="KM de saída">
+                        </div>
+                        <div class="form-group col">
+                            <label for="km-in">KM Chegada</label>
+                            <input type="hidden" id="km-in" name="km-in">
+                            <input type="text" class="form-control calendar-selector" data-target="#km-in" placeholder="KM de chegada">
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Clientes</legend>
+                    <div class="form-row col">
+                        <div class="form-group col">
+                            <div class="row my-2" id="cloneableField">
+                                <input type="hidden" input-number value="0" />
+                                <div class="col">
+                                    <label for="customer" no-clone>Cliente</label>
+                                    <input type="text" name="cloneableField0[customer]" class="form-control" required />
+                                </div>
+                                <div class="col">
+                                    <label for="freight" no-clone>Frete</label>
+                                    <input type="hidden" converted-value name="cloneableField0[freight]" sum-target="#f-freight">
+                                    <input type="text" class="form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do frete" value="0" required />
+                                </div>
+                                <div class="col">
+                                    <label for="order" no-clone>Pedido</label>
+                                    <input type="hidden" converted-value name="cloneableField0[order]" sum-target="#f-order">
+                                    <input type="text" class="form-control auto-float-convert-blur numbers-float-only sum" placeholder="Valor do pedido" value="0" required />
+                                </div>
+                                <div class="col">
+                                    <label for="check" no-clone>Cheque</label>
+                                    <input type="hidden" converted-value name="cloneableField0[check]" sum-target="#f-check">
+                                    <input type="text" class="form-control auto-float-convert-blur numbers-float-only sum" placeholder="Valor do pedido" value="0" required />
+                                </div>
+                                <div class="col">
+                                    <label for="other" no-clone>Por Conta</label>
+                                    <input type="hidden" converted-value name="cloneableField0[other]" sum-target="#f-other">
+                                    <input type="text" class="form-control auto-float-convert-blur numbers-float-only sum" placeholder="Valor do pedido" value="0" required />
+                                </div>
+                                <div class="col">
+                                    <label for="btn">&nbsp;</label><br>
+                                    <button type="submit" class="btn btn-success" add-btn="true">
+                                        <span class="fas fa-fw fa-plus" add-btn="true"></span>
+                                    </button>
+                                    <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
+                                        <i class="fas fa-fw fa-times" remove-btn="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group row col">
+                            <div class="col font-weight-bold text-center h3">Totais</div>
+                            <div class="col font-weight-bold py-1 text-center h5" id="f-freight"><span>R$ 0,00</span></div>
+                            <div class="col font-weight-bold py-1 text-center h5" id="f-order"><span>R$ 0,00</span></div>
+                            <div class="col font-weight-bold py-1 text-center h5" id="f-check"><span>R$ 0,00</span></div>
+                            <div class="col font-weight-bold py-1 text-center h5" id="f-other"><span>R$ 0,00</span></div>
+                            <div class="col">&nbsp;</div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}

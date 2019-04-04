@@ -165,6 +165,7 @@ import "./src/helpers/classes/autoChange";
 import "./src/helpers/classes/autoClick";
 import "./src/helpers/classes/autoFocus";
 import "./src/helpers/classes/autoSubmit";
+import "./src/helpers/classes/autoBlur";
 import "./src/helpers/classes/numbersOnly";
 import "./src/helpers/classes/images";
 

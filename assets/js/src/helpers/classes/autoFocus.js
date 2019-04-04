@@ -13,4 +13,8 @@ document.addEventListener('focus', (el) => {
         el.target.value = '';
     }
 
+    if (el.target.classList.contains('auto-clear')) {
+        el.target.value = '';
+    }
+
 }, true);

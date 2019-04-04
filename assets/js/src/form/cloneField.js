@@ -101,6 +101,11 @@ $(function () {
             var node = el.target.closest('#cloneableField');
             var cloneEl = node.cloneNode(true);
 
+            //remove campos marcados com no-clone
+            cloneEl.querySelectorAll('[no-clone]').forEach((el) => {
+                el.innerHTML = '&nbsp;';
+            })
+
             //desmarca checkbox caso exista
             if (cloneEl.querySelector('input[type="checkbox"]')) {
                 cloneEl.querySelector('input[type="checkbox"]').value = 0;
