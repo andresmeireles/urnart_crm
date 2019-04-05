@@ -20,7 +20,7 @@ document.addEventListener('change', function (el) {
         let elToSum = document.querySelectorAll(selector);
         let sum = 0;
         for (let el of elToSum) {
-            let number = parseFloat(el.value);
+            let number = isNaN(parseFloat(el.value)) ? 0 : parseFloat(el.value);
             sum += number;
         }
 

@@ -80,8 +80,9 @@ $(function () {
              * Busca em #cloneable fields marcados com required em branco
              * caso esta aem branco bloqueia a criação de um novo campo
              */
-            for (var c = 0; c < document.querySelectorAll('#cloneableField [required]').length; c++) {
-                if (document.querySelectorAll('#cloneableField [required]')[c].value === '') {
+            let cloneArea = el.target.closest("#cloneableField");
+            for (var c = 0; c < cloneArea.querySelectorAll('[required]').length; c++) {
+                if (cloneArea.querySelectorAll('[required]')[c].value === '') {
                     alert('Preencher campos antes de acrescentar novo registro');
                     return false;
                 }
@@ -114,6 +115,7 @@ $(function () {
 
             // reseta todos os campos escrevedo um nome unico
             var cloneElInputs = cloneEl.querySelectorAll('input');
+            let cloneName = cloneEl.querySelector('[input-name]').getAttribute('input-name');
             for (var c = 0; c < cloneElInputs.length; c++) {
                 cloneElInputs[c].value = '';
                 if (cloneElInputs[c].hasAttribute('input-number') ) {
@@ -126,7 +128,7 @@ $(function () {
                 if (cloneElInputs[c].classList.contains('ignore-clone')) {
                     continue;
                 }
-                var inputName = 'cloneableField' + iNumber + '[' + cloneElInputs[c].getAttribute('id') + ']';
+                var inputName = cloneName + iNumber + '[' + cloneElInputs[c].getAttribute('id') + ']';
                 cloneElInputs[c].setAttribute('name', inputName);
                 //cloneElInputs[c].value = cloneElInputs[c].defaultValue
             }

@@ -70,7 +70,7 @@
                         {% if formFill is same as(null) %}
                           <div class="input-group my-1 w-100" id="cloneableField">
                             <div class="col-3">
-                              <input type="hidden" input-number="true" id="id" name="cloneableField0[id]" value="1">
+                              <input type="hidden" input-number="true" input-name="cloneableField" id="id" name="cloneableField0[id]" value="1">
                               <input type="text" class="form-control my-1" placeholder="Nome" id="name" name="cloneableField0[name]" required> </div>
                             <div class="col">
                               <input type="text" class="form-control my-1" placeholder="Cidade" id="city" name="cloneableField0[city]" required> </div>
@@ -95,7 +95,7 @@
                           {% for report in formFill %}
                             <div class="input-group my-1 w-100" id="cloneableField">
                               <div class="col-3">
-                                <input type="hidden" input-number="true" id="id" name="cloneableField0[id]" value="{{ report.id }}">
+                                <input type="hidden" input-number="true" input-name="cloneableField" id="id" name="cloneableField0[id]" value="{{ report.id }}">
                                 <input type="text" class="form-control my-1" placeholder="Nome" id="name" name="cloneableField0[name]" value="{{ report.name }}" required> </div>
                               <div class="col">
                                 <input type="text" class="form-control my-1" placeholder="Cidade" id="city" name="cloneableField0[city]" value="{{ report.city }}" required> </div>

@@ -39,14 +39,14 @@ Existe um sistema de clonagem de campos que ficará versatil com o tempo, hoje e
 
 Em um uma tag `div` deve existir o id `cloneableField` e dentro dos campos cada input deve ter o campo name contendo `cloneableField0[nome]` .
 
-Para que `cloneableField` funcione corretamente deve haver um campo `input` com tipo `hidden` e atributos `input-number="true"` e valor `1`ou `0`.
+Para que `cloneableField` funcione corretamente deve haver um campo `input` com tipo `hidden` e atributos `input-number="true"` e valor `1`ou `0`. Também é nescessário que exista um atributo `input-name=[nomeDoInput]` com o nome que será posto nos atributos `name` das tags `input`.
 
 Dentro da `div` devem ter dois botões com atributos `add-btn="true` um e outro botão com `remove-btn="true"` sendo o primeiro para adicionar um novo campo e o outro para remover um botão.
 
 ##### Exemplo
 
 `<div class="input-group my-1 w-100" id="cloneableField">
-    <input type="hidden" input-number='true' value="1">
+    <input type="hidden" input-number='true' input-name="cloneableField" value="1">
     <input name="cloneableField0[nomedocampo]">
     <button type="submit" class="btn btn-success" add-btn="true">
         <span class="fas fa-fw fa-plus" add-btn="true"></span>
