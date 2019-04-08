@@ -8,11 +8,20 @@
             <hr>
         </div>
         <div class="col" id="travel-report">
-            <form>
-                <div class="form-row col">
+            <form method="GET">
+                <div class="form-row">
+                    <div class="form=group col">
+                        <input type="submit" class="btn btn-primary btn-lg btn-block" value="realizar prestação de contas">
+                    </div>
+                    {# <div class="form=group col">
+                        <input type="submit" class="btn btn-secondary btn-lg btn-block" value="salvar prestação de contas">
+                    </div> #}
+                </div>
+                <hr>
+                <div class="form-row">
                     <div class="form-group col">
                         <label for="driver-name">Nome do motorista</label>
-                        <input type="text" name="driver-name" class="form-control" placeholder="Nome" required>
+                        <input type="text" id="driver-name" name="driver-name" class="form-control" placeholder="Nome" required>
                     </div>
                 </div>
                 <fieldset>
@@ -57,23 +66,23 @@
                                 </div>
                                 <div class="col">
                                     <label for="freight" no-clone>Frete</label>
-                                    <input type="hidden" converted-value name="customerArr0[freight]" sum-target="#f-freight">
-                                    <input type="text" class="form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do frete" value="0" required />
+                                    <input type="hidden" class="entrada" converted-value name="customerArr0[freight]" sum-target="#f-freight">
+                                    <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do frete" value="0" required />
                                 </div>
                                 <div class="col">
                                     <label for="order" no-clone>Pedido</label>
-                                    <input type="hidden" converted-value name="customerArr0[order]" sum-target="#f-order">
-                                    <input type="text" class="form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="0" required />
+                                    <input type="hidden" class="entrada" converted-value name="customerArr0[order]" sum-target="#f-order">
+                                    <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="0" required />
                                 </div>
                                 <div class="col">
                                     <label for="check" no-clone>Cheque</label>
-                                    <input type="hidden" converted-value name="customerArr0[check]" sum-target="#f-check">
-                                    <input type="text" class="form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="0" required />
+                                    <input type="hidden" class="entrada" converted-value name="customerArr0[check]" sum-target="#f-check">
+                                    <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="0" required />
                                 </div>
                                 <div class="col">
                                     <label for="other" no-clone>Por Conta</label>
-                                    <input type="hidden" converted-value name="customerArr0[other]" sum-target="#f-other">
-                                    <input type="text" class="form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="0" required />
+                                    <input type="hidden" class="entrada" converted-value name="customerArr0[other]" sum-target="#f-other">
+                                    <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="0" required />
                                 </div>
                                 <div class="col">
                                     <label for="btn">&nbsp;</label><br>
@@ -89,11 +98,22 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group row col">
-                            <div class="col font-italic text-center h3">Totais</div>
+                            <div class="col font-italic text-center h3">&nbsp;</div>
                             <div class="col font-italic py-1 text-center h5" id="f-freight"><span>R$ 0,00</span></div>
                             <div class="col font-italic py-1 text-center h5" id="f-order"><span>R$ 0,00</span></div>
                             <div class="col font-italic py-1 text-center h5" id="f-check"><span>R$ 0,00</span></div>
                             <div class="col font-italic py-1 text-center h5" id="f-other"><span>R$ 0,00</span></div>
+                            <div class="col">&nbsp;</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group row col">
+                            <div class="col font-italic text-center h3">Totais</div>
+                            <input type="hidden" id="t-hidden-value" />
+                            <div class="col font-italic py-1 text-center h5" id="t-nh-value"><span>R$ 0,00</span></div>
+                            <div class="col font-italic py-1 text-center h5"><span>&nbsp;</span></div>
+                            <div class="col font-italic py-1 text-center h5"><span>&nbsp;</span></div>
+                            <div class="col font-italic py-1 text-center h5"><span>&nbsp;</span></div>
                             <div class="col">&nbsp;</div>
                         </div>
                     </div>
@@ -111,7 +131,7 @@
                                 <div class="col">
                                     <label for="customer" no-clone>Valor da despesa</label>
                                     <input type="hidden" name="despesas0[value]" converted-value sum-target="#d-value" />
-                                    <input type="text" class="form-control auto-float-convert-blur numbers-float-only disabled sum" placeholder="valor da despesa" disabled />
+                                    <input type="text" class="form-control auto-float-convert-blur numbers-float-only disabled sum despesas" placeholder="valor da despesa" disabled />
                                 </div>
                                 <div class="col">
                                     <label for="btn">&nbsp;</label><br>
@@ -128,7 +148,7 @@
                     <div class="form-row">
                         <div class="form-group row col">
                             <div class="col font-italic text-center h3">Valor total de despesas</div>
-                            <div class="col font-italic py-1 text-center h5"><span id="d-value">R$ 0,00</span></div>
+                            <div class="col font-italic py-1 text-center h5"><span class="despesas-value" id="d-value">R$ 0,00</span></div>
                             <div class="col font-italic py-1 text-center h5">&nbsp;</div>
                         </div>
                     </div>
@@ -139,70 +159,85 @@
                         <div class="form-group row col">
                             <div class="col">
                                 <label>Valor</label>
+                                <input type="hidden" converted-value name="caixa">
                                 <input type="text" class="form-control auto-float-convert-blur numbers-float-only" id="cx" placeholder="Valor do caixa" required />
                             </div>
                             <div class="col-1">
                                 <label for="btn">&nbsp;</label><br>
-                                <button type="submit" class="btn mx-1 btn-danger">
-                                    <i class="fas fa-fw fa-calculator"></i>
+                                <button type="submit" class="btn mx-1 btn-danger" data-fancybox data-src="#calc">
+                                    <a href="javascript:;" data-fancybox data-src="#calc" class="fas fa-fw fa-calculator"></a>
                                 </button>
                             </div>
                             <div>
-                                <div class="row col">
+                                <div class="row col-6" id="calc" style="display: none">
                                     <div class="form-group" id="calculator">
-                                        <div class="col my-2">
-                                            <label>Notas de 100</label>
-                                            <input type="text" class="form-control numbers-only" name="count100" calculator="100" placeholder="N° de notas" />
-                                            <input type="hidden" class="hc-target" value="0" />
-                                            <div><span class="c-target">R$ 0,00</span></div>
+                                        <div class="row">
+                                            <div class="col my-2">
+                                                <label>Notas de 100</label>
+                                                <input type="text" class="form-control numbers-only" name="count100" calculator="100" placeholder="N° de notas" />
+                                                <input type="hidden" class="hc-target" value="0" />
+                                                <div class="my-1"><span class="c-target">R$ 0,00</span></div>
+                                            </div>
+                                            <div class="col my-2">
+                                                <label>Notas de 50</label>
+                                                <input type="text" class="form-control numbers-only" name="count100" calculator="50" placeholder="N° de notas" />
+                                                <input type="hidden" class="hc-target" value="0" />
+                                                <div class="my-1"><span class="c-target">R$ 0,00</span></div>
+                                            </div>
                                         </div>
-                                        <div class="col my-2">
-                                            <label>Notas de 50</label>
-                                            <input type="text" class="form-control numbers-only" name="count100" calculator="50" placeholder="N° de notas" />
-                                            <input type="hidden" class="hc-target" value="0" />
-                                            <div><span class="c-target">R$ 0,00</span></div>
+                                        <div class="row">
+                                            <div class="col my-2">
+                                                <label>Notas de 20</label>
+                                                <input type="text" class="form-control numbers-only" name="count100" calculator="20" placeholder="N° de notas" />
+                                                <input type="hidden" class="hc-target" value="0" />
+                                                <div class="my-2"><span class="c-target">R$ 0,00</span></div>
+                                            </div>
+                                            <div class="col my-2">
+                                                <label>Notas de 10</label>
+                                                <input type="text" class="form-control numbers-only" name="count100" calculator="10" placeholder="N° de notas" />
+                                                <input type="hidden" class="hc-target" value="0" />
+                                                <div class="my-2"><span class="c-target">R$ 0,00</span></div>
+                                            </div>
                                         </div>
-                                        <div class="col my-2">
-                                            <label>Notas de 20</label>
-                                            <input type="text" class="form-control numbers-only" name="count100" calculator="20" placeholder="N° de notas" />
-                                            <input type="hidden" class="hc-target" value="0" />
-                                            <div><span class="c-target">R$ 0,00</span></div>
+                                        <div class="row">
+                                            <div class="col my-2">
+                                                <label>Notas de 5</label>
+                                                <input type="text" class="form-control numbers-only" name="count100" calculator="5" placeholder="N° de notas" />
+                                                <input type="hidden" class="hc-target" value="0" />
+                                                <div class="my-2"><span class="c-target">R$ 0,00</span></div>
+                                            </div>
+                                            <div class="col my-2">
+                                                <label>Notas de 2</label>
+                                                <input type="text" class="form-control numbers-only" name="count100" calculator="2" placeholder="N° de notas" />
+                                                <input type="hidden" class="hc-target" value="0" />
+                                                <div class="my-2"><span class="c-target">R$ 0,00</span></div>
+                                            </div>
                                         </div>
-                                        <div class="col my-2">
-                                            <label>Notas de 10</label>
-                                            <input type="text" class="form-control numbers-only" name="count100" calculator="10" placeholder="N° de notas" />
-                                            <input type="hidden" class="hc-target" value="0" />
-                                            <div><span class="c-target">R$ 0,00</span></div>
+                                        <div class="row">
+                                            <div class="col my-2">
+                                                <label>Moedas de 1</label>
+                                                <input type="text" class="form-control numbers-only" name="count100" calculator="1" placeholder="N° de notas" />
+                                                <input type="hidden" class="hc-target" value="0" />
+                                                <div class="my-2"><span class="c-target">R$ 0,00</span></div>
+                                            </div>
+                                            <div class="col my-2">
+                                                <label>Moedas de 0,50</label>
+                                                <input type="text" class="form-control numbers-only" name="count100" calculator="0.50" placeholder="N° de notas" />
+                                                <input type="hidden" class="hc-target" value="0" />
+                                                <div class="my-2"><span class="c-target">R$ 0,00</span></div>
+                                            </div>
+                                            <div class="col my-2">
+                                                <label>Moedas de 0,25</label>
+                                                <input type="text" class="form-control numbers-only" name="count100" calculator="0.25" placeholder="N° de notas" />
+                                                <input type="hidden" class="hc-target" value="0" />
+                                                <div class="my-2"><span class="c-target">R$ 0,00</span></div>
+                                            </div>
                                         </div>
-                                        <div class="col my-2">
-                                            <label>Notas de 5</label>
-                                            <input type="text" class="form-control numbers-only" name="count100" calculator="5" placeholder="N° de notas" />
-                                            <input type="hidden" class="hc-target" value="0" />
-                                            <div><span class="c-target">R$ 0,00</span></div>
-                                        </div>
-                                        <div class="col my-2">
-                                            <label>Notas de 2</label>
-                                            <input type="text" class="form-control numbers-only" name="count100" calculator="2" placeholder="N° de notas" />
-                                            <input type="hidden" class="hc-target" value="0" />
-                                            <div><span class="c-target">R$ 0,00</span></div>
-                                        </div>
-                                        <div class="col my-2">
-                                            <label>Moedas de 1</label>
-                                            <input type="text" class="form-control numbers-only" name="count100" calculator="1" placeholder="N° de notas" />
-                                            <input type="hidden" class="hc-target" value="0" />
-                                            <div><span class="c-target">R$ 0,00</span></div>
-                                        </div>
-                                        <div class="col my-2">
-                                            <label>Moedas de 0,50</label>
-                                            <input type="text" class="form-control numbers-only" name="count100" calculator="0.50" placeholder="N° de notas" />
-                                            <input type="hidden" class="hc-target" value="0" />
-                                            <div><span class="c-target">R$ 0,00</span></div>
-                                        </div>
-                                        <div class="col my-2">
-                                            <label>Moedas de 0,25</label>
-                                            <input type="text" class="form-control numbers-only" name="count100" calculator="0.25" placeholder="N° de notas" />
-                                            <input type="hidden" class="hc-target" value="0" />
-                                            <div><span class="c-target">R$ 0,00</span></div>
+                                        <div class="row">
+                                            <div class="col row mx-3 my-2">
+                                                <label class="mx-2 h3">Valor final</label>
+                                                <div><span class="h3" id="c-result">R$ 0,00</span></div>
+                                            </div>
                                         </div>
                                         <div class="col my-2"><button class="btn btn-primary calculate">Calcular valor</button></div>
                                     </div>
@@ -210,6 +245,40 @@
                             </div>
                         </div>
                     </div>
+                </fieldset>
+                <fieldset>
+                <legend class="font-weight-bold">Resumo</legend>
+                <div class="row col">
+                    <div class="col">
+                        <div class="col"><span>Entrada</span></div>
+                        <input type="hidden" value="0" class="inSub" id="input-value-in" value="0" />
+                        <div class="col"><span id="value-in">R$ 0,00</span></div>
+                    </div>
+                    <div class="col">
+                        <div class="col"><span>Caixa</span></div>
+                        <input type="hidden" value="0" class="cxSub" id="input-value-cx" value="0" />
+                        <div class="col"><span id="value-cx">R$ 0,00</span></div>
+                    </div>
+                    <div class="col">
+                        <div class="col"><span>Total</span></div>
+                        <input type="hidden" value="0" class="tSub" id="input-value-total" value="0" />
+                        <div class="col"><span id="value-total">R$ 0,00</span></div>
+                    </div>
+                    <div class="col">
+                        <div class="col"><span>Despesas</span></div>
+                        <input type="hidden" value="0" class="despSub" id="input-value-desp" value="0"  />
+                        <div class="col"><span id="value-desp">R$ 0,00</span></div>
+                    </div>
+                    <div class="col">
+                        <div class="col"><span>Balanço Final</span></div>
+                        <input type="hidden" id="input-value-final" />
+                        <div class="col"><span id="value-final">R$ 0,00</span></div>
+                    </div>
+                </div>
+                </fieldset >
+                <fieldset class="my-3" id="analytics" style="display: none">
+                    <legend class="font-weight-bold">Analise</legend>
+                    <div class="alert" id="prest-msg">A prestação de contas está não tem nenhum tipo de pendencia.</div>
                 </fieldset>
             </form>
         </div>

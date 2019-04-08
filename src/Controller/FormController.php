@@ -157,6 +157,20 @@ class FormController extends AbstractController
     }
 
     /**
+     * Redireciona para o template de formulário requisitado
+     *
+     * @param string $formName Nome do furomulario usado para template
+     *
+     * @Route("/forms/{formName}", methods={"POST"})
+     *
+     * @return Response
+     */
+    public function saveFormOnDb(Request $request, FormModel $model): Response
+    {
+        
+    }
+
+    /**
      * Cria e exporta arquivos para criação de formulários.
      *
      * @param Request $request      objeto de requisição.
