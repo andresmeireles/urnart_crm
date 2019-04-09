@@ -75,3 +75,7 @@ Algumas classes tem propositos especificos.
 ## numbers-float-only
 **TAG** : `input`, `textarea`
 **Função** : Neste `input`apenas teclas de numeros e a virgula **[** *,* **]**
+
+### disable-on-submit
+**TAG** : `input`, qualquer elemento clicalvel
+**Função** : Quando incluisa no elemento apos o evento submit o botão ficará desabilitado por 5 segundos.

@@ -1,0 +1,22 @@
+{% extends "index.html.twig" %}
+{% block title %}Lista de prestação de contas.{% endblock %}
+{% block content %}
+    <div class="col py-3">
+        <div class="col">
+            <h2>Lista de prestaçao de contas.</h2>
+            <hr>
+        </div>
+        <div class="row col">
+            {% for repo in travelItens %}
+                <div class="row col">
+                    <div class="col">
+                    </div>
+                    <div class="col">
+                        <a href="/form/" class="">Visualizar</a>
+                        <a href="/" class="">Editar</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

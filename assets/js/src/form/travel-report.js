@@ -1,5 +1,16 @@
 if (document.querySelector('#travel-report')) {
 
+    if (document.querySelector('#fill')) {
+        document.addEventListener('DOMContentLoaded', () => {
+            let inputs = document.querySelectorAll('input');
+
+            for (let i of inputs) {
+                i.dispatchEvent(new Event('change'));
+                i.dispatchEvent(new Event('blur'));
+            }
+        });
+    }
+
     document.addEventListener('click', (el) => {
 
         if (el.target.classList.contains('calculate')) {
@@ -38,6 +49,8 @@ if (document.querySelector('#travel-report')) {
         if (el.target.classList.contains('ent')) {
 
             if (el.target.value === '') {
+                el.target.value = 0;
+                el.target.dispatchEvent(new Event('change'));
                 document.querySelector('#t-hidden-value').value = 0;
                 document.querySelector('#t-nh-value').innerHTML = Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(0);
             }

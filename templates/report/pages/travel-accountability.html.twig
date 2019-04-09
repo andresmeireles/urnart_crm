@@ -1,0 +1,23 @@
+{% extends "index.html.twig" %}
+{% block title %}Lista de prestação de contas.{% endblock %}
+{% block content %}
+    <div class="col py-3">
+        <div class="col">
+            <h2>Lista de prestaçao de contas.</h2>
+            <hr>
+        </div>
+        <div class="col">
+            {% for repo in simpleView %}
+                <div class="row col py-2">
+                    <div class="col">
+                        <a href="/forms/travel-report/{{repo.id}}" class="text-primary h4">{{ repo.driverName }} - {{ repo.departureDate | date("d/m/Y") }} - {{ repo.arrivalDate | date("d/m/Y") }}</a>
+                    </div>
+                    <div class="col">
+                        <a {# href="/form/travel-report/{{repo.id}}" #} class="btn btn-success mx-2">Visualizar</a>
+                        <a href="/forms/travel-report/{{repo.id}}" class="btn btn-warning">Editar</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

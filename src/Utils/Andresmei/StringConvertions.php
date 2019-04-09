@@ -10,6 +10,24 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
  */
 class StringConvertions
 {
+    /**
+     * Convert snakeCase to camel case
+     *
+     * @param string $snakeCaseString
+     *
+     * @return string
+     */
+    public function snakeToCamelCase(string $snakeCaseString): string
+    {
+        $newStr = str_replace('_', ' ', $snakeCaseString);
+        $newStr = str_replace('-', ' ', $snakeCaseString);
+        $newStr = ucwords($newStr);
+        $newStr = str_replace(' ', '', $newStr);
+        $newStr[0] = strtolower($newStr[0]);
+
+        return $newStr;
+    } 
+
     public function moneyToFloat(string $money): float
     {
         $commaToFloat = str_replace(',', '.', $money);

@@ -14,6 +14,7 @@ use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\MyDateTime;
 use App\Utils\Exceptions\CustomException;
 use App\Utils\Andresmei\CsrfTokenVarification;
+use App\Utils\Andresmei\StringConvertions;
 
 class ReportController extends AbstractController
 {
@@ -51,7 +52,7 @@ class ReportController extends AbstractController
      * Redirect to specific report page
      *
      * @Route("/report/{reportType}")
-     * 
+     *
      * @param   string    $reportType  type of report to redirect
      *
      * @return  Response               report page
@@ -59,7 +60,8 @@ class ReportController extends AbstractController
     public function openReportPage(string $reportType): Response
     {
         $reportPage = sprintf('report/pages/%s.html.twig', $reportType);
-        $repository = sprintf('App\Entity\%s', ucfirst($reportType));
+        $str = (new StringConvertions())->snakeToCamelCase($reportType);
+        $repository = sprintf('App\Entity\%s', ucfirst($str));
         return $this->render($reportPage, [
             'simpleView' => $this->getDoctrine()->getRepository($repository)->findAll()
         ]);

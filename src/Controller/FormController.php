@@ -17,15 +17,18 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Yaml\Yaml;
 use App\Entity\Product;
 use App\Entity\PaymentType;
 use App\Entity\Transporter;
-use App\Utils\Andresmei\Form;
-use App\Config\NonStaticConfig;
-use Symfony\Component\Yaml\Yaml;
 use App\Model\FormModel;
+use App\Config\NonStaticConfig;
+use App\Utils\Andresmei\Form;
 use App\Utils\Andresmei\FileFunctions;
 use App\Utils\Andresmei\NestedArraySeparator;
+use App\Utils\Exceptions\CustomException;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use App\Entity\TravelAccountability;
 
 /**
  * Controller das paginas de formulário
@@ -51,7 +54,7 @@ class FormController extends AbstractController
     }
 
     /**
-     * @Route("/forms/view", methods="GET")
+     * @Route("/forms/view", methods="GET", name="form_view")
      *
      * @return  Response
      */
@@ -82,10 +85,10 @@ class FormController extends AbstractController
     /**
      * @Route("/forms/save", methods="GET", name="save_report")
      *
-     * @param   Request   $request  [$data description]
-     * @param   FormModel $model    [$model description]
+     * @param Request   $request
+     * @param FormModel $model   Nome do formulatio
      *
-     * @return  Response              [return description]
+     * @return  Response
      */
     public function saveFunction(Request $request, FormModel $model): Response
     {
@@ -165,9 +168,16 @@ class FormController extends AbstractController
      *
      * @return Response
      */
-    public function saveFormOnDb(Request $request, FormModel $model): Response
+    public function saveFormOnDb(Request $request, string $formName, FormModel $model): Response
     {
-        
+        if (!$this->isCsrfTokenValid('saveOnDb', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Token invalido');
+        }
+        $data = $request->request->all();
+        $result = $model->reportResolver($formName, $data);
+        $this->addFlash($result->getType(), $result->getMessage());
+
+        return $this->redirectToRoute('form');
     }
 
     /**
@@ -178,21 +188,20 @@ class FormController extends AbstractController
      *                              usado como template.
      * @param Form    $form         objeto de formulário customizado.
      *
-     * @Route("/forms/{formName}/print", methods={"GET", "POST"})
+     * @Route("/forms/{formName}/print", methods={"GET", "POST"}, name="overlord")
      *
      * @return Response
      */
     public function printForm(Request $request, string $formName, Form $form): Response
     {
         $data = $request->query->all();
-
         if ($request->query->get('save')) {
             $data['formName'] = $formName;
             return $this->redirectToRoute('save_report', $data);
         }
 
         if (empty($data)) {
-            echo 'Nenhum dado enviado';
+            throw new \Exception('Nenhum dado enviado');
         }
         $result = $form->returnSelectedFromType('show', $formName, $data);
         return new Response($result['template']);
@@ -236,5 +245,47 @@ class FormController extends AbstractController
 
         return $response;
         //return $this->file($file); <-- Alternativa mais simples :)
+    }
+
+    /**
+     * Redireciona para formulario e o completa com informações do banco de dados.
+     *
+     * @Route("/forms/{formName}/{idOrder<\d+>}")
+     *
+     * @return  Response
+     */
+    public function findFormFillWithId(string $formName, int $idOrder): Response
+    {
+        $pageName = sprintf('/form/%sForm.html.twig', $formName);
+        $formFullName = sprintf('%s/templates%s', $this->getParameter('kernel.project_dir'), $pageName);
+
+        if (!file_exists($formFullName)) {
+            throw new FileNotFoundException("Pagina não existe");
+        }
+
+        if ($formName === 'travel-report') {
+            $responseData = array(
+                'dataFill' => $this->getDoctrine()->getRepository(TravelAccountability::class)->find($idOrder)
+            );
+        }
+
+        return $this->render($pageName, $responseData ?? []);
+    }
+
+    /**
+     * @Route("/forms/{formName}/{idOrder<\d+>}/terminate", methods={"POST"})
+     */
+    public function terminateTravel(Request $request, string $formName, int $idORder, Form $form): Response
+    {
+        $data = $request->request->all();
+        /** @var App\Entity\TravelAccountability */
+        /* $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository(TravelAccountability::class)->find($idORder);
+        $entity->setActive(false);
+        $em->merge($entity);
+        $em->flush(); */
+
+        $result = $form->returnSelectedFromType('show', $formName, $data);
+        return new Response($result['template']);
     }
 }

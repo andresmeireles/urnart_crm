@@ -19,6 +19,13 @@ class NestedArraySeparator
      */
     private $arrayInArray;
 
+    /**
+     * Array Associativo com divisões
+     *
+     * @var array
+     */
+    private $associativeArray;
+
     public function __construct(array $nestedArray)
     {
         foreach ($nestedArray as $key => $value) {
@@ -28,6 +35,8 @@ class NestedArraySeparator
             }
             $this->setArrayInArray($value);
         }
+
+        $this->setArrayGroup($nestedArray);
     }
 
     public function getSimpleArray(): array
@@ -48,5 +57,36 @@ class NestedArraySeparator
     private function setArrayInArray(array $value): void
     {
         $this->arrayInArray[] = $value;
+    }
+
+    private function setArrayGroup(array $value): void
+    {
+        $keyName = '';
+        $arrayResult = array();
+        foreach ($value as $key => $val) {
+            if (!is_array($val)) {
+                continue;
+            }
+
+            $cleanedName = preg_replace('/[0-9]+/', '', $key);
+
+            if ($cleanedName !== $keyName) {
+                $keyName = $cleanedName;
+            }
+
+            $arrayResult[$keyName][] = $val;
+        }
+
+        $this->associativeArray = $arrayResult;
+    }
+
+    public function getAssoativeArray(): array
+    {
+        return $this->associativeArray;
+    }
+
+    public function getAssoativeArrayGroup(string $name): array
+    {
+        return $this->associativeArray[$name];
     }
 }
