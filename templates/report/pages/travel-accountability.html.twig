@@ -10,11 +10,13 @@
             {% for repo in simpleView %}
                 <div class="row col py-2">
                     <div class="col">
-                        <a href="/forms/travel-report/{{repo.id}}" class="text-primary h4">{{ repo.driverName }} - {{ repo.departureDate | date("d/m/Y") }} - {{ repo.arrivalDate | date("d/m/Y") }}</a>
+                        <a href="{{ repo.active ? '/forms/travel-report/' ~ repo.id : 'javascript:;' }}" class="text-primary h4">{{ repo.driverName }} - {{ repo.departureDate | date("d/m/Y") }} - {{ repo.arrivalDate | date("d/m/Y") }}</a>
                     </div>
                     <div class="col">
-                        <a {# href="/form/travel-report/{{repo.id}}" #} class="btn btn-success mx-2">Visualizar</a>
-                        <a href="/forms/travel-report/{{repo.id}}" class="btn btn-warning">Editar</a>
+                        <a {# href="/forms/travel-report/print" #} href="/forms/overlord/travel-accountability/{{ repo.id }}" class="btn btn-success text-light mx-2">Visualizar</a>
+                        {% if repo.active %}
+                            <a href="/forms/travel-report/{{repo.id}}" class="btn btn-warning text-dark">Editar</a>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}

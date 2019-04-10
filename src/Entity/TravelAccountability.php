@@ -62,6 +62,7 @@ class TravelAccountability extends BaseEntity
     {
         $this->expenses = new ArrayCollection();
         $this->travelEntries = new ArrayCollection();
+        parent::__construct();
     }
 
     public function getId(): ?int

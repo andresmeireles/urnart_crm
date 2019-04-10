@@ -109,7 +109,14 @@ class Form extends GenericContainer
     {
         $completeFilePath = $this->templateFolder.'/'.$formName.'.html.twig';
         if (!file_exists(__DIR__.'/../../../templates/'.$completeFilePath)) {
-            throw new \Exception("{$formName} não existe em {$this->templateFolder}. Caminho {$completeFilePath}");
+            throw new \Exception(
+                sprintf(
+                    "%s não existe em %s. Caminho %s",
+                    strtoupper($formName),
+                    $this->templateFolder,
+                    $completeFilePath
+                )
+            );
         }
         return $completeFilePath;
     }

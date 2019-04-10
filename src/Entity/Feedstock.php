@@ -28,7 +28,7 @@ class Feedstock extends BaseEntity
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @var string
+     * @var string|null
      */
     private $description;
 
@@ -74,12 +74,12 @@ class Feedstock extends BaseEntity
         return $this;
     }
 
-    public function getDescription() : ? string
+    public function getDescription() : ?string
     {
         return $this->description;
     }
 
-    public function setDescription(? string $description) : self
+    public function setDescription(?string $description) : self
     {
         $this->description = $description;
 
@@ -141,7 +141,7 @@ class Feedstock extends BaseEntity
         return $this->feedstockInventory;
     }
 
-    public function setFeedstockInventory(? FeedstockInventory $feedstockInventory) : self
+    public function setFeedstockInventory(?FeedstockInventory $feedstockInventory) : self
     {
         $this->feedstockInventory = $feedstockInventory;
 

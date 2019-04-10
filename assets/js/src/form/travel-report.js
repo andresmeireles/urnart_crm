@@ -184,7 +184,7 @@ if (document.querySelector('#travel-report')) {
         if (result < 0) {
             message.classList.add('alert', 'alert-warning');
             result = Math.abs(result);
-            message.innerHTML = `Empresa está devendo ${Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(result)} ao motorista ${driverName}.`;
+            message.innerHTML = `O valor de ${Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(result)} de ${driverName} não foi explicado.`;
             return;
         }
     }

@@ -12,9 +12,8 @@ use App\Model\ReportModel;
 use App\Model\SurveyModel;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\MyDateTime;
-use App\Utils\Exceptions\CustomException;
-use App\Utils\Andresmei\CsrfTokenVarification;
 use App\Utils\Andresmei\StringConvertions;
+use App\Utils\Exceptions\CustomException;
 
 class ReportController extends AbstractController
 {
@@ -51,7 +50,7 @@ class ReportController extends AbstractController
     /**
      * Redirect to specific report page
      *
-     * @Route("/report/{reportType}")
+     * @Route("/report/{reportType}", name="view_report_by_type")
      *
      * @param   string    $reportType  type of report to redirect
      *
@@ -59,6 +58,9 @@ class ReportController extends AbstractController
      */
     public function openReportPage(string $reportType): Response
     {
+        if ($reportType === 'travel-report') {
+            $reportType= 'travel-accountability';
+        }
         $reportPage = sprintf('report/pages/%s.html.twig', $reportType);
         $str = (new StringConvertions())->snakeToCamelCase($reportType);
         $repository = sprintf('App\Entity\%s', ucfirst($str));
@@ -69,7 +71,7 @@ class ReportController extends AbstractController
 
     /**
      * Create some report registry. Give a json response.
-     * 
+     *
      * @Route("/api/report/{pageType}/create", methods="POST")
      *
      * @param   Request   $request     Symfony Request object.
@@ -92,7 +94,7 @@ class ReportController extends AbstractController
 
     /**
      * Create some report registry.
-     * 
+     *
      * @Route("/report/{pageType}/create", methods="POST")
      *
      * @param   Request   $request     Symfony Request object.
@@ -120,7 +122,7 @@ class ReportController extends AbstractController
 
     /**
      * Return registry type.
-     * 
+     *
      * @Route("/report/{pageType}/list", methods="GET")
      *
      * @param   string    $pageType  Entity page.
@@ -151,10 +153,9 @@ class ReportController extends AbstractController
 
     /**
      * Return edit view.
-     * 
+     *
      * @Route("/report/{entity}/edit/{idConsult<\d+>}", methods="GET")
      *
-     * @param   Request   $request    Symfony Request object.
      * @param   string    $entity     Entity name.
      * @param   int       $idConsult  Id to fetch data from database.
      *
@@ -173,7 +174,7 @@ class ReportController extends AbstractController
 
     /**
      * Return edit view.
-     * 
+     *
      * @Route("/report/{entity}/edit/{idConsult<\d+>}", methods="POST")
      *
      * @param   Request   $request    Symfony Request object.
@@ -198,7 +199,7 @@ class ReportController extends AbstractController
 
     /**
      * Get data from entity.
-     * 
+     *
      * @Route("/api/report/{entity}/{consultId}")
      *
      * @param   string    $entity     Entity for consult.
@@ -217,7 +218,7 @@ class ReportController extends AbstractController
      * Cria pesquisa de satisfação
      *
      * @Route("/report/create/survey", name="createSurvey")
-     * 
+     *
      * @return Response
      */
     public function createSurvey(Request $request, SurveyModel $surveyModel): Response
@@ -231,7 +232,7 @@ class ReportController extends AbstractController
 
     /**
      * Send surveys to databases
-     * 
+     *
      * @Route("/report/survey/send", name="sendSurveys", methods="POST")
      *
      * @return Response
@@ -252,13 +253,13 @@ class ReportController extends AbstractController
         return new Response($response->getMessage(), $response->getHttpCode());
     }
 
-    /**************************************************** 
+    /****************************************************
     ************** SPECIFIC ENTITY METHODS **************
     *****************************************************/
 
     /**
      * Change status of Boleto. Specific function.
-     * 
+     *
      * @Route("/report/boleto/status/{boletoId}", methods="POST")
      *
      * @param   ReportModel  $model     Report with change functions.
@@ -286,7 +287,7 @@ class ReportController extends AbstractController
 
     /**
      * Redirect To chart generator page.
-     * 
+     *
      * @Route("/report/boleto/reportCreator/{reportName}", methods="GET")
      *
      * @param   Request      $request       Request model object.

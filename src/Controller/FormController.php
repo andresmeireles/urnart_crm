@@ -29,6 +29,7 @@ use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Exceptions\CustomException;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use App\Entity\TravelAccountability;
+use App\Utils\Andresmei\StringConvertions;
 
 /**
  * Controller das paginas de formulário
@@ -256,6 +257,11 @@ class FormController extends AbstractController
      */
     public function findFormFillWithId(string $formName, int $idOrder): Response
     {
+        /** @var TravelAccountability */
+        $regitry = $this->getDoctrine()->getRepository(TravelAccountability::class)->find($idOrder);
+        if (!$regitry->getActive()) {
+            throw new CustomException('Não se pode alterar item fechado.');
+        }
         $pageName = sprintf('/form/%sForm.html.twig', $formName);
         $formFullName = sprintf('%s/templates%s', $this->getParameter('kernel.project_dir'), $pageName);
 
@@ -273,19 +279,57 @@ class FormController extends AbstractController
     }
 
     /**
+     * @Route("/forms/{formName}/{idReport<\d+>}/edit", methods={"POST"})
+     */
+    public function editTravelAccountability(Request $request, string $formName, int $idReport, FormModel $model): Response
+    {
+        /** @var TravelAccountability */
+        $regitry = $this->getDoctrine()->getRepository(TravelAccountability::class)->find($idReport);
+        if (!$regitry->getActive()) {
+            throw new CustomException('Não se pode alterar item fechado.');
+        }
+        $data = $request->request->all();
+        $result = $model->editReportResolver($formName, $data, $idReport);
+
+        $this->addFlash(
+            $result->getType(),
+            $result->getMessage()
+        );
+
+        return $this->redirectToRoute('view_report_by_type', ['reportType' => $formName]);
+    }
+
+    /**
      * @Route("/forms/{formName}/{idOrder<\d+>}/terminate", methods={"POST"})
      */
     public function terminateTravel(Request $request, string $formName, int $idORder, Form $form): Response
     {
         $data = $request->request->all();
-        /** @var App\Entity\TravelAccountability */
-        /* $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
+        /** @var TravelAccountability */
         $entity = $em->getRepository(TravelAccountability::class)->find($idORder);
         $entity->setActive(false);
         $em->merge($entity);
-        $em->flush(); */
+        $em->flush();
 
         $result = $form->returnSelectedFromType('show', $formName, $data);
         return new Response($result['template']);
+    }
+
+    /**
+     * @Route("/forms/overlord/{formName}/{repoId}")
+     */
+    public function rxo(Request $request, $formName, $repoId)
+    {
+        $name = (new StringConvertions())->snakeToCamelCase($formName);
+        $className = sprintf('App\Entity\%s', ucwords($name));
+        /** @var TravelAccountability */
+        $entity = $this->getDoctrine()->getRepository($className)->find($repoId);
+        /* dump($entity->__toString(), Yaml::parse($entity->__toString()));
+        die(); */
+        return $this->redirectToRoute(
+            'overlord',
+            ['formName' => $formName, 'request' => Yaml::parse($entity->__toString())]
+        );
     }
 }

@@ -85,8 +85,8 @@ class NestedArraySeparator
         return $this->associativeArray;
     }
 
-    public function getAssoativeArrayGroup(string $name): array
+    public function getAssoativeArrayGroup(string $name): ?array
     {
-        return $this->associativeArray[$name];
+        return $this->associativeArray[$name] ?? null;
     }
 }

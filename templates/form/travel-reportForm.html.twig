@@ -21,10 +21,10 @@
                     </div>
                     {% else %}
                     <div class="form=group col">
-                        <input type="submit" class="btn btn-danger btn-lg btn-block disable-on-submit" onclick="javascript: form.action='/forms/tarvel-report/{{dataFill.id}}/terminate';" value="terminar relatorio">
+                        <input type="submit" class="btn btn-danger btn-lg btn-block disable-on-submit" onclick="javascript: form.action='/forms/travel-report/{{dataFill.id}}/terminate';" value="terminar relatorio">
                     </div>
                     <div class="form=group col">
-                        <input type="submit" class="btn btn-secondary btn-lg btn-block disable-on-submit" value="editar prestação de contas">
+                        <input type="submit" class="btn btn-secondary btn-lg btn-block disable-on-submit" onclick="javascript: form.action='/forms/travel-report/{{dataFill.id}}/edit';" value="editar prestação de contas">
                     </div>          
                     {% endif %}
                 </div>
@@ -235,8 +235,8 @@
                         <div class="form-group row col">
                             <div class="col">
                                 <label>Valor</label>
-                                <input type="hidden" converted-value name="caixa" value="{{ dataFill.cash | number_format(2, '.') }}" />
-                                <input type="text" class="form-control auto-float-convert-blur numbers-float-only" id="cx" placeholder="Valor do caixa" value="R$ {{dataFill.cash | number_format(2, ',', '.')}}" required />
+                                <input type="hidden" converted-value name="caixa" value="{{ dataFill is not defined ? '' : dataFill.cash | number_format(2, ',', '.') }}" />
+                                <input type="text" class="form-control auto-float-convert-blur numbers-float-only" id="cx" placeholder="Valor do caixa" value="R$ {{ dataFill is not defined ? '' : dataFill.cash | number_format(2, ',', '.') }}" required />
                             </div>
                             <div class="col-1">
                                 <label for="btn">&nbsp;</label><br>
