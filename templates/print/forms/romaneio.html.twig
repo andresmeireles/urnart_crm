@@ -65,12 +65,10 @@
             <td class="center">{{ (data.urnG + data.urnM + data.urnP) }}</td>
             <td class="center">{{ data.type }}</td>
             <td class="lp no-border" width="3%">R$</td>
-            <td class="no-border">{{ data.freight }}</td>
+            <td class="no-border">{{ data.freight | format_brl }}</td>
         </tr>
         {% set number = number + 1 %}
-        {% if data.freight matches "/^[0-9]*$/" %}
         {% set totalFreight = totalFreight + data.freight %}
-        {% endif %}
         {% set totalP = totalP + data.urnP %}
         {% set totalM = totalM + data.urnM %}
         {% set totalG = totalG + data.urnG %}
@@ -88,7 +86,7 @@
             <td class="center">{{ total }}</td>
             <td>&nbsp;</td>
             <td class="lp no-border">R$</td>
-            <td class="no-border"> {{ totalFreight }}</td>
+            <td class="no-border"> {{ totalFreight | format_brl }}</td>
         </tr>
     </table>
 

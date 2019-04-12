@@ -16,7 +16,7 @@
                     <input type="submit" class="disable-on-submit btn btn-primary col" value="Criar Romaneio">
                 </div>
                 <div class="col-4">
-                    <input type="submit" class="hide-cursor no-keypress disable-on-submit save-button-action btn btn-secondary col" name="save" value="Salvar">
+                    <input type="submit" class="hide-cursor no-keypress disable-on-submit save-button-action btn btn-secondary col" onclick="javascript: form.action='/forms/save'" value="Salvar">
                 </div>
                 
                 {% if config.getProperty('allow_survey') %}
