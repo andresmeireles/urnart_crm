@@ -47,7 +47,9 @@ class OrderController extends AbstractController
     public function index(): Response
     {
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
-        $manualOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findAll();
+        $manualOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(array(), array(
+            'lastUpdate' => 'DESC'
+        ));
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
             'manualOrder' => $manualOrder,
