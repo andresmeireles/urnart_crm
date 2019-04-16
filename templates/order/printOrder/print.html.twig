@@ -24,6 +24,10 @@
   .p-10 {
     font-size: 12px !important;
   }
+
+  .p-16 {
+    font-size: 16px !important;
+  }
   
   #checklist th {
     font-size: 11px !important;
@@ -98,10 +102,10 @@
         {% set prodPrice = product.getProductPrice %}
     {% endif %}
     <tr>
-      <td class="text-center font-weight-bold"><strong>{{ product.productAmount }}</strong></td>
-      <td class="text-center font-weight-bold"><strong>{{ product.getProductName | upper }}</strong></td>
-      <td class="text-center font-weight-bold"><strong><span class="float-left">R$</span><span class="float-right">{{ prodPrice | number_format(2, ',', '.') }}</span></strong></td>
-      <td class="text-center font-weight-bold"><strong><span class="float-left">R$</span><span class="float-right">{{ (prodPrice * product.getProductAmount) | number_format(2, ',', '.') }}</span></strong></td>
+      <td class="text-center font-weight-bold"><strong class="p-16">{{ product.productAmount }}</strong></td>
+      <td class="text-center font-weight-bold"><strong class="p-16">{{ product.getProductName | upper }}</strong></td>
+      <td class="text-center font-weight-bold"><strong><span class="float-left p-16">R$</span><span class="float-right p-16">{{ prodPrice | number_format(2, ',', '.') }}</span></strong></td>
+      <td class="text-center font-weight-bold"><strong><span class="float-left p-16">R$</span><span class="float-right p-16">{{ (prodPrice * product.getProductAmount) | number_format(2, ',', '.') }}</span></strong></td>
   </tr>   
     {% set totalAmount = totalAmount + product.getProductAmount %} 
     {% set totalProductPrice = totalProductPrice + (prodPrice * product.getProductAmount) %}
@@ -109,11 +113,11 @@
   </tbody>
   <tfoot>
     <tr>
-      <th class="text-center">{{ totalAmount }}</th>
+      <th class="text-center p-16">{{ totalAmount }}</th>
       <th colspan=3>&nbsp;</th>
     </tr>
     <tr>
-      <th colspan=2 class="text-right">Valor totoal produtoss</th>
+      <th colspan=2 class="text-right">Valor totoal produtos</th>
       <th colspan=2><span class="float-left">R$</span><span class="float-right">{{ totalProductPrice | number_format(2, ',', '.') }}</span></th>
     </tr>
     <tr>
@@ -190,13 +194,13 @@
   <tr>
     {% for product in cart %}
         <tr>
-            <td class="text-center font-weight-bold">{{ product.getProductAmount }}</td>
-            <td class="font-weight-bold" colspan=3>{{ product.getProductName }}</td>
+            <td class="text-center font-weight-bold p-16">{{ product.getProductAmount }}</td>
+            <td class="font-weight-bold p-16" colspan=3>{{ product.getProductName }}</td>
         </tr>
     {% endfor %}
   <tfoot>
     <tr>
-      <th class="text-center font-weight-bold">{{ totalAmount }}</th>
+      <th class="text-center font-weight-bold p-16">{{ totalAmount }}</th>
       <th colspan=3></th>
     </tr>
   </tfoot>

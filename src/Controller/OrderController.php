@@ -105,18 +105,18 @@ class OrderController extends AbstractController
         
         $data = $request->request->all();
         $arrData = array();
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             if (is_array($value)) {
                 unset($data[$key]);
                 $arrData[] = $value;
             }
         }
         $result = $model->createOrder($data, $arrData);
-        if ($result['http_code'] === '400') {
-            $this->addFlash('error', $result['message']);
+        if ($result->getHttpCode() === 400) {
+            $this->addFlash('error', $result->getMessage());
             return $this->redirectToRoute('createOrder');
         }
-        $this->addFlash('success', $result['message']);
+        $this->addFlash('success', $result->getMessage());
         return $this->redirectToRoute('order');
     }
 
@@ -164,19 +164,19 @@ class OrderController extends AbstractController
         $data = $request->request->all();
         $data['id'] = $orderId;
         $arrData = array();
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             if (is_array($value)) {
                 unset($data[$key]);
                 $arrData[] = $value;
             }
         }
         $result = $model->updateOrder($data, $arrData);
-        if ($result['http_code'] === '400') {
-            $this->addFlash('error', $result['message']);
+        if ($result->getHttpCode() === 400) {
+            $this->addFlash('error', $result->getMessage());
             return $this->redirectToRoute('createOrder');
         }
-        if ($result['http_code'] == '301') {
-            $this->addFlash('success', "Pedido {$data['id']} atualizado com sucesso");
+        if ($result->getHttpCode() === 301) {
+            $this->addFlash('success', sprintf("Pedido %s atualizado com sucesso", $data['id']));
         }
         return $this->redirectToRoute('order');
     }
@@ -198,8 +198,8 @@ class OrderController extends AbstractController
         }
         
         if ($hash !== hash('ripemd160', 'valido')) {
-          $this->addFlash('error', "Erro... falta o hash ou ele está errado.");
-          return $this->redirectToRoute('order');
+            $this->addFlash('error', "Erro... falta o hash ou ele está errado.");
+            return $this->redirectToRoute('order');
         }
         
         $result = $model->reserve($orderId);
@@ -208,12 +208,14 @@ class OrderController extends AbstractController
             throw new \Exception('Link antigo não existe. Abortado');
         }
 
-        if ($result['http_code'] == 301) {
-          $this->addFlash('success', $result['message']);  
-          return $this->redirectToRoute($request->headers->get('referer'));
+        if ($result->getHttpCode() === 301) {
+            $this->addFlash('success', $result->getMessage());
+
+            return $this->redirectToRoute($request->headers->get('referer'));
         }
 
-        $this->addFlash( $result['type'], $result['message']);
+        $this->addFlash($result->getType(), $result->getMessage());
+
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -256,10 +258,10 @@ class OrderController extends AbstractController
     {
         $result = $model->removeOrder((int) $orderId);
         $this->addFlash(
-            $result['type'],
-            $result['message']
+            $result->getType(),
+            $result->getMessage()
         );
-        return new Response($result['message'], $result['http_code'], array(
+        return new Response($result->getMessage(), $result->getHttpCode(), array(
             'redirect-route' => '/order'
         ));
     }
@@ -304,15 +306,15 @@ class OrderController extends AbstractController
         $typeOfList = $request->query->get('type') ?? 'lastUpdate';
         $lists = $typeOfList === 'bydate' ? '' : $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(
             array(),
-           array($typeOfList => 'ASC')
+            array($typeOfList => 'ASC')
         );
 
-        if (
-            $request->query->get('beginDate') !== null ||
-            $request->query->get('lastDate') !== null
-        )
-        {
-            $lists = $listModel->getListByDate('ManualOrderReport', $request->query->get('beginDate'), $request->query->get('lastDate'));
+        if ($request->query->get('beginDate') !== null || $request->query->get('lastDate') !== null) {
+            $lists = $listModel->getListByDate(
+                'ManualOrderReport',
+                $request->query->get('beginDate'),
+                $request->query->get('lastDate')
+            );
             $typeOfList = 'bydate';
         }
 
@@ -392,15 +394,22 @@ class OrderController extends AbstractController
      */
     public function viewEditManualOrder(int $orderId): Response
     {
+        /** @var ManualOrderReport|null */
         $orderToEdit = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
         
-        if ($orderToEdit === null ) {
-            $this->addFlash('error', sprintf('Pedido n° <b>%d</b> não exite. Verique se pedido foi corretamente cadastrado.', $orderId));
+        if ($orderToEdit === null) {
+            $this->addFlash('error', sprintf(
+                'Pedido n° <b>%d</b> não exite. Verique se pedido foi corretamente cadastrado.',
+                $orderId
+            ));
             return $this->redirectToRoute('order');
         }
-
         if (!$orderToEdit->getActive()) {
-            $this->addFlash('warning', sprintf('Pedido %d fechado não pode ser alterado. Fechado em %s', $orderToEdit->getId(), $orderToEdit->getLastUpdate()));
+            $this->addFlash('warning', sprintf(
+                'Pedido %d fechado não pode ser alterado. Fechado em %s',
+                $orderToEdit->getId(),
+                $orderToEdit->getLastUpdate()
+            ));
             return $this->redirectToRoute('manualList');
         }
 
