@@ -77,6 +77,9 @@ class FormModel extends Model
             $report->setDepartureKm($km);
             $km = (float) $accountabilityData['km-in'];
             $report->setArrivalKm($km);
+            $cash = $accountabilityData['caixa'] ?? 0;
+            $report->setCash((float) $cash);
+            $report->setComment($accountabilityData['comment']);
             $report->setDepartureDate(
                 new \DateTime($accountabilityData['dt-out'], new \DateTimeZone('America/Sao_Paulo'))
             );
@@ -114,6 +117,9 @@ class FormModel extends Model
             $accountability->setDepartureKm($km);
             $km = (float) $accountabilityData['km-in'];
             $accountability->setArrivalKm($km);
+            $cash = $accountabilityData['caixa'] ?? 0;
+            $accountability->setCash((float) $cash);
+            $accountability->setComment($accountabilityData['comment']);
             $accountability->setDepartureDate(
                 new \DateTime($accountabilityData['dt-out'], new \DateTimeZone('America/Sao_Paulo'))
             );

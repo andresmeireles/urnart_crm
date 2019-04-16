@@ -35,7 +35,12 @@ class ListModel extends Model
                 return $this->getParsedStatusOrderData(2);
                 break;
             default:
-                throw new ListNotExistsException(sprintf('A lista %s não existe ou inserida incorretamente. Favor verificar a lista', $type));
+                throw new ListNotExistsException(
+                    sprintf(
+                        'A lista %s não existe ou inserida incorretamente. Favor verificar a lista',
+                        $type
+                    )
+                );
                 break;
         }
     }

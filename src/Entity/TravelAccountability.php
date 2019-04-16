@@ -49,6 +49,11 @@ class TravelAccountability extends BaseEntity
     private $cash;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Expenses", mappedBy="idAccountability")
      */
     private $expenses;
@@ -138,6 +143,18 @@ class TravelAccountability extends BaseEntity
     public function setCash(float $cash): self
     {
         $this->cash = $cash;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

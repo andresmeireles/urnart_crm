@@ -103,7 +103,6 @@ if (document.querySelector('#travel-report')) {
                 input.removeAttribute('required');
                 const event = new Event('change');
                 input.dispatchEvent(event);
-
                 let clones = row.closest('.form-row').querySelectorAll('#cloneableField');
                 if (clones.length > 1) {
                     row.closest('#cloneableField').remove();
@@ -147,13 +146,13 @@ if (document.querySelector('#travel-report')) {
 
     const runCalc = () => {
         let cx = document.querySelector('.cxSub').value;
-        let inv = document.querySelector('.inSub').value;
+        let entrada = document.querySelector('.inSub').value;
         let desp = document.querySelector('.despSub').value;
-        let total = parseFloat(inv) - parseFloat(cx);
+        let total = parseFloat(entrada) - parseFloat(cx);
         document.querySelectorAll('.tSub').value = total;
         let result = 0;
 
-        result = (parseFloat(inv) - parseFloat(cx)) - parseFloat(desp);
+        result = (parseFloat(entrada) - parseFloat(cx)) - parseFloat(desp);
 
         document.querySelector('#input-value-final').value = result;
         document.querySelector("#value-total").innerHTML = Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(total)

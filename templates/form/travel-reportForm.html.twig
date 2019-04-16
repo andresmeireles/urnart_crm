@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="col">
                                     <label for="check" no-clone>Cheque</label>
-                                    <input type="hidden" class="entrada" converted-value name="customerArr{{ loop.index - 1}}[check]" id="check" sum-target="#f-check">
+                                    <input type="hidden" converted-value name="customerArr{{ loop.index - 1}}[check]" id="check" sum-target="#f-check">
                                     <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="R$ {{ entry.checkValue | number_format(2, ',', '.') }}" required />
                                 </div>
                                 <div class="col">
@@ -125,7 +125,7 @@
                                 </div>
                                 <div class="col">
                                     <label for="check" no-clone>Cheque</label>
-                                    <input type="hidden" class="entrada" converted-value name="customerArr0[check]" id="check" sum-target="#f-check">
+                                    <input type="hidden" {# class="entrada" #} converted-value name="customerArr0[check]" id="check" sum-target="#f-check">
                                     <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="0" required />
                                 </div>
                                 <div class="col">
@@ -169,6 +169,12 @@
                     </div>
                 </fieldset>
                 <fieldset>
+                    <legend class="font-weight-bold">Observações<small no-clone class="text-danger mx-3">Campo não obrigatorio</small></legend>
+                    <div class="form-group col">
+                        <textarea name="comment" class="form-control" rows="5">{{ dataFill.comment is not defined ? '' : dataFill.comment }}</textarea>
+                    </div>
+                </fieldset>
+                <fieldset>
                     <legend class="font-weight-bold">Despesas<small no-clone class="text-danger mx-3">Campo não obrigatorio</small></legend>
                     <div class="form-row col">
                         <div class="form-group col">
@@ -178,7 +184,7 @@
                                 <input type="hidden" input-number input-name="despesas" value="{{ loop.index }}" />
                                 <div class="col">
                                     <label for="customer" no-clone>Nome da despesa</label>
-                                    <input type="text" name="despesas{{ loop.index }}[name]" id="name" class="form-control disabled active-disabled" placeholder="nome da despesa" value="{{ expense.nome }}" requried disabled />
+                                    <input type="text" name="despesas{{ loop.index }}[name]" id="name" class="form-control" placeholder="nome da despesa" value="{{ expense.nome }}" requried />
                                 </div>
                                 <div class="col">
                                     <label for="customer" no-clone>Valor da despesa</label>
@@ -201,7 +207,7 @@
                                 <input type="hidden" input-number input-name="despesas" value="0" />
                                 <div class="col">
                                     <label for="customer" no-clone>Nome da despesa</label>
-                                    <input type="text" name="despesas0[name]" id="name" class="form-control disabled active-disabled" placeholder="nome da despesa" />
+                                    <input type="text" name="despesas0[name]" id="name" class="form-control active-disabled" placeholder="nome da despesa" />
                                 </div>
                                 <div class="col">
                                     <label for="customer" no-clone>Valor da despesa</label>
@@ -236,7 +242,7 @@
                             <div class="col">
                                 <label>Valor</label>
                                 <input type="hidden" converted-value name="caixa" value="{{ dataFill is not defined ? '' : dataFill.cash | number_format(2, ',', '.') }}" />
-                                <input type="text" class="form-control auto-float-convert-blur numbers-float-only" id="cx" placeholder="Valor do caixa" value="R$ {{ dataFill is not defined ? '' : dataFill.cash | number_format(2, ',', '.') }}" required />
+                                <input type="text" class="form-control auto-float-convert-blur auto-clear numbers-float-only" id="cx" placeholder="Valor do caixa" value="R$ {{ dataFill is not defined ? '' : dataFill.cash | number_format(2, ',', '.') }}" required />
                             </div>
                             <div class="col-1">
                                 <label for="btn">&nbsp;</label><br>
