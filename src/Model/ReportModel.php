@@ -10,6 +10,8 @@ use App\Utils\Andresmei\StdResponse;
 use Symfony\Component\Yaml\Yaml;
 use App\Utils\Andresmei\FileFunctions;
 use App\Utils\Exceptions\CustomException;
+use App\Utils\Andresmei\NestedArraySeparator;
+use App\Utils\Andresmei\StringConvertions;
 
 class ReportModel extends Model
 {
@@ -28,6 +30,9 @@ class ReportModel extends Model
             case 'boleto':
                 $flashResult = $this->createBoletoRegistry($data);
                 break;
+            case 'productionCount':
+                $flashResult = $this->createGenericRegistryArray($entity, $data);
+                break;
             default:
                 $flashResult = new FlashResponse(301, 'warning', sprintf(
                     'Impossível prosseguir, relátorio relacionado a %s não existe.',
@@ -37,6 +42,34 @@ class ReportModel extends Model
         }
 
         return $flashResult;
+    }
+
+    public function createGenericRegistryArray(string $entityName, array $data): FlashResponse
+    {
+        $entity = sprintf('App\Entity\%s', ucfirst($entityName));
+        $em = $this->em;
+        $info = new NestedArraySeparator($data);
+        $entityData = $info->getArrayInArray();
+        foreach ($entityData as $data) {
+            $class = new $entity;
+            foreach ($data as $key => $value) {
+                $methodName = sprintf('set%s', ucfirst($key));
+                
+                $reflectFunc = new \ReflectionClass($class);
+                $classReflec = $reflectFunc->getMethod($methodName)->getParameters()[0]->getType();
+                
+                if ($classReflec !== null) {
+                    $type = $classReflec->getName();
+                    $value = (new StringConvertions())->convertValue($type, $value);
+                }
+
+                $class->$methodName($value);
+            }
+            $em->persist($class);
+            $em->flush();
+        }
+
+        return new FlashResponse(200, 'success', 'Ação concluida com sucesso.');
     }
 
     public function createBoletoRegistry(array $data): FlashResponse

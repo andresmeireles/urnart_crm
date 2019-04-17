@@ -31,7 +31,8 @@ Inserindo a class `calendar-selector` em uma tag `input` então será aberto um 
 Para melhorar o uso desta função é aconselhado por a tag `no-keypress` para bloquear a inserção de quaisquer digitos se não que será inserido ao selecionar a data do calendario.
 
 ##### Exemplo
-`<input type="text" class="form-control no-keypress calendar-selector">`
+`<input type="hidden" id="[unique-id-name]" />
+<input type="text" class="form-control no-keypress calendar-selector" date-target="#[unique-id-name]">`
 
 ## clone machine
 
@@ -63,6 +64,7 @@ Dentro da `div` devem ter dois botões com atributos `add-btn="true` um e outro 
 </div>`
 
 #### auto-clear
+**TYPE**  : class.
 **TAG** : `input`, `textarea`
 **Função** : Ao dar focus no campo com a classe. O valor do campo é limpo.
 
@@ -71,17 +73,21 @@ Dentro da `div` devem ter dois botões com atributos `add-btn="true` um e outro 
 Algumas classes tem propositos especificos.
 
 ### no-keypress
+**TYPE**  : class.
 **TAG** : `input`, `textarea`
 **Função** : Neste `input` nenhuma tecla irá functionar.
 
 ### numbers-only
+**TYPE**  : class.
 **TAG** : `input`, `textarea`
 **Funções** : Neste `input` apenas numeros irão funcionar.
 
 ## numbers-float-only
+**TYPE**  : class.
 **TAG** : `input`, `textarea`
 **Função** : Neste `input`apenas teclas de numeros e a virgula **[** *,* **]**
 
 ### disable-on-submit
+**TYPE**  : class.
 **TAG** : `input`, qualquer elemento clicalvel
 **Função** : Quando incluisa no elemento apos o evento submit o botão ficará desabilitado por 5 segundos.

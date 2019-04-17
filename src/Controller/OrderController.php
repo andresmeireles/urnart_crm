@@ -22,6 +22,7 @@ use App\Entity\ManualOrderReport;
 use App\Entity\ManualProductCart;
 use App\Utils\Exceptions\CustomException;
 use App\Utils\Andresmei\NestedArraySeparator;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,15 +45,21 @@ class OrderController extends AbstractController
      * @Route("/order", name="order")
      *
      */
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
         $manualOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(array(), array(
             'lastUpdate' => 'DESC'
         ));
+
+        $paginatedOrders = $paginator->paginate(
+            $manualOrder,
+            $request->query->getInt('page', 1)
+        );
+
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
-            'manualOrder' => $manualOrder,
+            'manualOrder' => $paginatedOrders
         ]);
     }
 

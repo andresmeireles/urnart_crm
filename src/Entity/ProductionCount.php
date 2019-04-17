@@ -1,13 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Utils\Andresmei\StringConvertions;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductionCountRepository")
  */
-class ProductionCount
+class ProductionCount extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -25,6 +26,11 @@ class ProductionCount
      * @ORM\Column(type="integer")
      */
     private $amount;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
 
     public function getId(): ?int
     {
@@ -51,6 +57,20 @@ class ProductionCount
     public function setAmount(int $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(string $date): self
+    {
+        $date = (new StringConvertions())->convertStringToDate($date, '-', 'POR', '/');
+
+        $this->date = new \DateTime($date, new \DateTimeZone('America/Belem'));
 
         return $this;
     }

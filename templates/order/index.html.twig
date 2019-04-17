@@ -141,6 +141,9 @@
                 </tbody>
             </table>
         {% endif %}
+        <div class="navigation">
+            {{ knp_pagination_render(manualOrder) }}
+        </div>
     </div>
     {% for order in orders %}
         {% include '/order/pages/viewOrder.html.twig' with {'order' : order } %}

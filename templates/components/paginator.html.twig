@@ -1,0 +1,41 @@
+{# default Sliding pagination control implementation #}
+
+{% if pageCount > 1 %}
+<nav class="text-center" aria-label="Page navigation example">
+    <ul class="pagination justify-content-center col row">
+        {% if first is defined and current != first %}
+            <li class="page-item">
+                <a class="page-link text-secondary" href="{{ path(route, query|merge({(pageParameterName): first})) }}">&lt;&lt;</a>
+            </li>
+        {% endif %}
+
+        {% if previous is defined %}
+            <span class="previous">
+                <a class="page-link text-secondary" href="{{ path(route, query|merge({(pageParameterName): previous})) }}">&lt;</a>
+            </span>
+        {% endif %}
+
+        {% for page in pagesInRange %}
+            {% if page != current %}
+                <li class="page-item">
+                    <a class="page-link text-secondary" href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                </li>
+            {% else %}
+                <li class="page-link text-primary current">{{ page }}</li>
+            {% endif %}
+        {% endfor %}
+
+        {% if next is defined %}
+            <li class="next">
+                <a class="page-link text-secondary" href="{{ path(route, query|merge({(pageParameterName): next})) }}">&gt;</a>
+            </li>
+        {% endif %}
+
+        {% if last is defined and current != last %}
+            <li class="last">
+                <a class="page-link text-secondary" href="{{ path(route, query|merge({(pageParameterName): last})) }}">&gt;&gt;</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}

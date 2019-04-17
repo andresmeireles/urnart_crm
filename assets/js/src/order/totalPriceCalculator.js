@@ -1,7 +1,8 @@
 /**
  * catch all manual prices and calculate the final price of an order.
  */
-document.addEventListener('blur', function (el) {
+if (document.querySelector('.automaticOrder')) {
+    document.addEventListener('blur', function (el) {
     
     if (el.target.id === 'amount' || 
         el.target.id === 'price' || 
@@ -44,4 +45,5 @@ const calculateAllPrices = (rows) => {
     let finalPrice = primePrice + freight - discount;
     document.querySelector('#finalPrice').innerHTML = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(finalPrice);
     document.querySelector('#finalAmount').innerHTML = primeAmount; 
+}
 }

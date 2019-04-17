@@ -8,6 +8,7 @@
         "ext-iconv": "*",
         "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "jms/serializer": "^2.2",
+        "knplabs/knp-paginator-bundle": "^3.0",
         "respect/validation": "^1.1",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/asset": "^4.0",

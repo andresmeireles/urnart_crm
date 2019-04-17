@@ -58,14 +58,23 @@ class ReportController extends AbstractController
      */
     public function openReportPage(string $reportType): Response
     {
+        $reportPage = sprintf('report/pages/%s.html.twig', $reportType);
         if ($reportType === 'travel-report') {
             $reportType= 'travel-accountability';
+            $str = (new StringConvertions())->snakeToCamelCase($reportType);
+            $repository = sprintf('App\Entity\%s', ucfirst($str));
+            $travel = $this->getDoctrine()->getRepository($repository)->findAll();
         }
-        $reportPage = sprintf('report/pages/%s.html.twig', $reportType);
         $str = (new StringConvertions())->snakeToCamelCase($reportType);
         $repository = sprintf('App\Entity\%s', ucfirst($str));
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(sprintf(
+            'SELECT u.id, u.date FROM %s u',
+            $repository
+        ));
+        $view = $query->getResult();
         return $this->render($reportPage, [
-            'simpleView' => $this->getDoctrine()->getRepository($repository)->findAll()
+            'simpleView' => $travel ?? $view
         ]);
     }
 
@@ -105,7 +114,7 @@ class ReportController extends AbstractController
     public function createGenericReportRegistry(Request $request, string $pageType, ReportModel $model): Response
     {
         if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
-            throw new CustomException('Algo deu muito errado :(');
+            throw new CustomException('Token incorreto.');
         }
 
         $data = $request->request->all();

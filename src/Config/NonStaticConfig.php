@@ -50,6 +50,6 @@ final class NonStaticConfig
         if (!array_key_exists($param, $this->getConfig())) {
             throw new NotFoundParameterException("Configuração $param não existe");
         }
-        return (string) $this->config[$param];
+        return $this->config[$param];
     }
 }

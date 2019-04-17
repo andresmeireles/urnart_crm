@@ -141,6 +141,7 @@ import "./src/reports/boleto/boletoStartActions";
 import "./src/reports/boleto/boletoSendAction";
 import "./src/reports/boleto/viewBoleto";
 import "./src/reports/boleto/boletoChangeStatus";
+import "./src/reports/productionCount/startPage";
 
 //global tools
 import "./src/global/masks";

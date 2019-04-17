@@ -140,6 +140,12 @@
     "jms/serializer": {
         "version": "2.2.0"
     },
+    "knplabs/knp-components": {
+        "version": "v1.3.10"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v3.0.0"
+    },
     "mikey179/vfsstream": {
         "version": "v1.6.5"
     },

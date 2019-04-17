@@ -1,4 +1,4 @@
-$(function () {
+document.addEventListener('DOMContentLoaded', () => {
 	const toggle = (el, div) => {
 		if (window.getComputedStyle(el).display !== 'none') {
 			hide(el, div);
@@ -21,15 +21,15 @@ $(function () {
 		el.classList.remove('hide-content');
 	}
 
-	var menuButton = document.querySelector('#hideMenusNames');
+	//var menuButton = document.querySelector('#hideMenusNames');
 
-	if (document.querySelector('#hideMenuNames')) {
-		menuButton.addEventListener('click', function () {
+	document.addEventListener('click', (el) => {
+		if (el.target.id === 'hideMenusNames') {
 			var el = document.querySelectorAll('#menus li span');
 			let div = document.querySelector('#collapsible-sidebar');
 			for (var i = 0; i < el.length; i++) {
 				toggle(el[i], div);
 			}
-		});
-	}
+		}
+	});
 });

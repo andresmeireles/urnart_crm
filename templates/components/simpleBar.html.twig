@@ -6,9 +6,9 @@
             {% for list in listItens %}
                 <li class="noline text">
                     <div class="d-flex align-items-center">
-                        <a href="/{{ metalink }}/{{ pageType }}/{{ list.link }}" class="{{ list.class is defined ? list.class : '' }}">
+                        {{ list.disabled is not defined or list.disabled is same as(false) ? '<a' : '<div' }} href="/{{ metalink }}/{{ pageType }}/{{ list.link }}" class="{{ list.class is defined ? list.class : '' }}">
                             <span class="mx-2 my-2 btn btn-outline-light"><b>{{ list.text }}</b></span>
-                        </a>
+                        {{ list.disabled is not defined or list.disabled is same as(false) ? '</a>' : '</div>' }}
                     </div>
                 </li>
             {% endfor %}

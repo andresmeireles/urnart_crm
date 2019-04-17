@@ -71,10 +71,15 @@ class StringConvertions
      * @param string $string
      * @param string $delimiter
      * @param string $type
+     * @throws \Exception
      * @return string
      */
-    public function convertStringToDate(string $string, string $delimiter, string $type = 'POR'): string
-    {
+    public function convertStringToDate(
+        string $string,
+        string $delimiter = '/',
+        string $type = 'POR',
+        string $divisor = '-'
+    ): string {
         switch (strtoupper($type)) {
             case 'POR':
                 $date = explode($delimiter, $string);
@@ -86,10 +91,34 @@ class StringConvertions
                         sprintf('Data informada DIA = %s, MES = %s, ANO = %s não é valida.', $day, $month, $year)
                     );
                 }
-                return "{$month}-{$day}-{$year}";
+                return "{$month}{$divisor}{$day}{$divisor}{$year}";
                 break;
             default:
                 throw new \Exception(sprintf('Tipo de formação de data %s não suportdado pelo sistema.', $type));
+                break;
+        }
+    }
+
+    public function convertValue(string $type, $value)
+    {
+        switch ($type) {
+            case 'string':
+                return (string) $value;
+                break;
+            case 'int':
+                return (int) $value;
+                break;
+            case 'bool':
+                return (bool) $value;
+                break;
+            case 'array':
+                return (array) $value;
+                break;
+            case 'float':
+                return (float) $value;
+                break;
+            default:
+                throw new \Exception(sprintf("Tipo %s não reconhecido", $type));
                 break;
         }
     }
