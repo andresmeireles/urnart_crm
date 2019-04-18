@@ -11,14 +11,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	const hide = (el, div) => {
 		div.classList.add('col-md-0');
-		div.classList.remove('sidebar-fixed-width');
+		div.classList.remove('col-2');
+		//div.classList.remove('sidebar-fixed-width');
+		div.classList.add('px-2');
 		el.classList.add('hide-content');
+		document.querySelector('#content').classList.add('px-5');
+		let sideIcons = document.querySelectorAll('.side-icons');
+		for (let icon of sideIcons) {
+			icon.classList.add('fa-2x');
+			icon.classList.remove('mx-2');
+		}
 	}
 
 	const show = (el, div) => {
-		div.classList.add('sidebar-fixed-width');
+		//div.classList.add('sidebar-fixed-width');
 		div.classList.remove('col-md-0');
+		div.classList.add('col-2');
+		div.classList.remove('px-2');
 		el.classList.remove('hide-content');
+		document.querySelector('#content').classList.remove('px-5');
+		let sideIcons = document.querySelectorAll('.side-icons');
+		for (let icon of sideIcons) {
+			icon.classList.remove('fa-2x');
+			icon.classList.add('mx-2');
+		}
 	}
 
 	//var menuButton = document.querySelector('#hideMenusNames');

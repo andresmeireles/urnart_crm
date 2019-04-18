@@ -16,7 +16,7 @@ document.addEventListener('submit', (el) => {
         i.removeAttribute('type');
         setTimeout(() => {
             i.setAttribute('type', 'submit');
-        }, 5000);
+        }, 10000);
     }
     /* for (let i of submitButtons) {
         i.setAttribute('disabled', '');

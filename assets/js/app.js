@@ -124,6 +124,7 @@ import "./src/form/pdfSend";
 import "./src/form/triggerMultipleForms";
 import "./src/form/saveButton";
 import "./src/form/travel-report";
+import "./src/form/romaneio";
 
 import "./src/storage/feedstock";
 import "./src/storage/feedStockActions";

@@ -1,9 +1,7 @@
 {% extends 'index.html.twig' %}
-
 {% block title %}Etiqetas Manual{% endblock %}
-
 {% block content %}
-  <div class="px-4 w-100">
+  <div class="py-5 px-4 w-100">
   {% for message in app.flashes('message') %}
   <div class="alert alert-warning text-center" id="alert-rmv">
     <b>{{ message }}</b>

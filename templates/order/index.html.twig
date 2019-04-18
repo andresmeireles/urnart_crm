@@ -1,10 +1,8 @@
 {% extends 'index.html.twig' %}
-
 {% block title %}Pedidos{% endblock %}
-
 {% block content %}
     <div class="bg-secondary">
-        <div class="sidebar-sticky p-1">
+        <div class="sidebar-sticky p-1 my-3">
             <ul class="list-unstyled">
                 <li class="px-3"><span class="px-3 mx-3">&nbsp;</span></li>
                 <li class="noline text d-none">
@@ -57,7 +55,7 @@
             {% endfor %}
         </script>
     {% endfor %}
-    <div class="col p-3">
+    <div class="col p-3 py-5">
         {% if orders == [] and manualOrder == [] %}
             <h3>Não ha pedidos cadastrados no momento. Você pode cadastralos clicando <a class="text-secondary" href="forms/order">aqui</a></h3>
         {% else %}

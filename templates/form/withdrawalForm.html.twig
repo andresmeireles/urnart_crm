@@ -1,7 +1,5 @@
 {% extends 'index.html.twig' %}
-
 {% block title %}Retirada de Urnas{% endblock %}
-
 {% block errorMessage %}
   {% for message in app.flashes('error') %}
     <div class="alert alert-danger alert-dismissible fade show flash">
@@ -12,9 +10,8 @@
     </div>
 {% endfor %}
 {% endblock %}
-
 {% block content %}
-    <div class="col py-3 px-4">
+    <div class="col py-5 px-4">
         <div class="col-12">
           <h1 class="display-3">Autorizada de Retirada</h1>
           <hr> </div>

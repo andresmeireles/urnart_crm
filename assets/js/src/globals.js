@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+	let collapseDefault = document.querySelector('#hideMenusNames');
+	collapseDefault.dispatchEvent(new Event('click', {
+		'view': window,
+		'bubbles': true,
+		'cancelable': true
+	}));
+	
 	//add single elements
 	document.querySelectorAll('.sender').forEach( function (el) {
 		el.addEventListener('click', function (el) {

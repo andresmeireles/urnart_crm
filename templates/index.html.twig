@@ -1,14 +1,8 @@
 {% extends 'headerTemplate.html.twig' %}
 
 {% block body %}
-  <style>
-    .xof {
-      max-width: 250px !important;
-      width: 250px !important;
-    }
-  </style>
   <header>
-    <nav class="navbar top-navbar navbar-expand-md bg-dark navbar-dark">
+    <nav class="navbar-dark fixed-top flex-md-nowrap shadow navbar top-navbar navbar-expand-md bg-dark navbar-dark py-0">
       <div class="navbar-header">
         <a class="navbar-brand text-white" href="/">Urnart</a>
       </div>
@@ -24,17 +18,18 @@
       <div class="navbar-collapse text-center justify-content-end">
         <ul class="navbar-nav d-none d-sm-block">
           <li class="nav-item text-right">
-            <a class="nav-link logout" href="/logout">
+            <a class="nav-link logout py-0" href="/logout">
               <i class="fas fw fa-sign-out-alt fa-lg logout"></i> Sair</a>
           </li>
         </ul>
       </div>
     </nav>
   </header>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="bg-primary sidebar-fixed-width" id="collapsible-sidebar">
-      <div class="sidebar-sticky p-1">
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      {# <div class="bg-primary sidebar-fixed-width" id="collapsible-sidebar"> #}
+      <nav class="col-2 bg-primary sidebar py-0 px-2" id="collapsible-sidebar">
+      <div class="sidebar-sticky bg-primary py-5">
         <ul class="list-unstyled" id="menus">
           <li class="my-1">
             <div class="my-1"> 
@@ -45,72 +40,72 @@
           <li class="noline text">
             <a href="/">
               <div class="d-flex align-items-center">
-                <i class="fa fa-fw fa-home fa-2x my-1"></i>
-                <span class="">&nbsp;&nbsp;Dashboard</span>
+                <i class="fa fa-fw fa-home my-1 mx-2 side-icons" title="dashboard"></i>
+                <span class="mx-3 my-1">&nbsp;&nbsp;Dashboard</span>
               </div>
             </a>
           </li>
           <li class="noline">
             <a href="/report">
               <div class="d-flex align-items-center">
-                <i class="far fa-fw fa-2x fa-file-alt my-1"></i>
-                <span class="">&nbsp;&nbsp;Relatórios</span>
+                <i class="far fa-fw fa-file-alt my-1 mx-2 side-icons" title="relatorios"></i>
+                <span class="mx-3 my-1">&nbsp;&nbsp;Relatórios</span>
               </div>
             </a>
           </li>
           <li class="noline">
             <a href="/order">
               <div class="d-flex align-items-center">
-                <i class="fas fa-fw fa-2x fa-shopping-cart my-1"></i>
-                <span class="">&nbsp;&nbsp;Pedido</span>
+                <i class="fas fa-fw fa-shopping-cart my-1 mx-2 side-icons" title="pedido"></i>
+                <span class="mx-3 my-1">&nbsp;&nbsp;Pedido</span>
               </div>
             </a>
           </li>
           <li class="noline">
             <a href="/forms">
               <div class="d-flex align-items-center">
-                <i class="far fa-fw fa-2x fa-sticky-note my-1"></i>
-                <span class="">&nbsp;&nbsp;Formulários</span>
+                <i class="far fa-fw fa-sticky-note my-1 mx-2 side-icons" title="formularios"></i>
+                <span class="mx-3 my-1">&nbsp;&nbsp;Formulários</span>
               </div>
             </a>
           </li>
           <li class="noline">
             <a href="/financeiro">
               <div class="d-flex align-items-center">
-                <i class="fas fa-fw fa-2x fa-calculator my-1"></i>
-                <span class="">&nbsp;&nbsp;Financeiro</span>
+                <i class="fas fa-fw fa-calculator my-1 mx-2 side-icons" title="financeiro"></i>
+                <span class="mx-3 my-1">&nbsp;&nbsp;Financeiro</span>
               </div>
             </a>
           </li>
           <li class="noline">
             <a href="/person">
               <div class="d-flex align-items-center">
-                <i class="fas fa-fw fa-2x fa-user my-1"></i>
-                <span class="">&nbsp;&nbsp;Clientes</span>
+                <i class="fas fa-fw fa-user my-1 mx-2 side-icons" title="cliente"></i>
+                <span class="mx-3 my-1">&nbsp;&nbsp;Clientes</span>
               </div>
             </a>
           </li>
           <li class="noline">
             <a href="/storage">
               <div class="d-flex align-items-center">
-                <i class="fas fa-fw fa-2x fa-box-open my-1"></i>
-                <span class="">&nbsp;&nbsp;Estoque</span>
+                <i class="fas fa-fw fa-box-open my-1 mx-2 side-icons" title="estoque"></i>
+                <span class="mx-3 my-1">&nbsp;&nbsp;Estoque</span>
               </div>
             </a>
           </li>
           <li class="noline">
             <a href="/register">
               <div class="d-flex align-items-center">
-                <i class="fas fa-fw fa-2x fa-address-card my-1"></i>
-                <span class="">&nbsp;&nbsp;Registros</span>
+                <i class="fas fa-fw fa-address-card my-1 mx-2 side-icons" title="registros"></i>
+                <span class="mx-3 my-1">&nbsp;&nbsp;Registros</span>
               </div>
             </a>
           </li>
           <li class="noline">
             <a href="/register/configuration">
               <div class="d-flex align-items-center">
-                <i class="fas fa-fw fa-2x fa-cog my-1"></i>
-                <span class="">&nbsp;&nbsp;Configuração</span>
+                <i class="fas fa-fw fa-cog my-1 mx-2 side-icons" title="configuração"></i>
+                <span class="mx-3 my-1">&nbsp;&nbsp;Configuração</span>
               </div>
             </a>
           </li>
@@ -118,20 +113,21 @@
           <li class="noline">
             <a href="/admin">
               <div class="d-flex align-items-center">
-                <i class="fas fa-fw fa-2x fa-tools my-1"></i>
-                <span class="">&nbsp;&nbsp;Admin</span>
+                <i class="fas fa-fw fa-tools my-1 mx-2 side-icons" title="admin"></i>
+                <span class="mx-3 my-1">&nbsp;&nbsp;Admin</span>
               </div>
             </a>
           </li>
           {% endif %}
         </ul>
       </div>
-    </div>
+      </nav>
+    {# </div> #}
       <div class="col" id="content">
         <div id='message'></div>
         {% include 'components/notification.html.twig' %}
         {% block errorMessage %}{% endblock %}
-        <div class="row">
+        <div class="row h-100">
           {% block content %}{% endblock %}
         </div>
       </div>

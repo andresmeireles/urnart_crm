@@ -45,7 +45,7 @@ final class NonStaticConfig
      * @param string $param
      * @return string
      */
-    public function getProperty(string $param): string
+    public function getProperty(string $param)
     {
         if (!array_key_exists($param, $this->getConfig())) {
             throw new NotFoundParameterException("Configuração $param não existe");

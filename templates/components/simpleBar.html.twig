@@ -1,8 +1,6 @@
 <div class="bg-{{ barBackground is defined ? barBackground : 'secondary' }}" {{ id is defined ? 'id="'~ id ~'"' : '' }}>
-    <div class="sidebar-sticky p-1">
+    <div class="sidebar-sticky py-5">
         <ul class="list-unstyled">
-            <li class="px-3"><span class="px-3 mx-3">&nbsp;</span></li>
-
             {% for list in listItens %}
                 <li class="noline text">
                     <div class="d-flex align-items-center">
