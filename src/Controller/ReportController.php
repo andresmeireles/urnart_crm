@@ -67,6 +67,7 @@ class ReportController extends AbstractController
         }
         $str = (new StringConvertions())->snakeToCamelCase($reportType);
         $repository = sprintf('App\Entity\%s', ucfirst($str));
+        /** @var \Doctrine\ORM\EntityManager */
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery(sprintf(
             'SELECT u.id, u.date FROM %s u',

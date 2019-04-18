@@ -14,14 +14,14 @@
                     </a>
                 </li>
                 <li class="noline text cursor-decoration">
-                    <a href="/order/manual/list?type=customerName">
+                    <a href="/order/manual/list?type=customerName&page=1">
                         <div class="d-flex align-items-center">
                             <span class="mx-1 my-2">&nbsp;&nbsp;Pedidos Por Cliente</span>
                         </div>
                     </a>
                 </li>
                 <li class="noline">
-                    <a href="/order/manual/list?type=bydate">
+                    <a href="/order/manual/list?type=bydate&page=1">
                         <div class="d-flex align-items-center">
                             <span class="mx-1 my-2 disabled">&nbsp;&nbsp;Pedidos por data</span>
                         </div>
@@ -100,6 +100,9 @@
             </div>
 
         {% endif %}
+        <div class="navigation">
+            {{ knp_pagination_render(lists) }}
+        </div>
     </div>
     
     {% for order in lists %}

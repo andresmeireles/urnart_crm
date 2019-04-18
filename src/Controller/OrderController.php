@@ -302,16 +302,16 @@ class OrderController extends AbstractController
      ************************/
 
     /**
-     * @Route("/order/manual/list", name="manualList")
+     * @Route("/order/manual/list", name="manualList", methods="GET")
      *
      * @param   Request     $request
      * @param   ListModel   $listModel
      * @return  Response
      */
-    public function manualListing(Request $request, ListModel $listModel): Response
+    public function manualListing(Request $request, ListModel $listModel, PaginatorInterface $paginator): Response
     {
         $typeOfList = $request->query->get('type') ?? 'lastUpdate';
-        $lists = $typeOfList === 'bydate' ? '' : $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(
+        $lists = $typeOfList === 'bydate' ? array() : $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(
             array(),
             array($typeOfList => 'ASC')
         );
@@ -325,8 +325,13 @@ class OrderController extends AbstractController
             $typeOfList = 'bydate';
         }
 
+        $paginatorList = $paginator->paginate(
+            $lists,
+            $request->query->getInt('page', 1)
+        );
+
         return $this->render('/order/lists/'. $typeOfList .'List.html.twig', [
-            'lists' => $lists,
+            'lists' => $paginatorList,
             'beginDate' => $request->query->get('beginDate'),
             'lastDate' => $request->query->get('lastDate')
         ]);

@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="bg-secondary" id="manual-list">
-        <div class="sidebar-sticky p-1">
+        <div class="sidebar-sticky py-4 px-1">
             <ul class="list-unstyled">
                 <li class="px-3">
                     <span class="px-3 mx-3">&nbsp;</span></li>
@@ -30,7 +30,7 @@
             </ul>
         </div>
     </div>
-<div class="px-4 py-3 col printOrder">
+<div class="px-4 py-5 col printOrder">
 	<form method="GET">
 		<div class="form-row">
 			<h3 class="col-md-12">Selecione datas para busca de pedidos</h3>
@@ -93,7 +93,7 @@
         {% endif %}
         
         {% if lists is empty %} 
-            <h4>Não há pedidos deste intervalo.</h5> 
+            <h4>Não há pedidos deste intervalo.</h5>
         {% endif %}
         
         {% for list in lists %}
@@ -134,8 +134,11 @@
                         {% endif %}
                     </div>
                 </div>
-
         {% endfor %}
+        <div class="navigation">
+            {{ knp_pagination_render(lists) }}
+        </div>
+        
 	</div>
 </div>
 

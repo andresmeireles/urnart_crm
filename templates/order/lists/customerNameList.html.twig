@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="bg-secondary" id="manual-list">
-        <div class="sidebar-sticky p-1">
+        <div class="sidebar-sticky py-3 px-1">
             <ul class="list-unstyled">
                 <li class="px-3">
                     <span class="px-3 mx-3">&nbsp;</span></li>
@@ -21,7 +21,7 @@
                     </a>
                 </li>
                 <li class="noline">
-                    <a href="/order/manual/list?type=bydate">
+                    <a href="/order/manual/list?type=bydate&page=1">
                         <div class="d-flex align-items-center">
                             <span class="mx-1 my-2 disabled">&nbsp;&nbsp;Pedidos por data</span>
                         </div>
@@ -30,7 +30,7 @@
             </ul>
         </div>
     </div>
-    <div class="p-4 col printOrder">
+    <div class="py-5 px-4 col printOrder">
         <h2>Relatorio de pedidos</h2>
         <hr>
         {% if lists is empty %}
@@ -124,8 +124,10 @@
 
                 {% endfor %}
             </div>
-
         {% endif %}
+        <div class="navigation">
+            {{ knp_pagination_render(lists) }}
+        </div>
     </div>
 
     {% for order in lists %}
