@@ -50,8 +50,15 @@ if (document.querySelector('#manualOrder')) {
             calculate(row);
         }
 
-        if (el.target.id === 'discount' && el.target.value === '' && document.querySelector('[toggle-disabled]').checked) {
-            document.querySelector('[toggle-disabled]').dispatchEvent(new MouseEvent('click', {'view': window, 'bubbles': true, 'cancelable': true}));
+        if (el.target.id === 'discount' && el.target.value === '') {
+            document.querySelector("[toggle-disabled]").dispatchEvent(
+                new MouseEvent('click', {
+                        'view': window,
+                        'bubbles': true,
+                        'cancelable': true
+                    }
+                )
+            );
         } 
 
     }, true);

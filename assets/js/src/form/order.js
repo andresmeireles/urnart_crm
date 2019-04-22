@@ -6,6 +6,7 @@ $(function () {
 	
 	document.addEventListener('click', function (el) {
 		if (el.target.id == 'portCheck') {
+			//el.preventDefault();
 			var port = document.querySelector('#port');
 
 			if (port.getAttribute('disabled') != null) {
@@ -18,11 +19,15 @@ $(function () {
 		}
 
 		if (el.target.id == 'discountCheck') {
+			//el.preventDefault();
 			var discount = document.querySelector('#discount');
+			/* console.log(el.target); */
 
 			if (el.target.checked === true) {
 				discount.removeAttribute('disabled');				
 			} else {
+				/* el.target.checked = false;
+				el.preventDefault(); */
 				discount.value = '';
 				document.querySelector('#hiddenDiscount').value = 0;
 				discount.setAttribute('disabled', 'disabled');
@@ -35,7 +40,7 @@ $(function () {
 
 		if (el.target.id === 'price' || el.target.id === 'amount') {
 			var row = el.target.parentNode.parentNode;
-			var amount = ( isNaN(parseInt(row.querySelector('#amount').value)) ? 1 : (row.querySelector('#amount').value) );
+			var amount = (isNaN(parseInt(row.querySelector('#amount').value)) ? 1 : (row.querySelector('#amount').value));
 			row.querySelector('#amount').value = amount;
 			var qnt = parseInt(row.querySelector('#amount').value);
 			var productTotalPrice = parseInt(row.querySelector('#price').value) * qnt;
@@ -71,11 +76,9 @@ $(function () {
 	};
 
 	var recalculate = function () { 
-		// var products = ( isNaN(parseInt(allProductsPrice.innerHTML)) ? 0 : parseInt(allProductsPrice.innerHTML) ); 
 		var products = isNaN(parseInt(allProductsPriceFloat.value)) ? 0 : parseInt(allProductsPriceFloat.value); 
 		var freight = ( isNaN(parseInt(document.querySelector('#hiddenFreight').value)) ? 0 : parseInt(document.querySelector('#hiddenFreight').value) );
 		var discount = ( isNaN(parseInt(document.querySelector('#hiddenDiscount').value)) ? 0 : parseInt(document.querySelector('#hiddenDiscount').value));
-		console.log(products, freight, discount, document.querySelector('#freight').value);
 		finalTotalPrice = (products + freight) - discount;	
 		totalPrice.innerHTML = money(finalTotalPrice);	
 
