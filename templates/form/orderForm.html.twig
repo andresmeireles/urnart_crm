@@ -1,7 +1,5 @@
 {% extends 'index.html.twig' %}
-
-{% block tittle %}Pedido{% endblock %}
-
+{% block title %}Pedido{% endblock %}
 {% block content %}
 <script>
     var transporter = [{% for transporter in transporters %}{ value: '{{ transporter.name }}', port: '{{ transporter.port }}', cod: '{{ transporter.getId }}'},{% endfor %}]
@@ -73,13 +71,12 @@
                       <div class="form-group">
                         <div class="input-group">
                           <h3>Total Produtos&nbsp;</h3>
-                          <h3>R$&nbsp;&nbsp;</h3>
-                          <h3><span id="allProductsPrice">0,00</span></h3>
+                          <input type="hidden" id="hiddenAllProductsPrice" />
+                          <h3><span id="allProductsPrice">R$&nbsp;0,00</span></h3>
                         </div>
                         <div class="input-group">
                           <h3>Valor Final &nbsp;</h3>
-                          <h3>R$&nbsp;&nbsp;</h3>
-                          <h3><span id="finalPrice">0,00</span></h3>
+                          <h3><span id="finalPrice">R$&nbsp;0,00</span></h3>
                         </div>
                       </div>
                     </div>
@@ -108,7 +105,7 @@
                       <div class="form-group">
                         <label>Valor do frete</label>
                         <div class="input-group">
-                          <input type="hidden" converted-value name="freight">
+                          <input type="hidden" converted-value name="freight" id="hiddenFreight">
                           <input type="text" class="form-control numbers-float-only auto-float-convert-blur" id="freight"></div>
                       </div>
                       <div class="form-group">
@@ -119,7 +116,7 @@
                               <input type="checkbox" toggle-disabled="discount" id="discountCheck">
                             </div>
                           </div>
-                          <input type="hidden" name="discount" id="noDiscount" converted-value value="0">
+                          <input type="hidden" name="discount" id="hiddenDiscount" converted-value value="0">
                           <input type="text" class="form-control numbers-float-only auto-float-convert-blur" disabled="disabled" id="discount">
                         </div>
                           <small class="form-text text-muted">Caso exista algum desconto marque a opção</small>

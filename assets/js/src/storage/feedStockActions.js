@@ -1,3 +1,4 @@
+if (document.querySelector('#stock')) {
     const previous = []
     let now = ''
 
@@ -150,3 +151,4 @@
             })
         }
     })
+}

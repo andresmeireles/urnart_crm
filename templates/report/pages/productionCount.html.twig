@@ -31,8 +31,235 @@
         <h2>Relatorios</h2>
         <hr>
     </div>
-    <div class="col">
-        to do => fazer os belos relatorios de produção :)
+    <div class="row">
+        <canvas class="col-6 d-inline" id="line-report">hellow</canvas>
+        <canvas class="col-6 d-inline" id="bar-report">hellow</canvas>
+        <canvas class="col-6 d-inline" id="line-report2">hellow</canvas>
+        <canvas class="col-6 d-inline" id="bar-report2">hellow</canvas>
+        <p>to do => fazer os belos relatorios de produção :)</p>
+        <p>to do => fazer os belos relatorios de produção :)</p>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                let bar = document.getElementById('line-report').getContext('2d');
+                let barReport = new Chart(bar, {
+                    type: 'line',
+                    data: {
+                        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto'],
+                        datasets: [{
+                            fill: 'boundary',
+                            lineTension: 0,
+                            label: 'produção de urmas',
+                            pointBorderWidth: 21,
+                            pointHitRadius: 82,
+                            borderColor: 'blue',
+                            pointBackgroundColor: 'red',
+                            borderWidth: 3,
+                            data: [
+                                100,
+                                80,
+                                30,
+                                162,
+                                50,
+                            ]
+                        }],
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Produção deste mês',
+                            fontSize: 28
+                        },
+                        responsive: true,
+                        legend: {
+                            display: false,
+                            position: 'bottom'
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    stepSize: 40, // fazer por varaivel
+                                    stacked: true
+                                }
+                            }]
+                        },
+                        plugins: {
+                            labels: {
+                                render: 'value'
+                            }
+                        }
+                    }
+                });
+            })
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                let bar = document.getElementById('bar-report').getContext('2d');
+                let barReport = new Chart(bar, {
+                    type: 'bar',
+                    data: {
+                        labels: [1, 2, 3, 4, 5, 6, 7, 8],
+                        datasets: [{
+                            label: 'produção de urmas',
+                            backgroundColor: 'rgba(255, 255, 0, 0.8)',
+                            hoverBackgroundColor: 'rgba(255, 255, 0, 0.6)',
+                            borderWidth: 1,
+                            data: [
+                                10,
+                                20,
+                                30,
+                                40,
+                                50,
+                                60,
+                                70,
+                                80
+                            ]
+                        }],
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Produção deste mês',
+                            fontSize: 28
+                        },
+                        tooltips: {
+                            enabled: false,
+                        },
+                        responsive: true,
+                        legend: {
+                            display: false,
+                            position: 'bottom'
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    stepSize: 30, // fazer por varaivel
+                                    stacked: true
+                                }
+                            }]
+                        },
+                        plugins: {
+                            labels: {
+                                render: 'value'
+                            }
+                        }
+                    }
+                });
+            })
+        </script>
+        <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    let bar = document.getElementById('line-report2').getContext('2d');
+                    let barReport = new Chart(bar, {
+                        type: 'line',
+                        data: {
+                            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto'],
+                            datasets: [{
+                                fill: 'boundary',
+                                lineTension: 0,
+                                label: 'produção de urmas',
+                                pointBorderWidth: 21,
+                                pointHitRadius: 82,
+                                borderColor: 'blue',
+                                pointBackgroundColor: 'red',
+                                borderWidth: 3,
+                                data: [
+                                    100,
+                                    80,
+                                    30,
+                                    162,
+                                    50,
+                                ]
+                            }],
+                        },
+                        options: {
+                            title: {
+                                display: true,
+                                text: 'Produção deste mês',
+                                fontSize: 28
+                            },
+                            responsive: true,
+                            legend: {
+                                display: false,
+                                position: 'bottom'
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        stepSize: 40, // fazer por varaivel
+                                        stacked: true
+                                    }
+                                }]
+                            },
+                            plugins: {
+                                labels: {
+                                    render: 'value'
+                                }
+                            }
+                        }
+                    });
+                })
+            </script>
+    
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    let bar = document.getElementById('bar-report2').getContext('2d');
+                    let barReport = new Chart(bar, {
+                        type: 'bar',
+                        data: {
+                            labels: [1, 2, 3, 4, 5, 6, 7, 8],
+                            datasets: [{
+                                label: 'produção de urmas',
+                                backgroundColor: 'rgba(255, 255, 0, 0.8)',
+                                hoverBackgroundColor: 'rgba(255, 255, 0, 0.6)',
+                                borderWidth: 1,
+                                data: [
+                                    10,
+                                    20,
+                                    30,
+                                    40,
+                                    50,
+                                    60,
+                                    70,
+                                    80
+                                ]
+                            }],
+                        },
+                        options: {
+                            title: {
+                                display: true,
+                                text: 'Produção deste mês',
+                                fontSize: 28
+                            },
+                            tooltips: {
+                                enabled: false,
+                            },
+                            responsive: true,
+                            legend: {
+                                display: false,
+                                position: 'bottom'
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        stepSize: 30, // fazer por varaivel
+                                        stacked: true
+                                    }
+                                }]
+                            },
+                            plugins: {
+                                labels: {
+                                    render: 'value'
+                                }
+                            }
+                        }
+                    });
+                })
+            </script>
     </div>
     <div class="col fancybox">
         <div class="col-10" id="add" style="display: none">

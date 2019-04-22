@@ -95,6 +95,7 @@ global.getFormLessData = require("./src/helpers/classes/sendDataFormless");
 global.sendDataWithCsrf = require("./src/helpers/functions/sendDataWithCsrf");
 global.checkMask = require("./src/helpers/functions/checkMask");
 global.simpleRequest = require("./src/helpers/functions/simpleRequest");
+global.money = require("./src/helpers/functions/money");
 
 // validations
 global.checkRequired = require("./src/helpers/functions/checkRequired");
@@ -125,6 +126,7 @@ import "./src/form/triggerMultipleForms";
 import "./src/form/saveButton";
 import "./src/form/travel-report";
 import "./src/form/romaneio";
+import "./src/form/order";
 
 import "./src/storage/feedstock";
 import "./src/storage/feedStockActions";
