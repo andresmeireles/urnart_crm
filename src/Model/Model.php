@@ -104,7 +104,7 @@ abstract class Model
      * Lista a partir de uma data dados de um repositorio.
      *
      * @param string      $repository
-     * @param string      $dateField
+     * @param string      $whereField
      * @param array       $selectFields
      * @param string      $beginDate    Formato da data é DIA/MÊS/ANO
      * @param string      $lastDate     Formato da data é DIA/MÊS/ANO
@@ -115,7 +115,7 @@ abstract class Model
      */
     public function getGenericListByDateArrayFields(
         string $repository,
-        string $dateField = 'createDate',
+        string $whereField = 'createDate',
         array  $selectFields = array(),
         string $beginDate = '',
         string $lastDate = '',
@@ -142,20 +142,20 @@ abstract class Model
         }
 
         if (!is_null($convertedBeginDate) && !is_null($convertedLastDate)) {
-            $result = $query->where(sprintf('u.%s BETWEEN :begin AND :last', $dateField))
+            $result = $query->where(sprintf('u.%s BETWEEN :begin AND :last', $whereField))
                             ->setParameter('begin', $convertedBeginDate)
                             ->setParameter('last', sprintf("%s 23:00:00", $convertedLastDate))
                             ->orderBy(sprintf('u.%s', $orderBy ?? 'id'), sprintf('%s', $typeOfOrder ?? 'ASC'));
         }
 
         if (is_null($convertedBeginDate) && !is_null($convertedLastDate)) {
-            $result = $query->where(sprintf('u.%s <= :date', $dateField))
+            $result = $query->where(sprintf('u.%s <= :date', $whereField))
                             ->setParameter('date', sprintf('%s 23:00:00', $convertedLastDate))
                             ->orderBy(sprintf('u.%s', $orderBy ?? 'id'), sprintf('%s', $typeOfOrder ?? 'ASC'));
         }
 
         if (!is_null($convertedBeginDate) && is_null($convertedLastDate)) {
-            $result = $query->where(sprintf('u.%s >= :date', $dateField))
+            $result = $query->where(sprintf('u.%s >= :date', $whereField))
                             ->setParameter('date', $convertedBeginDate)
                             ->orderBy(sprintf('u.%s', $orderBy ?? 'id'), sprintf('%s', $typeOfOrder ?? 'ASC'));
         }

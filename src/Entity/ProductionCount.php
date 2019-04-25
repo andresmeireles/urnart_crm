@@ -20,7 +20,12 @@ class ProductionCount extends BaseEntity
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $model;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $height;
 
     /**
      * @ORM\Column(type="integer")
@@ -37,16 +42,26 @@ class ProductionCount extends BaseEntity
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getModel(): ?string
     {
-        return $this->name;
+        return $this->model;
     }
 
-    public function setName(string $name): self
+    public function setModel(string $model): self
     {
-        $this->name = $name;
+        $this->model = $model;
 
         return $this;
+    }
+
+    public function getHeight(): ?string
+    {
+        return $this->height;
+    }
+
+    public function setHeight(string $height): self
+    {
+        $this->height = $height;
     }
 
     public function getAmount(): ?int

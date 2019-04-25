@@ -61,6 +61,26 @@ class ReportController extends AbstractController
     }
 
     /**
+     * @Route("/report/{entity}/{reportname}/print", name="make_report", methods="POST")
+     */
+    public function printAllProductionBalanceReport(
+        Request $request,
+        string $reportname,
+        ReportModel $model
+    ): Response {
+        $beginDate = $request->request->get('begin-date');
+        $lastDate = $request->request->get('last-date');
+        $result = $model->getProductsByModelName(
+            $beginDate,
+            $lastDate,
+        );
+
+        return $this->render(sprintf('/print/report/%s.html.twig', $reportname), [
+            'data' => $result
+        ]);
+    }
+
+    /**
      * @Route("/report/productionCount", name="prod_count", methods="GET")
      */
     public function openProductionCountReportIndex(ReportModel $model): Response

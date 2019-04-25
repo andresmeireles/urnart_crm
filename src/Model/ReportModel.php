@@ -10,7 +10,6 @@ use App\Utils\Andresmei\FileFunctions;
 use App\Utils\Exceptions\CustomException;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\StringConvertions;
-use App\Entity\ProductionCount;
 
 class ReportModel extends Model
 {
@@ -502,6 +501,26 @@ class ReportModel extends Model
         }
 
         return $reportData;
+    }
+
+    public function getProductsByModelName(string $beginDate, string $lastDate): array
+    {
+        $result = $this->getGenericListByDateArrayFields(
+            'ProductionCount',
+            'date',
+            ['name', 'amount'],
+            $beginDate,
+            $lastDate
+        );
+
+        foreach ($result as $key => $field) {
+            $nameModel = explode(' ', $field['name']);
+            $result[$key]['model'] = $nameModel[0]; 
+            $result[$key]['height'] = $nameModel[1]; 
+        }
+
+        dump($result);
+        die();
     }
 
     public function makeDailyProductionCount(string $date): array

@@ -41,6 +41,8 @@
     {% set allM = [] %}
     {% set calendarDate = '' %}
     {% set calendarMonth = '' %}
+
+    {# produção dos ultimos 30 dias #}
     {% for date, dataObj in dateChart %}
         {% set amount = 0 %}
         {% set calendarDate = date %}
@@ -49,9 +51,9 @@
         {% endfor %}
         {% set allD = allD|merge({ (calendarDate) : amount }) %}
     {% endfor %}
-    {# {% for v, tex in allD %}
-        <h2>Data da produção {{ v | date('d') }} : Valor da produção {{ tex }}</h2><br>
-    {% endfor %} #}
+    {# produção dos ultimos 30 dias #}
+
+    {# produção durante o mês #}
     {% for date, dataObj in monthChart %}
         {% set amount = 0 %}
         {% set calendarMonth = date %}
@@ -60,10 +62,13 @@
         {% endfor %}
         {% set allM = allM|merge({ (calendarMonth) : amount }) %}
     {% endfor %}
+    {# /produção durante o mês #}
+
         <canvas class="col-6 d-inline" id="line-report">produção por mês</canvas>
-        <canvas class="col-6 d-inline" id="bar-report">hellow</canvas>
-        {# <canvas class="col-5 d-inline" id="line-report2">hellow</canvas>
-        <canvas class="col-5 d-inline" id="bar-report2">hellow</canvas> #}
+        <canvas class="col-6 d-inline" id="bar-report">Produção das ultimas semanas</canvas>
+        <canvas class="col-5 d-inline" id="line-report2">produção por modelo</canvas>
+        <canvas class="col-5 d-inline" id="bar-report2">produção por modelos no mês</canvas>
+
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 let bar = document.getElementById('line-report').getContext('2d');
@@ -205,8 +210,8 @@
             </fieldset>
             </form>
         </div>
-        <div class="col fancybox" id="make-report" style="display: none"> {# relatorio de produção por dia #}
-            <form method="post">
+        <div class="col fancybox" id="make-report" style="display: none"> {# relatorio de produção por intervalo de data #}
+            <form method="post" action="/report/productionCount/monthBalance/print">
             <fieldset>
                 <legend>Relatorio por intervalo de datas</legend>
                     <div class="form-group col">

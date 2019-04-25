@@ -1,0 +1,13 @@
+{% extends "headerTemplatePrint.html.twig" %}
+{% block customStyle %}
+    @media print {
+        @page  {
+            size: landscape;
+        }
+    }
+{% endblock %}
+{% block body %}
+    <pre>
+        {{ dump(data) }}
+    </pre>
+{% endblock %}
