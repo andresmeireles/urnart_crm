@@ -29,9 +29,54 @@ if (document.querySelector('#addProdCount')) {
             }, 700);
         }
 
+        if (el.target.id === 'replicate') {
+            setTimeout(() => {
+                let dateFields = document.querySelectorAll('#date');
+                let dateToReplicate = document.querySelector('#date-global').value;
+    
+                for (let field of dateFields) {
+                    field.value = dateToReplicate;
+                }
+            }, 500);
+        }
+
     });
 
+    document.addEventListener('focus', (el) => {
+        if (el.target.id === 'name') {
+            let replicateDate = document.querySelector('#replicate');
+            replicateDate.dispatchEvent(new Event('blur'));
+        }
+        if (el.target.id === 'amount') {
+            let replicateDate = document.querySelector('#replicate');
+            replicateDate.dispatchEvent(new Event('blur'));
+        }
+    }, true);
+
     document.addEventListener('blur', (el) => {
+        if (el.target.id === 'replicate') {
+            setTimeout(() => {
+                let dateFields = document.querySelectorAll('#date');
+                let dateToReplicate = document.querySelector('#date-global').value;
+    
+                for (let field of dateFields) {
+                    field.value = dateToReplicate;
+                }
+            }, 500);
+        }
+
+        if (el.target.id === 'amount') {
+            setTimeout(() => {
+                let amount = el.target.value;
+                let calc = document.querySelector('.prod-calculator');
+                let prod = Number(amount) + Number(calc.innerHTML);
+                calc.innerHTML = prod;
+            }, 133);
+        }
+
+    }, true);
+
+    document.addEventListener('change', (el) => {
 
         if (el.target.id === 'replicate') {
             setTimeout(() => {

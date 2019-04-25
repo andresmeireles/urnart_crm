@@ -48,6 +48,23 @@ class ReportController extends AbstractController
     }
 
     /**
+     * @Route("/report/productionCount", name="prod_count")
+     */
+    public function openProductionCountReportIndex(ReportModel $model): Response
+    {
+        $today = (new MyDateTime())->output('d-m-Y');
+        $aMonthDate = (new MyDateTime())->minusDate('P1M')->output('d-m-Y');
+        $aYearnDate = (new MyDateTime())->minusDate('P1Y')->output('d-m-Y');
+        $productionByDayOnMonth = $model->getByDateIntervalProductAmount($aMonthDate, $today);
+        $monthChart = $model->getByDateIntervalProductAmount($aYearnDate, $today, 'm-Y');
+        
+        return $this->render('report/pages/productionCount.html.twig' , array(
+            'dateChart' => $productionByDayOnMonth,
+            'monthChart' => $monthChart
+        ));
+    }
+
+    /**
      * Redirect to specific report page
      *
      * @Route("/report/{reportType}", name="view_report_by_type")

@@ -66,9 +66,9 @@ class ProductionCount extends BaseEntity
         return $this->date;
     }
 
-    public function setDate(string $date): self
+    public function setDate(string $productionDate): self
     {
-        $date = (new StringConvertions())->convertStringToDate($date, '-', 'POR', '/');
+        $date = (new StringConvertions())->convertStringToDate($productionDate, '-', 'POR', '/');
 
         $this->date = new \DateTime($date, new \DateTimeZone('America/Belem'));
 

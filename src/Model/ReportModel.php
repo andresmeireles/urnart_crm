@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Model;
 
@@ -12,6 +10,7 @@ use App\Utils\Andresmei\FileFunctions;
 use App\Utils\Exceptions\CustomException;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\StringConvertions;
+use App\Entity\ProductionCount;
 
 class ReportModel extends Model
 {
@@ -464,5 +463,41 @@ class ReportModel extends Model
         }
 
         return $response;
+    }
+
+    public function getByDateIntervalProductAmount(string $intervalDate, string $today, string $formatInterval = 'Y-m-d'): array
+    {
+        $productionDay = '';
+        $reportData = array();
+
+        $result = $this->getGenericListByDateArrayFields(
+            'ProductionCount',
+            'date',
+            array(),
+            $intervalDate,
+            $today,
+            'date',
+            'ASC'
+        );
+        /** @var \App\Entity\ProductionCount $value */
+        foreach ($result as $value) {
+            if ($value->getDate() === null) {
+                throw new \Exception('Algo de errado não está certo. Não deveria haver um date null.');
+            }
+            
+            $actualDate = $value->getDate()->format($formatInterval);
+
+            if ($actualDate !== $productionDay) {
+                $productionDay = $actualDate;
+                $reportData[$actualDate][] = $value;
+                continue;
+            }
+
+            if ($actualDate === $productionDay) {
+                $reportData[$actualDate][] = $value;
+            }
+        }
+
+        return $reportData;
     }
 }

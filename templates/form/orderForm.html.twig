@@ -6,7 +6,7 @@
     var payment = [{% for payment in payments %}{ value: '{{ payment.name }}', cod: '{{ payment.getId }}', plot: '{{ payment.isPlot }}' },{% endfor %}]
 </script>
 
-  <div class="py-5 px-3">
+  <div class="py-5 px-3" id="form-order">
         <div class="col-12">
           <div class="clearfix">
             <h1 class="float-left">Criar Pedido</h1>{#<a href="/order/create" class="btn btn-white btn-lg float-left text-dark"><i       class="fas fa-arrow-right"></i> Ir para pedido automatico</a></h1>

@@ -104,6 +104,7 @@ $(function () {
 
             //remove campos marcados com no-clone
             cloneEl.querySelectorAll('[no-clone]').forEach((el) => {
+                el.remove();
                 el.innerHTML = '&nbsp;';
             })
 

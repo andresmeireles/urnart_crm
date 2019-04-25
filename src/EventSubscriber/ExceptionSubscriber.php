@@ -30,7 +30,9 @@ class ExceptionSubscriber implements EventSubscriberInterface
                         substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
         
         if ($event->getRequest()->server->get('APP_ENV') === 'dev') {
-            $exception = $exceptionClass === 'Exception' || $exceptionClass === 'Twig_Error_Loader' ? $exceptionClass : substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
+            $exception = $exceptionClass === 'Exception' || $exceptionClass === 'Twig_Error_Loader' ?
+            $exceptionClass :
+            substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
         }
 
         $refererLink = $event->getRequest()->headers->get('referer');
@@ -49,10 +51,15 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 break;
             case 'UniqueConstraintViolationException':
             case 'ForeignKeyConstraintViolationException':
-                $this->triggerFlashMessage($event, 'Item ja está cadastrado em algum registro e não pode ser removido. COD::400', 'error');
+                $this->triggerFlashMessage(
+                    $event,
+                    'Item ja está cadastrado em algum registro e não pode ser removido. COD::400',
+                    'error'
+                );
                 return $event->setResponse(new RedirectResponse($refererLink));
                 break;
             case 'Exception':
+            case 'AuthenticationException':
                 return $event->setResponse(new Response(
                     $event->getException()->getMessage(),
                     301,
@@ -73,13 +80,14 @@ class ExceptionSubscriber implements EventSubscriberInterface
     /**
      * Lança mensagens que serão disparadas em flash notification
      *
-     * @param  GetResponseForExceptionEvent $event   Objeto de evento
-     * @param  string                       $message Mensagem que será disparada
-     * @param  string                       $type    Tipo de mensagen que será disparada
+     * @param  GetResponseForExceptionEvent $event
+     * @param  string                       $message
+     * @param  string                       $type
      * @return void
      */
     private function triggerFlashMessage(GetResponseForExceptionEvent $event, string $message, string $type): void
     {
+        /** @var Symfony\Component\HttpFoundation\Session\SessionInterface $event */
         $event->getRequest()->getSession()->getFlashBag()->add(
             $type,
             $message

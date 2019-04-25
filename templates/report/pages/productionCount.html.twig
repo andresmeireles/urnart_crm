@@ -32,19 +32,40 @@
         <hr>
     </div>
     <div class="row">
+    {% set allD = [] %}
+    {% set allM = [] %}
+    {% set calendarDate = '' %}
+    {% set calendarMonth = '' %}
+    {% for date, dataObj in dateChart %}
+        {% set amount = 0 %}
+        {% set calendarDate = date %}
+        {% for obj in dataObj %}
+            {% set amount = amount + obj.amount %}
+        {% endfor %}
+        {% set allD = allD|merge({ (calendarDate) : amount }) %}
+    {% endfor %}
+    {# {% for v, tex in allD %}
+        <h2>Data da produção {{ v | date('d') }} : Valor da produção {{ tex }}</h2><br>
+    {% endfor %} #}
+    {% for date, dataObj in monthChart %}
+        {% set amount = 0 %}
+        {% set calendarMonth = date %}
+        {% for obj in dataObj %}
+            {% set amount = amount + obj.amount %}
+        {% endfor %}
+        {% set allM = allM|merge({ (calendarMonth) : amount }) %}
+    {% endfor %}
         <canvas class="col-6 d-inline" id="line-report">hellow</canvas>
         <canvas class="col-6 d-inline" id="bar-report">hellow</canvas>
-        <canvas class="col-6 d-inline" id="line-report2">hellow</canvas>
-        <canvas class="col-6 d-inline" id="bar-report2">hellow</canvas>
-        <p>to do => fazer os belos relatorios de produção :)</p>
-        <p>to do => fazer os belos relatorios de produção :)</p>
+        <canvas class="col-5 d-inline" id="line-report2">hellow</canvas>
+        <canvas class="col-5 d-inline" id="bar-report2">hellow</canvas>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 let bar = document.getElementById('line-report').getContext('2d');
                 let barReport = new Chart(bar, {
                     type: 'line',
                     data: {
-                        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto'],
+                        labels: [{% for chartDay, notUsed in allM %}"{{ chartDay | month_coverter }}",{% endfor %}],
                         datasets: [{
                             fill: 'boundary',
                             lineTension: 0,
@@ -54,13 +75,7 @@
                             borderColor: 'blue',
                             pointBackgroundColor: 'red',
                             borderWidth: 3,
-                            data: [
-                                100,
-                                80,
-                                30,
-                                162,
-                                50,
-                            ]
+                            data: [{% for notUsed, chartData in allM %}'{{ chartData }}',{% endfor %}]
                         }],
                     },
                     options: {
@@ -78,7 +93,7 @@
                             yAxes: [{
                                 ticks: {
                                     beginAtZero: true,
-                                    stepSize: 40, // fazer por varaivel
+                                    stepSize: 500, // fazer por varaivel
                                     stacked: true
                                 }
                             }]
@@ -99,22 +114,13 @@
                 let barReport = new Chart(bar, {
                     type: 'bar',
                     data: {
-                        labels: [1, 2, 3, 4, 5, 6, 7, 8],
+                        labels: [{% for chartDay, notUsed in allD %}'{{ chartDay | date('d/m') }}',{% endfor %}],
                         datasets: [{
                             label: 'produção de urmas',
                             backgroundColor: 'rgba(255, 255, 0, 0.8)',
                             hoverBackgroundColor: 'rgba(255, 255, 0, 0.6)',
                             borderWidth: 1,
-                            data: [
-                                10,
-                                20,
-                                30,
-                                40,
-                                50,
-                                60,
-                                70,
-                                80
-                            ]
+                            data: [{% for nonUsed, valueChart in allD %}{{ valueChart }},{% endfor %}]
                         }],
                     },
                     options: {
@@ -124,7 +130,7 @@
                             fontSize: 28
                         },
                         tooltips: {
-                            enabled: false,
+                            enabled: true,
                         },
                         responsive: true,
                         legend: {
@@ -270,10 +276,16 @@
                 <div class="form-group col">
                     <input type="submit" class="btn btn-success btn-block disable-on-submit" value="registrar produção" />
                 </div>
-                <div class="form-group col">
-                    <label for="prodName" no-clone>Data da produção</label>
-                    <input type="hidden" id="date-global" />
-                    <input type="text" class="form-control no-keypress calendar-selector" id="replicate" date-target="#date-global" required />
+                <div class="input-group">
+                    <div class="form-group col">
+                        <label for="prodName" no-clone>Data da produção</label>
+                        <input type="hidden" id="date-global" />
+                        <input type="text" class="form-control no-keypress calendar-selector" id="replicate" date-target="#date-global" autocomplete="off" required />
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="calculator">Toral da produção</label>
+                        <div class="prod-calculator h4 mx-3">0</div>
+                    </div>
                 </div>
                 <div class="input-group" id="cloneableField">
                     <input type="hidden" input-number='true' input-name="prodCount" value="0" />
@@ -283,15 +295,18 @@
                         <input type="text" class="form-control" name="prodCount0[name]" id="name" required />
                     </div>
                     <div class="form-group col">
-                        <label for="prodName" no-clone>Nome da urna</label>
+                        <label for="prodName" no-clone>Quantidade</label>
                         <input type="text" class="form-control numbers-only" name="prodCount0[amount]" id="amount" required />
                     </div>
-                    <button class="btn btn-success my-3 py-2" add-btn="true">
-                        <span class="fas fa-fw fa-plus" add-btn="true"></span>
-                    </button>
-                    <button class="btn mx-1 btn-danger my-3 py-2" remove-btn="true">
-                        <i class="fas fa-fw fa-times" remove-btn="true"></i>
-                    </button>
+                    <div class="form-group col-2">
+                        <label no-clone>&nbsp;</label><br no-clone>
+                        <button class="btn btn-success" add-btn="true">
+                            <span class="fas fa-fw fa-plus" add-btn="true"></span>
+                        </button>
+                        <button class="btn mx-1 btn-danger" remove-btn="true">
+                            <i class="fas fa-fw fa-times" remove-btn="true"></i>
+                        </button>
+                    </div>
                 </div>
             </fieldset>
             </form>

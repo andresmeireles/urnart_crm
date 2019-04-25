@@ -101,6 +101,69 @@ abstract class Model
     }
 
     /**
+     * Lista a partir de uma data dados de um repositorio.
+     *
+     * @param string      $repository
+     * @param string      $dateField
+     * @param array       $selectFields
+     * @param string      $beginDate    Formato da data é DIA/MÊS/ANO
+     * @param string      $lastDate     Formato da data é DIA/MÊS/ANO
+     * @param string|null $orderBy
+     * @param string|null $typeOfOrder
+     *
+     * @return array
+     */
+    public function getGenericListByDateArrayFields(
+        string $repository,
+        string $dateField = 'createDate',
+        array  $selectFields = array(),
+        string $beginDate = '',
+        string $lastDate = '',
+        ?string $orderBy = null,
+        ?string $typeOfOrder = null
+    ): array {
+        $selectFieldsString = '';
+        foreach ($selectFields as $value) {
+            $selectFieldsString .= sprintf("u.%s,", $value);
+        }
+        if (empty($selectFields)) {
+            $selectFieldsString = "u";
+        }
+        $selectFieldsString = trim($selectFieldsString, ',');
+        
+        $repo = 'App\Entity\\'.$repository;
+        $convertedBeginDate = (new StringConvertions())->strToDateString($beginDate);
+        $convertedLastDate = (new StringConvertions())->strToDateString($lastDate);
+        $queryBuilder = $this->em->createQueryBuilder();
+        $result = null;
+        $query = $queryBuilder->select($selectFieldsString)->from($repo, 'u');
+        if (is_null($convertedBeginDate) && is_null($convertedLastDate)) {
+            $result = $query->orderBy(sprintf('u.%s', $orderBy ?? 'id'), sprintf('%s', $typeOfOrder ?? 'ASC'));
+        }
+
+        if (!is_null($convertedBeginDate) && !is_null($convertedLastDate)) {
+            $result = $query->where(sprintf('u.%s BETWEEN :begin AND :last', $dateField))
+                            ->setParameter('begin', $convertedBeginDate)
+                            ->setParameter('last', sprintf("%s 23:00:00", $convertedLastDate))
+                            ->orderBy(sprintf('u.%s', $orderBy ?? 'id'), sprintf('%s', $typeOfOrder ?? 'ASC'));
+        }
+
+        if (is_null($convertedBeginDate) && !is_null($convertedLastDate)) {
+            $result = $query->where(sprintf('u.%s <= :date', $dateField))
+                            ->setParameter('date', sprintf('%s 23:00:00', $convertedLastDate))
+                            ->orderBy(sprintf('u.%s', $orderBy ?? 'id'), sprintf('%s', $typeOfOrder ?? 'ASC'));
+        }
+
+        if (!is_null($convertedBeginDate) && is_null($convertedLastDate)) {
+            $result = $query->where(sprintf('u.%s >= :date', $dateField))
+                            ->setParameter('date', $convertedBeginDate)
+                            ->orderBy(sprintf('u.%s', $orderBy ?? 'id'), sprintf('%s', $typeOfOrder ?? 'ASC'));
+        }
+
+        return $result->getQuery()->getResult();
+    }
+
+    /**
      * Dql consult helper
      *
      * @param   string  $dqlStringConsult  String with consult in DQL.

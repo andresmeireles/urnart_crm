@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Utils\Andresmei;
 
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Cache\Exception\LogicException;
 
 /**
  * Faz operações de conversão de strings em algo desejado.
@@ -26,7 +26,7 @@ class StringConvertions
         $newStr[0] = strtolower($newStr[0]);
 
         return $newStr;
-    } 
+    }
 
     public function moneyToFloat(string $money): float
     {
@@ -47,6 +47,7 @@ class StringConvertions
      * Transforma uma string em uma data pre-definida pelo sistema
      *
      * @param string|null $dateString
+     *
      * @return string|null
      */
     public function strToDateString(?string $dateString): ?string
@@ -87,7 +88,7 @@ class StringConvertions
                 $month = (int) $date[1];
                 $year = (int) $date[2];
                 if (!checkdate($month, $day, $year)) {
-                    throw new BadCredentialsException(
+                    throw new LogicException(
                         sprintf('Data informada DIA = %s, MES = %s, ANO = %s não é valida.', $day, $month, $year)
                     );
                 }

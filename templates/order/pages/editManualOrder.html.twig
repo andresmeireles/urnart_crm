@@ -8,7 +8,7 @@
     var payment = [{% for payment in payments %}{ value: '{{ payment.name }}', cod: '{{ payment.getId }}', plot: '{{ payment.isPlot }}' },{% endfor %}]
 </script>
 
-  <div class="p-3 manual-editing">
+  <div class="p-3 manual-editing" id="form-order">
         <div class="col-12">
           <div class="clearfix">
             <h1 class="float-left">Editar Pedido {{ order.getId }}</h1>{#<a href="/order/create" class="btn btn-white btn-lg float-left text-dark"><i       class="fas fa-arrow-right"></i> Ir para pedido automatico</a></h1>
@@ -81,13 +81,12 @@
                       <div class="form-group">
                         <div class="input-group">
                           <h3>Total Produtos&nbsp;</h3>
-                          <h3>R$&nbsp;&nbsp;</h3>
-                          <h3><span id="allProductsPrice">0,00</span></h3>
+                          <input type="hidden" id="hiddenAllProductsPrice" />
+                          <h3><span id="allProductsPrice">R$&nbsp;0,00</span></h3>
                         </div>
                         <div class="input-group">
                           <h3>Valor Final &nbsp;</h3>
-                          <h3>R$&nbsp;&nbsp;</h3>
-                          <h3><span id="finalPrice">0,00</span></h3>
+                          <h3><span id="finalPrice">R$&nbsp;0,00</span></h3>
                         </div>
                       </div>
                     </div>
@@ -116,7 +115,7 @@
                       <div class="form-group">
                         <label>Valor do frete</label>
                         <div class="form-group">
-                          <input type="hidden" converted-value="" name="freight" value="{{ order.getFreight }}">
+                          <input type="hidden" converted-value="" name="freight" value="{{ order.getFreight }}" id="hiddenFreight">
                           <input type="text" class="form-control numbers-float-only auto-float-convert-blur" id="freight" value="R$ {{ order.getFreight | number_format(2, ',', '.') }}"></div>
                       </div>
                       <div class="form-group">
@@ -124,10 +123,10 @@
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
-                              <input type="checkbox" toggle-disabled="discount" id="discountCheck" {{ order.getDiscount == null ? '' : 'checked' }}>
+                              <input type="checkbox"{#  toggle-disabled="discount" #} id="discountCheck" {{ order.getDiscount == null ? '' : 'checked' }}>
                             </div>
                           </div>
-                          <input type="hidden" name="discount" id="noDiscount" converted-value value="{{ order.getDiscount }}">
+                          <input type="hidden" name="discount" id="hiddenDiscount" converted-value value="{{ order.getDiscount }}">
                           <input type="text" class="form-control numbers-float-only auto-float-convert-blur" id="discount" value="R$ {{ order.getDiscount | number_format(2, ',', '.') }}">
                         </div>
                           <small class="form-text text-muted">Caso exista algum desconto marque a opção</small>
