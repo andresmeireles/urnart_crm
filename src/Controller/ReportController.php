@@ -48,20 +48,42 @@ class ReportController extends AbstractController
     }
 
     /**
-     * @Route("/report/productionCount", name="prod_count")
+     * @Route("/report/productionCount/mdr", name="make_report", methods="POST")
+     */
+    public function makePrintReport(Request $request, ReportModel $model): Response
+    {
+        $repoDate = $request->request->get('repo-date');
+        $report = $model->makeDailyProductionCount($repoDate);
+
+        return $this->render('/print/report/productionCountReport.html.twig', [
+            'data' => $report
+        ]);
+    }
+
+    /**
+     * @Route("/report/productionCount", name="prod_count", methods="GET")
      */
     public function openProductionCountReportIndex(ReportModel $model): Response
     {
+        /** @var string */
         $today = (new MyDateTime())->output('d-m-Y');
         $aMonthDate = (new MyDateTime())->minusDate('P1M')->output('d-m-Y');
         $aYearnDate = (new MyDateTime())->minusDate('P1Y')->output('d-m-Y');
         $productionByDayOnMonth = $model->getByDateIntervalProductAmount($aMonthDate, $today);
         $monthChart = $model->getByDateIntervalProductAmount($aYearnDate, $today, 'm-Y');
         
-        return $this->render('report/pages/productionCount.html.twig' , array(
+        return $this->render('report/pages/productionCount.html.twig', array(
             'dateChart' => $productionByDayOnMonth,
             'monthChart' => $monthChart
         ));
+    }
+
+    /**
+     * @Route("/report/productionCount/make_production_report", name="make_production_report")
+     */
+    public function makeProductionReport(): Response
+    {
+        return $this->render('print/report/productionCountReport.html.twig');
     }
 
     /**

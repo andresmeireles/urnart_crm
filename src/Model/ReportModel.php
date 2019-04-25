@@ -465,8 +465,11 @@ class ReportModel extends Model
         return $response;
     }
 
-    public function getByDateIntervalProductAmount(string $intervalDate, string $today, string $formatInterval = 'Y-m-d'): array
-    {
+    public function getByDateIntervalProductAmount(
+        string $intervalBeginDate,
+        string $intervalLastDate,
+        string $formatInterval = 'Y-m-d'
+    ): array {
         $productionDay = '';
         $reportData = array();
 
@@ -474,8 +477,8 @@ class ReportModel extends Model
             'ProductionCount',
             'date',
             array(),
-            $intervalDate,
-            $today,
+            $intervalBeginDate,
+            $intervalLastDate,
             'date',
             'ASC'
         );
@@ -499,5 +502,41 @@ class ReportModel extends Model
         }
 
         return $reportData;
+    }
+
+    public function makeDailyProductionCount(string $date): array
+    {
+        $reportDate = $date;
+        $todayTotal = 0;
+        $yesterdayTotal = 0;
+        if ('' === $reportDate) {
+            throw new CustomException('Não é possível criar relátorio sem datas');
+        }
+        $explodedDate = explode('-', $reportDate);
+        $monthBegin = sprintf("%s-%s-%s", '01', $explodedDate[1], $explodedDate[2]);
+        $yesterday = sprintf("%s-%s-%s", ( (int) $explodedDate[0]) - 1, $explodedDate[1], $explodedDate[2]);
+        $todayReport = $this->getByDateIntervalProductAmount($monthBegin, $reportDate);
+        $yesterdayReport = $this->getByDateIntervalProductAmount($monthBegin, $yesterday);
+
+        foreach ($todayReport as $tr) {
+            /** @var \App\Entity\ProductionCount $value */
+            foreach ($tr as $value) {
+                $todayTotal += $value->getAmount();
+            }
+        }
+
+        foreach ($yesterdayReport as $tr) {
+            /** @var \App\Entity\ProductionCount $value */
+            foreach ($tr as $value) {
+                $yesterdayTotal += $value->getAmount();
+            }
+        }
+
+        return [
+            'today' => $reportDate,
+            'todayVal' => $todayTotal,
+            'yesterday' => $yesterday,
+            'yesterdayVal' => $yesterdayTotal
+        ];
     }
 }

@@ -16,12 +16,17 @@
             disabled: true,
             link: 'make-report',
             class: 'modal-transform',
-            text: 'Criar relatório de produção'
+            text: 'Criar balanço do mês'
         },
         {
             link: 'check-all-entries',
             class: '',
             text: 'Ver todas as entradas'
+        },
+        {
+            link: 'make-daily-report',
+            class: 'modal-transform',
+            text: 'Criar relatorio diario'
         }
     ]
 } %}
@@ -55,10 +60,10 @@
         {% endfor %}
         {% set allM = allM|merge({ (calendarMonth) : amount }) %}
     {% endfor %}
-        <canvas class="col-6 d-inline" id="line-report">hellow</canvas>
+        <canvas class="col-6 d-inline" id="line-report">produção por mês</canvas>
         <canvas class="col-6 d-inline" id="bar-report">hellow</canvas>
-        <canvas class="col-5 d-inline" id="line-report2">hellow</canvas>
-        <canvas class="col-5 d-inline" id="bar-report2">hellow</canvas>
+        {# <canvas class="col-5 d-inline" id="line-report2">hellow</canvas>
+        <canvas class="col-5 d-inline" id="bar-report2">hellow</canvas> #}
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 let bar = document.getElementById('line-report').getContext('2d');
@@ -69,7 +74,7 @@
                         datasets: [{
                             fill: 'boundary',
                             lineTension: 0,
-                            label: 'produção de urmas',
+                            label: 'produção por urmas',
                             pointBorderWidth: 21,
                             pointHitRadius: 82,
                             borderColor: 'blue',
@@ -81,7 +86,7 @@
                     options: {
                         title: {
                             display: true,
-                            text: 'Produção deste mês',
+                            text: 'Produção por mês',
                             fontSize: 28
                         },
                         responsive: true,
@@ -126,7 +131,7 @@
                     options: {
                         title: {
                             display: true,
-                            text: 'Produção deste mês',
+                            text: 'Produção das ultimas semanas',
                             fontSize: 28
                         },
                         tooltips: {
@@ -155,120 +160,9 @@
                 });
             })
         </script>
-        <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    let bar = document.getElementById('line-report2').getContext('2d');
-                    let barReport = new Chart(bar, {
-                        type: 'line',
-                        data: {
-                            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto'],
-                            datasets: [{
-                                fill: 'boundary',
-                                lineTension: 0,
-                                label: 'produção de urmas',
-                                pointBorderWidth: 21,
-                                pointHitRadius: 82,
-                                borderColor: 'blue',
-                                pointBackgroundColor: 'red',
-                                borderWidth: 3,
-                                data: [
-                                    100,
-                                    80,
-                                    30,
-                                    162,
-                                    50,
-                                ]
-                            }],
-                        },
-                        options: {
-                            title: {
-                                display: true,
-                                text: 'Produção deste mês',
-                                fontSize: 28
-                            },
-                            responsive: true,
-                            legend: {
-                                display: false,
-                                position: 'bottom'
-                            },
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true,
-                                        stepSize: 40, // fazer por varaivel
-                                        stacked: true
-                                    }
-                                }]
-                            },
-                            plugins: {
-                                labels: {
-                                    render: 'value'
-                                }
-                            }
-                        }
-                    });
-                })
-            </script>
-    
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    let bar = document.getElementById('bar-report2').getContext('2d');
-                    let barReport = new Chart(bar, {
-                        type: 'bar',
-                        data: {
-                            labels: [1, 2, 3, 4, 5, 6, 7, 8],
-                            datasets: [{
-                                label: 'produção de urmas',
-                                backgroundColor: 'rgba(255, 255, 0, 0.8)',
-                                hoverBackgroundColor: 'rgba(255, 255, 0, 0.6)',
-                                borderWidth: 1,
-                                data: [
-                                    10,
-                                    20,
-                                    30,
-                                    40,
-                                    50,
-                                    60,
-                                    70,
-                                    80
-                                ]
-                            }],
-                        },
-                        options: {
-                            title: {
-                                display: true,
-                                text: 'Produção deste mês',
-                                fontSize: 28
-                            },
-                            tooltips: {
-                                enabled: false,
-                            },
-                            responsive: true,
-                            legend: {
-                                display: false,
-                                position: 'bottom'
-                            },
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true,
-                                        stepSize: 30, // fazer por varaivel
-                                        stacked: true
-                                    }
-                                }]
-                            },
-                            plugins: {
-                                labels: {
-                                    render: 'value'
-                                }
-                            }
-                        }
-                    });
-                })
-            </script>
     </div>
     <div class="col fancybox">
-        <div class="col-10" id="add" style="display: none">
+        <div class="col-10" id="add" style="display: none"> {# cadastrar produção do dia #}
             <form action="/report/productionCount/create" method="post">
             {% include "components/csrfToken.html.twig" with {'tokenText':'autenticateBoleto'} %}
             <fieldset>
@@ -283,7 +177,7 @@
                         <input type="text" class="form-control no-keypress calendar-selector" id="replicate" date-target="#date-global" autocomplete="off" required />
                     </div>
                     <div class="form-group col-2">
-                        <label for="calculator">Toral da produção</label>
+                        <label for="calculator">Total da produção</label>
                         <div class="prod-calculator h4 mx-3">0</div>
                     </div>
                 </div>
@@ -311,7 +205,7 @@
             </fieldset>
             </form>
         </div>
-        <div class="col fancybox" id="make-report" style="display: none">
+        <div class="col fancybox" id="make-report" style="display: none"> {# relatorio de produção por dia #}
             <form method="post">
             <fieldset>
                 <legend>Relatorio por intervalo de datas</legend>
@@ -328,6 +222,23 @@
                             <label for="bregindate">Data final</label>
                             <input type="hidden" id="last-date" name="last-date" />
                             <input type="text" class="form-control no-keypress calendar-selector" placeholder="Data final" date-target="#last-date" required />
+                        </div>
+                    </div>
+            </fieldset>
+            </form>
+        </div>
+        <div class="col fancybox" id="make-daily-report" style="display: none"> {# relatorio de produção por dia #}
+            <form method="POST" action="/report/productionCount/mdr">
+            <fieldset>
+                <legend>Relatorio de produção</legend>
+                    <div class="form-group col">
+                        <input type="submit" class="btn btn-success btn-block disable-on-submit disable-on-submit" value="criar relatorio" />
+                    </div>
+                    <div class="form-row col">
+                        <div class="form-group col">
+                            <label for="bregindate">Data de inicio</label>
+                            <input type="hidden" id="repo-date" name="repo-date" />
+                            <input type="text" class="form-control no-keypress calendar-selector" placeholder="Data de inicio" date-target="#repo-date" required />
                         </div>
                     </div>
             </fieldset>
