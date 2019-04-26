@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Utils\Andresmei\StringConvertions;
+use App\Utils\Exceptions\CustomException;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductionCountRepository")
@@ -49,7 +50,7 @@ class ProductionCount extends BaseEntity
 
     public function setModel(string $model): self
     {
-        $cleanedModel = trim($model);
+        $cleanedModel = ltrim(trim($model));
         $cleanedModel = strtoupper($model);
 
         $this->model = $cleanedModel;
@@ -64,7 +65,41 @@ class ProductionCount extends BaseEntity
 
     public function setHeight(string $height): self
     {
-        $this->height = trim($height);
+        $smallHeights = [
+            50 => '050',
+            70 => '070',
+            90 => '090',
+            11 => '110',
+            13 => '130',
+            14 => '140',
+            15 => '150',
+            16 => '160',
+            17 => '170',
+            18 => '180',
+            19 => '190',
+            21 => '210',
+            1  => 'T1',
+            2  => 'T2',
+            3  => 'T3'
+        ];
+        $cleanedHeight = ltrim(trim($height));
+        if (strlen($cleanedHeight) > 3) {
+            throw new CustomException(sprintf(
+                'Tamanho %s tem mais de três digitos, tamanhos não devem ter mais de 3 digitos.',
+                $cleanedHeight
+            ));
+        }
+        if (strlen($cleanedHeight) <= 2) {
+            if (!array_key_exists((int) $cleanedHeight, $smallHeights)) {
+                throw new CustomException(sprintf(
+                    'Tamanho %s não é reconhecido, insira um tamanho valido.',
+                    $cleanedHeight
+                ));
+            }
+            $cleanedHeight = $smallHeights[(int) $cleanedHeight];
+        }
+
+        $this->height = $cleanedHeight;
 
         return $this;
     }
