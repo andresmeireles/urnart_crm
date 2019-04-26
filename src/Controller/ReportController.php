@@ -61,7 +61,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * @Route("/report/{entity}/{reportname}/print", name="make_report", methods="POST")
+     * @Route("/report/{entity}/{reportname}/print", name="make_report_print", methods="POST")
      */
     public function printAllProductionBalanceReport(
         Request $request,
