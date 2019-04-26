@@ -49,7 +49,10 @@ class ProductionCount extends BaseEntity
 
     public function setModel(string $model): self
     {
-        $this->model = $model;
+        $cleanedModel = trim($model);
+        $cleanedModel = strtoupper($model);
+
+        $this->model = $cleanedModel;
 
         return $this;
     }
@@ -61,7 +64,9 @@ class ProductionCount extends BaseEntity
 
     public function setHeight(string $height): self
     {
-        $this->height = $height;
+        $this->height = trim($height);
+
+        return $this;
     }
 
     public function getAmount(): ?int

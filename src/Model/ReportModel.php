@@ -515,8 +515,8 @@ class ReportModel extends Model
 
         foreach ($result as $key => $field) {
             $nameModel = explode(' ', $field['name']);
-            $result[$key]['model'] = $nameModel[0]; 
-            $result[$key]['height'] = $nameModel[1]; 
+            $result[$key]['model'] = $nameModel[0];
+            $result[$key]['height'] = $nameModel[1];
         }
 
         dump($result);
