@@ -67,11 +67,16 @@ if (document.querySelector('#addProdCount')) {
 
         if (el.target.id === 'amount') {
             setTimeout(() => {
-                let amount = el.target.value;
+                // let amount = el.target.value;
+                let prod = 0;
                 let calc = document.querySelector('.prod-calculator');
-                let prod = Number(amount) + Number(calc.innerHTML);
+                let amounts = document.querySelectorAll('#amount');
+                for (let am of amounts) {
+                    prod += Number(am.value);
+                }
+                // let prod = Number(amount) + Number(calc.innerHTML);
                 calc.innerHTML = prod;
-            }, 133);
+            }, 166);
         }
 
     }, true);

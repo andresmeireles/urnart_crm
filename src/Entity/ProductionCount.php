@@ -29,6 +29,11 @@ class ProductionCount extends BaseEntity
     private $height;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $obs;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $amount;
@@ -50,12 +55,23 @@ class ProductionCount extends BaseEntity
 
     public function setModel(string $model): self
     {
-        $cleanedModel = ltrim(trim($model));
         $cleanedModel = strtoupper($model);
+        $cleanedModel = ltrim(trim($model));
+
+        if ($cleanedModel === 'S') {
+            $cleanedModel = 'SL';
+        }
 
         $this->model = $cleanedModel;
 
         return $this;
+    }
+
+    public function getFullHeight(): string
+    {
+        $fullHeight = sprintf('%s %s', $this->height, $this->obs);
+
+        return $fullHeight;
     }
 
     public function getHeight(): ?string
@@ -100,6 +116,23 @@ class ProductionCount extends BaseEntity
         }
 
         $this->height = $cleanedHeight;
+
+        return $this;
+    }
+
+    public function getObs(): ?string
+    {
+        return $this->obs;
+    }
+
+    public function setObs(string $obs): self
+    {
+        $allowedHeights = ['SUPER GORDA', 'GORDA', 'BALEIA'];
+        $uObs = strtoupper($obs);
+        if (!in_array($uObs, $allowedHeights)) {
+            throw new \Exception('Observação não existe.');
+        }
+        $this->obs = $uObs;
 
         return $this;
     }

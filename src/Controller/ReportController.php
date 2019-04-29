@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -85,7 +84,7 @@ class ReportController extends AbstractController
      */
     public function openProductionCountReportIndex(ReportModel $model): Response
     {
-        /** @var string */
+        /** @var string $today */
         $today = (new MyDateTime())->output('d-m-Y');
         $aMonthDate = (new MyDateTime())->minusDate('P1M')->output('d-m-Y');
         $aYearnDate = (new MyDateTime())->minusDate('P1Y')->output('d-m-Y');

@@ -508,19 +508,18 @@ class ReportModel extends Model
         $result = $this->getGenericListByDateArrayFields(
             'ProductionCount',
             'date',
-            ['name', 'amount'],
+            ['model', 'height', 'amount'],
             $beginDate,
             $lastDate
         );
 
-        foreach ($result as $key => $field) {
-            $nameModel = explode(' ', $field['name']);
-            $result[$key]['model'] = $nameModel[0];
-            $result[$key]['height'] = $nameModel[1];
-        }
+        /* $model = $this->
+        $height =  */
 
         dump($result);
         die();
+
+        return array();
     }
 
     public function makeDailyProductionCount(string $date): array
@@ -534,6 +533,9 @@ class ReportModel extends Model
         $explodedDate = explode('-', $reportDate);
         $monthBegin = sprintf("%s-%s-%s", '01', $explodedDate[1], $explodedDate[2]);
         $yesterday = sprintf("%s-%s-%s", ( (int) $explodedDate[0]) - 1, $explodedDate[1], $explodedDate[2]);
+        if (strtolower((new \DateTime($yesterday))->format('l')) === 'sunday') {
+            $yesterday = sprintf("%s-%s-%s", ( (int) $explodedDate[0]) - 3, $explodedDate[1], $explodedDate[2]);
+        }
         $todayReport = $this->getByDateIntervalProductAmount($monthBegin, $reportDate);
         $yesterdayReport = $this->getByDateIntervalProductAmount($monthBegin, $yesterday);
 
