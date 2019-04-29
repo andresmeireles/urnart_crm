@@ -74,8 +74,28 @@ class ReportController extends AbstractController
             $lastDate,
         );
 
+        $data = $result->result;
+        $nameResults = array();
+
+        foreach ($data as $value) {
+            $modelHeight = sprintf("%s %s", $value['model'], $value['height']);
+
+            if (array_key_exists($modelHeight, $nameResults)) {
+                $number = $nameResults[$modelHeight];
+                $nameResults[$modelHeight] = $number + $value['amount'];
+                continue;
+            }
+
+            $nameResults[$modelHeight] = $value['amount'];
+        }
+
+        // $res = json_encode($nameResults);
+        $res = $nameResults;
+        
         return $this->render(sprintf('/print/report/%s.html.twig', $reportname), [
-            'data' => $result
+            'model' => $result->model,
+            'height' => $result->height,
+            'result' => $res
         ]);
     }
 

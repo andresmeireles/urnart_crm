@@ -7,7 +7,44 @@
     }
 {% endblock %}
 {% block body %}
-    <pre>
-        {{ dump(data) }}
-    </pre>
+    <script>
+        var products = JSON.parse('{{ result |json_encode|e('js') }}')
+    </script>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tam</th>
+                {% for m in model %}
+                    <th class="text-center mod">{{ m.model }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for h in height %}
+            <tr>
+                <th class="tam">{{ h.height }}{{ h.obs is same as(null) ? '' : ' '~h.obs }}</th>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">0</td>
+                <td class="text-center report-builder">
+                    0
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

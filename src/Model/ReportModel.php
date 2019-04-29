@@ -503,7 +503,7 @@ class ReportModel extends Model
         return $reportData;
     }
 
-    public function getProductsByModelName(string $beginDate, string $lastDate): array
+    public function getProductsByModelName(string $beginDate, string $lastDate): StdResponse
     {
         $result = $this->getGenericListByDateArrayFields(
             'ProductionCount',
@@ -513,13 +513,15 @@ class ReportModel extends Model
             $lastDate
         );
 
-        /* $model = $this->
-        $height =  */
+        $height = $this->dqlConsult("SELECT DISTINCT u.height, u.obs FROM App\Entity\ProductionCount u ORDER BY u.obs ASC");
+        $model = $this->dqlConsult("SELECT DISTINCT u.model FROM App\Entity\ProductionCount u ORDER BY u.model ASC"); 
 
-        dump($result);
-        die();
+        $response = new StdResponse();
+        $response->result = $result;
+        $response->height = $height;
+        $response->model = $model;
 
-        return array();
+        return $response;
     }
 
     public function makeDailyProductionCount(string $date): array
