@@ -5,46 +5,61 @@
             size: landscape;
         }
     }
+    * {
+        font-size: 13.3px !important;
+    }
 {% endblock %}
 {% block body %}
-    <script>
-        var products = JSON.parse('{{ result |json_encode|e('js') }}')
-    </script>
-
-    <table class="table">
+<div class="table-responsive">
+    <table class="table table-sm table-bordered-black">
         <thead>
             <tr>
                 <th>Tam</th>
                 {% for m in model %}
-                    <th class="text-center mod">{{ m.model }}</th>
+                    {% if m.model is same as('CINZARIO') %}
+                        <th class="text-center">CINZ</th>
+                    {% elseif m.model is same as('ECO SV SV') %}
+                        <th class="text-center">ESVSV</th>
+                    {% elseif m.model is same as('PET CAT') %}
+                        <th class="text-center">PCAT</th>
+                    {% elseif m.model is same as('PET DOG') %}
+                        <th class="text-center">PDOG</th>                                               
+                    {% else %}
+                        <th class="text-center mod">{{ m.model }}</th>
+                    {% endif %}
                 {% endfor %}
+                <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
+            {% set counter =  model | length %}
+            {% set reverseModelName = model | reverse %}
             {% for h in height %}
             <tr>
                 <th class="tam">{{ h.height }}{{ h.obs is same as(null) ? '' : ' '~h.obs }}</th>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">0</td>
-                <td class="text-center report-builder">
-                    0
-                </td>
+                {% for item in range(0, (counter - 1)) %}
+                    {% set modelName = reverseModelName[counter - loop.index].model ~ h.height ~ h.obs | trim  %}
+                    <td class="text-center">
+                        {{ result[modelName] ?? 0 }}
+                    </td>
+                {% endfor %}
+                <th class="text-center mod table-info">
+                    {{ heightTotal[h.height~h.obs] ?? 0}}
+                </th>
             </tr>
             {% endfor %}
         </tbody>
+        <tfoot class="table-info">
+            <tr>
+                <th>&nbsp;</th>
+                {% for m in reverseModelName | reverse %}
+                    <th class="text-center mod">
+                        {{ modelTotal[m.model] ?? 0}}
+                    </th>
+                {% endfor %}
+                <th>{{ finalTotal }}</th>
+            </tr>
+        </tfoot>
     </table>
+</div>
 {% endblock %}

@@ -4,6 +4,21 @@
 	min-width: 100%;
 }
 
+.table-bordered-black thead,
+.table-bordered-black thead th,
+.table-bordered-black thead td,
+.table-bordered-black tbody,
+.table-bordered-black tbody th,
+.table-bordered-black tbody td,
+.table-bordered-black tfoot,
+.table-bordered-black tfoot th,
+.table-bordered-black tfoot td,
+.table-bordered-black th,
+.table-bordered-black td,
+.table-bordered-black {
+	border: 1px solid #000
+}
+
 /** put element in bottom */
 .ct-fixed-bottom {
 	bottom: 0%;

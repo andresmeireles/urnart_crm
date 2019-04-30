@@ -508,13 +508,15 @@ class ReportModel extends Model
         $result = $this->getGenericListByDateArrayFields(
             'ProductionCount',
             'date',
-            ['model', 'height', 'amount'],
+            ['model', 'height', 'amount', 'obs'],
             $beginDate,
             $lastDate
         );
 
-        $height = $this->dqlConsult("SELECT DISTINCT u.height, u.obs FROM App\Entity\ProductionCount u ORDER BY u.obs ASC");
-        $model = $this->dqlConsult("SELECT DISTINCT u.model FROM App\Entity\ProductionCount u ORDER BY u.model ASC"); 
+        $height = $this->dqlConsult(
+            "SELECT DISTINCT u.height, u.obs FROM App\Entity\ProductionCount u ORDER BY u.obs ASC"
+        );
+        $model = $this->dqlConsult("SELECT DISTINCT u.model FROM App\Entity\ProductionCount u ORDER BY u.model ASC");
 
         $response = new StdResponse();
         $response->result = $result;

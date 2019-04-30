@@ -76,9 +76,13 @@ class ReportController extends AbstractController
 
         $data = $result->result;
         $nameResults = array();
+        $modelResults = array();
+        $heightResults = array();
+        $finalTotal = 0;
 
         foreach ($data as $value) {
-            $modelHeight = sprintf("%s %s", $value['model'], $value['height']);
+            $modelHeight = sprintf("%s%s%s", $value['model'], $value['height'], $value['obs'] ?? '');
+            $modelHeight = trim($modelHeight);
 
             if (array_key_exists($modelHeight, $nameResults)) {
                 $number = $nameResults[$modelHeight];
@@ -89,12 +93,41 @@ class ReportController extends AbstractController
             $nameResults[$modelHeight] = $value['amount'];
         }
 
+        foreach ($data as $value) {
+            $modelName = sprintf('%s', $value['model']);
+
+            if (array_key_exists($modelName, $modelResults)) {
+                $number = $modelResults[$modelName];
+                $modelResults[$modelName] = $number + $value['amount'];
+                continue;
+            }
+
+            $modelResults[$modelName] = $value['amount'];
+        }
+
+        foreach ($data as $value) {
+            $heightName = sprintf('%s%s', $value['height'], $value['obs']);
+            $finalTotal += $value['amount'];
+            if (array_key_exists($heightName, $heightResults)) {
+                $number = $heightResults[$heightName];
+                $heightResults[$heightName] = $number + $value['amount'];
+                continue;
+            }
+
+            $heightResults[$heightName] = $value['amount'];
+        }
+
         // $res = json_encode($nameResults);
         $res = $nameResults;
+        $modelTotals = $modelResults;
+        $heightTotals = $heightResults;
         
         return $this->render(sprintf('/print/report/%s.html.twig', $reportname), [
             'model' => $result->model,
+            'modelTotal' => $modelTotals,
             'height' => $result->height,
+            'heightTotal' => $heightTotals,
+            'finalTotal' => $finalTotal,
             'result' => $res
         ]);
     }
