@@ -70,7 +70,9 @@ class ReportController extends AbstractController
         $result = $model->makeReportByType($type, $dateOne, $dateTwo);
         $template = sprintf('/print/report/%s.html.twig', $result->template);
         return $this->render($template, [
-            'data' => $result->result
+            'data' => $result->result,
+            'bDate' => $dateOne,
+            'lDate' => $dateTwo
         ]);
     }
 
@@ -143,6 +145,8 @@ class ReportController extends AbstractController
             'height' => $result->height,
             'heightTotal' => $heightTotals,
             'finalTotal' => $finalTotal,
+            'bDate' => $beginDate,
+            'lDate' => $lastDate,
             'result' => $res
         ]);
     }

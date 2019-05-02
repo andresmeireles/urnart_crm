@@ -6,11 +6,12 @@
         }
     }
     * {
-        font-size: 13.3px !important;
+        font-size: 13.3px;
     }
 {% endblock %}
 {% block body %}
 <div class="table-responsive">
+    <div class="h2 text-center">Relatorio de {{ bDate | date('d/m/Y') }} a {{ lDate | date('d/m/Y') }}</div>
     <table class="table table-sm table-bordered-black">
         <thead>
             <tr>
@@ -57,7 +58,7 @@
                         {{ modelTotal[m.model] ?? 0}}
                     </th>
                 {% endfor %}
-                <th>{{ finalTotal }}</th>
+                <th class="text-center">{{ finalTotal }}</th>
             </tr>
         </tfoot>
     </table>

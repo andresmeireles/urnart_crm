@@ -8,9 +8,9 @@
 {% endblock %}
 {% block body %}
 <div class="p-1">
-    <div class="h2">Lista dos produtos</div>
+    <div class="h2 text-center">Relatorio de {{ bDate | date('d/m/Y') }} a {{ lDate | date('d/m/Y') }}</div>
     <div class="column">
-        <table class="table table-bordered table-sm">
+        <table class="table table-bordered-black table-sm">
             <thead>
                 <tr>
                     <th>Nome</th>
