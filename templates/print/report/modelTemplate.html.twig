@@ -1,0 +1,98 @@
+{% extends "headerTemplatePrint.html.twig" %}
+{% block customStyle %}
+    @media print {
+        @page  {
+            size: landscape;
+        }
+    }
+{% endblock %}
+{% block body %}
+<div class="p-1">
+    <div class="h2">Lista dos produtos</div>
+    <div class="column">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Quantidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ECO CV</td>
+                    <td>{{ data['ECO CV'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>ECO SV</td>
+                    <td>{{ data['ECO SV'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>ECO CV SV</td>
+                    <td>{{ data['ECO CV SV'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>ECO SV SV</td>
+                    <td>{{ data['ECO SV SV'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>SL</td>
+                    <td>{{ data['SL'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>P1</td>
+                    <td>{{ data['P1'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>P2</td>
+                    <td>{{ data['P2'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>P3</td>
+                    <td>{{ data['P3'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>G2</td>
+                    <td>{{ data['G2'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>G3</td>
+                    <td>{{ data['G3'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>G5</td>
+                    <td>{{ data['G5'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>M5</td>
+                    <td>{{ data['M5'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>T7</td>
+                    <td>{{ data['T7'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>A9</td>
+                    <td>{{ data['A9'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>X12</td>
+                    <td>{{ data['X12'] ?? 0 }}</td>
+                </tr>
+                <tr>
+                    <td>C3</td>
+                    <td>{{ data['C3'] ?? 0 }}</td>
+                </tr>
+                <tr class="table-light">
+                    <th>TOTAL</th>
+                    <th>{{ data['total'] }}</th>
+                </tr>
+                <tr class="table-light">
+                    <th>TOTAL ESPECIAIS</th>
+                    <th>{{ (data['C3'] ?? 0) + (data['X12'] ?? 0) + (data['A9'] ?? 0) + (data['T7'] ?? 0) + (data['M5'] ?? 0) + (data['G5'] ?? 0) }}</th>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

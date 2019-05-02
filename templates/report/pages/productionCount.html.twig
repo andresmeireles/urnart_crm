@@ -10,7 +10,7 @@
             disabled: true,
             link: 'add',
             class: 'modal-transform',
-            text: 'Adicionar produção modal'
+            text: 'Adicionar produção'
         },
         {
             disabled: true,
@@ -27,6 +27,16 @@
             link: 'make-daily-report',
             class: 'modal-transform',
             text: 'Criar relatorio diario'
+        },
+        {
+            link: 'make-model-report',
+            class: 'modal-transform',
+            text: 'Relatorio por modelo'
+        },
+        {
+            link: 'mhr',
+            class: '',
+            text: 'Relatorio por tamanho'
         }
     ]
 } %}
@@ -261,6 +271,29 @@
                         </div>
                     </div>
             </fieldset>
+            </form>
+        </div>
+        <div class="col fancybox" id="make-model-report" style="display: none">
+            <form method="POST" action="/report/productionCount/mr">
+                <fieldset>
+                    <legend>Relatorio de modelos</legend>
+                        <div class="form-group col">
+                            <input type="submit" class="btn btn-success btn-block disable-on-submit disable-on-submit" value="criar relatorio" />
+                        </div>
+                        <div class="form-row col">
+                            <input type="hidden" name="type" value="model">
+                            <div class="form-group col">
+                                <label for="bregindate">Data de inicio</label>
+                                <input type="hidden" id="begin-date" name="begin-date" />
+                                <input type="text" class="form-control no-keypress calendar-selector" placeholder="Data de inicio" date-target="#begin-date" required />
+                            </div>
+                            <div class="form-group col">
+                                <label for="bregindate">Data final</label>
+                                <input type="hidden" id="last-date" name="last-date" />
+                                <input type="text" class="form-control no-keypress calendar-selector" placeholder="Data final" date-target="#last-date" required />
+                            </div>
+                        </div>
+                </fieldset>
             </form>
         </div>
     </div>

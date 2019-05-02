@@ -60,6 +60,21 @@ class ReportController extends AbstractController
     }
 
     /**
+     * @Route("/report/productionCount/mr", name="make_report_custom", methods="POST")
+     */
+    public function makeRepo(Request $request, ReportModel $model): Response
+    {
+        $type = $request->request->get('type');
+        $dateOne = $request->request->get('begin-date');
+        $dateTwo = $request->request->get('last-date');
+        $result = $model->makeReportByType($type, $dateOne, $dateTwo);
+        $template = sprintf('/print/report/%s.html.twig', $result->template);
+        return $this->render($template, [
+            'data' => $result->result
+        ]);
+    }
+
+    /**
      * @Route("/report/{entity}/{reportname}/print", name="make_report_print", methods="POST")
      */
     public function printAllProductionBalanceReport(

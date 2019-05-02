@@ -564,4 +564,65 @@ class ReportModel extends Model
             'yesterdayVal' => $yesterdayTotal
         ];
     }
+
+    /**
+     * @param string $type
+     * @param string $dateOne
+     * @param string $dateTwo
+     *
+     * @return StdResponse Ira retornar os valores [template] e [result]
+     */
+    public function makeReportByType(string $type, string $dateOne, string $dateTwo): StdResponse
+    {
+        $explodedDate = explode('-', $dateOne);
+        $explodedDateTwo = explode('-', $dateTwo);
+        $startDate = sprintf("%s-%s-%s", $explodedDate[0], $explodedDate[1], $explodedDate[2]);
+        $lastDate = sprintf("%s-%s-%s", $explodedDateTwo[0], $explodedDateTwo[1], $explodedDateTwo[2]);
+        $resultRepo = array();
+        $resultRepo['total'] = 0;
+        switch ($type) {
+            case 'model':
+                $typeName = 'm';
+                break;
+            case 'height':
+                $typeName = 'h';
+                break;
+            default:
+                throw new CustomException('Tipo de modelo não funciona.');
+                break;
+        }
+        $report = $this->getGenericListByDateArrayFields(
+            'ProductionCount',
+            'date',
+            array(),
+            $startDate,
+            $lastDate
+        );
+        /** @var \App\Entity\ProductionCount $r */
+        if ($typeName === 'm') {
+            foreach ($report as $r) {
+                $resultRepo['total'] += $r->getAmount();
+                if (array_key_exists($r->getModel(), $resultRepo)) {
+                    $resultRepo[$r->getModel()] += $r->getAmount();
+                    continue;
+                }
+                $resultRepo[$r->getModel()] = $r->getAmount();
+            }
+        }
+        if ($typeName === 'h') {
+            foreach ($report as $r) {
+                $resultRepo['total'] += $r->getAmount();
+                if (array_key_exists($r->getHeight(), $resultRepo)) {
+                    $resultRepo[$r->getHeight()] += $r->getAmount();
+                    continue;
+                }
+                $resultRepo[$r->getModel()] = $r->getAmount();
+            }
+        }
+        $response = new StdResponse();
+        $response->template = sprintf('%sTemplate', $type);
+        $response->result = $resultRepo;
+
+        return $response;
+    }
 }
