@@ -7,6 +7,7 @@ if (document.querySelector('#romaneioForm')) {
 
             if (el.target.id === 'save-action') {
                 let form = el.target.closest('form');
+                originalAction = document.querySelector('form').getAttribute('action');
                 form.setAttribute('action', '/forms/save');
             }
 
