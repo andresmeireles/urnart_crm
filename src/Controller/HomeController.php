@@ -38,9 +38,7 @@ class HomeController extends AbstractController
      * @return Response
      */
     public function index(ListModel $model, ReportModel $rmodel)
-    {
-        $rmodel->setTruckOrder(33);
-        
+    {        
         //chart
         $boletoValue = 0.0;
         $boletoData = $model->dqlConsult('SELECT u.boletoValue FROM App\Entity\Boleto u');
