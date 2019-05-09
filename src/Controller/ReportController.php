@@ -69,6 +69,7 @@ class ReportController extends AbstractController
         $dateTwo = $request->request->get('last-date');
         $result = $model->makeReportByType($type, $dateOne, $dateTwo);
         $template = sprintf('/print/report/%s.html.twig', $result->template);
+
         return $this->render($template, [
             'data' => $result->result,
             'bDate' => $dateOne,

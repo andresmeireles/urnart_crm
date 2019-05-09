@@ -64,6 +64,11 @@ class ManualOrderReport extends BaseEntity
      */
     private $manualProductCarts;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TravelTruckOrders", inversedBy="orderId")
+     */
+    private $travelTruckOrders;
+
     public function __construct()
     {
         parent::__construct();
@@ -211,5 +216,17 @@ class ManualOrderReport extends BaseEntity
 
         $finalValue = ($cartValue + $this->getFreight()) - $this->getDiscount();
         return $finalValue;
+    }
+
+    public function getTravelTruckOrders(): ?TravelTruckOrders
+    {
+        return $this->travelTruckOrders;
+    }
+
+    public function setTravelTruckOrders(?TravelTruckOrders $travelTruckOrders): self
+    {
+        $this->travelTruckOrders = $travelTruckOrders;
+
+        return $this;
     }
 }

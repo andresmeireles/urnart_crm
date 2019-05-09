@@ -55,13 +55,21 @@ class ProductionCount extends BaseEntity
 
     public function setModel(string $model): self
     {
+        $modelConvertions = [
+            'ECOCVSV' => 'ECO CV SV',
+            'ECOSVSV' => 'ECO SV SV',
+            'ECOCV' => 'ECO CV',
+            'ECOSV' => 'ECO SV'
+        ];
         $cleanedModel = strtoupper($model);
-        $cleanedModel = ltrim(trim($model));
-
+        $cleanedModel = ltrim(trim($cleanedModel));
         if ($cleanedModel === 'S') {
             $cleanedModel = 'SL';
         }
-
+        $cleanedModel = str_replace(' ', '', $cleanedModel);
+        if (array_key_exists($cleanedModel, $modelConvertions)) {
+            $cleanedModel = $modelConvertions[$cleanedModel];
+        }
         $this->model = $cleanedModel;
 
         return $this;
@@ -114,7 +122,6 @@ class ProductionCount extends BaseEntity
             }
             $cleanedHeight = $smallHeights[(int) $cleanedHeight];
         }
-
         $this->height = $cleanedHeight;
 
         return $this;
@@ -157,7 +164,6 @@ class ProductionCount extends BaseEntity
     public function setDate(string $productionDate): self
     {
         $date = (new StringConvertions())->convertStringToDate($productionDate, '-', 'POR', '/');
-
         $this->date = new \DateTime($date, new \DateTimeZone('America/Belem'));
 
         return $this;

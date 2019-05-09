@@ -10,6 +10,8 @@ use App\Utils\Andresmei\FileFunctions;
 use App\Utils\Exceptions\CustomException;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\StringConvertions;
+use App\Entity\ManualOrderReport;
+use App\Entity\TravelTruckOrders;
 
 class ReportModel extends Model
 {
@@ -624,5 +626,41 @@ class ReportModel extends Model
         $response->result = $resultRepo;
 
         return $response;
+    }
+
+    public function dumpFields(string $dateOne, string $dateTwo, ...$fields): array
+    {
+        $explodedDate = explode('-', $dateOne);
+        $explodedDateTwo = explode('-', $dateTwo);
+        $startDate = sprintf("%s-%s-%s", $explodedDate[0], $explodedDate[1], $explodedDate[2]);
+        $lastDate = sprintf("%s-%s-%s", $explodedDateTwo[0], $explodedDateTwo[1], $explodedDateTwo[2]);
+        $results = array();
+        foreach ($fields as $field) {
+            $query = sprintf(
+                'SELECT DISTINCT(u.%s) FROM App\Entity\ProductionCount u WHERE u.date BETWEEN %s AND %s',
+                $field,
+                $startDate,
+                $lastDate
+            );
+            $result = $this->dqlConsult($query);
+            $results[] = $result;
+        }
+
+        return $results;
+    }
+
+    public function setTruckOrder(int $orderId)
+    {
+        $em = $this->em;
+        $orderRegistry = $em->getRepository(ManualOrderReport::class)->find($orderId);
+        if (null === $orderRegistry) {
+            throw new \Exception(sprintf("O pedido %s não existe", $orderId));
+        }
+        $truck = new TravelTruckOrders();
+
+        $truck->addOrderId($orderRegistry);
+        $truck->setActive(true);
+
+        return true;
     }
 }

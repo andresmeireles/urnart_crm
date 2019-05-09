@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Tests\Model;
 
@@ -14,7 +13,7 @@ class FormModelTest extends TestCase
 
     public function testSaveReport()
     {
-        $entityManager = $this->getTestManager(); 
+        $entityManager = $this->getTestManager();
         $formModel = new FormModel($entityManager);
         $data = [];
         $path = 'path';
