@@ -1,4 +1,9 @@
 {% extends "headerTemplatePrint.html.twig" %}
+{% block customStyle %}
+    * {
+        font-family: Arial, Helvetica, sans-serif !important;
+    }
+{% endblock %}
 {% block body %}
     {% set total = 0 %}
     <script>
@@ -16,21 +21,21 @@
             <tr><th colspan="2" class="text-center">AUTORIZAÇÃO DE RETIRADA</th></tr>
             <tr><td colspan="2" class="text-center">{{ 'now' | date('d/m/Y') }}</td></tr>
             <tr>
-                <td>Cliente</td>
+                <th class="text-center">CLIENTE</th>
                 <td>{{ order.customerName }}</td>
             </tr>
-            <tr><td colspan="2" class="text-center">DESCRIÇÃO</td></tr>
+            <tr><th colspan="2" class="text-center">DESCRIÇÃO</th></tr>
             <tr>
-                <td>QUANTIDADE</td>
-                <td>MODELO</td>
+                <th class="text-center">QUANTIDADE</th>
+                <th class="text-center">MODELO</th>
             </tr>
         </thead>
         <tbody>
         {% for item in order.manualProductCarts %}
             {% set total = total + item.productAmount %}
             <tr>
-                <td>{{ item.productAmount }}</td>
-                <td>{{ item.productName }}</td>
+                <td class="text-center">{{ item.productAmount }}</td>
+                <td class="text-center">{{ item.productName }}</td>
             </tr>            
         {% endfor %}
         </tbody>
