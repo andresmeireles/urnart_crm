@@ -106,6 +106,7 @@
                                 <span close="h={{ 'valido' | makeHash }}&i={{ order.id }}"
                                       class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
                             {% endif %}
+                            <a href="order/auth/manual/print/{{ order.id }}"><i class="fas fa-hand-point-right"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -133,6 +134,7 @@
                                     Fechar
                                 </a>
                             {% endif %}
+                            <a href="order/auth/manual/print/{{ order.id }}" class="badge badge-pill badge-secondary"><i class="fas fa-hand-point-right" title="Imprimir autorização"></i></a>
                         </td>
                     </tr>
                 {% endfor %}

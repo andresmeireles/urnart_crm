@@ -1,0 +1,48 @@
+{% extends "headerTemplatePrint.html.twig" %}
+{% block body %}
+    {% set total = 0 %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            var rows = document.querySelectorAll('tbody tr')
+            if (rows.length < 7) { 
+                for (var o = rows.length; o < 7; o++) { 
+                    document.querySelector('tbody').insertAdjacentHTML('beforeend', '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>')
+                }
+            }
+        });
+    </script>
+    <table class="table table-bordered-black table-sm">
+        <thead>
+            <tr><th colspan="2" class="text-center">AUTORIZAÇÃO DE RETIRADA</th></tr>
+            <tr><td colspan="2" class="text-center">{{ 'now' | date('d/m/Y') }}</td></tr>
+            <tr>
+                <td>Cliente</td>
+                <td>{{ order.customerName }}</td>
+            </tr>
+            <tr><td colspan="2" class="text-center">DESCRIÇÃO</td></tr>
+            <tr>
+                <td>QUANTIDADE</td>
+                <td>MODELO</td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in order.manualProductCarts %}
+            {% set total = total + item.productAmount %}
+            <tr>
+                <td>{{ item.productAmount }}</td>
+                <td>{{ item.productName }}</td>
+            </tr>            
+        {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>{{ total }}</td>
+                <td>&nbsp;</td>
+            </tr>
+        </tfoot>
+    </table>
+{% endblock %}

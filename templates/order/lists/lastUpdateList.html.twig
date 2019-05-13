@@ -91,8 +91,9 @@
                                 Editar
                             </a>
                             <a class="badge badge-pill badge-danger order-close" href="/order/manual/{{list.getId}}">
-                                Fechar
+                                <i class="fas fa-times-circle" title="Fechar pedido"></i>
                             </a>
+                            <a href="order/auth/manual/print/{{ list.id }}" class="badge badge-pill badge-secondary"><i class="fas fa-hand-point-right" title="Imprimir autorização"></i></a>
                         {% endif %}
                     </div>
                 </div>

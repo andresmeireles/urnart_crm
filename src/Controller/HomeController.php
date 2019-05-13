@@ -38,7 +38,7 @@ class HomeController extends AbstractController
      * @return Response
      */
     public function index(ListModel $model, ReportModel $rmodel)
-    {        
+    {
         //chart
         $boletoValue = 0.0;
         $boletoData = $model->dqlConsult('SELECT u.boletoValue FROM App\Entity\Boleto u');
@@ -82,6 +82,14 @@ class HomeController extends AbstractController
     public function greeting(?string $name = 'meu amigo'): Response
     {
         return new Response(sprintf('Olá %s', $name));
+    }
+
+    /**
+     * @Route("test")
+     */
+    public function testPage()
+    {
+        return $this->render('home/test.html.twig');
     }
 
     /**

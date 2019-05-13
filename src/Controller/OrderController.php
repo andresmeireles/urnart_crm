@@ -377,6 +377,18 @@ class OrderController extends AbstractController
     }
 
     /**
+     * @Route("order/auth/manual/print/{orderId<\d+>}")
+     */
+    public function printManualOrderProductAuthAllowWithdraw(int $orderId): Response
+    {
+        $productOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
+
+        return $this->render('/order/printOrder/authProduct.html.twig', [
+            'order' => $productOrder
+        ]);
+    }
+
+    /**
      * @Route("/order/manual/{orderId<\d+>}", methods={"POST"})
      *
      * @param int $orderId
