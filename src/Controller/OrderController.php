@@ -46,7 +46,7 @@ class OrderController extends AbstractController
      * @Route("/order", name="order")
      *
      */
-    public function index(Request $request, PaginatorInterface $paginator, IndexManagerInterface $indexingManager): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
         $manualOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(array(), array(
@@ -57,11 +57,7 @@ class OrderController extends AbstractController
             $manualOrder,
             $request->query->getInt('page', 1)
         );
-/* 
-        $xof = $indexingManager->index($manualOrder, $this->getDoctrine()->getManager());
-        dump($xof);
-        die();
- */
+
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
             'manualOrder' => $paginatedOrders
