@@ -57,11 +57,11 @@ class OrderController extends AbstractController
             $manualOrder,
             $request->query->getInt('page', 1)
         );
-
+/* 
         $xof = $indexingManager->index($manualOrder, $this->getDoctrine()->getManager());
         dump($xof);
         die();
-
+ */
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
             'manualOrder' => $paginatedOrders

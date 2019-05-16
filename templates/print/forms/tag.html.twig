@@ -55,7 +55,9 @@ body{height:100%;}
                 <div class="col">
                     {% if data.city == '' %}
                         {% set fontsize = 'h1' %}
-                    {% elseif data.name | length > 19 %}
+                    {% elseif data.name | length < 25 %}
+                        {% set fontsize = 'h2' %}
+                    {% elseif data.name | length > 25 %}
                         {% set fontsize = 'h52' %}
                     {% else %}
                         {% set fontsize = 'h2' %}
