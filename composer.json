@@ -6,6 +6,7 @@
     "require": {
         "php": "^7.2",
         "ext-iconv": "*",
+        "algolia/search-bundle": "^3.4",
         "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "jms/serializer": "^2.2",
         "knplabs/knp-paginator-bundle": "^3.0",
@@ -31,7 +32,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.1",
-        "mikey179/vfsStream": "^1.6",
+        "mikey179/vfsstream": "^1.6",
         "phpstan/phpstan": "^0.10.5",
         "phpstan/phpstan-doctrine": "^0.10.0",
         "phpstan/phpstan-symfony": "^0.10.2",

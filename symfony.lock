@@ -1,4 +1,19 @@
 {
+    "algolia/algoliasearch-client-php": {
+        "version": "1.28.0"
+    },
+    "algolia/search-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "e4763dc0b1cb323ae78d414ded0cd1ae914fe205"
+        },
+        "files": [
+            "./config/packages/algolia_search.yaml"
+        ]
+    },
     "behat/transliterator": {
         "version": "v1.2.0"
     },
@@ -395,6 +410,9 @@
     },
     "symfony/security-http": {
         "version": "v4.2.0"
+    },
+    "symfony/serializer": {
+        "version": "v4.2.8"
     },
     "symfony/stopwatch": {
         "version": "v4.1.0"

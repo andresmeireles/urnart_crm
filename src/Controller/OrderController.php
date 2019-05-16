@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Algolia\SearchBundle\IndexManagerInterface;
 
 /**
  * Controller das paginas de pedidos
@@ -45,7 +46,7 @@ class OrderController extends AbstractController
      * @Route("/order", name="order")
      *
      */
-    public function index(Request $request, PaginatorInterface $paginator): Response
+    public function index(Request $request, PaginatorInterface $paginator, IndexManagerInterface $indexingManager): Response
     {
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
         $manualOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(array(), array(
@@ -56,6 +57,10 @@ class OrderController extends AbstractController
             $manualOrder,
             $request->query->getInt('page', 1)
         );
+
+        $xof = $indexingManager->index($manualOrder, $this->getDoctrine()->getManager());
+        dump($xof);
+        die();
 
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
