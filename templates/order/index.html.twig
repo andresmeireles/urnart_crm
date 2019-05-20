@@ -56,6 +56,14 @@
         </script>
     {% endfor %}
     <div class="col p-3 py-5">
+        {% set info = {
+            entity: 'ManualOrderReport',
+            field: 'customerName',
+            placeholder: 'Ordem' 
+        } %}
+        <div class="py-2">
+            {% include "components/searchBar.html.twig" with {'data': info} %}  
+        </div>
         {% if orders == [] and manualOrder == [] %}
             <h3>Não ha pedidos cadastrados no momento. Você pode cadastralos clicando <a class="text-secondary" href="forms/order">aqui</a></h3>
         {% else %}

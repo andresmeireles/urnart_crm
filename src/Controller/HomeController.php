@@ -12,11 +12,10 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Model\ListModel;
 use App\Entity\ManualOrderReport;
-use App\Model\ReportModel;
 
 /**
  * Classe do controller home
@@ -37,7 +36,7 @@ class HomeController extends AbstractController
      *
      * @return Response
      */
-    public function index(ListModel $model, ReportModel $rmodel)
+    public function index(ListModel $model)
     {
         //chart
         $boletoValue = 0.0;
@@ -59,6 +58,23 @@ class HomeController extends AbstractController
             'values' => array($boletoValue, $orderValue),
             'amount' => array($boletoAmount, $orderAmount)
         ]);
+    }
+
+    /**
+     * @Route("/search", name="simple.search", methods="GET")
+     */
+    public function simpleSearchEngine(Request $request): Response
+    {
+        $query = $request->query;
+        $link = $query->get('link');
+        $entity = $query->get('entity');
+        $type = $query->get('type');
+        $queryMessage = $query->get('query');
+
+        dump($link, $entity, $type, $queryMessage);
+        die();
+
+        return $this->render();
     }
 
     /**

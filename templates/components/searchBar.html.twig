@@ -1,0 +1,13 @@
+<div class="col">
+    <form action="\search" method="get">
+        <div class="input-group mb-3">
+            <input type="hidden" name="link" value="{{app.request.getUri}}">
+            <input type="hidden" name="entity" value="{{data.entity}}">
+            <input type="hidden" name="type" value="{{data.field}}">
+            <input type="text" class="form-control" placeholder="Pesquisar {{ data.placeholder ?? '' }}" aria-label="Pesquisar {{ data.placeholder ?? '' }}" name="query" aria-describedby="button-addon2">
+            <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </form>
+</div>
