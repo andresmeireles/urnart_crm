@@ -52,31 +52,33 @@ document.addEventListener('click', function(el) {
 });
 
 document.addEventListener('keyup', function (el) {
-	let formId = document.querySelector('form').getAttribute('id');
-	
-	if (el.target.id == 'inputOther' || el.target.id == 'colors') {
-		if (el.which === 27) {
-			hideInputField(el.target.id);
-		}
-		
-		var input = el.target.value;
-		var select = document.querySelector(`#${formId}	#${el.target.id}List`);
-		
-		if (el.keyCode == 13) {
-			if (input.value == '') {
-				return false;
+	if (document.querySelector('.feedstock')) {
+		let formId = document.querySelector('form').getAttribute('id');
+
+		if (el.target.id == 'inputOther' || el.target.id == 'colors') {
+			if (el.which === 27) {
+				hideInputField(el.target.id);
 			}
 			
-			var optValue = input;
-			var option = document.createElement('option');
-			option.text = optValue;
-			option.value = optValue.toLowerCase();
-			option.id = (optValue.replace(/\s/g, '-')).toLowerCase();
-			option.setAttribute('selected', '');
+			var input = el.target.value;
+			var select = document.querySelector(`#${formId}	#${el.target.id}List`);
 			
-			addOnUl(optValue, el.target.id);
-			select.add(option, null);
-			hideInputField(el.target.id);
+			if (el.keyCode == 13) {
+				if (input.value == '') {
+					return false;
+				}
+				
+				var optValue = input;
+				var option = document.createElement('option');
+				option.text = optValue;
+				option.value = optValue.toLowerCase();
+				option.id = (optValue.replace(/\s/g, '-')).toLowerCase();
+				option.setAttribute('selected', '');
+				
+				addOnUl(optValue, el.target.id);
+				select.add(option, null);
+				hideInputField(el.target.id);
+			}
 		}
 	}
 })

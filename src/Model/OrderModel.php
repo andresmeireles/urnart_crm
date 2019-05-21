@@ -52,7 +52,9 @@ class OrderModel extends Model
             $order->setTransporter($transporter);
             $customPort = array_key_exists('port', $information) ? $information['port'] : null;
             if (!is_null($transporter) && !is_null($customPort)) {
-                $customPort = (ltrim(trim($information['port'])) === $transporter->getPort()) ? null : ltrim(trim($information['port']));
+                $customPort = (ltrim(trim($information['port'])) === $transporter->getPort())?
+                null:
+                ltrim(trim($information['port']));
             }
             $order->setCustomPort($customPort);
             $paymentType = $this->em->getRepository(PaymentType::class)->find($information['formPg']);

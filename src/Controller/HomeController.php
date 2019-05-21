@@ -61,23 +61,6 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/search", name="simple.search", methods="GET")
-     */
-    public function simpleSearchEngine(Request $request): Response
-    {
-        $query = $request->query;
-        $link = $query->get('link');
-        $entity = $query->get('entity');
-        $type = $query->get('type');
-        $queryMessage = $query->get('query');
-
-        dump($link, $entity, $type, $queryMessage);
-        die();
-
-        return $this->render();
-    }
-
-    /**
     * @Route("/financeiro")
     *
     * @return Response  Symofny response object.
@@ -101,11 +84,11 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("test")
+     * @Route("/test")
      */
     public function testPage()
     {
-        return $this->render('home/test.html.twig');
+        return $this->render('newpagesidebar.html.twig');
     }
 
     /**

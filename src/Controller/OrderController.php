@@ -46,8 +46,20 @@ class OrderController extends AbstractController
      * @Route("/order", name="order")
      *
      */
-    public function index(Request $request, PaginatorInterface $paginator): Response
+    public function index(Request $request, PaginatorInterface $paginator, OrderModel $orderModel): Response
     {
+        $query = $request->query;
+        if (!empty($query->get('query'))) {
+            $entity = sprintf('App\Entity\%s', $query->get('entity'));
+            $field = $query->get('field');
+            $queryMessage = $query->get('query');
+            $fomartQuery = sprintf("SELECT u FROM %s u WHERE u.%s LIKE '%%%s%%'", $entity, $field, $queryMessage);
+            $result = $orderModel->dqlConsult($fomartQuery);
+            $manualOrderSearchResult = $paginator->paginate(
+                $result,
+                $request->query->getInt('page', 1)
+            );
+        }
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
         $manualOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(array(), array(
             'lastUpdate' => 'DESC'
@@ -59,9 +71,32 @@ class OrderController extends AbstractController
         );
 
         return $this->render('order/index.html.twig', [
-            'orders' => $orders,
-            'manualOrder' => $paginatedOrders
+            'orders' => $orders ?? [],
+            'manualOrder' => $manualOrderSearchResult ?? $paginatedOrders ?? []
         ]);
+    }
+
+    /**
+     * @Route("order/search", name="simple.search", methods="GET")
+     */
+    public function simpleSearchEngine(
+        Request $request,
+        PaginatorInterface $paginator,
+        OrderModel $orderModel
+    ): Response {
+        $query = $request->query;
+        $routeName = $query->get('name');
+        $entity = sprintf('App\Entity\%s', $query->get('entity'));
+        $field = $query->get('field');
+        $queryMessage = $query->get('query');
+        $fomartQuery = sprintf("SELECT u FROM %s u WHERE u.%s = '%s'", $entity, $field, $queryMessage);
+        $result = $orderModel->dqlConsult($fomartQuery);
+        $manualOrderResult = $paginator->paginate(
+            $result,
+            $request->query->getInt('page', 1)
+        );
+        
+        return $this->redirectToRoute($routeName, ['manualOrderSearch' => $manualOrderResult], 301);
     }
 
     /**

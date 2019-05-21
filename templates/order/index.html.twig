@@ -1,8 +1,9 @@
 {% extends 'index.html.twig' %}
 {% block title %}Pedidos{% endblock %}
 {% block content %}
-    <div class="bg-secondary">
-        <div class="sidebar-sticky p-1 my-3">
+<div class="row">
+    <div class="col bg-secondary" style="margin-left: -3px;">
+        <div class="sidebar-sticky">
             <ul class="list-unstyled">
                 <li class="px-3"><span class="px-3 mx-3">&nbsp;</span></li>
                 <li class="noline text d-none">
@@ -55,9 +56,11 @@
             {% endfor %}
         </script>
     {% endfor %}
-    <div class="col p-3 py-5">
+    <div class="col px-3">
         {% set info = {
             entity: 'ManualOrderReport',
+            route: '/order',
+            name: 'order',
             field: 'customerName',
             placeholder: 'Ordem' 
         } %}
@@ -159,4 +162,5 @@
     {% for order in manualOrder %}
         {% include '/order/pages/viewManualOrder.html.twig' with {'order' : order } %}
     {% endfor %}
+</div>
 {% endblock %}

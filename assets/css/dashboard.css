@@ -2,6 +2,36 @@ body {
   font-size: .875rem;
 }
 
+.top_nav {
+  display: block;
+  margin-left: 230px;
+}
+
+.nav_menu {
+  float: left;
+  background: #EDEDED;
+  border-bottom: 1px solid #D9DEE4;
+  margin-bottom: 10px;
+  width: 100%;
+  position: relative;
+}
+
+.left_col {
+  min-height: 100%;
+  width: 230px;
+  padding: 0;
+  position: absolute;
+  display: -ms-flexbox;
+  display: flex;
+  z-index: 1;
+}
+
+.right_col {
+  padding: 10px 20px 0;
+  margin-left: 230px;
+  min-height: 1780px;
+}
+
 .feather {
   width: 16px;
   height: 16px;

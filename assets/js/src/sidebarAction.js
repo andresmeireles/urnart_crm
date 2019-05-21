@@ -12,10 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	const hide = (el, div) => {
 		div.classList.add('col-md-0');
 		div.classList.remove('col-2');
+		div.classList.remove('mx-2');
 		//div.classList.remove('sidebar-fixed-width');
+		div.querySelector('#sidebar-icons').classList.add('my-4');
 		div.classList.add('px-2');
 		el.classList.add('hide-content');
-		document.querySelector('#content').classList.add('px-5');
+		document.querySelector('#content').classList.add('mx-5');
 		let sideIcons = document.querySelectorAll('.side-icons');
 		for (let icon of sideIcons) {
 			icon.classList.add('fa-2x');
@@ -26,10 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	const show = (el, div) => {
 		//div.classList.add('sidebar-fixed-width');
 		div.classList.remove('col-md-0');
+		div.classList.add('mx-2');
 		div.classList.add('col-2');
 		div.classList.remove('px-2');
 		el.classList.remove('hide-content');
-		document.querySelector('#content').classList.remove('px-5');
+		div.querySelector('#sidebar-icons').classList.remove('my-4');
+		document.querySelector('#content').classList.remove('mx-5');
 		let sideIcons = document.querySelectorAll('.side-icons');
 		for (let icon of sideIcons) {
 			icon.classList.remove('fa-2x');

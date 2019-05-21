@@ -4,6 +4,23 @@
 	min-width: 100%;
 }
 
+.custom-div {
+	position: relative;
+	width: 100%;
+	min-height: 1px;
+}
+
+.custom-row {
+	display: flex;
+	flex-wrap: wrap;
+	margin-left: -15px;
+}
+
+.no-margin-row {
+	display: flex;
+	flex-wrap: wrap;
+}
+
 .table-bordered-black thead,
 .table-bordered-black thead th,
 .table-bordered-black thead td,
