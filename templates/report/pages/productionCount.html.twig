@@ -40,7 +40,50 @@
         }
     ]
 } %}
-{% include "components/simpleBar.html.twig" with obj %}
+{# {% include "components/simpleBar.html.twig" with obj %} #}
+{% set btn = {
+    title: 'Ações',
+    buttoms: [
+        {
+            label: 'Adicionar produtos',
+            link: '#',
+            modal: true,
+            id: 'add'
+        },
+        {
+            modal: true,
+            id: 'make-daily-report',
+            link: '#',
+            icon: 'fas fa-chalkboard-teacher',
+            label: 'Criar relatorio diario'
+        },
+        {
+            modal: true,
+            link: '#',
+            id: 'make-report',
+            label: 'Criar balanço do mês'
+        },
+        {
+            modal: false,
+            link: '/check-all-entries',
+            icon: 'fas fa-exclamation-triangle',
+            label: 'Ver todas as entradas'
+        },
+        {
+            modal: true,
+            id: 'make-model-report',
+            link: '#',
+            label: 'Relatorio por modelo'
+        },
+        {
+            link: '/mhr',
+            label: 'Relatorio por tamanho',
+            color: 'danger'
+        }
+    ]
+} %}
+{% include "components/splitButtomBar.html.twig" with btn %}
+
 <div class="col px-3 py-5" id="addProdCount">
     <div class="col">
         <h2>Relatorios</h2>

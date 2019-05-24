@@ -1,3 +1,9 @@
+// Import Custom SB Admin 2 Variables (Overrides Default Bootstrap Variables)
+@import "variables.scss";
+
+// Import vendor libs
+//@import "../vendor/bootstrap/scss/bootstrap.scss";
+@import '~bootstrap/scss/bootstrap.scss';
 @import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
 @import '~@fortawesome/fontawesome-free/scss/solid.scss';
 @import '~@fortawesome/fontawesome-free/scss/brands.scss';
@@ -7,8 +13,6 @@
 @import '~@fancyapps/fancybox/src/css/share.css';
 @import '~@fancyapps/fancybox/src/css/slideshow.css';
 @import '~@fancyapps/fancybox/src/css/thumbs.css';
-@import '~tablesorter/dist/css/scss/theme.scss';
-@import '~tablesorter/dist/css/theme.default.min.css';
 @import '~vex-js/sass/vex.sass';
 @import '~vex-js/sass/vex-theme-default.sass';
 @import '~noty/src/noty.scss';
@@ -16,8 +20,24 @@
 @import '~balloon-css/src/balloon.scss';
 @import "~filepond/dist/filepond.min.css";
 @import '~@chenfengyuan/datepicker/dist/datepicker.min.css';
-@import '../css/dashboard.css';
-@import '../css/theme.css';
-@import '../css/theme_complement.css';
+
+// Import Custom SB Admin 2 Mixins and Components
+@import "mixins.scss";
+@import "global.scss";
+@import "utilities.scss";
+
+// Custom Components
+@import "dropdowns.scss";
+@import "navs.scss";
+@import "buttons.scss";
+@import "cards.scss";
+@import "charts.scss";
+@import "login.scss";
+@import "error.scss";
+@import "footer.scss";
+
+// @import '../css/dashboard.css';
+// @import '../css/theme.css';
+// @import '../css/theme_complement.css';
 @import '../css/notify.css';
 @import "../css/components.css";

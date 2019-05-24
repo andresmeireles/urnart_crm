@@ -104,9 +104,13 @@ class ProductionCount extends BaseEntity
             21 => '210',
             1  => 'T1',
             2  => 'T2',
-            3  => 'T3'
+            3  => 'T3',
+            'T1' => 'T1',
+            'T2' => 'T2',
+            'T3' => 'T3'
         ];
         $cleanedHeight = ltrim(trim($height));
+        $cleanedHeight = strtoupper($cleanedHeight);
         if (strlen($cleanedHeight) > 3) {
             throw new CustomException(sprintf(
                 'Tamanho %s tem mais de três digitos, tamanhos não devem ter mais de 3 digitos.',

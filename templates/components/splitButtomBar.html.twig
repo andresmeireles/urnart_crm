@@ -1,0 +1,32 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">{{ title }}</h6>
+    </div>
+    <script>
+        document.addEventListener('mouseover', (el) => {
+            if (el.target.classList.contains('show-label')) {
+                var btns = el.target.closest('div').querySelectorAll('.hidden-label');
+                for (let b of btns) {
+                    b.classList.add('d-none');
+                }
+                el.target.closest('a').querySelector('.hidden-label').classList.remove('d-none');
+            }
+        });/* 
+        document.addEventListener('mouseout', (el) => {
+            if (el.target.classList.contains('show-label')) {
+                el.target.closest('a').querySelector('.hidden-label').classList.add('d-none');
+            }
+        }); */
+    </script>
+    <div class="card-body" id="hide-icon-names">
+        <!-- Circle Buttons (Large) -->
+        {% for btn in buttoms %}
+            <a href="{{ btn.link and btn.modal is defined and btn.modal is same as(true) ? btn.link : '#' }}" {% if btn.modal is defined and btn.modal is same as(true) %}data-fancybox data-src="#{{btn.id}}"{% endif %} class="btn btn-{{btn.color ?? 'primary'}} btn-icon-split mx-1">
+                <span class="icon text-white-50 show-label">
+                    <i class="{{ btn.icon ?? 'fas fa-info-circle' }} show-label"></i>
+                </span>
+                <span class="text show-label hidden-label d-none">{{ btn.label }}</span>
+            </a>
+        {% endfor %}
+    </div>
+</div>

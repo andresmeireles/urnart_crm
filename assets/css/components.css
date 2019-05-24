@@ -4,3 +4,48 @@
     height: 8px;
     position: relative;
 }
+
+.table-bordered-black thead,
+.table-bordered-black thead th,
+.table-bordered-black thead td,
+.table-bordered-black tbody,
+.table-bordered-black tbody th,
+.table-bordered-black tbody td,
+.table-bordered-black tfoot,
+.table-bordered-black tfoot th,
+.table-bordered-black tfoot td,
+.table-bordered-black th,
+.table-bordered-black td,
+.table-bordered-black {
+	border: 1px solid #000
+}
+
+/** put element in bottom */
+.ct-fixed-bottom {
+	bottom: 0%;
+}
+
+/** vex z-index */
+.vex-overlay {
+	z-index: 99997 !important;
+}
+
+.vex {
+	z-index: 99998 !important
+}
+
+.action-buttons a {
+	margin: 0px 70px 0px 0px;
+}
+/** end custom vex css */
+
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-group { padding: 2px 5px; }
+.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+
+.cursor-decoration {
+	cursor: pointer;
+}

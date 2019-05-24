@@ -9,6 +9,8 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
+  <title>SB Admin 2 - Dashboard</title>
+
   <!-- Custom fonts for this template-->
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
@@ -38,7 +40,6 @@
 </head>
 
 <body id="page-top">
-  {% include 'components/notification.html.twig' %}
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -46,7 +47,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
@@ -77,45 +78,28 @@
             </div>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link{% if item.subitems is defined %} collapsed{% endif %}" href="{{ item.route }}" {% if item.subitems is defined %}data-toggle="collapse" data-target="#{{item.collapseName}}" aria-expanded="true" aria-controls="{{item.collapseName}}"{% endif %}>
+            <a class="nav-link{% if item.subitems is defined %} collapsed{% endif %}" href="{{ item.route }}" {% if item.subitems is defined %}data-toggle="collapse" data-target="#{{item.subitems.name}}" aria-expanded="true" aria-controls="{{item.subitems.name}}"{% endif %}>
               <i class="fas fa-fw {{item.icon }}"></i>
               <span>{{ item.name }}</span>
             </a>
             {% if item.subitems is defined %}
-              <div id="{{ item.collapseName }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                {% for sitem in item.subitems %}
-                  {% if sitem.name is defined %}<h6 class="collapse-header">{{ sitem.name }}</h6>{% endif %}
-                    {% for subitem in sitem.items %}
-                      <a class="collapse-item" href="{{ subitem.route }}">{{ subitem.name }}</a>
-                    {% endfor %}
-                  {% endfor %}
-                </div>
+            <div id="{{ item.subitems.name }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+              <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">{{ item.subitems.name }}</h6>
+                {% for subitem in item.subitems.items %}
+                  <a class="collapse-item" href="{{ subitem.route }}">{{ subitem.name }}</a>
+                {% endfor %}
               </div>
+            </div>
             {% endif %}
           </li>
           {% endif %}
       {% endfor %}
 
-      {% if is_granted('ROLE_SUPER_ADMIN') %}
-       <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="/admin">
-          <i class="fas fa-fw fa-tools"></i>
-          <span>Admin</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">  
-      {% endif %}
-
       <!-- Sidebar Toggler (Sidebar) -->
-      {# <div class="text-center d-none d-md-inline">
+      <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div> #}
+      </div>
 
     </ul>
     <!-- End of Sidebar -->
@@ -130,7 +114,7 @@
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
           <!-- Sidebar Toggle (Topbar) -->
-          <button id="sidebarToggleTop" class="btn btn-link {# d-md-none #} rounded-circle mr-3">
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
 
@@ -170,7 +154,7 @@
             </li>
 
             <!-- Nav Item - Alerts -->
-            {# <li class="nav-item dropdown no-arrow mx-1"> \\ FAZER ISSO MAIS TARDE
+            {# <li class="nav-item dropdown no-arrow mx-1"> //VER ISSO MAIS TARDE
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
@@ -219,7 +203,7 @@
             </li> #}
 
             <!-- Nav Item - Messages -->
-            {# <li class="nav-item dropdown no-arrow mx-1"> \\ FAZER MAIS TARDE
+            {# <li class="nav-item dropdown no-arrow mx-1"> \\ FAZER ISSO MAIS TARDE
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-envelope fa-fw"></i>
                 <!-- Counter - Messages -->
@@ -274,14 +258,14 @@
               </div>
             </li> #}
 
-            <!-- divisor -->
+            <!-- divider on topbar -->
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="/defaultImage.jpg">
+                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -325,9 +309,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <script>
-            </script>
-            <span>Copyright &copy; Urnas Mart {{ 'now' | date('Y') }}</span>
+            <span>Copyright &copy; Your Website 2019</span>
           </div>
         </div>
       </footer>

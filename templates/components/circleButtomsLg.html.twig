@@ -1,0 +1,13 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">{{ data.title }}</h6>
+    </div>
+    <div class="card-body">
+        <!-- Circle Buttons (Large) -->
+        {% for btn in data.buttoms %}
+            <a href="{{ btn.link and btn.modal is defined and btn.modal is same as(true) ? btn.link : '#' }}" {% if btn.modal is defined and btn.modal is same as(true) %}data-fancybox data-src="#{{btn.id}}"{% endif %} class="btn btn-{{btn.color ?? 'primary'}} btn-circle btn-lg">
+                <i class="{{ btn.icon ?? 'fas fa-info-circle' }}"></i>
+            </a>
+        {% endfor %}
+    </div>
+</div>

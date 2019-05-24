@@ -3,6 +3,8 @@
 parameters:
     locale: 'en'
 
+    interface_version: 2.0
+
     # vich uploader parameters
     app.path.user_profile_images: /uploads/images/profile
 

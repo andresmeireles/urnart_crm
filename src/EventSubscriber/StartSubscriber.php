@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Model\ReportModel;
 use App\Utils\Andresmei\StdResponse;
 use App\Utils\Andresmei\WriteBoletoReport;
-use App\Utils\Exceptions\UserNotLoggedException;
+use Symfony\Component\Yaml\Yaml;
 
 class StartSubscriber extends AbstractController implements EventSubscriberInterface
 {
@@ -18,12 +18,18 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
 
         $this->checkIfFolderExists();
 
-        $fileName = sprintf('Utils/ReportFiles/%s.yaml', $today->format('d-m-Y') );
+        $fileName = sprintf('Utils/ReportFiles/%s.yaml', $today->format('d-m-Y'));
 
         if (!file_exists(__DIR__.'/../'.$fileName)) {
             $this->writeDaylyBoletoRegister($today, $this);
         }
-        
+
+        $getFile = file_get_contents(__DIR__.'/../../config/system_menus.yaml');
+        if (is_string($getFile)) {    
+            $menus = Yaml::parse($getFile);
+            $this->get('twig')->addGlobal('menus', $menus);
+        }
+
         return;
     }
     

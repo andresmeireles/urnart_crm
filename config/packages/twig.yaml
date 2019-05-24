@@ -4,3 +4,5 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     cache: false
+    globals:
+        version: '%interface_version%'

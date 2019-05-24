@@ -50,23 +50,28 @@ class ReportModel extends Model
         $em = $this->em;
         $info = new NestedArraySeparator($data);
         $entityData = $info->getArrayInArray();
-        foreach ($entityData as $data) {
-            $class = new $entity;
-            foreach ($data as $key => $value) {
-                $methodName = sprintf('set%s', ucfirst($key));
-                
-                $reflectFunc = new \ReflectionClass($class);
-                $classReflec = $reflectFunc->getMethod($methodName)->getParameters()[0]->getType();
-                
-                if ($classReflec !== null) {
-                    $type = $classReflec->getName();
-                    $value = (new StringConvertions())->convertValue($type, $value);
-                }
+        // $em->getConnection()->begin
+        try {
+            foreach ($entityData as $data) {
+                $class = new $entity;
+                foreach ($data as $key => $value) {
+                    $methodName = sprintf('set%s', ucfirst($key));
+                    
+                    $reflectFunc = new \ReflectionClass($class);
+                    $classReflec = $reflectFunc->getMethod($methodName)->getParameters()[0]->getType();
+                    
+                    if ($classReflec !== null) {
+                        $type = $classReflec->getName();
+                        $value = (new StringConvertions())->convertValue($type, $value);
+                    }
 
-                $class->$methodName($value);
+                    $class->$methodName($value);
+                }
+                $em->persist($class);
             }
-            $em->persist($class);
             $em->flush();
+        } catch (CustomException $e) {
+            throw new \Exception($e->getMessage());
         }
 
         return new FlashResponse(200, 'success', 'Ação concluida com sucesso.');

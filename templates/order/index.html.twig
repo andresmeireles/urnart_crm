@@ -2,6 +2,8 @@
 {% block title %}Pedidos{% endblock %}
 {% block content %}
 <div class="row">
+    {% if version < 2 %}
+    <!-- second sidebar -->
     <div class="col bg-secondary" style="margin-left: -3px;">
         <div class="sidebar-sticky">
             <ul class="list-unstyled">
@@ -37,6 +39,8 @@
             </ul>
         </div>
     </div>
+    <!-- end of seccond sidebar -->
+    {% endif %}
     {% for label, messages in app.flashes %}
         <script>
             {% for message in messages %}

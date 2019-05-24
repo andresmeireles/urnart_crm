@@ -5,8 +5,6 @@
  */
 
 require("bootstrap");
-require("imask");
-require("tablesorter");
 require("jquery-mask-plugin");
 require("devbridge-autocomplete");
 
@@ -54,7 +52,6 @@ import "chartjs-plugin-labels";
 //globals
 global.$ = global.jQuery = $;
 global.axios = require("axios");
-global.tablesorter = require("tablesorter");
 global.rot = require("rot");
 global.noty = noty;
 global.numeral = numeralJs;
@@ -103,6 +100,9 @@ global.checkRequired = require("./src/helpers/functions/checkRequired");
 /***********************
  ******* IMPORTS *******
  ***********************/
+
+//SIDEBAR
+import "./src/sidebar/sidebar";
 
 // GLOBAL IMPORT
 import "./src/logoutAction";
@@ -173,10 +173,3 @@ import "./src/helpers/classes/autoSubmit";
 import "./src/helpers/classes/autoBlur";
 import "./src/helpers/classes/numbersOnly";
 import "./src/helpers/classes/images";
-
-if (document.querySelector(".f-date")) {
-  var dateMask = new IMask(document.querySelector(".f-date"), {
-    mask: Date,
-    lazy: false
-  });
-}
