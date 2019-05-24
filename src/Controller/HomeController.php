@@ -38,8 +38,25 @@ class HomeController extends AbstractController
      */
     public function index(ListModel $model)
     {
-        $openOrder = $model->dqlConsult('SELECT COUNT(u) FROM App\Entity\ManualOrderReport u WHERE u.active = 1');
+        $openOrder = ['value' => 0, 'amount' => 0];
+        $closeOrder = $openOrder;
         //chart
+
+        $aYearOrderReport = [];
+        $currentYearReport = [];
+        $currentYearReportData = $model->dqlConsult(
+            sprintf(
+                'SELECT u FROM App\Entity\ManualOrderReport WHERE YEAR(u.date) = %s',
+                (new \DateTime('now'))->format('Y')
+            )
+        );
+        /** @var ManualOrderReport $rd */
+        foreach ($currentYearReportData as $rd) {
+            # code...
+        }
+
+
+
         $boletoValue = 0.0;
         $boletoData = $model->dqlConsult('SELECT u.boletoValue FROM App\Entity\Boleto u');
         $boletoAmount = count($boletoData);
@@ -52,13 +69,21 @@ class HomeController extends AbstractController
         /** @var ManualOrderReport $key */
         foreach ($orderData as $key) {
             $orderValue += $key->getOrderFinalPrice();
+            if ($key->getActive()) {
+                $openOrder['value'] += $key->getOrderFinalPrice();
+                $openOrder['amount']++;
+                continue;
+            }
+            $closeOrder['value'] += $key->getOrderFinalPrice();
+            $closeOrder['amount']++;
         }
 
         return $this->render('home/index.html.twig', [
             'values' => array($boletoValue, $orderValue),
             'amount' => array($boletoAmount, $orderAmount),
-            'openOrders' => $openOrder[0][1],
-            'orderValues' => $orderValue
+            'openOrders' => $openOrder,
+            'orderValues' => $orderValue,
+            'closeOrders' => $closeOrder
         ]);
     }
 

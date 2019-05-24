@@ -6,17 +6,17 @@ namespace App\Model;
 use App\Entity\Order;
 use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\ListNotExistsException;
+use App\Utils\Andresmei\StdResponse;
+use App\Utils\Andresmei\MyDateTime;
 
 class ListModel extends Model
 {
     /**
-     * [select description]
+     * @param string $type
+     * @param null   $optionalParameter
      *
-     * @param   string  $type  [$type description]
-     *
-     * @return  array           [return description]
      */
-    public function select(string $type): array
+    public function select(string $type, $optionalParameter = null)
     {
         switch ($type) {
             case 'client':
@@ -34,6 +34,9 @@ class ListModel extends Model
             case 'reserved':
                 return $this->getParsedStatusOrderData(2);
                 break;
+            case 'currentYearOrderReport':
+                return $this->yearOrderReport($optionalParameter);
+                break;
             default:
                 throw new ListNotExistsException(
                     sprintf(
@@ -43,6 +46,22 @@ class ListModel extends Model
                 );
                 break;
         }
+    }
+
+    /**
+     * Retorna serie de valores relacionados a pedidos no ano selecionado .
+     * Resultados retornados
+     *
+     * @param string|null $year
+     *
+     * @return  StdResponse
+     */
+    public function yearOrderReport(?string $year): StdResponse
+    {
+        $result = new StdResponse();
+        $year = (new MyDateTime())->validOrNull($year) ?? (new \DateTime())->format('Y');
+
+        return $result;
     }
 
     /**
