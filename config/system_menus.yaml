@@ -53,6 +53,10 @@
 - divider: true
 - namediv: 'Sistema'
 
+- name: 'Registros'
+  route: '/register'
+  icon: 'fa-address-card'
+
 - name: 'Configuração'
   route: '/register/configuration'
   icon: 'fa-cog'

@@ -38,6 +38,7 @@ class HomeController extends AbstractController
      */
     public function index(ListModel $model)
     {
+        $openOrder = $model->dqlConsult('SELECT COUNT(u) FROM App\Entity\ManualOrderReport u WHERE u.active = 1');
         //chart
         $boletoValue = 0.0;
         $boletoData = $model->dqlConsult('SELECT u.boletoValue FROM App\Entity\Boleto u');
@@ -45,7 +46,6 @@ class HomeController extends AbstractController
         foreach ($boletoData as $key) {
             $boletoValue += $key['boletoValue'];
         }
-
         $orderValue = 0.0;
         $orderData = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findAll();
         $orderAmount = count($orderData);
@@ -56,7 +56,9 @@ class HomeController extends AbstractController
 
         return $this->render('home/index.html.twig', [
             'values' => array($boletoValue, $orderValue),
-            'amount' => array($boletoAmount, $orderAmount)
+            'amount' => array($boletoAmount, $orderAmount),
+            'openOrders' => $openOrder[0][1],
+            'orderValues' => $orderValue
         ]);
     }
 
