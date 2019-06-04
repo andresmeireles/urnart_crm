@@ -20,12 +20,12 @@ trait GenericSetter
         $counter = 0;
 
         foreach ($elements as $key => $value) {
-            if ($value == null) {
+            if ($value === null) {
                 $counter++;
             }
         }
 
-        if ($counter == count($elements)) {
+        if ($counter === count($elements)) {
             throw new \Exception('Não é possível persistir elemento completamente vázio');
         }
 

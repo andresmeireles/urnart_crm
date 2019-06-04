@@ -6,14 +6,15 @@ use App\Utils\Form\Parameters;
 use App\Utils\Form\Interfaces\ResponseFormInterface;
 use App\Utils\Validation\ValidatorJson;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Knp\Snappy\Pdf;
 
 class Form
 {
+    /**
+     * @var App\Utils\Form\Form
+     */
     private $FormFactory;
-    private $formName;
 
     public function __construct(string $FormName)
     {
@@ -65,16 +66,16 @@ class Form
         return false;
     }
 
-    public function save(CreateFormInterface $Form): bool
+    /* public function save(CreateFormInterface $Form)
     {
-    }
+    } */
 
     public function getMessage()
     {
         return ValidatorJson::getErrors();
     }
 
-    public function show(ResponseFormInterface $Form): string
+    public function show(ResponseFormInterface $Form): Response
     {
         // windows
         $pdf = new Pdf(__DIR__.'\..\..\..\vendor\wemersonjanuario\wkhtmltopdf-windows\bin\64bit\wkhtmltopdf.exe');

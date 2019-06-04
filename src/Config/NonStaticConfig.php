@@ -17,7 +17,10 @@ final class NonStaticConfig
      */
     private $config;
 
-    public $env = true;
+    /**
+     * @var bool is dev or not.
+     */
+    private $env = true;
 
     public function __construct()
     {
@@ -51,5 +54,10 @@ final class NonStaticConfig
             throw new NotFoundParameterException("Configuração $param não existe");
         }
         return $this->config[$param];
+    }
+
+    public function getEnv(): bool
+    {
+        return $this->env;
     }
 }

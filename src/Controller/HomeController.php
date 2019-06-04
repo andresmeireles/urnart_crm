@@ -44,16 +44,15 @@ class HomeController extends AbstractController
 
         $aYearOrderReport = [];
         $currentYearReport = [];
-        $currentYearReportData = $model->dqlConsult(
-            sprintf(
-                'SELECT u FROM App\Entity\ManualOrderReport WHERE YEAR(u.date) = %s',
-                (new \DateTime('now'))->format('Y')
-            )
+        $queryString = sprintf(
+            "SELECT u FROM App\Entity\ManualOrderReport u WHERE u.createDate LIKE '%s-%%'",
+            (new \DateTime('now'))->format('Y')
         );
+        $currentYearReportData = $model->dqlConsult($queryString);
         /** @var ManualOrderReport $rd */
-        foreach ($currentYearReportData as $rd) {
+        /* foreach ($currentYearReportData as $repoData) {
             # code...
-        }
+        } */
 
 
 

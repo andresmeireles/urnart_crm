@@ -19,7 +19,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        if ((new NonStaticConfig())->env) {
+        if ((new NonStaticConfig())->getEnv()) {
             return $this;
         }
         
@@ -97,7 +97,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-           'kernel.exception' => 'onKernelException',
+            'kernel.exception' => 'onKernelException'
         ];
     }
 }

@@ -7,10 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Utils\Generic\Crud;
 use App\Utils\Exceptions\CustomException;
-use App\Config\Configuration;
+use App\Config\NonStaticConfig;
 
 class RegisterController extends AbstractController
 {
@@ -145,10 +144,10 @@ class RegisterController extends AbstractController
      * @Route("/register/configuration", methods="POST")
      *
      * @param Request $request
-     * @param Configuration $config
+     * @param NonStaticConfig $config
      * @return Response write new config
      */
-    public function writeConfiguration(Request $request, Configuration $config): Response
+    public function writeConfiguration(Request $request, NonStaticConfig $config): Response
     {
         if (!$this->isCsrfTokenValid('configuration', $request->request->get('_csrf_token'))) {
             throw new CustomException('Token incorreto ou não enviado.');
@@ -168,10 +167,10 @@ class RegisterController extends AbstractController
     /**
      * @Route("/resetlogo", methods="PUT")
      *
-     * @param Configuration $config
+     * @param NonStaticConfig $config
      * @return Response
      */
-    public function resetlogo(Configuration $config, Request $request): Response
+    public function resetlogo(NonStaticConfig $config, Request $request): Response
     {
         $hash = (json_decode($request->getContent()))->hash;
         if (!($hash == hash('ripemd160', 'valido'))) {

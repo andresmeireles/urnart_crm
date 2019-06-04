@@ -3,7 +3,6 @@
 namespace App\Utils\Form\Interfaces;
 
 use App\Utils\Form\Parameters;
-use App\Utils\Form\Interfaces\ResponseFormInterface;
 
 interface CreateFormInterface
 {

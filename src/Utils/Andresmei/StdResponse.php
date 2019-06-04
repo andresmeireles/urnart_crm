@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ * Utils namespace 
  */
 namespace App\Utils\Andresmei;
 
@@ -12,7 +12,9 @@ namespace App\Utils\Andresmei;
 class StdResponse extends \stdClass
 {
     public function __call($key,$params){
-        if(!isset($this->{$key})) throw new \Exception("Call to undefined method ".get_class($this)."::".$key."()");
+        if(!isset($this->{$key})) {
+            throw new \Exception(sprintf("Call undefined param %s()", $key));
+        }
         $subject = $this->{$key};
         call_user_func_array($subject,$params);
     }

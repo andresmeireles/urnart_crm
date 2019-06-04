@@ -86,13 +86,13 @@ class TagFormCreator implements CreateFormInterface
 				<div class="tag-box-1 tag-float-left"><logo_img class="tag-logo_img" src="'. $image .'"></div>
 				
 				<div class="tag-box-2 tag-float-left">
-				<span class="t-w100 tag-float-left '. ($param['city'] == '' ? "t-font-sz6" : ((strlen($param['name']) > 27) ? "t-font-sz0" : "t-font-sz5"))  .'">'. $param['name'] .'</span>
+				<span class="t-w100 tag-float-left '. $param['city'] == '' ? "t-font-sz6" : ((strlen($param['name']) > 27) ? "t-font-sz0" : "t-font-sz5")  .'">'. $param['name'] .'</span>
 				<span class="tag-float-left t-font-sz3 t-w100">'. $param['city'] .'</span>
 				</div>
 				
 				<div class="tag-box-3 tag-float-left t-right">
-				<span class="t-font-sz1 tag-float-left t-w100">'. (($param['check'] != 0) ? ceil($count/2) : $count) .'</span>
-				<span class="t-font-sz4 tag-float-left t-w100">VOL. '. (($param['check'] != 0) ? ceil($param['amount']/2) : $param['amount']) .'</span>
+				<span class="t-font-sz1 tag-float-left t-w100">'. ($param['check'] != 0) ? ceil($count/2) : $count .'</span>
+				<span class="t-font-sz4 tag-float-left t-w100">VOL. '. ($param['check'] != 0) ? ceil($param['amount']/2) : $param['amount'] .'</span>
 				</div> 
 				<div class="tag-clear"></div>
 				

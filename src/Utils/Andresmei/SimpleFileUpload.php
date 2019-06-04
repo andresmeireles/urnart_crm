@@ -11,7 +11,7 @@ class SimpleFileUpload
     /**
      * Tamanho maximo do arquivo
      */
-    const MAX_SIZE_FILE = 400000;
+    private const MAX_SIZE_FILE = 400000;
 
     /**
      * @var string
@@ -78,9 +78,9 @@ class SimpleFileUpload
         return true;
     }
 
-    public function uploadFile(File $fileToUpload, ?string $uploadPath)
+    /* public function uploadFile(File $fileToUpload, ?string $uploadPath)
     {
-    }
+    } */
 
     public static function getStatus(): bool
     {

@@ -58,6 +58,6 @@ class AppExtension extends AbstractExtension
 
     public function dieFunc(): void
     {
-        die();
+        die;
     }
 }

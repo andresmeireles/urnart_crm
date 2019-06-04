@@ -1,10 +1,7 @@
 <?php
 namespace App\Utils\Generic;
 
-use App\Utils\Generic\GenericContainer;
-use App\Utils\Generic\GenericSetter;
 use JMS\Serializer\SerializerBuilder;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use App\Utils\Andresmei\FlashResponse;
 
@@ -85,31 +82,29 @@ class Crud extends GenericContainer
 
     public function get(string $entity, ? string $type = null) : ? array
     {
-        if ($type == 'json') {
+        if ($type === 'json') {
             $this->getJsonData($entity);
         }
 
         $this->setEntity($entity);
-        $data = $this->em->getRepository($this->entity)->findAll();
-        return $data;
+
+        return $this->em->getRepository($this->entity)->findAll();
     }
 
     public function getJsonData(string $entity)
     {
         $this->setEntity($entity);
         $serializer = SerializerBuilder::create()->build();
-
         $data = $this->em->getRepository($this->entity)->findAll();
-        $jsonResponse = $serializer->serialize($data, 'json');
-
-        return $jsonResponse;
+        
+        return $serializer->serialize($data, 'json');
     }
 
     public function getWithSimpleCriteria(string $entity, array $criteria): ?array
     {
         $this->setEntity($entity);
-        $data = $this->em->getRepository($this->entity)->findBy($criteria);
-        return $data;
+
+        return $this->em->getRepository($this->entity)->findBy($criteria);
     }
 
     public function getWithSimpleCriteriaJson(string $entity, array $criteria) : ?string
@@ -117,15 +112,14 @@ class Crud extends GenericContainer
         $this->setEntity($entity);
         $serializer = SerializerBuilder::create()->build();
         $data = $this->em->getRepository($this->entity)->findBy($criteria);
-        $response = $serializer->serialize($data, 'json');
-        return $response;
+
+        return $serializer->serialize($data, 'json');
     }
 
     public function getRegisterById(string $entity, int $id): ?object
     {
         $this->setEntity($entity);
         $repository = $this->em->getRepository($this->entity);
-        $result = $repository->find($id);
-        return $result;
+        return $repository->find($id);
     }
 }

@@ -59,7 +59,6 @@ abstract class BaseEntity
     public function setLastUpdate(): self
     {
         $this->lastUpdate = new \DateTime('now', new \DateTimeZone('America/Sao_Paulo'));
-        ;
 
         return $this;
     }

@@ -99,7 +99,7 @@ class StorageController extends AbstractController
                 'product' => $getter->getRegisterById('feedstock', $productId),
                 'unit' => $getter->get('unit'),
                 'departament' => $getter->get('departament'),
-             ]);
+            ]);
         }
         
         return $this->createNotFoundException();
@@ -200,8 +200,8 @@ class StorageController extends AbstractController
     public function redirectToUpdate($productId): Response
     {
         return $this->render('/storage/forms/productForm.html.twig', [
-                'product' => $this->getDoctrine()->getManager()->getRepository(Product::class)->find($productId)
-        ]);
+            'product' => $this->getDoctrine()->getManager()->getRepository(Product::class)->find($productId)
+            ]);
     }
     
     /**

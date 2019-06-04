@@ -5,8 +5,6 @@ namespace App\Utils\Form;
 use App\Utils\Form\Interfaces\ResponseFormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-//use Symfony\Component\HttpFoundation\Session\Session;
-
 class ResponseForm implements ResponseFormInterface
 {
     private $bodyForm;

@@ -29,8 +29,8 @@ class ValidatorJson
         foreach ($validations as $parameterName => $rule) {
             try {
                 $rule->setName($parameterName)->assert($params[$parameterName]);
-            } catch (NestedValidationException $e) {
-                self::$errors = $e->getMessages();
+            } catch (NestedValidationException $err) {
+                self::$errors = $err->getMessages();
             }
         }
     }

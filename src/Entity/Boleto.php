@@ -114,7 +114,7 @@ class Boleto extends BaseEntity
             case 1:
                 return 'Pago';
                 break;
-            case 2;
+            case 2:
                 return 'Pago em atraso';
                 break;
             case 3:

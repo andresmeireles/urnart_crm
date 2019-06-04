@@ -30,14 +30,14 @@ class Validator
         foreach ($validations as $parameterName => $rule) {
             try {
                 $rule->setName($parameterName)->assert($params[$parameterName]);
-            } catch (NestedValidationException $e) {
-                $this->errors = $e->getMessages();
+            } catch (NestedValidationException $err) {
+                $this->errors = $err->getMessages();
             }
         }
         
         if ($this->getErrors()) {
             print_r($this->errors);
-            die();
+            die;
         }
 
         return true;

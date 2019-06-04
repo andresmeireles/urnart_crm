@@ -33,6 +33,7 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.1",
         "mikey179/vfsstream": "^1.6",
+        "nunomaduro/phpinsights": "^1.5",
         "phpstan/phpstan": "^0.10.5",
         "phpstan/phpstan-doctrine": "^0.10.0",
         "phpstan/phpstan-symfony": "^0.10.2",

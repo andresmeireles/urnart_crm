@@ -460,7 +460,7 @@ class ReportModel extends Model
         $response = null;
 
         $reportName = empty($date) ?
-            (new FileFunctions)->getLastCreateFileFromFolder($path) :
+            (new FileFunctions)->getLastCreateFileFromFolder($path):
             (new FileFunctions)->getFileByDate($path, $date);
 
         if (!is_null($reportName) && file_exists($reportName)) {
