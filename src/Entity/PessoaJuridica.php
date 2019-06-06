@@ -1,7 +1,6 @@
 <?php
 namespace App\Entity;
 
-use App\Entity\BaseEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -257,22 +256,19 @@ class PessoaJuridica extends BaseEntity
     public function getState(): ?Estado
     {
         $estado = $this->getProprietarios()->first()->getPessoaFisica()->getAddress()->getEstado();
-        $estado = $estado ?? null;
-        return $estado;
+        return $estado ?? null;
     }
 
     public function getEstado(): ?string
     {
         $estado = $this->getProprietarios()->first()->getPessoaFisica()->getAddress()->getEstado();
-        $estado = $estado == null ? '' : $estado->getNome();
-        return $estado;
+        return $estado == null ? '' : $estado->getNome();
     }
 
     public function getMunicipio() : ? string
     {
         $municipio = $this->getProprietarios()->first()->getPessoaFisica()->getAddress()->getMunicipio();
-        $municipio = $municipio == null ? '' : $municipio->getNome();
-        return $municipio;
+        return $municipio == null ? '' : $municipio->getNome();
     }
 
     /**

@@ -2,12 +2,12 @@
 
 namespace App\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Model\ReportModel;
 use App\Utils\Andresmei\StdResponse;
 use App\Utils\Andresmei\WriteBoletoReport;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\Yaml\Yaml;
 
 class StartSubscriber extends AbstractController implements EventSubscriberInterface
@@ -25,7 +25,7 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
         }
 
         $getFile = file_get_contents(__DIR__.'/../../config/system_menus.yaml');
-        if (is_string($getFile)) {    
+        if (is_string($getFile)) {
             $menus = Yaml::parse($getFile);
             $this->get('twig')->addGlobal('menus', $menus);
         }
@@ -58,12 +58,12 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
         foreach ($titulos as $titulo) {
             switch ($titulo->getBoletoStatus()) {
                 case 0:
-                    $response->naoPago[] = $titulo;       
+                    $response->naoPago[] = $titulo;
                     break;
                 case 2:
                     $response->atrasado[] = $titulo;
                     break;
-                case 3;
+                case 3:
                     $response->provisionado[] = $titulo;
                     break;
                 case 4:

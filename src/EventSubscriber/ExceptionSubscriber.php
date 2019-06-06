@@ -2,11 +2,11 @@
 
 namespace App\EventSubscriber;
 
+use App\Config\NonStaticConfig;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use App\Config\NonStaticConfig;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
@@ -63,7 +63,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 return $event->setResponse(new Response(
                     $event->getException()->getMessage(),
                     301,
-                    array('type' => 'ninja')
+                    ['type' => 'ninja']
                 ));
                 break;
             case 'Twig_Error_Loader':

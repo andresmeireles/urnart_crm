@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Utils\Andresmei;
 
-use App\Utils\Andresmei\StdResponse;
 use Symfony\Component\Yaml\Yaml;
 
 class WriteBoletoReport

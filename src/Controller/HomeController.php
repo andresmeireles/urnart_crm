@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * HomeController
  *
@@ -10,12 +10,11 @@
  */
 namespace App\Controller;
 
+use App\Entity\ManualOrderReport;
+use App\Model\ListModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Model\ListModel;
-use App\Entity\ManualOrderReport;
 
 /**
  * Classe do controller home
@@ -41,21 +40,6 @@ class HomeController extends AbstractController
         $openOrder = ['value' => 0, 'amount' => 0];
         $closeOrder = $openOrder;
         //chart
-
-        $aYearOrderReport = [];
-        $currentYearReport = [];
-        $queryString = sprintf(
-            "SELECT u FROM App\Entity\ManualOrderReport u WHERE u.createDate LIKE '%s-%%'",
-            (new \DateTime('now'))->format('Y')
-        );
-        $currentYearReportData = $model->dqlConsult($queryString);
-        /** @var ManualOrderReport $rd */
-        /* foreach ($currentYearReportData as $repoData) {
-            # code...
-        } */
-
-
-
         $boletoValue = 0.0;
         $boletoData = $model->dqlConsult('SELECT u.boletoValue FROM App\Entity\Boleto u');
         $boletoAmount = count($boletoData);
@@ -78,8 +62,8 @@ class HomeController extends AbstractController
         }
 
         return $this->render('home/index.html.twig', [
-            'values' => array($boletoValue, $orderValue),
-            'amount' => array($boletoAmount, $orderAmount),
+            'values' => [$boletoValue, $orderValue],
+            'amount' => [$boletoAmount, $orderAmount],
             'openOrders' => $openOrder,
             'orderValues' => $orderValue,
             'closeOrders' => $closeOrder

@@ -2,16 +2,16 @@
 
 namespace App\Model;
 
-use App\Utils\Andresmei\FlashResponse;
 use App\Entity\Boleto;
-use App\Utils\Andresmei\StdResponse;
-use Symfony\Component\Yaml\Yaml;
-use App\Utils\Andresmei\FileFunctions;
-use App\Utils\Exceptions\CustomException;
-use App\Utils\Andresmei\NestedArraySeparator;
-use App\Utils\Andresmei\StringConvertions;
 use App\Entity\ManualOrderReport;
 use App\Entity\TravelTruckOrders;
+use App\Utils\Andresmei\FileFunctions;
+use App\Utils\Andresmei\FlashResponse;
+use App\Utils\Andresmei\NestedArraySeparator;
+use App\Utils\Andresmei\StdResponse;
+use App\Utils\Andresmei\StringConvertions;
+use App\Utils\Exceptions\CustomException;
+use Symfony\Component\Yaml\Yaml;
 
 class ReportModel extends Model
 {
@@ -163,12 +163,12 @@ class ReportModel extends Model
         switch ($typeOfOrder) {
             case 'last':
                 $list = 'Ultimos Títulos';
-                $order = array('createDate' => 'ASC');
+                $order = ['createDate' => 'ASC'];
                 break;
             case 'client':
                 $list = 'Títulos por cliente';
                 if ($entity === 'boleto') {
-                    $order = array('boletoCustomerOwner' => 'ASC');
+                    $order = ['boletoCustomerOwner' => 'ASC'];
                 }
                 break;
             case 'byDate':
@@ -189,7 +189,7 @@ class ReportModel extends Model
 
         $returnObject = new StdResponse;
         $returnObject->typeOfList = $list;
-        $returnObject->consultResults = $this->em->getRepository($entity)->findBy(array(), $order);
+        $returnObject->consultResults = $this->em->getRepository($entity)->findBy([], $order);
 
         return $returnObject;
     }
@@ -205,8 +205,7 @@ class ReportModel extends Model
     public function serializedGenericConsult(string $entity, int $consultId): string
     {
         $result = $this->em->getRepository($entity)->find($consultId);
-        $jsonResult = $this->serializer->serialize($result, 'json');
-        return $jsonResult;
+        return $this->serializer->serialize($result, 'json');
     }
 
     /****************************************************
@@ -255,11 +254,11 @@ class ReportModel extends Model
                     ));
                 }
 
-                $porContaArray[] = array(
+                $porContaArray[] = [
                     'statusDate' => (new \DateTime('now'))->format('d/m/Y'),
                     'porContaValue' => $boletoData['porContaValue'],
                     'porContaDate' => $boletoData['porContaDate']
-                );
+                ];
 
                 $boletoRegistry->setBoletoPorContaStatus($porContaArray);
             }
@@ -308,8 +307,8 @@ class ReportModel extends Model
         $res = [];
 
         if (!is_null($pastReportRegister)) {
-            foreach ($pastReportRegister as $key => $value) {
-                foreach ($value as $k => $v) {
+            foreach ($pastReportRegister as $value) {
+                foreach ($value as $v) {
                     $res[] = $v;
                 }
             }
@@ -325,7 +324,7 @@ class ReportModel extends Model
             }
         }
 
-        foreach ($resultData as $key => $value) {
+        foreach ($resultData as $value) {
             $titlesPrices += $value['boletoValue'];
             switch ($value['boletoStatus']) {
                 case 0:
@@ -391,14 +390,14 @@ class ReportModel extends Model
             $endingDate
         );
         $c = $reportResults;
-        $pastResponse = array();
+        $pastResponse = [];
         $totalValue = 0;
         $paymentValue = 0;
         $data = [];
 
         if (!is_null($pastReportFile)) {
             foreach ($reportResults as $key => $value) {
-                foreach ($value as $k => $v) {
+                foreach ($value as $v) {
                     $pastResponse[] = $v;
                 }
             }
@@ -451,8 +450,7 @@ class ReportModel extends Model
             'SELECT u FROM App\Entity\Boleto u WHERE u.boletoVencimento <  %s AND u.boletoStatus <> 1',
             "'{$date} %'"
         );
-        $result = $this->dqlConsult($consultString);
-        return $result;
+        return $this->dqlConsult($consultString);
     }
 
     private function getReportFile(string $path, ?string $date): ?array
@@ -477,12 +475,12 @@ class ReportModel extends Model
         string $formatInterval = 'Y-m-d'
     ): array {
         $productionDay = '';
-        $reportData = array();
+        $reportData = [];
 
         $result = $this->getGenericListByDateArrayFields(
             'ProductionCount',
             'date',
-            array(),
+            [],
             $intervalBeginDate,
             $intervalLastDate,
             'date',
@@ -543,9 +541,9 @@ class ReportModel extends Model
         }
         $explodedDate = explode('-', $reportDate);
         $monthBegin = sprintf("%s-%s-%s", '01', $explodedDate[1], $explodedDate[2]);
-        $yesterday = sprintf("%s-%s-%s", ( (int) $explodedDate[0]) - 1, $explodedDate[1], $explodedDate[2]);
+        $yesterday = sprintf("%s-%s-%s", ((int) $explodedDate[0]) - 1, $explodedDate[1], $explodedDate[2]);
         if (strtolower((new \DateTime($yesterday))->format('l')) === 'sunday') {
-            $yesterday = sprintf("%s-%s-%s", ( (int) $explodedDate[0]) - 3, $explodedDate[1], $explodedDate[2]);
+            $yesterday = sprintf("%s-%s-%s", ((int) $explodedDate[0]) - 3, $explodedDate[1], $explodedDate[2]);
         }
         $todayReport = $this->getByDateIntervalProductAmount($monthBegin, $reportDate);
         $yesterdayReport = $this->getByDateIntervalProductAmount($monthBegin, $yesterday);
@@ -585,7 +583,7 @@ class ReportModel extends Model
         $explodedDateTwo = explode('-', $dateTwo);
         $startDate = sprintf("%s-%s-%s", $explodedDate[0], $explodedDate[1], $explodedDate[2]);
         $lastDate = sprintf("%s-%s-%s", $explodedDateTwo[0], $explodedDateTwo[1], $explodedDateTwo[2]);
-        $resultRepo = array();
+        $resultRepo = [];
         $resultRepo['total'] = 0;
         switch ($type) {
             case 'model':
@@ -601,7 +599,7 @@ class ReportModel extends Model
         $report = $this->getGenericListByDateArrayFields(
             'ProductionCount',
             'date',
-            array(),
+            [],
             $startDate,
             $lastDate
         );
@@ -639,7 +637,7 @@ class ReportModel extends Model
         $explodedDateTwo = explode('-', $dateTwo);
         $startDate = sprintf("%s-%s-%s", $explodedDate[0], $explodedDate[1], $explodedDate[2]);
         $lastDate = sprintf("%s-%s-%s", $explodedDateTwo[0], $explodedDateTwo[1], $explodedDateTwo[2]);
-        $results = array();
+        $results = [];
         foreach ($fields as $field) {
             $query = sprintf(
                 'SELECT DISTINCT(u.%s) FROM App\Entity\ProductionCount u WHERE u.date BETWEEN %s AND %s',

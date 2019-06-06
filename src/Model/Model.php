@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 namespace App\Model;
 
+use App\Config\NonStaticConfig;
+use App\Utils\Andresmei\StringConvertions;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Yaml\Yaml;
-use App\Config\NonStaticConfig;
-use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\Metadata\ClassMetadata;
-use App\Utils\Andresmei\StringConvertions;
+use JMS\Serializer\SerializerBuilder;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Service Container for models
@@ -116,7 +116,7 @@ abstract class Model
     public function getGenericListByDateArrayFields(
         string $repository,
         string $whereField = 'createDate',
-        array  $selectFields = array(),
+        array $selectFields = [],
         string $beginDate = '',
         string $lastDate = '',
         ?string $orderBy = null,
@@ -173,14 +173,12 @@ abstract class Model
     public function dqlConsult(string $dqlStringConsult): array
     {
         $query = $this->em->createQuery($dqlStringConsult);
-        $result = $query->execute();
-        return $result;
+        return $query->execute();
     }
 
     public function sqlConsult(string $sqlConsult)
     {
         $query = $this->em->createNativeQuery($sqlConsult);
-        $result = $query->getResult();
-        return $result;
+        return $query->getResult();
     }
 }

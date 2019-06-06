@@ -214,8 +214,7 @@ class ManualOrderReport extends BaseEntity
             $cartValue += ($key->getProductPrice() * $key->getProductAmount());
         }
 
-        $finalValue = ($cartValue + $this->getFreight()) - $this->getDiscount();
-        return $finalValue;
+        return $cartValue + $this->getFreight() - $this->getDiscount();
     }
 
     public function getTravelTruckOrders(): ?TravelTruckOrders

@@ -1,18 +1,18 @@
 <?php declare(strict_types=1);
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use App\Config\NonStaticConfig;
 use App\Entity\Survey;
 use App\Model\ReportModel;
 use App\Model\SurveyModel;
-use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\MyDateTime;
+use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\CustomException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ReportController extends AbstractController
 {
@@ -93,9 +93,9 @@ class ReportController extends AbstractController
         );
 
         $data = $result->result;
-        $nameResults = array();
-        $modelResults = array();
-        $heightResults = array();
+        $nameResults = [];
+        $modelResults = [];
+        $heightResults = [];
         $finalTotal = 0;
 
         foreach ($data as $value) {
@@ -164,10 +164,10 @@ class ReportController extends AbstractController
         $productionByDayOnMonth = $model->getByDateIntervalProductAmount($aMonthDate, $today);
         $monthChart = $model->getByDateIntervalProductAmount($aYearnDate, $today, 'm-Y');
         
-        return $this->render('report/pages/productionCount.html.twig', array(
+        return $this->render('report/pages/productionCount.html.twig', [
             'dateChart' => $productionByDayOnMonth,
             'monthChart' => $monthChart
-        ));
+        ]);
     }
 
     /**
@@ -286,7 +286,7 @@ class ReportController extends AbstractController
 
         return $this->render($templateFile, [
             'typeOfList' => $listOfResults->typeOfList,
-            'simpleView' => $listOfResults->consultResults ?? $byDateResults ?? array(),
+            'simpleView' => $listOfResults->consultResults ?? $byDateResults ?? [],
             'beginDate' => $beginDate ?? null,
             'lastDate' => $lastDate ?? null
         ]);

@@ -2,20 +2,20 @@
 
 namespace App\Controller;
 
-use Symfony\Component\Yaml\Yaml;
+use App\Config\NonStaticConfig;
+use App\Utils\Exceptions\CustomException;
+use App\Utils\Generic\Crud;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Utils\Generic\Crud;
-use App\Utils\Exceptions\CustomException;
-use App\Config\NonStaticConfig;
+use Symfony\Component\Yaml\Yaml;
 
 class RegisterController extends AbstractController
 {
     /**
      * @Route("/register", name="register")
-     * 
+     *
      * @return Response
      */
     public function index(): Response
@@ -51,9 +51,9 @@ class RegisterController extends AbstractController
     public function addGenericRegisterAjax(string $entity, Crud $setter, Request $request)
     {
         $setter->set($entity, $request->request->all());
-        return new Response('Produto adicionado com sucesso', 200, array(
+        return new Response('Produto adicionado com sucesso', 200, [
             'type-message' => 'success'
-        ));
+        ]);
     }
 
     /**
@@ -113,13 +113,13 @@ class RegisterController extends AbstractController
      */
     public function getGenericRemover(string $entity, Request $request, Crud $crud)
     {
-        $id = (json_decode($request->getContent()))->id;
+        $id = json_decode($request->getContent())->id;
         $response = $crud->remove($id, $entity);
 
         return new Response(
             $response->getMessage(),
             Response::HTTP_OK,
-            array('type-message' => $response->getType())
+            ['type-message' => $response->getType()]
         );
     }
 
@@ -172,7 +172,7 @@ class RegisterController extends AbstractController
      */
     public function resetlogo(NonStaticConfig $config, Request $request): Response
     {
-        $hash = (json_decode($request->getContent()))->hash;
+        $hash = json_decode($request->getContent())->hash;
         if (!($hash == hash('ripemd160', 'valido'))) {
             return new Response('false', 400);
         }

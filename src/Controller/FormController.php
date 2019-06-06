@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * FormController
  *
@@ -10,26 +10,26 @@
  */
 namespace App\Controller;
 
+use App\Config\NonStaticConfig;
+use App\Entity\PaymentType;
+use App\Entity\Product;
+use App\Entity\Transporter;
+use App\Entity\TravelAccountability;
+use App\Model\FormModel;
+use App\Utils\Andresmei\FileFunctions;
+use App\Utils\Andresmei\Form;
+use App\Utils\Andresmei\NestedArraySeparator;
+use App\Utils\Andresmei\StringConvertions;
+use App\Utils\Exceptions\CustomException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
-use App\Entity\Product;
-use App\Entity\PaymentType;
-use App\Entity\Transporter;
-use App\Model\FormModel;
-use App\Config\NonStaticConfig;
-use App\Utils\Andresmei\Form;
-use App\Utils\Andresmei\FileFunctions;
-use App\Utils\Andresmei\NestedArraySeparator;
-use App\Utils\Exceptions\CustomException;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
-use App\Entity\TravelAccountability;
-use App\Utils\Andresmei\StringConvertions;
 
 /**
  * Controller das paginas de formulário
@@ -70,8 +70,8 @@ class FormController extends AbstractController
         );
 
         $files = $fileFunc->getFilesFromFolder($reportFolder);
-        $reports = array();
-        foreach ($files as $key => $value) {
+        $reports = [];
+        foreach (array_keys($files) as $key) {
             $arrayFile = file_get_contents($key);
             if (is_string($arrayFile)) {
                 $reports[] = Yaml::parse($arrayFile);
@@ -100,7 +100,6 @@ class FormController extends AbstractController
         $rootDir = $this->getParameter('kernel.root_dir');
         $reportPath = sprintf('%s/%s', $rootDir, $path);
         $result = $model->saveReport($data, $reportPath);
-
         $this->addFlash(
             $result->getType(),
             $result->getMessage()
@@ -270,9 +269,9 @@ class FormController extends AbstractController
         }
 
         if ($formName === 'travel-report') {
-            $responseData = array(
+            $responseData = [
                 'dataFill' => $this->getDoctrine()->getRepository(TravelAccountability::class)->find($idOrder)
-            );
+            ];
         }
 
         return $this->render($pageName, $responseData ?? []);

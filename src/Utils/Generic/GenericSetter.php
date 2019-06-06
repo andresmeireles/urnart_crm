@@ -19,7 +19,7 @@ trait GenericSetter
         $elements = $this->entity->__toArray();
         $counter = 0;
 
-        foreach ($elements as $key => $value) {
+        foreach ($elements as $value) {
             if ($value === null) {
                 $counter++;
             }

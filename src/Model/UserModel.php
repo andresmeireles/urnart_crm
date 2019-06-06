@@ -2,13 +2,13 @@
 
 namespace App\Model;
 
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\User;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Exceptions\NotSamePasswordException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class UserModel extends Model
 {
@@ -166,7 +166,7 @@ class UserModel extends Model
         $entityManager = $this->em;
 
         $user = $this->em->getRepository(User::class)->findOneBy(
-            array('id' => $userId, 'email' => $userName)
+            ['id' => $userId, 'email' => $userName]
         );
 
         if (null === $user) {

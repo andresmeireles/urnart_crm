@@ -2,21 +2,19 @@
 namespace App\Controller;
 
 use App\Entity\Email;
-use App\Entity\Phone;
 use App\Entity\Estado;
-use App\Entity\Address;
 use App\Entity\Municipio;
-use App\Model\PersonModel;
-use App\Utils\Generic\Crud;
-use App\Entity\PessoaFisica;
-use App\Entity\Proprietario;
 use App\Entity\PessoaJuridica;
-use Respect\Validation\Validator as v;
+use App\Entity\Phone;
+use App\Entity\Proprietario;
+use App\Model\PersonModel;
 use App\Utils\Exceptions\CustomException;
+use App\Utils\Generic\Crud;
+use Respect\Validation\Validator as v;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PersonController extends AbstractController
 {
@@ -118,7 +116,7 @@ class PersonController extends AbstractController
 
         //dados do usuario
         $pessoaFisica = $pessoa->getProprietarios()->first()->getPessoaFisica();
-        $proprietary = $entityManager->getRepository(Proprietario::class)->findOneBy(array('pessoaFisica' => $pessoaFisica->getId()));
+        $proprietary = $entityManager->getRepository(Proprietario::class)->findOneBy(['pessoaFisica' => $pessoaFisica->getId()]);
         $address = $pessoaFisica->getAddress();
         $emails = $pessoaFisica->getEmails();
         $phones = $pessoaFisica->getPhones();
@@ -151,7 +149,7 @@ class PersonController extends AbstractController
 
         $client = $pessoa;
         $pessoaFisica = $pessoa->getProprietarios()->first()->getPessoaFisica();
-        $proprietary = $entityManager->getRepository(Proprietario::class)->findOneBy(array('pessoaFisica' => $pessoaFisica->getId()));
+        $proprietary = $entityManager->getRepository(Proprietario::class)->findOneBy(['pessoaFisica' => $pessoaFisica->getId()]);
         $addr = $pessoaFisica->getAddress();
 
         $cpf = v::cpf()->validate($person['cpf']) ? $person['cpf'] : false;

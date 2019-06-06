@@ -25,7 +25,7 @@ class ResponseForm implements ResponseFormInterface
         $this->bodyForm = $body;
         $this->message = $message;
         if (!$message) {
-            $this->message = array('0' => 'Sucesso');
+            $this->message = ['0' => 'Sucesso'];
         }
 
         return $this;
@@ -46,7 +46,7 @@ class ResponseForm implements ResponseFormInterface
         return $this->orientation;
     }
 
-    public function setErrorMessage(array $messages): ResponseFormInterface
+    public function newErrorMessage(array $messages): ResponseFormInterface
     {
         $this->message = $messages;
 

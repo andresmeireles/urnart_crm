@@ -2,10 +2,10 @@
 
 namespace App\Model;
 
-use App\Entity\Unit;
 use App\Entity\Departament;
 use App\Entity\Feedstock;
 use App\Entity\FeedstockInventory;
+use App\Entity\Unit;
 
 class FeedstockModel extends Model
 {
@@ -41,9 +41,9 @@ class FeedstockModel extends Model
             $inventory = new FeedstockInventory();
             if ($type == 'update') {
                 $feedstock = $this->em->getRepository(Feedstock::class)->find($id);
-                $inventory = $this->em->getRepository(FeedstockInventory::class)->findOneBy(array(
+                $inventory = $this->em->getRepository(FeedstockInventory::class)->findOneBy([
                     'feedstock_id' => $id
-                ));
+                ]);
             }
 
             $feedstock->setNome($data['name']);
@@ -110,9 +110,9 @@ class FeedstockModel extends Model
         $this->em->getConnection()->beginTransaction();
         try {
             foreach ($values as $inv) {
-                $feedstock = $this->em->getRepository(FeedStockInventory::class)->findOneBy(array(
+                $feedstock = $this->em->getRepository(FeedStockInventory::class)->findOneBy([
                     'feedstock_id' => $inv['name'],
-                ));
+                ]);
 
                 $actualStock = $feedstock->getStock();
                 $newStock = $actualStock + $inv['amount'];
@@ -146,17 +146,17 @@ class FeedstockModel extends Model
         $this->em->getConnection()->beginTransaction();
         try {
             foreach ($values as $inv) {
-                $feedstock = $this->em->getRepository(FeedStockInventory::class)->findOneBy(array(
+                $feedstock = $this->em->getRepository(FeedStockInventory::class)->findOneBy([
                     'feedstock_id' => $inv['name'],
-                ));
+                ]);
 
                 $actualStock = $feedstock->getStock();
                 
                 if ($actualStock < $inv['amount']) {
-                    return array(
+                    return [
                         'http_code' => 203,
                         'message' => 'Retirada maior que estoque'
-                    );
+                    ];
                 }
 
                 $newStock = $actualStock - $inv['amount'];
@@ -168,10 +168,10 @@ class FeedstockModel extends Model
             
             $this->em->getConnection()->commit();
 
-            return array(
+            return [
                 'http_code' => 200,
                 'message' => 'Sucesso!'
-            );
+            ];
         } catch (\Exception $e) {
             $this->em->getConnection()->rollback();
             throw new \Exception($e->getMessage());

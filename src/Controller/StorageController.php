@@ -3,19 +3,16 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Entity\Feedstock;
+use App\Entity\Product;
 use App\Form\FeedstockForm;
+use App\Model\FeedstockModel;
 use App\Model\ProductModel;
 use App\Utils\Generic\Crud;
-use App\Model\FeedstockModel;
-use App\Entity\Product;
-use App\Entity\Feedstock;
-use App\Entity\FeedstockInventory;
-use App\Form\FeedstockInventoryForm;
-use App\Repository\FeedstockRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class StorageController extends AbstractController
 {
@@ -85,9 +82,10 @@ class StorageController extends AbstractController
                 throw new \Exception($e->getMessage());
             }
 
-            return new Response(200, Response::HTTP_OK, array(
-            'redirect-route' => '/storage/product'
-            ));
+            return new Response(200, Response::HTTP_OK, [
+                'redirect-route' => '/storage/product'
+                ]
+            );
         }
         
         if ($method == 'GET') {
@@ -103,15 +101,14 @@ class StorageController extends AbstractController
         }
         
         return $this->createNotFoundException();
-        
     }
 
     /**
      * @Route("/storage/feedstockAction/update/{id}", methods="POST")
      *
-     * @param FeedstockModel    $model
-     * @param Request           $request
-     * @param int               $productId
+     * @param FeedstockModel $model
+     * @param Request        $request
+     * @param int            $productId
      * @return Response
      */
     public function updateFeedStock(FeedstockModel $model, Request $request, int $productId): Response
@@ -125,9 +122,9 @@ class StorageController extends AbstractController
     /**
      * @Route("/storage/feedstock/in", methods="POST")
      *
-     * @param Feedstock   $model
-     * @param Request     $request
-     * 
+     * @param Feedstock $model
+     * @param Request $request
+     *
      * @return Response
      * @throws \Exception
      */
@@ -172,7 +169,7 @@ class StorageController extends AbstractController
      * @Route("/storage/productAction", methods="POST")
      *
      * @param ProductModel $model
-     * @param array $data
+     * @param array $request
      * @param Request $require
      * @return Response
      * @throws \Exception
@@ -193,15 +190,16 @@ class StorageController extends AbstractController
      *
      * @Route("/storage/productAction/{id<\d+?>}", methods="GET")
      *
-     * @param string $id
-     * 
+     * @param string $productId
+     *
      * @return Response
      */
     public function redirectToUpdate($productId): Response
     {
         return $this->render('/storage/forms/productForm.html.twig', [
             'product' => $this->getDoctrine()->getManager()->getRepository(Product::class)->find($productId)
-            ]);
+            ]
+        );
     }
     
     /**
@@ -227,7 +225,7 @@ class StorageController extends AbstractController
             ]);
         }
 
-        return $this->redirectToRoute('showProd', array(), 301);
+        return $this->redirectToRoute('showProd', [], 301);
     }
     
     /**
@@ -244,9 +242,9 @@ class StorageController extends AbstractController
         $productId = (int) $productId;
         $result = $model->remove($productId);
 
-        return new Response($result['message'], $result['http_code'], array(
+        return new Response($result['message'], $result['http_code'], [
             'redirect-route' => '/storage/product'
-        ));
+        ]);
     }
 
     /**

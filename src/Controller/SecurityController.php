@@ -33,9 +33,7 @@ class SecurityController extends AbstractController
      */
     public function getUserName(): Response
     {
-        /**
-         * @var \App\Entity\User  $userName
-         */
+        /** @var \App\Entity\User $userName */
         $userName = $this->getUser();
 
         return new Response($userName->getUserNickname());

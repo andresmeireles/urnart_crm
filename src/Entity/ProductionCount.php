@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\CustomException;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductionCountRepository")
@@ -77,9 +77,7 @@ class ProductionCount extends BaseEntity
 
     public function getFullHeight(): string
     {
-        $fullHeight = sprintf('%s %s', $this->height, $this->obs);
-
-        return $fullHeight;
+        return sprintf('%s %s', $this->height, $this->obs);
     }
 
     public function getHeight(): ?string

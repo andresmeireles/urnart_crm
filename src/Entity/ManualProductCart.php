@@ -22,7 +22,7 @@ class ManualProductCart
     private $productName;
 
     /**
-     * 
+     *
      * @ORM\Column(type="float")
      */
     private $productPrice;

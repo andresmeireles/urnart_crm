@@ -112,8 +112,6 @@ class ProductInventory
         if ($this->reserved > $this->stock) {
             return 0;
         }
-        $nonReserved = $this->stock - $this->reserved;
-
-        return $nonReserved;
+        return $this->stock - $this->reserved;
     }
 }

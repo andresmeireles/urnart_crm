@@ -72,17 +72,17 @@ class Departament
         return $this;
     }
 
- /*    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
+    /*    public function getProduct(): ?Product
+       {
+           return $this->product;
+       }
 
-    public function setProduct(?Product $product): self
-    {
-        $this->product = $product;
+       public function setProduct(?Product $product): self
+       {
+           $this->product = $product;
 
-        return $this;
-    } */
+           return $this;
+       } */
 
     /**
      * @return Collection|Feedstock[]

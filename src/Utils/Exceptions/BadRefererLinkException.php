@@ -2,7 +2,6 @@
 
 namespace App\Utils\Exceptions;
 
-class BadRefererLinkException extends \Exception 
+class BadRefererLinkException extends \Exception
 {
-    
 }

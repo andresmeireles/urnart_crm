@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\Entity\Order;
-use App\Entity\Product;
-use App\Entity\PaymentType;
-use App\Entity\Transporter;
-use App\Entity\PessoaJuridica;
-use App\Entity\ProductCart as Cart;
-use App\Utils\Andresmei\FlashResponse;
 use App\Entity\ManualOrderReport;
 use App\Entity\ManualProductCart;
+use App\Entity\Order;
+use App\Entity\PaymentType;
+use App\Entity\PessoaJuridica;
+use App\Entity\Product;
+use App\Entity\ProductCart as Cart;
+use App\Entity\Transporter;
+use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Andresmei\StringConvertions;
 
 class OrderModel extends Model
@@ -52,7 +52,7 @@ class OrderModel extends Model
             $order->setTransporter($transporter);
             $customPort = array_key_exists('port', $information) ? $information['port'] : null;
             if (!is_null($transporter) && !is_null($customPort)) {
-                $customPort = (ltrim(trim($information['port'])) === $transporter->getPort())?
+                $customPort = ltrim(trim($information['port'])) === $transporter->getPort()?
                 null:
                 ltrim(trim($information['port']));
             }
@@ -65,7 +65,7 @@ class OrderModel extends Model
             $order->setComments($comments);
             if ($type == 'update' && isset($id)) {
                 $productCart = $entityManager->getRepository(Cart::class)
-                                            ->findBy(array('orderNumber' => $id));
+                                            ->findBy(['orderNumber' => $id]);
                 foreach ($productCart as $p) {
                     $entityManager->remove($p);
                 }
@@ -187,7 +187,7 @@ class OrderModel extends Model
                     }
                 }
                 $reserved = $product->getProductInventory()->getReserved();
-                $amountReserved = ($reserved + $cart->getAmount());
+                $amountReserved = $reserved + $cart->getAmount();
                 $product->setReserved($amountReserved);
                 $entityManager->merge($product);
             }
@@ -246,7 +246,7 @@ class OrderModel extends Model
                 if ($actualStatus !== 1) {
                     continue;
                 }
-                $amountReserved = ($reserved - $cart->getAmount());
+                $amountReserved = $reserved - $cart->getAmount();
                 $product->setReserved($amountReserved);
                 $entityManager->merge($product);
             }
@@ -399,7 +399,7 @@ class OrderModel extends Model
             $report->setPaymentType($paymentType);
             
             $removeCart = $entityManager->getRepository(ManualProductCart::class)
-                                ->findBy(array('manualOrderReport' => $orderId));
+                                ->findBy(['manualOrderReport' => $orderId]);
             $this->removeManualProductCart($removeCart);
             
             foreach ($products as $product) {

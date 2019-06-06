@@ -11,7 +11,7 @@ class FileFunctions
      *
      * @param   string  $path  Path of folder.
      *
-     * @return  array          
+     * @return  array
      */
     public function getFilesFromFolder(string $path): array
     {
@@ -35,7 +35,6 @@ class FileFunctions
      */
     public function getLastCreateFileFromFolder(string $path): string
     {
-
         $files = $this->getFilesFromFolder($path);
 
         arsort($files); // reorganiza valores de array a partir de seus valores de forma decrescente.
@@ -81,6 +80,5 @@ class FileFunctions
 
     public function writeFileInFolder()
     {
-        
     }
 }

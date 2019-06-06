@@ -2,41 +2,37 @@
 
 namespace App\Twig;
 
-use Twig\TwigFilter;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use WGenial\NumeroPorExtenso\NumeroPorExtenso;
 
 class AppExtension extends AbstractExtension
 {
     public function getFilters()
     {
-        return array(
-            new TwigFilter('rot13', array($this, 'rot13Filter')),
-            new TwigFilter('makeHash', array($this, 'makeHash')),
-            new TwigFilter('extense', array($this, 'extense')),
-            new TwigFilter('strToArray', array($this, 'strToArray')),
-            new TwigFilter('die', array($this, 'dieFunc'))
-        );
+        return [
+            new TwigFilter('rot13', [$this, 'rot13Filter']),
+            new TwigFilter('makeHash', [$this, 'makeHash']),
+            new TwigFilter('extense', [$this, 'extense']),
+            new TwigFilter('strToArray', [$this, 'strToArray']),
+            new TwigFilter('die', [$this, 'dieFunc'])
+        ];
     }
 
     public function rot13Filter(string $string): string
     {
-        $rot13String = str_rot13($string);
-
-        return $rot13String;
+        return str_rot13($string);
     }
 
     public function makeHash(string $hashableValue): string
     {
-        $hasedString = hash('ripemd160', $hashableValue);
-        return $hasedString;
+        return hash('ripemd160', $hashableValue);
     }
 
     public function extense(float $number): string
     {
         $extense = new NumeroPorExtenso();
-        $extense = $extense->converter($number);
-        return $extense;
+        return $extense->converter($number);
     }
 
     /**
@@ -49,7 +45,7 @@ class AppExtension extends AbstractExtension
     {
         $toArrayConverter = str_replace('{"', '', str_replace('"}', '', $toArrayConverter));
         $array = [];
-        foreach (explode('","', $toArrayConverter) as $key => $value) {
+        foreach (explode('","', $toArrayConverter) as $value) {
             $answerQuestion = explode('":"', $value);
             $array[$answerQuestion[0]] = $answerQuestion[1];
         }

@@ -18,8 +18,7 @@ class ProductModel extends Model
      */
     public function insert(array $data): FlashResponse
     {
-        $result = $this->runAction($data, null, 'insert');
-        return $result;
+        return $this->runAction($data, null, 'insert');
     }
 
     /**
@@ -32,8 +31,7 @@ class ProductModel extends Model
      */
     public function update(array $data, int $productId): FlashResponse
     {
-        $result = $this->runAction($data, $productId, 'update');
-        return $result;
+        return $this->runAction($data, $productId, 'update');
     }
 
     /**
@@ -47,10 +45,10 @@ class ProductModel extends Model
         $this->em->remove($product);
         $this->em->flush();
 
-        return array(
+        return [
             'http_code' => 200,
             'message' => sprintf("Produto %s removido com sucesso!", $product->getName())
-        );
+        ];
     }
 
     /**
@@ -73,10 +71,10 @@ class ProductModel extends Model
         }
 
         $type = strtolower($unclearType);
-        $allowParameters = array(
+        $allowParameters = [
             'insert',
             'update'
-        );
+        ];
 
         if (!in_array($type, $allowParameters)) {
             throw new \Exception(sprintf("Operaçao %s não suportada, operações suportadas: INSERT e UPDATE", $type));
@@ -87,7 +85,7 @@ class ProductModel extends Model
             $product = new Product;
             $name = strtolower($data['name']);
             if ($type === 'insert') {
-                $result = $this->em->getRepository(Product::class)->findOneBy(array('name' => $name));
+                $result = $this->em->getRepository(Product::class)->findOneBy(['name' => $name]);
                 if (!is_null($result)) {
                     return new FlashResponse(400, 'warning', 'Produto com nome igual já cadastrado');
                 }
@@ -102,7 +100,7 @@ class ProductModel extends Model
             
             $price = (float) $data['price'];
             $product->setPrice($price);
-            $color = $data['colors'] ?? array();
+            $color = $data['colors'] ?? [];
             $product->setColor($color);
             $product->setSeries($data['model']);
             if ($type == 'insert') {
@@ -139,9 +137,9 @@ class ProductModel extends Model
         $this->em->getConnection()->beginTransaction();
         try {
             foreach ($data as $info) {
-                $productInventory = $this->em->getRepository(ProductInventory::class)->findOneBy(array(
+                $productInventory = $this->em->getRepository(ProductInventory::class)->findOneBy([
                     'product' => $info->product
-                ));
+                ]);
                 $oldStock = $productInventory->getStock();
                 $stock = (float) $info->amount;
                 $newStock = $stock + $oldStock;
@@ -150,16 +148,16 @@ class ProductModel extends Model
             }
             $this->em->flush();
             $this->em->getConnection()->commit();
-            return array(
+            return [
                 'http_code' => 200,
                 'message' => 'Sucesso!'
-            );
+            ];
         } catch (\Exception $e) {
             $this->em->getConnection()->rollback();
-            return array(
+            return [
                 'http_code' => 203,
                 'message' => $e->getMessage()
-            );
+            ];
         }
     }
 }

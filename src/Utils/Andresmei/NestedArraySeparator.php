@@ -62,7 +62,7 @@ class NestedArraySeparator
     private function setArrayGroup(array $value): void
     {
         $keyName = '';
-        $arrayResult = array();
+        $arrayResult = [];
         foreach ($value as $key => $val) {
             if (!is_array($val)) {
                 continue;

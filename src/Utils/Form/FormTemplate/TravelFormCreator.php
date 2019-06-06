@@ -2,12 +2,11 @@
 
 namespace App\Utils\Form\FormTemplate;
 
-use App\Utils\Form\ResponseForm;
-use App\Utils\Form\Parameters;
-use App\Utils\Form\Interfaces\ResponseFormInterface;
 use App\Utils\Form\Interfaces\CreateFormInterface;
+use App\Utils\Form\Interfaces\ResponseFormInterface;
+use App\Utils\Form\Parameters;
+use App\Utils\Form\ResponseForm;
 use App\Utils\Validation\ValidatorJson;
-use App\Utils\Validation\ValidationFields;
 use Respect\Validation\Validator as v;
 
 class TravelFormCreator implements CreateFormInterface
@@ -34,7 +33,7 @@ class TravelFormCreator implements CreateFormInterface
     {
         $parameter = $parameters->getNonClonedParameters();
         $clonedParameters = $parameters->getClonedParameters();
-        $background = file_get_contents(__DIR__.'/travel-form/file');
+        //$background = file_get_contents(__DIR__.'/travel-form/file');
         $logo = file_get_contents(__DIR__.'/etiqueta/logo');
         $itemsCounter = 1;
         $pageCounter = 1;

@@ -35,7 +35,7 @@ class SurveyModel extends Model implements ModelInterface
             $connection->rollback();
             throw new \Exception(sprintf("Error: %s", $e->getMessage()));
         }
-        return array('msg' => 'Sucesso!');
+        return ['msg' => 'Sucesso!'];
     }
 
     public function saveData(array $data, string $customerId, string $surveyReferenceDate): ObjectResponse
@@ -45,10 +45,10 @@ class SurveyModel extends Model implements ModelInterface
         $connection = $this->em->getConnection();
         $connection->beginTransaction();
         try {
-            $userSurvey = $entityManager->getRepository(Survey::class)->findOneBy(array(
+            $userSurvey = $entityManager->getRepository(Survey::class)->findOneBy([
                 'id' => $customerId,
                 'surveyReferenceDate' => $surveyReferenceDate
-            ));
+            ]);
             $userSurvey->setAnswer($surveyResultString);
             $entityManager->merge($userSurvey);
             $entityManager->flush();
@@ -70,18 +70,18 @@ class SurveyModel extends Model implements ModelInterface
      */
     public function getSurveyData(array $surveyBruteData): array
     {
-        $cleanSurveyData = array();
-        foreach ($surveyBruteData as $key => $value) {
+        $cleanSurveyData = [];
+        foreach ($surveyBruteData as $value) {
             if (!array_key_exists($value->getSurveyReferenceDate(), $cleanSurveyData)) {
-                $cleanSurveyData[$value->getSurveyReferenceDate()] = array();
+                $cleanSurveyData[$value->getSurveyReferenceDate()] = [];
             }
 
-            $cleanSurveyData[$value->getSurveyReferenceDate()] += array(
-                $value->getCustomerName() => array(
+            $cleanSurveyData[$value->getSurveyReferenceDate()] += [
+                $value->getCustomerName() => [
                     'id' => $value->getId(),
                     'answer' => $value->getAnswer()
-                )
-            );
+                ]
+            ];
         }
 
         return $cleanSurveyData;
@@ -90,12 +90,11 @@ class SurveyModel extends Model implements ModelInterface
     private function writeResult(array $customerData): string
     {
         $questionary = $this->settings->getProperty('survey_question');
-        $resultString = array();
+        $resultString = [];
         foreach ($customerData as $key => $value) {
             $text = $questionary[$key]['text'];
             $resultString[$text] = $value;
         }
-        $answerString = (string) json_encode($resultString);
-        return $answerString;
+        return (string) json_encode($resultString);
     }
 }

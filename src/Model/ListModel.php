@@ -4,10 +4,10 @@ declare(strict_types = 1);
 namespace App\Model;
 
 use App\Entity\Order;
+use App\Utils\Andresmei\MyDateTime;
+use App\Utils\Andresmei\StdResponse;
 use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\ListNotExistsException;
-use App\Utils\Andresmei\StdResponse;
-use App\Utils\Andresmei\MyDateTime;
 
 class ListModel extends Model
 {
@@ -106,12 +106,10 @@ class ListModel extends Model
     public function getJsonListOrderBy(string $repository, string $orderBy): string
     {
         $returnList = $this->em->getRepository('App\Entity\\'.$repository)->findBy(
-            array(),
-            array($orderBy => 'ASC')
+            [],
+            [$orderBy => 'ASC']
         );
-        $jsonResponse = $this->serializer->serialize($returnList, 'json');
-
-        return $jsonResponse;
+        return $this->serializer->serialize($returnList, 'json');
     }
 
     /**
@@ -123,12 +121,10 @@ class ListModel extends Model
      */
     public function getListOrderBy(string $repository, string $orderBy): array
     {
-        $returnList = $this->em->getRepository('App\Entity\\'.$repository)->findBy(
-            array(),
-            array($orderBy => 'ASC')
+        return $this->em->getRepository('App\Entity\\'.$repository)->findBy(
+            [],
+            [$orderBy => 'ASC']
         );
-
-        return $returnList;
     }
 
     /**

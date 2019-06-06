@@ -41,14 +41,12 @@ abstract class BaseEntity
     public function __toString(): ?string
     {
         $serializer = SerializerBuilder::create()->build();
-        $result = $serializer->serialize($this, 'json');
-        return $result;
+        return $serializer->serialize($this, 'json');
     }
 
     public function getCreateDate(): ?string
     {
-        $date = ($this->createDate instanceof \DateTime) ? $this->createDate->format('d-m-Y') : null;
-        return $date;
+        return $this->createDate instanceof \DateTime ? $this->createDate->format('d-m-Y') : null;
     }
 
     public function getLastUpdate(): ?string

@@ -12,16 +12,13 @@ use App\Entity\PessoaFisica;
 use App\Entity\PessoaJuridica;
 use App\Entity\Phone;
 use App\Entity\Proprietario;
-use App\Model\Model;
 use App\Utils\Exceptions\FieldAlreadyExistsException;
-use Doctrine\Common\Persistence\ObjectManager;
 use Respect\Validation\Validator as v;
-use Symfony\Component\Yaml\Yaml;
 
 class PersonModel extends Model
 {
     protected $error = false;
-    protected $errorResponse = array();
+    protected $errorResponse = [];
 
     /**
      * @param array $data
@@ -49,20 +46,20 @@ class PersonModel extends Model
             }
         }
         if (is_null($person['cpf'])) {
-            return array(
+            return [
                 'http_code' => 400,
                 'type' => 'warning',
                 'message' => 'CPF não pode estar vázio',
-            );
+            ];
         }
         if (!$this->config['allow_same_cpf']) {
             $result = $this->checkSameField('cpf', $person['cpf']);
             if ($result['result'] !== 0) {
-                return array(
+                return [
                     'http_code' => 400,
                     'type' => 'warning',
                     'message' => 'CPF já cadastrado para algum outro cliente'
-                );
+                ];
             }
         }
         $person['birthDate'] = $person['birthDate'] === "" ? null : $person['birthDate'];
@@ -137,18 +134,18 @@ class PersonModel extends Model
             $em->flush();
             $em->getConnection()->commit();
 
-            return array(
+            return [
                 'http_code' => 200,
                 'type'      => 'success',
                 'message'   => 'Cliente adicionado com sucesso'
-            );
+            ];
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
-            return array(
+            return [
                 'http_code' => 400,
                 'type'      => 'error',
                 'message'   => $e->getMessage()
-            );
+            ];
             //throw new \Exception($e->getMessage());
         }
     }
@@ -156,11 +153,11 @@ class PersonModel extends Model
     public function error(string $type): ?bool
     {
         $this->error = true;
-        $this->errorResponse = array(
+        $this->errorResponse = [
             'http_code' => 400,
             'type' => 'warning',
             'message' => "Informação em {$type} não é valida"
-        );
+        ];
         return false;
     }
 

@@ -2,11 +2,11 @@
 
 namespace App\Utils\Andresmei;
 
+use App\Config\NonStaticConfig;
+use App\Utils\Exceptions\BinaryNotFoundException;
+use App\Utils\GenericContainer;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Environment;
-use App\Utils\GenericContainer;
-use App\Utils\Exceptions\BinaryNotFoundException;
-use App\Config\NonStaticConfig;
 
 class Form extends GenericContainer
 {
@@ -44,8 +44,7 @@ class Form extends GenericContainer
             throw new \Exception(sprintf('Tipo %s não é um tipo valido', $type));
         }
         $template = $type === 'pdf' ? sprintf('%sPdf', $formName) : $formName;
-        $result = $this->$type($template, $data);
-        return $result;
+        return $this->$type($template, $data);
     }
 
     public function setCustomTemplateFolder(string $dir): self
@@ -60,9 +59,9 @@ class Form extends GenericContainer
     public function show(string $formName, array $data): array
     {
         $this->setParsedFile($formName, $data);
-        return array(
+        return [
             'template' => $this->parsedFile
-        );
+        ];
     }
 
     /**
@@ -99,10 +98,10 @@ class Form extends GenericContainer
         unset($result);
         unset($opt);
         unlink($htmlReportFile);
-        return array(
+        return [
             'pdf_path' => $pdfDir,
             'type' => 'success',
-        );
+        ];
     }
 
     private function checkFileExistence(string $formName): string
@@ -132,7 +131,7 @@ class Form extends GenericContainer
     {
         $file = $this->checkFileExistence($formName);
         $clonedFields = [];
-        foreach ($data as $key => $value) {
+        foreach ($data as $value) {
             if (is_array($value)) {
                 $clonedFields[] = $value;
             }
@@ -140,10 +139,10 @@ class Form extends GenericContainer
         if ($formName == 'romaneio-board') {
             $clonedFields = array_reverse($clonedFields);
         }
-        $this->parsedFile = $this->twig->render($file, array(
+        $this->parsedFile = $this->twig->render($file, [
             'data' => $data,
             'prod' => $clonedFields,
             'logo' => $this->nonStaticConfig->getProperty('logo_image_path'),
-        ));
+        ]);
     }
 }

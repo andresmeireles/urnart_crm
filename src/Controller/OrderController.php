@@ -10,24 +10,23 @@
  */
 namespace App\Controller;
 
-use App\Entity\Order;
 use App\Entity\Estado;
-use App\Entity\Product;
-use App\Model\ListModel;
-use App\Model\OrderModel;
-use App\Entity\PaymentType;
-use App\Entity\Transporter;
-use App\Entity\PessoaJuridica;
 use App\Entity\ManualOrderReport;
 use App\Entity\ManualProductCart;
-use App\Utils\Exceptions\CustomException;
+use App\Entity\Order;
+use App\Entity\PaymentType;
+use App\Entity\PessoaJuridica;
+use App\Entity\Product;
+use App\Entity\Transporter;
+use App\Model\ListModel;
+use App\Model\OrderModel;
 use App\Utils\Andresmei\NestedArraySeparator;
+use App\Utils\Exceptions\CustomException;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Algolia\SearchBundle\IndexManagerInterface;
 
 /**
  * Controller das paginas de pedidos
@@ -61,9 +60,9 @@ class OrderController extends AbstractController
             );
         }
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
-        $manualOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(array(), array(
+        $manualOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy([], [
             'lastUpdate' => 'DESC'
-        ));
+        ]);
 
         $paginatedOrders = $paginator->paginate(
             $manualOrder,
@@ -147,7 +146,7 @@ class OrderController extends AbstractController
         }
         
         $data = $request->request->all();
-        $arrData = array();
+        $arrData = [];
         foreach ($data as $key => $value) {
             if (is_array($value)) {
                 unset($data[$key]);
@@ -181,13 +180,13 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('order');
         }
 
-        return $this->render('/order/pages/editOrder.html.twig', array(
+        return $this->render('/order/pages/editOrder.html.twig', [
             'order' => $this->getDoctrine()->getManager()->getRepository(Order::class)->find($orderId),
             'products' => $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll(),
             'customers' => $this->getDoctrine()->getManager()->getRepository(PessoaJuridica::class)->findAll(),
             'payments' => $this->getDoctrine()->getManager()->getRepository(PaymentType::class)->findAll(),
             'transporters' => $this->getDoctrine()->getManager()->getRepository(Transporter::class)->findAll(),
-        ));
+        ]);
     }
 
     /**
@@ -198,7 +197,7 @@ class OrderController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function updateOrder(OrderModel $model, Request $request, string  $orderId): Response
+    public function updateOrder(OrderModel $model, Request $request, string $orderId): Response
     {
         if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Algo deu muito errado :(');
@@ -206,7 +205,7 @@ class OrderController extends AbstractController
 
         $data = $request->request->all();
         $data['id'] = $orderId;
-        $arrData = array();
+        $arrData = [];
         foreach ($data as $key => $value) {
             if (is_array($value)) {
                 unset($data[$key]);
@@ -304,9 +303,9 @@ class OrderController extends AbstractController
             $result->getType(),
             $result->getMessage()
         );
-        return new Response($result->getMessage(), $result->getHttpCode(), array(
+        return new Response($result->getMessage(), $result->getHttpCode(), [
             'redirect-route' => '/order'
-        ));
+        ]);
     }
 
     /**
@@ -347,9 +346,9 @@ class OrderController extends AbstractController
     public function manualListing(Request $request, ListModel $listModel, PaginatorInterface $paginator): Response
     {
         $typeOfList = $request->query->get('type') ?? 'lastUpdate';
-        $lists = $typeOfList === 'bydate' ? array() : $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(
-            array(),
-            array($typeOfList => 'ASC')
+        $lists = $typeOfList === 'bydate' ? [] : $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(
+            [],
+            [$typeOfList => 'ASC']
         );
 
         if ($request->query->get('beginDate') !== null || $request->query->get('lastDate') !== null) {
@@ -510,9 +509,9 @@ class OrderController extends AbstractController
     public function removeManualOrder(int $orderId, OrderModel $orderModel): Response
     {
         $order = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
-        $cart = $this->getDoctrine()->getRepository(ManualProductCart::class)->findBy(array(
+        $cart = $this->getDoctrine()->getRepository(ManualProductCart::class)->findBy([
             'manualOrderReport' => $orderId,
-        ));
+        ]);
         if (!$order instanceof ManualOrderReport) {
             throw new \Exception('Nada foi mandado para ser apagado');
         }

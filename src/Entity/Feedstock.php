@@ -3,10 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Entity\BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FeedstockRepository")
@@ -105,8 +102,7 @@ class Feedstock extends BaseEntity
      */
     public function getMainVendor() : ?string
     {
-        $mainVendor = $this->vendors[0];
-        return $mainVendor;
+        return $this->vendors[0];
     }
 
     /**
@@ -121,7 +117,7 @@ class Feedstock extends BaseEntity
             array_shift($otherVendors);
             return $otherVendors;
         }
-        return array();
+        return [];
     }
 
     public function getPeriodicity() : ? int

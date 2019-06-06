@@ -4,11 +4,8 @@ namespace App\Utils\Form\FormTemplate;
 
 use App\Utils\Form\Interfaces\CreateFormInterface;
 use App\Utils\Form\Interfaces\ResponseFormInterface;
-use App\Utils\Form\ResponseForm;
-use App\Utils\Form\Form;
 use App\Utils\Form\Parameters;
-use App\Utils\Validation\ValidatorJson;
-use Respect\Validation\Validator as v;
+use App\Utils\Form\ResponseForm;
 
 class RemandFormCreator implements CreateFormInterface
 {
@@ -106,9 +103,7 @@ class RemandFormCreator implements CreateFormInterface
 			</div>
 			</body>';
 
-        $response = $body.''.$body;
-
-        return $response;
+        return $body.''.$body;
     }
 
     private function productBody(Parameters $parameters): string
@@ -191,8 +186,6 @@ class RemandFormCreator implements CreateFormInterface
 				</div>
 				</body>';
 
-        $response = $body.''.$body;
-
-        return $response;
+        return $body.''.$body;
     }
 }

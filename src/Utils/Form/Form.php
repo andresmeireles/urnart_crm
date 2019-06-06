@@ -1,13 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Utils\Form;
 
-use App\Utils\Form\Parameters;
 use App\Utils\Form\Interfaces\ResponseFormInterface;
 use App\Utils\Validation\ValidatorJson;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\HttpFoundation\Response;
 use Knp\Snappy\Pdf;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Yaml\Yaml;
 
 class Form
 {
@@ -38,9 +37,8 @@ class Form
     {
         foreach ($parameters as $key => $value) {
             if (is_array($value)) {
-                $parameters[$key] = array_map(function ($parameter) {
-                    $result = ltrim(trim($parameter));
-                    return $result;
+                $parameters[$key] = array_map(static function ($parameter) {
+                    return ltrim(trim($parameter));
                 }, $value);
                 continue;
             }

@@ -29,7 +29,7 @@ class Boleto extends BaseEntity
 
     /**
      * @ORM\Column(type="smallint")
-     * 
+     *
      * Status possíveis.
      * 0 - Sem previsão
      * 1 - Pago
@@ -109,7 +109,7 @@ class Boleto extends BaseEntity
     {
         switch ($this->boletoStatus) {
             case 0:
-                return 'Não Pago';       
+                return 'Não Pago';
                 break;
             case 1:
                 return 'Pago';
@@ -144,9 +144,9 @@ class Boleto extends BaseEntity
         $this->setLastUpdate();
         $date = !is_null($boletoPaymentDate) ? new \DateTime($boletoPaymentDate) : $boletoPaymentDate;
 
-        if (!($date instanceOf \DateTime) and !is_null($date)) {
+        if (!($date instanceof \DateTime) and !is_null($date)) {
             throw new InvalidParameterException(sprintf('Parametro [%s] não é valido. Valores reconhecidos são instancia de \DateTIme e null', $date));
-        } 
+        }
 
         $this->boletoPaymentDate = $date;
 
@@ -196,9 +196,9 @@ class Boleto extends BaseEntity
         $this->setLastUpdate();
         $date = new \DateTime($boletoVencimento);
 
-        if (!($date instanceOf \DateTime)) {
+        if (!($date instanceof \DateTime)) {
             throw new InvalidParameterException(sprintf('Parametro [%s] não é valido. Preciso enviar instancia de \DateTime.', $date));
-        } 
+        }
 
         $this->boletoVencimento = $date;
 

@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -25,35 +25,35 @@ class User extends BaseEntity implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="string")
      *
-     * @var  string $userNickname Nome do usuário.
+     * @var  string Nome do usuário.
      */
     private $userNickname;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      *
-     * @var string $email Email do usuário.
+     * @var string Email do usuário.
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
      *
-     * @var array $roles Permissões do usuário.
+     * @var array Permissões do usuário.
      */
     private $roles = [];
 
     /**
      * @ORM\Column(type="string")
      *
-     * @var string $password The hashed password
+     * @var string The hashed password
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      *
-     * @var string|null $profileImage Name of image. Possible hashed.
+     * @var string|null Name of image. Possible hashed.
      */
     private $profileImage;
 
@@ -189,16 +189,16 @@ class User extends BaseEntity implements UserInterface, \Serializable
      */
     public function serialize()
     {
-        return serialize(array(
+        return serialize([
             $this->id,
             $this->email,
             $this->password,
-        ));
+        ]);
     }
 
     public function unserialize($serialized)
     {
-        list (
+        list(
             $this->id,
             $this->email,
             $this->password,

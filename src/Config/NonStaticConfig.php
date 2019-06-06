@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace App\Config;
 
-use Symfony\Component\Yaml\Yaml;
-use App\Config\NotLoadedConfigException;
-use App\Config\NotFoundParameterException;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Symfony\Component\Yaml\Yaml;
 
 final class NonStaticConfig
 {
@@ -34,7 +32,7 @@ final class NonStaticConfig
      * Retorna um array com arquivo de configuração iniciado.
      *
      * @throws NotLoadedConfigException
-     * 
+     *
      * @return array array associativo com nomes das configurações e valor respoectivo.
      */
     public function getConfig(): array

@@ -3,16 +3,15 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Config\NotFoundParameterException;
+use App\Entity\Expenses;
+use App\Entity\TravelAccountability;
+use App\Entity\TravelEntry;
+use App\Utils\Andresmei\FlashResponse;
+use App\Utils\Andresmei\NestedArraySeparator;
+use App\Utils\Exceptions\CustomException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
-use App\Utils\Andresmei\FlashResponse;
-use App\Entity\TravelAccountability;
-use App\Utils\Andresmei\NestedArraySeparator;
-use Symfony\Component\Validator\Constraints\DateTime;
-use App\Entity\Expenses;
-use App\Entity\TravelEntry;
-use App\Config\NotFoundParameterException;
-use App\Utils\Exceptions\CustomException;
 
 class FormModel extends Model
 {
@@ -153,9 +152,9 @@ class FormModel extends Model
     public function editTravelExpenseReport(array $expenses, TravelAccountability $travelAccountability): void
     {
         $entityManager = $this->em;
-        $rmExpenses = $entityManager->getRepository(Expenses::class)->findBy(array(
+        $rmExpenses = $entityManager->getRepository(Expenses::class)->findBy([
             'idAccountability' => $travelAccountability->getId(),
-        ));
+        ]);
         foreach ($rmExpenses as $expense) {
             $entityManager->remove($expense);
             $entityManager->flush();
@@ -172,9 +171,9 @@ class FormModel extends Model
     public function editTravelEntryReport(array $entries, TravelAccountability $travelAccountability): void
     {
         $entityManager = $this->em;
-        $rmEntry = $entityManager->getRepository(TravelEntry::class)->findBy(array(
+        $rmEntry = $entityManager->getRepository(TravelEntry::class)->findBy([
             'idTravelAccountability' => $travelAccountability->getId(),
-        ));
+        ]);
         foreach ($rmEntry as $entry) {
             $entityManager->remove($entry);
             $entityManager->flush();

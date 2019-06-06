@@ -44,7 +44,8 @@
         "symfony/phpunit-bridge": "^4.0",
         "symfony/profiler-pack": "^1.0",
         "symfony/templating": "^4.0",
-        "symfony/var-dumper": "^4.0"
+        "symfony/var-dumper": "^4.0",
+        "symplify/easy-coding-standard": "^6.0"
     },
     "config": {
         "platform": {

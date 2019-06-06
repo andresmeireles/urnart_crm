@@ -2,8 +2,8 @@
 
 namespace App\Utils\Form\FormTemplate;
 
-use App\Utils\Form\Interfaces\ResponseFormInterface;
 use App\Utils\Form\Interfaces\CreateFormInterface;
+use App\Utils\Form\Interfaces\ResponseFormInterface;
 use App\Utils\Form\Parameters;
 use App\Utils\Form\ResponseForm;
 use App\Utils\Validation\ValidatorJson;
@@ -48,8 +48,8 @@ class FreightLetterFormCreator implements CreateFormInterface
 
     private function createBody(array $parameters)
     {
-        $imageBackground = file_get_contents(__DIR__.'/carta-frete/background');
-        $imageSign = file_get_contents(__DIR__.'/carta-frete/sign');
+        //$imageBackground = file_get_contents(__DIR__.'/carta-frete/background');
+        //$imageSign = file_get_contents(__DIR__.'/carta-frete/sign');
         $extenseNumber = new NumeroPorExtenso();
 
         $body = '

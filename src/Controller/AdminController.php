@@ -4,13 +4,13 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Model\UserModel;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 
 /**
  * @IsGranted("ROLE_ADMIN")
@@ -42,9 +42,9 @@ class AdminController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Você não pode acessar está pagina.');
 
-        return $this->render('admin/pages/user/userPermission.html.twig', array(
+        return $this->render('admin/pages/user/userPermission.html.twig', [
             'users' => $this->getDoctrine()->getRepository(User::class)->findAll()
-        ));
+        ]);
     }
 
     /**
@@ -55,17 +55,17 @@ class AdminController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Você não pode acessar está pagina.');
 
         if ($this->isCsrfTokenValid('permissions', $request->request->get('_csrf_token'))) {
-            throw new InvalidCsrfTokenException('Token incorreto ou invalido');    
-        }   
+            throw new InvalidCsrfTokenException('Token incorreto ou invalido');
+        }
 
         $userId = $request->request->get('identification');
         $userName = $request->request->get('name');
-        $roles = $request->request->get('user_roles') ?? array();
+        $roles = $request->request->get('user_roles') ?? [];
 
         $response = $model->editRoles($userId, $userName, $roles);
 
         if ($asynchronous) {
-            return new Response($response->getMessage(), 200, array('type' => $response->getType()));
+            return new Response($response->getMessage(), 200, ['type' => $response->getType()]);
         }
 
         $this->addFlash($response->getType(), $response->getMessage());
@@ -73,8 +73,8 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('user_permission');
     }
 
-    /** 
-     * @Route("/api/admin/permission", methods="POST") 
+    /**
+     * @Route("/api/admin/permission", methods="POST")
      */
     public function asyncEditUserPermissions(Request $request, UserModel $model): Response
     {
@@ -113,8 +113,8 @@ class AdminController extends AbstractController
      */
     public function showUser(): Response
     {
-        return $this->render('admin/pages/user/x.html.twig', array(
+        return $this->render('admin/pages/user/x.html.twig', [
             'users' => $this->getDoctrine()->getRepository(User::class)->findAll()
-        ));
+        ]);
     }
 }

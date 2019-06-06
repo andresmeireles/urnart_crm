@@ -25,12 +25,12 @@ class SimpleFileUpload
      *
      * Array com tipos de imagem suportados.
      */
-    protected static $supportedImages = array(
+    protected static $supportedImages = [
         'image/jpeg',
         'image/png',
         'image/svg+xml',
         'image/webp'
-    );
+    ];
 
     /**
      * @var string
