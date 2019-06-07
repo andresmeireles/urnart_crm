@@ -5,23 +5,54 @@
         {% for item in el.fields %}
             <div class="form-row">
             {% for r in item %}
-                <div class="form-group col mx-1">
+                {% if r.type is same as('hidden') %}
+                    <input  type="{{ r.type }}" 
+                        {% if r.name is defined %}name="{{ r.name }}"{% endif %} 
+                        placeholder="{{ r.placeholder is defined ? r.placeholder : '' }}"
+                        class="{% for class in r.class %}{{ class ~ ' ' }}{% endfor %}" 
+                        {% if r.required is defined and r.required is same as(true) %}
+                        required=""
+                        {% endif %}
+                        {% if r.autocomplete is defined and r.required is same as(true) %}
+                        autocomplete="{{r.autocomplete}}"
+                        {% endif %}
+                        {% if r.disabled is defined and r.disabled is same as(true) %}
+                        disabled="disabled"
+                        {% endif %}
+                    />
+                {% else %}
+                <div class="form-group {{ ( r.newLine is defined and r.newLine is same as(true)) ? 'col-12' : 'col' }} mx-1">
                 <label for="name" {{ r.required is defined and r.required is same as(true) ? 'class="required"' : '' }}>{{ r.label ?? '' }}&nbsp;</label>
                 {% if r.type is same as('select') %}
-                    <select name="{{ r.name }}" 
+                    <select {% if r.name is defined %}name="{{ r.name }}"{% endif %} 
                             class="{% for class in r.class %}{{ class ~ ' ' }}{% endfor %}"
                             {% if r.required is defined and r.required is same as(true) %}
                                 required=""
                             {% endif %}
                     >
-                        <option selected disabled>Selecione um valor</option>
+                        <option value="" selected disabled>Selecione um valor</option>
                         {% for k, v in r.values %}
                             <option value="{{ k }}">{{ v }}</option>
                         {% endfor %}
                     </select>
+                {% elseif 'auto-float-convert-blur' in r.class %}
+                    <input type="hidden" converted-value name="{{ r.name }}">
+                    <input  type="{{ r.type }}" 
+                            class="{% for class in r.class %}{{ class ~ ' ' }}{% endfor %}" 
+                            placeholder="{{ r.placeholder is defined ? r.placeholder : '' }}"
+                            {% if r.required is defined and r.required is same as(true) %}
+                                required=""
+                            {% endif %}
+                            {% if r.autocomplete is defined and r.required is same as(true) %}
+                                autocomplete="{{r.autocomplete}}"
+                            {% endif %}
+                            {% if r.disabled is defined and r.disabled is same as(true) %}
+                                disabled="disabled"
+                            {% endif %}
+                    />
                 {% else %}
                     <input  type="{{ r.type }}" 
-                            name="{{ r.name }}" 
+                            {% if r.name is defined %}name="{{ r.name }}"{% endif %} 
                             placeholder="{{ r.placeholder is defined ? r.placeholder : '' }}"
                             class="{% for class in r.class %}{{ class ~ ' ' }}{% endfor %}" 
                             {% if r.required is defined and r.required is same as(true) %}
@@ -30,12 +61,21 @@
                             {% if r.autocomplete is defined and r.required is same as(true) %}
                                 autocomplete="{{r.autocomplete}}"
                             {% endif %}
+                            {% if r.disabled is defined and r.disabled is same as(true) %}
+                                disabled="disabled"
+                            {% endif %}
                     />         
                 {% endif %}
                 </div>
+                {% endif %}
             {% endfor %}
             </div>
         {% endfor %} 
+        {% if el.jsFunc is defined %}
+            <script>
+            {{ el.jsFunc | raw }}            
+            </script>
+        {% endif %}
         <div class="form-group">
             <button type="submit" class="btn btn-success btn-block disable-on-submit">Enviar</button>
         </div> 

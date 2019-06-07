@@ -154,12 +154,12 @@ class RegisterController extends AbstractController
         }
 
         $images = $request->files->get('images');
-        $result = $config->writeConfFile($request->request->all(), $images);
+        // $result = $config->writeConfFile($request->request->all(), $images);
 
-        $this->addFlash(
-            $result->getType(),
-            $result->getMessage()
-        );
+        // $this->addFlash(
+        //     $result->getType(),
+        //     $result->getMessage()
+        // );
 
         return $this->redirectToRoute('config');
     }
@@ -176,7 +176,7 @@ class RegisterController extends AbstractController
         if (!($hash == hash('ripemd160', 'valido'))) {
             return new Response('false', 400);
         }
-        $config->resetLogoImage();
+        // $config->resetLogoImage();
         return new Response('true', 200);
     }
 }

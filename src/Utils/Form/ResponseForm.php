@@ -1,11 +1,12 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Utils\Form;
 
-use App\Utils\Form\Interfaces\ResponseFormInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class ResponseForm implements ResponseFormInterface
+class ResponseForm
 {
     private $bodyForm;
     private $orientation;
@@ -14,13 +15,12 @@ class ResponseForm implements ResponseFormInterface
     public function __construct(string $body = null, string $orientation = 'Portrait', array $message = null)
     {
         $this->orientation = $orientation;
-
         if ($body != null) {
             $this->setResponse($body, $message);
         }
     }
 
-    public function setResponse(string $body, ?array $message = null): ResponseFormInterface
+    public function setResponse(string $body, ?array $message = null): self
     {
         $this->bodyForm = $body;
         $this->message = $message;
@@ -46,7 +46,7 @@ class ResponseForm implements ResponseFormInterface
         return $this->orientation;
     }
 
-    public function newErrorMessage(array $messages): ResponseFormInterface
+    public function newErrorMessage(array $messages): self
     {
         $this->message = $messages;
 
@@ -58,10 +58,11 @@ class ResponseForm implements ResponseFormInterface
         return $this->message;
     }
 
-    public function redirectError(string $route, array $message)
+    public function redirectError(string $route, array $message): Response
     {
         $session = new Session;
         $session->getFlashBag()->set('error', $message);
-        return new RedirectResponse('/form/'.$route);
+
+        return new RedirectResponse('/form/' . $route);
     }
 }

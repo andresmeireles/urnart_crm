@@ -1,6 +1,10 @@
-<?php
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
+/**
+ * TO-DO
+ * 
+ * Image saver
+ * config file saver
+ */
 namespace App\Config;
 
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
@@ -44,6 +48,7 @@ final class NonStaticConfig
      * Função para recuperar o valor de alguma configuração.
      *
      * @param string $param
+     *
      * @return string
      */
     public function getProperty(string $param)
@@ -51,9 +56,25 @@ final class NonStaticConfig
         if (!array_key_exists($param, $this->getConfig())) {
             throw new NotFoundParameterException("Configuração $param não existe");
         }
+
         return $this->config[$param];
     }
 
+    /**
+     * Write images on paths.
+     *
+     * @return self
+     */
+    public function writeImage(): self
+    {
+        return $this;
+    }
+
+    /**
+     * get env file.
+     *
+     * @return boolean
+     */
     public function getEnv(): bool
     {
         return $this->env;
