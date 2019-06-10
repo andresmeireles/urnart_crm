@@ -8,13 +8,30 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\Common\Persistence\ObjectRepository;
 use App\Entity\User;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Functions to use on tests.
  */
 trait TestTrait
 {
-    public function getTestManager(Object $entity = null)
+    /**
+     * @return EntityManager
+     */
+    public function getTestEntityManager(object $entity = null): EntityManager
+    {
+        $entityManager = $this->createMock(EntityManager::class);
+        $entityManager->expects($this->any())
+            ->method('getRepository')
+            ->willReturn($this->getTestRepository($entity));
+
+        return $entityManager;
+    }
+
+    /**
+     * @return ObjectManager
+     */
+    public function getTestManager(Object $entity = null): ObjectManager
     {
         $objectManager = $this->createMock(ObjectManager::class);
         
@@ -30,6 +47,15 @@ trait TestTrait
         $repository = $this->createMock(ObjectRepository::class);
         $repository->expects($this->any())
             ->method('find')
+            ->willReturn($entity);
+        $repository->expects($this->any())
+            ->method('findAll')
+            ->willReturn([]);
+        $repository->expects($this->any())
+            ->method('findBy')
+            ->willReturn([]);
+        $repository->expects($this->any())
+            ->method('findOneBy')
             ->willReturn($entity);
 
         return $repository;

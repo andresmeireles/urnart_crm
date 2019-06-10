@@ -7,13 +7,21 @@ use App\Entity\Feedstock;
 use App\Entity\FeedstockInventory;
 use App\Entity\Unit;
 
+/**
+ * TESTS 
+ * 
+ * TO-DO
+ * update
+ * feedIn
+ * feedOut
+ */
 class FeedstockModel extends Model
 {
     /**
      * Função que persiste e atualiza produtos do inventário
      *
      * @param array  $data Array associativo com dados a serem incluidos ou atualizados.
-     * @param string $type [INSERT] inseri no banco de dados. [UPDATE] atualiza o produto no banco de dados.
+     * @param string $type [INSERT] insere no banco de dados. [UPDATE] atualiza o produto no banco de dados.
      * @param int    $id   Caso a TYPE [$type] for UPDATE, ID do produto.
      * @return void
      */
@@ -35,12 +43,13 @@ class FeedstockModel extends Model
             throw new \Exception('Parametro' . $data['name'] . 'não existe');
         }
 
-        $this->em->getConnection()->beginTransaction();
         try {
             $feedstock = new Feedstock();
             $inventory = new FeedstockInventory();
             if ($type == 'update') {
+                /** @var Feedstock $feedstock */
                 $feedstock = $this->em->getRepository(Feedstock::class)->find($id);
+                /** @var FeedstockInventory $inventory */
                 $inventory = $this->em->getRepository(FeedstockInventory::class)->findOneBy([
                     'feedstock_id' => $id
                 ]);
@@ -73,10 +82,7 @@ class FeedstockModel extends Model
             $this->em->persist($feedstock);
             $this->em->persist($inventory);
 
-            $this->em->flush();
-            $this->em->getConnection()->commit();
         } catch (\Exception $e) {
-            $this->em->getConnection()->rollback();
             throw new \Exception(
                 sprintf(
                     'Erro - %s. Arquivo - %s. Linha - %s.',
@@ -86,6 +92,8 @@ class FeedstockModel extends Model
                 )
             );
         }
+
+        $this->em->flush();
     }
 
     /**

@@ -90,5 +90,11 @@
         "symfony": {
             "allow-contrib": false
         }
+    },
+    "repositories": {
+        "phpunit-bridge": {
+            "type": "path",
+            "url": "C:\\Projects\\sysadmin\\vendor\\symfony\\phpunit-bridge"
+        }
     }
 }

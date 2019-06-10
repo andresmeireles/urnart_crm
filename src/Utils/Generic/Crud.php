@@ -1,10 +1,16 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace App\Utils\Generic;
 
 use App\Utils\Andresmei\FlashResponse;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use JMS\Serializer\SerializerBuilder;
 
+/**
+ * Generic Crud functions.
+ * 
+ * Tests OK
+ */
 class Crud extends GenericContainer
 {
     /**
@@ -47,7 +53,7 @@ class Crud extends GenericContainer
             $this->em->remove($registry);
             $this->em->flush();
         } catch (ForeignKeyConstraintViolationException $e) {
-            return new FlashResponse(200, 'danger', 'Item não pode ser removido pois está sendo utilizado em algum pedido.');
+            throw new \Exception('Item não pode ser removido pois está sendo utilizado em algum pedido.');
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
