@@ -88,27 +88,27 @@ class UserModelTest extends TestCase
         $this->assertEquals($model, $result);
     }
 
-    public function testResetProfileImage()
-    {
-        $model = new UserModel($this->getTestManager());
-        /** @var User $user */
-        $user = $this->getTestUser();
-        $user->setProfileImage('test.jpg');
+    // public function testResetProfileImage()
+    // {
+    //     $model = new UserModel($this->getTestManager());
+    //     /** @var User $user */
+    //     $user = $this->getTestUser();
+    //     $user->setProfileImage('test.jpg');
                 
-        $user->expects($this->any())
-            ->method('getProfileImage')
-            ->willReturn('test.jpg');
+    //     $user->expects($this->any())
+    //         ->method('getProfileImage')
+    //         ->willReturn('test.jpg');
         
-        $this->fileExists->expects($this->any())
-            ->willReturn(true)
-            ->method('file_exists');
+    //     $this->fileExists->expects($this->any())
+    //         ->willReturn(true)
+    //         ->method('file_exists');
 
-        $this->isDir->expects($this->any())
-            ->willReturn(false)
-            ->method('is_dir');
+    //     $this->isDir->expects($this->any())
+    //         ->willReturn(false)
+    //         ->method('is_dir');
 
-        $result = $model->resetProfileImage(__DIR__.'/../../public/uploads/images/profile', $user);
+    //     $result = $model->resetProfileImage(__DIR__.'/../../public/uploads/images/profile', $user);
 
-        $this->assertEquals(new FlashResponse(200, 'success', 'Imagem resetada com sucesso!'), $result);
-    }
+    //     $this->assertEquals(new FlashResponse(200, 'success', 'Imagem resetada com sucesso!'), $result);
+    // }
 }

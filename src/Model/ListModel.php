@@ -9,6 +9,18 @@ use App\Utils\Andresmei\StdResponse;
 use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\ListNotExistsException;
 
+/**
+ * TEST 
+ * 
+ * yearOrderReport
+ * getParsedClientData
+ * getParsedLastOrderData
+ * getParsedStatusOrderData
+ * getJsonListOrderBy
+ * getListOrderBy
+ * getListByDate
+ * 
+ */
 class ListModel extends Model
 {
     /**

@@ -13,6 +13,9 @@ use App\Utils\Exceptions\CustomException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * TEST Ok
+ */
 class FormModel extends Model
 {
     public function saveReport(array $data, string $path)
@@ -29,6 +32,9 @@ class FormModel extends Model
         return new FlashResponse(200, 'success', 'Arquivo salvo com sucesso!');
     }
 
+    /**
+     * @return FlashResponse
+     */
     public function reportResolver(string $formName, array $data): FlashResponse
     {
         switch ($formName) {
@@ -45,8 +51,8 @@ class FormModel extends Model
         switch ($formName) {
             case 'travel-report':
                 $entity = $this->em
-                                ->getRepository(TravelAccountability::class)
-                                ->find($reportId);
+                            ->getRepository(TravelAccountability::class)
+                            ->find($reportId);
                 return $this->editAcountabilityReport($entity, $data);
             default:
                 throw new \Exception(sprintf('Relatorio editavel com nome %s não existe', $formName));
@@ -105,6 +111,8 @@ class FormModel extends Model
     {
         $entityManager = $this->em;
         $accountability = new TravelAccountability();
+        /* dump($data);
+        die; */
         $array = new NestedArraySeparator($data);
         $accountabilityData = $array->getSimpleArray();
         $entries = $array->getAssoativeArrayGroup('customerArr');

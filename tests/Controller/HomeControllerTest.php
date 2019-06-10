@@ -14,14 +14,14 @@ class HomeControllerTest extends WebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    public function testFinanceiro()
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/');
-        //$this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(
-            0,
-            $crawler->filter('h1.text-center')->count()
-        );
-    }
+    // public function testFinanceiro()
+    // {
+    //     $client = static::createClient();
+    //     $crawler = $client->request('GET', '/');
+    //     //$this->assertEquals(200, $client->getResponse()->getStatusCode());
+    //     $this->assertGreaterThan(
+    //         0,
+    //         $crawler->filter('h1.text-center')->count()
+    //     );
+    // }
 }

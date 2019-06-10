@@ -8,12 +8,7 @@ use App\Entity\FeedstockInventory;
 use App\Entity\Unit;
 
 /**
- * TESTS 
- * 
- * TO-DO
- * update
- * feedIn
- * feedOut
+ * TESTS OK
  */
 class FeedstockModel extends Model
 {
@@ -46,7 +41,7 @@ class FeedstockModel extends Model
         try {
             $feedstock = new Feedstock();
             $inventory = new FeedstockInventory();
-            if ($type == 'update') {
+            if ($type === 'update') {
                 /** @var Feedstock $feedstock */
                 $feedstock = $this->em->getRepository(Feedstock::class)->find($id);
                 /** @var FeedstockInventory $inventory */
@@ -54,34 +49,27 @@ class FeedstockModel extends Model
                     'feedstock_id' => $id
                 ]);
             }
-
             $feedstock->setNome($data['name']);
             $feedstock->setDescription($data['description']);
             $feedstock->setPeriodicity((int)$data['periocid']);
-
             $unit = $this->em->getRepository(Unit::class)->find($data['unit']);
             $feedstock->setUnit($unit);
-
             $vendors = $data['otherVendors'] ?? '';
-
             isset($data['otherVendors']) ?
                 array_unshift($vendors, $data['mainVendor']) :
                 $vendors = (array)$data['mainVendor'];
-                
+    
             $feedstock->setVendors($vendors);
-
             $departament = $this->em->getRepository(Departament::class)->find($data['departament']);
             $feedstock->setDepartament($departament);
-
-            $inventory->setFeedstockId($feedstock);
+            if ($type === 'insert') {
+                $inventory->setFeedstockId($feedstock);
+            }
             $inventory->setMaxStock($data['maxStock']);
             $inventory->setMinStock($data['minStock']);
-
             $feedstock->setLastUpdate();
-
             $this->em->persist($feedstock);
             $this->em->persist($inventory);
-
         } catch (\Exception $e) {
             throw new \Exception(
                 sprintf(
@@ -115,7 +103,6 @@ class FeedstockModel extends Model
         unset($data['date']);
         $values = array_values($data);
 
-        $this->em->getConnection()->beginTransaction();
         try {
             foreach ($values as $inv) {
                 $feedstock = $this->em->getRepository(FeedStockInventory::class)->findOneBy([
@@ -128,12 +115,9 @@ class FeedstockModel extends Model
                 $feedstock->setStock((string) $newStock);
 
                 $this->em->merge($feedstock);
-                $this->em->flush();
             }
-            
-            $this->em->getConnection()->commit();
+            $this->em->flush();            
         } catch (\Exception $e) {
-            $this->em->getConnection()->rollback();
             throw new \Exception($e->getMessage());
         }
     }
@@ -151,7 +135,6 @@ class FeedstockModel extends Model
 
         $values = array_values($data);
         
-        $this->em->getConnection()->beginTransaction();
         try {
             foreach ($values as $inv) {
                 $feedstock = $this->em->getRepository(FeedStockInventory::class)->findOneBy([
@@ -171,17 +154,11 @@ class FeedstockModel extends Model
                  
                 $feedstock->setStock((string) $newStock);
                 $this->em->merge($feedstock);
-                $this->em->flush();
             }
-            
-            $this->em->getConnection()->commit();
+            $this->em->flush();
 
-            return [
-                'http_code' => 200,
-                'message' => 'Sucesso!'
-            ];
+            return ['http_code' => 200, 'message' => 'Sucesso!'];
         } catch (\Exception $e) {
-            $this->em->getConnection()->rollback();
             throw new \Exception($e->getMessage());
         }
     }
