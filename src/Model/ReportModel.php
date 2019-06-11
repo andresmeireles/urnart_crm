@@ -12,6 +12,7 @@ use App\Utils\Andresmei\StdResponse;
 use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\CustomException;
 use Symfony\Component\Yaml\Yaml;
+use App\Utils\Andresmei\MyDateTime;
 
 class ReportModel extends Model
 {
@@ -652,18 +653,33 @@ class ReportModel extends Model
         return $results;
     }
 
-    public function setTruckOrder(int $orderId)
+    /**
+     * @param array $reportData Mandar parametro com as sefintes informaçãoes no devido formato
+     *                          'driverName' => 'Nome do rapaz',
+     *                          'kmout' => null|'236599',
+     *                          'departureDate => null|'2010/10/31' Formarto YYYY/MM/DD 
+     */
+    public function createTruckDepartureReport(array $reportData, array $orders): FlashResponse
     {
-        $em = $this->em;
-        $orderRegistry = $em->getRepository(ManualOrderReport::class)->find($orderId);
-        if (null === $orderRegistry) {
-            throw new \Exception(sprintf("O pedido %s não existe", $orderId));
+        $entityManager = $this->em;
+        $manualOrderRepository = $entityManager->getRepository(ManualOrderReport::class);
+        $truckArrivalReport = new TravelTruckOrders();
+        try {            
+            $truckArrivalReport->setDriverName($reportData['driverName']);
+            $truckArrivalReport->setKmout($reportData['kmout']);
+            $date = new MyDateTime($reportData['departureDate'], 'America/Belem');
+            $truckArrivalReport->setDepartureDate($date);
+            foreach ($orders as $order) {
+                $manualOrderReport = $manualOrderRepository->find($order);
+                $truckArrivalReport->addOrderId($manualOrderReport);
+            }
+            $truckArrivalReport->setActive(true);
+            $entityManager->persist($truckArrivalReport);
+        } catch (\Exception $error) {
+            throw new \Exception($error->getMessage());
         }
-        $truck = new TravelTruckOrders();
+        $entityManager->flush();
 
-        $truck->addOrderId($orderRegistry);
-        $truck->setActive(true);
-
-        return true;
+        return new FlashResponse(200, 'success', 'Relatorio de saida do caminhão criado com sucesso!');
     }
 }

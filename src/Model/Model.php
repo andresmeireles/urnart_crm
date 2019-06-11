@@ -1,13 +1,14 @@
 <?php declare(strict_types=1);
 namespace App\Model;
 
-use App\Config\NonStaticConfig;
-use App\Utils\Andresmei\StringConvertions;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
-use JMS\Serializer\Metadata\ClassMetadata;
-use JMS\Serializer\SerializerBuilder;
+use App\Config\NonStaticConfig;
 use Symfony\Component\Yaml\Yaml;
+use JMS\Serializer\SerializerBuilder;
+use App\Utils\Andresmei\StringConvertions;
+use JMS\Serializer\Metadata\ClassMetadata;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Service Container for models

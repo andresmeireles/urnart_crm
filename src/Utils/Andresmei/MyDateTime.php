@@ -9,17 +9,6 @@ final class MyDateTime extends \DateTime
         parent::__construct($date, new \DateTimeZone($timezone ?? 'America/Belem'));
     }
 
-    public function validOrNull(string $testYear): ?string
-    {
-        $logicalTest = true;
-        
-        if ($logicalTest) {
-            return null;
-        }
-
-        return $validYear;
-    }
-
     /**
      * Incrimenta o valor das datas.
      *
