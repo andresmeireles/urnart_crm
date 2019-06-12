@@ -10,6 +10,7 @@ use App\Entity\ManualOrderReport;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use App\Utils\Exceptions\CustomException;
+use App\Entity\TravelTruckOrders;
 
 class ReportModelTest extends TestCase
 {
@@ -36,13 +37,46 @@ class ReportModelTest extends TestCase
             ->willReturn(new ManualOrderReport);
         $model = new ReportModel($entityManager);
         $reportData = [
-            'driverName' => '',
+            'driverName' => 'José',
             'kmout' => null,
-            'departureDate' => '2010/12/31'
+            'departureDate' => '2010/12/31     '
         ];
         $orders = [10];
         $result = $model->createTruckDepartureReport($reportData, $orders);
         
         $this->assertEquals(new FlashResponse(200, 'success', 'Relatorio de saida do caminhão criado com sucesso!'), $result);
+    }
+
+    public function testEditTruckDepartureReport()
+    {
+        /** @var PHPUnit\Framework\MockObject\MockObject|EntityManager $entityManager */
+        $entityManager = $this->createMock(EntityManager::class);
+        $mockRepo = $this->createMock(ObjectRepository::class);
+        $entityManager->expects($this->any())
+            ->method('getRepository')
+            ->willReturn($mockRepo);
+        $mockRepo->expects($this->at(0))
+            ->method('find')
+            ->willReturn(new TravelTruckOrders);
+        $mockRepo->expects($this->at(1))
+            ->method('find')
+            ->willReturn(new ManualOrderReport);
+        $model = new ReportModel($entityManager);
+        $reportData = [
+            'driverName' => 'José',
+            'kmout' => null,
+            'departureDate' => '2010/12/31     '
+        ];
+        $orders = [10];
+        $result = $model->editTruckDepartureReport(new TravelTruckOrders, $reportData, $orders);
+        
+        $this->assertEquals(
+            new FlashResponse(
+                200,
+                'success',
+                sprintf('Relatorio %s editado com sucesso', (new TravelTruckOrders)->getId())
+            ),
+            $result
+        );
     }
 }

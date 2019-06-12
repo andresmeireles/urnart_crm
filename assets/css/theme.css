@@ -1300,6 +1300,11 @@ select.form-control:focus::-ms-value {
   display: block;
   width: 100%; }
 
+.form.user .form-control-user {
+    font-size: 0.8rem;
+    border-radius: 10rem;
+    padding: 1.5rem 1rem; }
+
 .col-form-label {
   padding-top: calc(0.375rem + 1px);
   padding-bottom: calc(0.375rem + 1px);

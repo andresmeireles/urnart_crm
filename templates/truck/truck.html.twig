@@ -1,7 +1,49 @@
 {% extends "index.html.twig" %}
 {% block title %}Caminhão{% endblock %}
 {% block content %}
-    <div class="bg-light">
-        caminhão
+    <h1 class="h3 mb-2 text-gray-800">Relatórios de Viagem do Caminhão</h1>
+    <hr>
+    <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Relatórios</h6>
+            <div class="dropdown no-arrow">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                <div class="dropdown-header">Ações:</div>
+                <a class="dropdown-item" href="/truck/create">Novo Relatório</a>
+                {# <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a> #}
+            </div>
+            </div>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+        {% if reports is not defined or reports is empty %}
+            Nenhum relatório criado.
+        {% else %}
+            {% for item in items %}
+            <nav class="navbar navbar-expand navbar-light bg-light mb-3">
+                <a class="navbar-brand" href="#">Relatorio do José da data 10/10/2010</a>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Ações
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Editar</a>
+                        <a class="dropdown-item" href="#">Visualizar</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Criar relátorios</a>
+                    </div>
+                    </li>
+                </ul>
+            </nav>     
+            {% endfor %}       
+        {% endif %}
+        </div>
     </div>
 {% endblock %}

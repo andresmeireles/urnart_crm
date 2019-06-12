@@ -62,12 +62,13 @@ class TravelTruckOrders extends BaseEntity
 
     public function setDriverName(?string $driverName): self
     {
-        if ($driverName === null) {
+        $clearString = trim($driverName);
+        if (strlen($clearString) === 0) {
             throw new CustomException(
                 sprintf('Erro. Parametro %s não aceito como nome', $driverName)
             );
         }
-        $this->driverName = $driverName;
+        $this->driverName = $clearString;
 
         return $this;
     }

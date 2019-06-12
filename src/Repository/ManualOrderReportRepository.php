@@ -19,6 +19,23 @@ class ManualOrderReportRepository extends ServiceEntityRepository
         parent::__construct($registry, ManualOrderReport::class);
     }
 
+    public function someFieldsConsult(string ...$fields)
+    {
+        $queryConsult = '';
+        $manager = $this->getEntityManager();
+        foreach ($fields as $field) {
+            $queryConsult .= sprintf('u.%s, ', $field);
+        }
+        $query = $manager->createQuery(
+            sprintf(
+                'SELECT %s FROM App\Entity\ManualOrderReport u WHERE u.active = :param',
+                trim($queryConsult, ', ')
+            )
+        )->setParameter('param', true);
+
+        return $query->execute();
+    }
+
     // /**
     //  * @return ManualOrderReport[] Returns an array of ManualOrderReport objects
     //  */

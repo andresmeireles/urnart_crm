@@ -1,0 +1,82 @@
+{% extends "index.html.twig" %}
+{% block title %}Criar relatório{% endblock %}
+{% block content %}
+    <script>
+        var orders = [
+            {% for order in orders %}{value:'{{ order.id}} - {{ order.customerName}}',data:'{{order.id}}'},{% endfor%}
+        ]
+        document.addEventListener('DOMContentLoaded', () => {
+            autocompleteFunction();
+        });
+
+        const autocompleteFunction = () => {
+            $('.insertOrder').autocomplete({
+                lookup: orders,
+                onSelect: function (suggestion) {
+                    
+                    console.log(suggestion, this);
+                }
+            });
+        }
+    </script>
+    <h1 class="h3 mb-2 text-gray-800">Criar de Viagem do Caminhão</h1>
+    <hr>
+    <form method="post" id="createTruckOrder">
+        <fieldset>
+            <legend>Informações</legend>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Nome do motorista">
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" class="form-control numbers-only" name="kmout" placeholder="Quilometragem aproximada">
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="hidden" id="converted-date" name="departureDate">
+                    <input type="text" class="form-control no-keypress calendar-selector" date-target="#converted-date" placeholder="Previsão de saida.">
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Pedidos do caminhão</legend>
+            <div class="form-group row" id="cloneableField">
+                <input type="hidden" input-number='true' input-name="optname" value="0">
+                <div class="form-group col my-1" input-name="optname">
+                    <input type="hidden" name="order[id]" inserter />
+                    <input type="text" class="form-control insertOrder" id="autocomplete" placeholder="Pedidos do caminhão" />
+                    <!-- <input type="text" class="form-control insertOrder" list="order" placeholder="Pedidos do caminhão" /> -->
+                    
+                    {# <select class="form-control" class="showOptions" name="order[id]" id="">
+                        <option value="" class="form-control" disabled selected>Numero do pedido - Nome do cliente</option>
+                        {% for order in orders %}
+                            <option value="{{ order.id }}">{{ order.id }} - {{ order.customerName }}</option>
+                        {% endfor %}
+                    </select> #}
+                </div>
+                <button type="submit" class="btn btn-success" add-btn="true">
+                    <span class="fas fa-fw fa-plus" add-btn="true"></span>
+                </button>
+                <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
+                    <i class="fas fa-fw fa-times" remove-btn="true"></i>
+                </button>
+            </div>
+            <datalist class="col-md-12" id="order">
+                {% for order in orders %}
+                    <option value="{{ order.id }} - {{ order.customerName }}" idv="{{order.id}}">Pedido numero {{ order.id }}</option>
+                {% endfor %}
+            </datalist>
+                <script>
+                    document.addEventListener('blur', (el) => {
+                        if (el.target.classList.contains('insertOrder')) {
+                            setTimeout(() => {
+                                console.log(el.target.value);
+                            }, 1000)
+                        }
+                    }, true);
+                    document.addEventListener('select', (el) => {
+                        console.log(el.target);
+                    }, true)
+                </script>
+        </fieldset>
+    </form>
+{% endblock %}

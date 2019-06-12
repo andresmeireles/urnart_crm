@@ -11,7 +11,7 @@ class Model extends BaseEntity
 {
     /**
      * @ORM\Id()
-     * @ORM\Generatedprice()
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;

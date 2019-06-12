@@ -21,12 +21,12 @@ class ReportModel extends Model
      *
      * @param string $entity
      * @param array  $data
+     *
      * @return FlashResponse
      */
     public function createGenericReport(string $entity, array $data): FlashResponse
     {
         $flashResult = '';
-
         switch ($entity) {
             case 'boleto':
                 $flashResult = $this->createBoletoRegistry($data);
@@ -45,46 +45,53 @@ class ReportModel extends Model
         return $flashResult;
     }
 
+    /**
+     * @param string $entityName
+     * @param array $data
+     *
+     * @return FlashResponse
+     * @throws CustomException
+     */
     public function createGenericRegistryArray(string $entityName, array $data): FlashResponse
     {
         $entity = sprintf('App\Entity\%s', ucfirst($entityName));
         $em = $this->em;
         $info = new NestedArraySeparator($data);
         $entityData = $info->getArrayInArray();
-        // $em->getConnection()->begin
         try {
             foreach ($entityData as $data) {
                 $class = new $entity;
                 foreach ($data as $key => $value) {
                     $methodName = sprintf('set%s', ucfirst($key));
-                    
                     $reflectFunc = new \ReflectionClass($class);
                     $classReflec = $reflectFunc->getMethod($methodName)->getParameters()[0]->getType();
-                    
                     if ($classReflec !== null) {
                         $type = $classReflec->getName();
                         $value = (new StringConvertions())->convertValue($type, $value);
                     }
-
                     $class->$methodName($value);
                 }
                 $em->persist($class);
             }
             $em->flush();
-        } catch (CustomException $e) {
-            throw new \Exception($e->getMessage());
+        } catch (\Exception $e) {
+            throw new CustomException($e->getMessage());
         }
 
         return new FlashResponse(200, 'success', 'Ação concluida com sucesso.');
     }
 
+    /**
+     * @param array $data
+     *
+     * @return FlashResponse
+     * @throws PDOException
+     */
     public function createBoletoRegistry(array $data): FlashResponse
     {
         $entity = new Boleto;
         $entityManager = $this->em;
-
         $entityManager->getConnection()->beginTransaction();
-
         try {
             $entity->setBoletoCustomerOwner($data['boletoCustomerOwner']);
             $entity->setBoletoNumber($data['boletoNumber']);
@@ -115,30 +122,32 @@ class ReportModel extends Model
         return new FlashResponse($httpCode, $type, $message);
     }
 
+    /**
+     * @param string $entity
+     * @param integer $consultId
+     * @param array $data
+     *
+     * @return FlashResponse
+     * @throws PDOException
+     */
     public function editRegistryGeneric(string $entity, int $consultId, array $data): FlashResponse
     {
         $entityManager = $this->em;
-
         $entityClass = sprintf('App\Entity\%s', ucwords($entity));
         $entityToEdit = $entityManager->getRepository($entityClass)->find($consultId);
-        
         $entityManager->getConnection()->beginTransaction();
-
         try {
             foreach ($data as $key => $value) {
                 $methodName = sprintf('set%s', ucwords($key));
                 if (!method_exists($entityToEdit, $methodName)) {
                     continue;
                 }
-
                 if (strpos($value, '.') !== false) {
                     $value = (float) $value;
                 }
-
                 if (ctype_digit($value)) {
                     $value = (int) $value;
                 }
-
                 $entityToEdit->$methodName($value);
             }
             $entityManager->merge($entityToEdit);
@@ -156,11 +165,16 @@ class ReportModel extends Model
         ));
     }
     
+    /**
+     * @param string $entity
+     * @param string $typeOfOrder
+     * @return StdResponse
+     * @throws BadMethodCallException
+     */
     public function getGenericList(string $entity, string $typeOfOrder): StdResponse
     {
         $order = '';
         $list = '';
-        
         switch ($typeOfOrder) {
             case 'last':
                 $list = 'Ultimos Títulos';
@@ -185,9 +199,7 @@ class ReportModel extends Model
                 ));
                 break;
         }
-
         $entity = sprintf('App\Entity\%s', ucwords($entity));
-
         $returnObject = new StdResponse;
         $returnObject->typeOfList = $list;
         $returnObject->consultResults = $this->em->getRepository($entity)->findBy([], $order);
@@ -206,6 +218,7 @@ class ReportModel extends Model
     public function serializedGenericConsult(string $entity, int $consultId): string
     {
         $result = $this->em->getRepository($entity)->find($consultId);
+
         return $this->serializer->serialize($result, 'json');
     }
 
@@ -216,34 +229,29 @@ class ReportModel extends Model
     /**
      * Boleto entity specific. Change status and do some operation.
      *
-     * @param   int       $boletoId    Identificaction of Boleto entity
-     * @param   array     $boletoData  Status and date info.
+     * @param int $boletoId    Identificaction of Boleto entity
+     * @param array $boletoData  Status and date info.
      *
-     * @return  FlashResponse               FlashResponse object.
+     * @return FlashResponse
+     * @throws CustomException|PDOException
      */
     public function boletoChangeStatus(int $boletoId, array $boletoData): FlashResponse
     {
         $entityManager = $this->em;
-
         $boletoRegistry = $entityManager->getRepository(Boleto::class)->find($boletoId);
-
         if (is_null($boletoRegistry)) {
             throw new \PDOException('Não é uma instancia de Boleto entity.');
         }
-
         try {
             $status = (int) $boletoData['boletoStatus'];
             $boletoRegistry->setBoletoStatus($status);
-
             if ($status === 1 || $status === 2) {
                 $boletoRegistry->setBoletoPaymentDate($boletoData['boletoPaymentDate']);
                 $boletoRegistry->setActive(false);
             }
-
             if ($status === 3) { //Pagamento Provisionado
                 $boletoRegistry->setBoletoProvisionamentoDate($boletoData['boletoProvisionamentoDate']);
             }
-
             if ($status === 4) {//Pagamento Por Conta
                 if ($boletoData['porContaValue'] > $boletoRegistry->getBoletoValue()) {
                     throw new CustomException(sprintf(
@@ -254,16 +262,13 @@ class ReportModel extends Model
                         $boletoRegistry->getBoletoInstallment()
                     ));
                 }
-
                 $porContaArray[] = [
                     'statusDate' => (new \DateTime('now'))->format('d/m/Y'),
                     'porContaValue' => $boletoData['porContaValue'],
                     'porContaDate' => $boletoData['porContaDate']
                 ];
-
                 $boletoRegistry->setBoletoPorContaStatus($porContaArray);
             }
-
             $entityManager->merge($boletoRegistry);
             $entityManager->flush();
         } catch (\PDOException $e) {
@@ -284,14 +289,15 @@ class ReportModel extends Model
     /**
      * Lista por data dados de um repositorio.
      *
-     * @param   string|null $startDate
-     * @param   string|null $endingDate
-     * @return  StdResponse
+     * @param string|null $startDate
+     * @param string|null $endingDate
+     *
+     * @return StdResponse
+     * @throws Exception
      */
     public function generateBoletoPieChart(?string $startDate, ?string $endingDate): StdResponse
     {
         $pastReportRegister = $this->getReportFile(__DIR__.'/../Utils/ReportFile', $endingDate);
-
         $resultData = $this->getGenericListByDate(
             'Boleto',
             'boletoVencimento',
@@ -306,7 +312,6 @@ class ReportModel extends Model
         $titlesPrices = 0;
         $payedValue = 0;
         $res = [];
-
         if (!is_null($pastReportRegister)) {
             foreach ($pastReportRegister as $value) {
                 foreach ($value as $v) {
@@ -314,7 +319,6 @@ class ReportModel extends Model
                 }
             }
         }
-
         foreach ($res as $r) {
             foreach ($c as $key => $value) {
                 if ($r['id'] === $value['id']) {
@@ -324,7 +328,6 @@ class ReportModel extends Model
                 $resultData[$key] = $value;
             }
         }
-
         foreach ($resultData as $value) {
             $titlesPrices += $value['boletoValue'];
             switch ($value['boletoStatus']) {
@@ -348,7 +351,6 @@ class ReportModel extends Model
                     throw new \Exception('Tem algo muito errado.');
             }
         }
-
         $response = new StdResponse();
         $response->boletosStatusCount = $data;
         $response->statusNames = $statusNames;
@@ -379,10 +381,16 @@ class ReportModel extends Model
         return $this->getGenericListByDate($entity, $whereField, $requiredFields, $startDate, $endingDate);
     }
 
+    /**
+     * @param string|null $startDate
+     * @param string|null $endingDate
+     * 
+     * @return StdResponse
+     * @throws Exception
+     */
     public function generateBoletoListReport(?string $startDate, ?string $endingDate): StdResponse
     {
         $pastReportFile = $this->getReportFile(__DIR__.'/../Utils/ReportFile', $endingDate);
-
         $reportResults = $this->searchByDate(
             'Boleto',
             'boletoVencimento',
@@ -395,7 +403,6 @@ class ReportModel extends Model
         $totalValue = 0;
         $paymentValue = 0;
         $data = [];
-
         if (!is_null($pastReportFile)) {
             foreach ($reportResults as $key => $value) {
                 foreach ($value as $v) {
@@ -403,7 +410,6 @@ class ReportModel extends Model
                 }
             }
         }
-
         foreach ($pastResponse as $r) {
             foreach ($c as $key => $value) {
                 if ($r['id'] === $value['id']) {
@@ -413,7 +419,6 @@ class ReportModel extends Model
                 $reportResults[$key] = $value;
             }
         }
-
         foreach ($reportResults as $key => $value) {
             $totalValue += $value['boletoValue'];
             switch ($value['boletoStatus']) {
@@ -437,31 +442,41 @@ class ReportModel extends Model
                     throw new \Exception('Tem algo muito errado.');
             }
         }
-
         $response = new StdResponse;
         $response->boletosStatusCount = $data;
         $response->totalValue = $totalValue;
         $response->boletoPayedValue = $paymentValue;
+        
         return $response;
     }
 
+    /**
+     * @param string $date
+     *
+     * @return array
+     */
     public function getNonPayedBoletosByDate(string $date): array
     {
         $consultString = sprintf(
             'SELECT u FROM App\Entity\Boleto u WHERE u.boletoVencimento <  %s AND u.boletoStatus <> 1',
             "'{$date} %'"
         );
+
         return $this->dqlConsult($consultString);
     }
 
+    /**
+     * @param string $path
+     * @param string|null $date
+     *
+     * @return array|null
+     */
     private function getReportFile(string $path, ?string $date): ?array
     {
         $response = null;
-
         $reportName = empty($date) ?
             (new FileFunctions)->getLastCreateFileFromFolder($path):
             (new FileFunctions)->getFileByDate($path, $date);
-
         if (!is_null($reportName) && file_exists($reportName)) {
             $dataFile = file_get_contents($reportName);
             $response = Yaml::parse((string) $dataFile);
@@ -470,6 +485,14 @@ class ReportModel extends Model
         return $response;
     }
 
+    /**
+     * @param string $intervalBeginDate
+     * @param string $intervalLastDate
+     * @param string $formatInterval
+     *
+     * @return array
+     * @throws Exception
+     */
     public function getByDateIntervalProductAmount(
         string $intervalBeginDate,
         string $intervalLastDate,
@@ -477,7 +500,6 @@ class ReportModel extends Model
     ): array {
         $productionDay = '';
         $reportData = [];
-
         $result = $this->getGenericListByDateArrayFields(
             'ProductionCount',
             'date',
@@ -491,16 +513,13 @@ class ReportModel extends Model
         foreach ($result as $value) {
             if ($value->getDate() === null) {
                 throw new \Exception('Algo de errado não está certo. Não deveria haver um date null.');
-            }
-            
+            }  
             $actualDate = $value->getDate()->format($formatInterval);
-
             if ($actualDate !== $productionDay) {
                 $productionDay = $actualDate;
                 $reportData[$actualDate][] = $value;
                 continue;
             }
-
             if ($actualDate === $productionDay) {
                 $reportData[$actualDate][] = $value;
             }
@@ -509,6 +528,12 @@ class ReportModel extends Model
         return $reportData;
     }
 
+    /**
+     * @param string $beginDate
+     * @param string $lastDate
+     *
+     * @return StdResponse
+     */
     public function getProductsByModelName(string $beginDate, string $lastDate): StdResponse
     {
         $result = $this->getGenericListByDateArrayFields(
@@ -518,12 +543,10 @@ class ReportModel extends Model
             $beginDate,
             $lastDate
         );
-
         $height = $this->dqlConsult(
             "SELECT DISTINCT u.height, u.obs FROM App\Entity\ProductionCount u ORDER BY u.obs ASC"
         );
         $model = $this->dqlConsult("SELECT DISTINCT u.model FROM App\Entity\ProductionCount u ORDER BY u.model ASC");
-
         $response = new StdResponse();
         $response->result = $result;
         $response->height = $height;
@@ -532,6 +555,12 @@ class ReportModel extends Model
         return $response;
     }
 
+    /**
+     * @param string $date
+     *
+     * @return array
+     * @throws CustomException
+     */
     public function makeDailyProductionCount(string $date): array
     {
         $reportDate = $date;
@@ -577,6 +606,7 @@ class ReportModel extends Model
      * @param string $dateTwo
      *
      * @return StdResponse Ira retornar os valores [template] e [result]
+     * @throws CustomException
      */
     public function makeReportByType(string $type, string $dateOne, string $dateTwo): StdResponse
     {
@@ -632,6 +662,13 @@ class ReportModel extends Model
         return $response;
     }
 
+    /**
+     * @param string $dateOne
+     * @param string $dateTwo
+     * @param [type] ...$fields
+     *
+     * @return array
+     */
     public function dumpFields(string $dateOne, string $dateTwo, ...$fields): array
     {
         $explodedDate = explode('-', $dateOne);
@@ -658,6 +695,10 @@ class ReportModel extends Model
      *                          'driverName' => 'Nome do rapaz',
      *                          'kmout' => null|'236599',
      *                          'departureDate => null|'2010/10/31' Formarto YYYY/MM/DD 
+     * @param array $orders Array associativo contendo ids de ManualOrderReport
+     *
+     * @return FlashResponse
+     * @throws Exception
      */
     public function createTruckDepartureReport(array $reportData, array $orders): FlashResponse
     {
@@ -681,5 +722,52 @@ class ReportModel extends Model
         $entityManager->flush();
 
         return new FlashResponse(200, 'success', 'Relatorio de saida do caminhão criado com sucesso!');
+    }
+
+    /**
+     * @param TravelTruckOrders $orderTruckId
+     * @param array $reportData
+     * @param array $orders
+     *
+     * @return FlashResponse
+     * @throws Exception
+     */
+    public function editTruckDepartureReport(TravelTruckOrders $orderTruckId, array $reportData, array $orders): FlashResponse
+    {
+        $entityManager = $this->em;
+        $manualOrderRepository = $entityManager->getRepository(ManualOrderReport::class);
+        /** @var TravelTruckOrders $truckReport */
+        $truckReport = $entityManager->getRepository(TravelTruckOrders::class)->find($orderTruckId->getId());
+        try {
+            $truckReport->setDriverName($reportData['driverName']);
+            $truckReport->setKmout($reportData['kmout']);
+            $date = new MyDateTime($reportData['departureDate'], 'America/Belem');
+            $truckReport->setDepartureDate($date);
+            $truckReport->getOrderId()->map(function ($value) use ($truckReport) {
+                $truckReport->removeOrderId($value);
+            });
+            foreach ($orders as $order) {
+                $manualOrderReport = $manualOrderRepository->find($order);
+                $truckReport->addOrderId($manualOrderReport);
+            }
+            $entityManager->merge($truckReport);
+        } catch (\Exception $error) {
+            throw new \Exception(
+                sprintf(
+                    "%s, no arquivo %s e linha %s",
+                    $error->getMessage(),
+                    $error->getFile(),
+                    $error->getLine()
+                ),
+                $error->getCode()
+            );
+        }
+        $entityManager->flush();
+
+        return new FlashResponse(
+            200,
+            'success',
+            sprintf('Relatorio %s editado com sucesso', $orderTruckId->getId())
+        );
     }
 }

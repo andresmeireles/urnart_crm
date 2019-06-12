@@ -53,6 +53,7 @@ import "chartjs-plugin-labels";
 global.$ = global.jQuery = $;
 global.axios = require("axios");
 global.rot = require("rot");
+global.c = require("@tarekraafat/autocomplete.js");
 global.noty = noty;
 global.numeral = numeralJs;
 global.vex = vexjs;
@@ -136,6 +137,9 @@ import "./src/register/customer";
 import "./src/register/cloneFieldCustomer";
 import "./src/register/config";
 import "./src/register/loadAjax";
+
+// FORM
+import "./src/truck/truckAction";
 
 // reports
 import "./src/reports/survey";

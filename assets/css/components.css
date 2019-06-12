@@ -5,6 +5,11 @@
     position: relative;
 }
 
+.form-control-user {
+    font-size: 0.8rem !important;
+    border-radius: 10rem !important;
+    padding: 1.5rem 1rem !important; }
+
 .table-bordered-black thead,
 .table-bordered-black thead th,
 .table-bordered-black thead td,

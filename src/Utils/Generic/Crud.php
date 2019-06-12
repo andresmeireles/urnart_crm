@@ -5,6 +5,7 @@ namespace App\Utils\Generic;
 use App\Utils\Andresmei\FlashResponse;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use JMS\Serializer\SerializerBuilder;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Generic Crud functions.
@@ -48,7 +49,6 @@ class Crud extends GenericContainer
     {
         $this->setEntity($entity);
         $registry = $this->em->getRepository($this->entity)->find($id);
-
         try {
             $this->em->remove($registry);
             $this->em->flush();
@@ -59,6 +59,42 @@ class Crud extends GenericContainer
         }
         
         return new FlashResponse(200, 'success', sprintf('Produto %d removido com sucesso!', $id));
+    }
+
+    /**
+     * Remove grupo de entradas em uma entidade
+     *
+     * @param string $id
+     * @param object $entity
+     * @return boolean
+     * 
+     * @throws Exception
+     */
+    public function removeManyEntries(Collection $entries): bool
+    {
+        $entityManager = $this->em;
+        // $entries = $entityManager->getRepository($entity)->findBy(['id' => $id]);
+        // $entries->forAll(function ($k, $v) {
+        //     dump($v);
+        // });
+        try {
+            $entries->forAll(function ($k, $value) use ($entityManager) {
+                $entityManager->remove($value);
+            });
+        } catch (\Exception $error) {
+            throw new \Exception(
+                sprintf(
+                    "%s, no arquivo %s e linha %s",
+                    $error->getMessage(),
+                    $error->getFile(),
+                    $error->getLine()
+                ),
+                $error->getCode()
+            );
+        }
+        $entityManager->flush();
+
+        return true;
     }
 
     public function commit($errorMessage = null): void
