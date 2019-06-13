@@ -228,4 +228,20 @@ class ManualOrderReport extends BaseEntity
 
         return $this;
     }
+
+    /**
+     * Calcula o total dos produtos do pedido e retorna somados
+     *
+     * @return integer
+     */
+    public function getProductsAmount(): int
+    {
+        $amount = 0;
+        $products = $this->getManualProductCarts();
+        $products->map(function ($product) use (&$amount) {
+            $amount += $product->getProductAmount();
+        });
+
+        return (int) $amount;
+    }
 }

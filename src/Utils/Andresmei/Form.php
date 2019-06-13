@@ -38,7 +38,24 @@ class Form extends GenericContainer
         parent::__construct($entityManager, $twig);
     }
 
-    public function returnSelectedFromType(string $type, string $formName, array $data): ?array
+    /**
+     * Função que criar formulario a partir de parametros enviados
+     *
+     * @param string $type Tipo de formulario desejado, parametros atuais [pdf, show]
+     * @param string $formName Nome do formulário que pode ser criado. Lista de formularios são:
+     *                          tag
+     *                          freight-letter                          
+     *                          order
+     *                          receipt
+     *                          remand
+     *                          romaneio
+     *                          travel
+     *                          travel-report
+     *                          withdrawal
+     * @param array $data Informações sobre o formulário
+     * @return array
+     */
+    public function returnSelectedFromType(string $type, string $formName, array $data): array
     {
         if (!in_array($type, $this->allowedTypes)) {
             throw new \Exception(sprintf('Tipo %s não é um tipo valido', $type));
@@ -47,15 +64,14 @@ class Form extends GenericContainer
         return $this->$type($template, $data);
     }
 
-    public function setCustomTemplateFolder(string $dir): self
-    {
-        if (!is_dir($dir)) {
-            throw new \Exception("{$dir} não é um diretorio.");
-        }
-
-        return $this;
-    }
-
+    /**
+     * Retorna relatorio no formato HTML, para informação mais detalhada checar documentação do metodo
+     * returnSelectedFormType
+     *
+     * @param string $formName nome do formulário
+     * @param array $data Informações do formulário
+     * @return array
+     */
     public function show(string $formName, array $data): array
     {
         $this->setParsedFile($formName, $data);
@@ -65,7 +81,8 @@ class Form extends GenericContainer
     }
 
     /**
-     * Recebe parametros para criação de html e conversão para pdf.
+     * Recebe parametros para criação de html e conversão para pdf. Para informação mais geerica sobre
+     * parametros checar metodo returnSelectedFormType
      *
      * @param string $formName Nome do formulario
      * @param array  $data informações do formulário

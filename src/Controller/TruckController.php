@@ -10,6 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Entity\TravelTruckOrders;
+use App\Model\FormModel;
+use App\Utils\Andresmei\Form;
+use App\Model\DepartureModel;
 
 class TruckController extends AbstractController
 {
@@ -26,20 +29,17 @@ class TruckController extends AbstractController
     }
 
     /**
-     * @Route("truck/create", methods="GET", name="create.truck.report")
+     * @Route("/truck/create", methods="GET", name="create.truck.report")
      */
     public function viewCreateForm(): Response
-    {
-        /** @var ManualOrderReportRepository|ManualOrderReport */
-        $ordersId = $this->getDoctrine()->getRepository(ManualOrderReport::class)->someFieldsConsult('id', 'customerName');
-        
+    {        
         return $this->render('truck/pages/createTruckRepo.html.twig', [
-            'orders' => $ordersId
+            'orders' => $this->getDoctrine()->getRepository(ManualOrderReport::class)->someFieldsConsult('id', 'customerName')
         ]);
     }
 
     /**
-     * @Route("truck/create", methods="POST")
+     * @Route("/truck/create", methods="POST")
      */
     public function createTruckForm(Request $request, ReportModel $reportModel): Response
     {
@@ -57,22 +57,18 @@ class TruckController extends AbstractController
     }
 
     /**
-     * @Route("truck/edit/{id<\d+>}", methods="GET")
+     * @Route("/truck/edit/{id<\d+>}", methods="GET")
      */
     public function viewEditForm(int $id): Response
     {
-        /** @var TravelTruckOrders $data */
-        $data = $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find($id);
-        $ordersId = $this->getDoctrine()->getRepository(ManualOrderReport::class)->someFieldsConsult('id', 'customerName');
-        
         return $this->render('truck/pages/editTruckRepo.html.twig', [
-            'orders' => $ordersId,
-            'data' => $data
+            'orders' => $this->getDoctrine()->getRepository(ManualOrderReport::class)->someFieldsConsult('id', 'customerName'),
+            'data' => $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find($id)
         ]);
     }
 
     /**
-     * @Route("truck/edit/{id<\d+>}", methods="POST")
+     * @Route("/truck/edit/{id<\d+>}", methods="POST")
      */
     public function editTruckForm(Request $request, ReportModel $reportModel, int $id): Response
     {
@@ -80,13 +76,47 @@ class TruckController extends AbstractController
         $nestedArray = new NestedArraySeparator($alldata);
         $reportInformation = $nestedArray->getSimpleArray();
         $reportOrderInformation = $nestedArray->getArrayInArray();
+        /** @var TravelTruckOrders $truckOrderEntity */
         $truckOrderEntity = $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find($id);
-        $result = $reportModel->editTruckDepartureReport($truckOrderEntity, $reportInformation, $reportOrderInformation);
+        $result = $reportModel->editTruckDepartureReport(
+            $truckOrderEntity,
+            $reportInformation,
+            $reportOrderInformation
+        );
         $this->addFlash(
             $result->getType(),
             $result->getMessage()
         );
 
         return $this->redirectToRoute('truck.index');
+    }
+
+    /**
+     * @Route("/truck/create/report/{typeReport}/show/{entityId<\d+>}")
+     *
+     * Criar relatório a partir de informações enviadas
+     *
+     * @param Form $form
+     * @param DepartureModel $departureModel
+     * @param string $typeReport Nome da tag para criação do formulário.
+     * @param int $entityId
+     * @return Response
+     */
+    public function createSingleReports(
+        Form $form,
+        DepartureModel $departureModel,
+        string $typeReport,
+        int $entityId
+    ): Response {
+        /** @var TravelTruckOrders $entityClass */
+        $entityClass = $this->getDoctrine()
+            ->getRepository(TravelTruckOrders::class)
+            ->find($entityId);
+        $result = $departureModel->generateAutomaticShowReportWithData(
+            $entityClass,
+            $form,
+            $typeReport
+        );
+        return new Response($result);
     }
 }

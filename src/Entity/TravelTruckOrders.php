@@ -21,19 +21,19 @@ class TravelTruckOrders extends BaseEntity
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Column(type="string")
      */
     private $driverName;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      * @ORM\Column(type="date")
      */
     private $departureDate;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Column(type="string", nullable=true)
      */
     private $kmout;
@@ -62,7 +62,7 @@ class TravelTruckOrders extends BaseEntity
 
     public function setDriverName(?string $driverName): self
     {
-        $clearString = trim($driverName);
+        $clearString = trim((string)$driverName);
         if (strlen($clearString) === 0) {
             throw new CustomException(
                 sprintf('Erro. Parametro %s não aceito como nome', $driverName)
