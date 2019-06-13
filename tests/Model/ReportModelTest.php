@@ -41,7 +41,9 @@ class ReportModelTest extends TestCase
             'kmout' => null,
             'departureDate' => '2010/12/31     '
         ];
-        $orders = [10];
+        $orders = [
+            ['id' => 10]
+        ];
         $result = $model->createTruckDepartureReport($reportData, $orders);
         
         $this->assertEquals(new FlashResponse(200, 'success', 'Relatorio de saida do caminhão criado com sucesso!'), $result);
@@ -67,7 +69,9 @@ class ReportModelTest extends TestCase
             'kmout' => null,
             'departureDate' => '2010/12/31     '
         ];
-        $orders = [10];
+        $orders = [
+            ['id' => 10]
+        ];
         $result = $model->editTruckDepartureReport(new TravelTruckOrders, $reportData, $orders);
         
         $this->assertEquals(

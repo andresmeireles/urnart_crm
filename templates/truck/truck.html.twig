@@ -25,16 +25,16 @@
         {% if reports is not defined or reports is empty %}
             Nenhum relatório criado.
         {% else %}
-            {% for item in items %}
+            {% for report in reports %}
             <nav class="navbar navbar-expand navbar-light bg-light mb-3">
-                <a class="navbar-brand" href="#">Relatorio do José da data 10/10/2010</a>
+                <a class="navbar-brand" href="#">Relatorio {{ 'do ' ~ report.driverName ~ ' data' }} {{'de ' ~ report.departureDate | date('d/m/Y')}}</a>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Ações
                     </a>
                     <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Editar</a>
+                        <a class="dropdown-item" href="/truck/edit/{{report.id}}">Editar</a>
                         <a class="dropdown-item" href="#">Visualizar</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Criar relátorios</a>

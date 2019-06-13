@@ -711,13 +711,13 @@ class ReportModel extends Model
             $date = new MyDateTime($reportData['departureDate'], 'America/Belem');
             $truckArrivalReport->setDepartureDate($date);
             foreach ($orders as $order) {
-                $manualOrderReport = $manualOrderRepository->find($order);
+                $manualOrderReport = $manualOrderRepository->find($order['id']);
                 $truckArrivalReport->addOrderId($manualOrderReport);
             }
             $truckArrivalReport->setActive(true);
             $entityManager->persist($truckArrivalReport);
         } catch (\Exception $error) {
-            throw new \Exception($error->getMessage());
+            throw new \Exception($error->getMessage(), $error->getCode());
         }
         $entityManager->flush();
 
@@ -732,12 +732,12 @@ class ReportModel extends Model
      * @return FlashResponse
      * @throws Exception
      */
-    public function editTruckDepartureReport(TravelTruckOrders $orderTruckId, array $reportData, array $orders): FlashResponse
+    public function editTruckDepartureReport(TravelTruckOrders $orderTruckEntity, array $reportData, array $orders): FlashResponse
     {
         $entityManager = $this->em;
         $manualOrderRepository = $entityManager->getRepository(ManualOrderReport::class);
         /** @var TravelTruckOrders $truckReport */
-        $truckReport = $entityManager->getRepository(TravelTruckOrders::class)->find($orderTruckId->getId());
+        $truckReport = $entityManager->getRepository(TravelTruckOrders::class)->find($orderTruckEntity->getId());
         try {
             $truckReport->setDriverName($reportData['driverName']);
             $truckReport->setKmout($reportData['kmout']);
@@ -747,7 +747,7 @@ class ReportModel extends Model
                 $truckReport->removeOrderId($value);
             });
             foreach ($orders as $order) {
-                $manualOrderReport = $manualOrderRepository->find($order);
+                $manualOrderReport = $manualOrderRepository->find($order['id']);
                 $truckReport->addOrderId($manualOrderReport);
             }
             $entityManager->merge($truckReport);
@@ -767,7 +767,7 @@ class ReportModel extends Model
         return new FlashResponse(
             200,
             'success',
-            sprintf('Relatorio %s editado com sucesso', $orderTruckId->getId())
+            sprintf('Relatorio %s editado com sucesso', $orderTruckEntity->getId())
         );
     }
 }
