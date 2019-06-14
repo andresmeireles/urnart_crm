@@ -44,6 +44,12 @@ class TravelTruckOrders extends BaseEntity
      */
     private $orderId;
 
+    /**
+     * @var array
+     * @ORM\Column(type="array")
+     */
+    private $checkedOrders = [];
+
     public function __construct()
     {
         $this->orderId = new ArrayCollection();
@@ -123,6 +129,18 @@ class TravelTruckOrders extends BaseEntity
                 $orderId->setTravelTruckOrders(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCheckedOrders(): ?array
+    {
+        return $this->checkedOrders;
+    }
+
+    public function setCheckedOrders(array $checkedOrders): self
+    {
+        $this->checkedOrders = $checkedOrders;
 
         return $this;
     }

@@ -705,15 +705,18 @@ class ReportModel extends Model
         $entityManager = $this->em;
         $manualOrderRepository = $entityManager->getRepository(ManualOrderReport::class);
         $truckArrivalReport = new TravelTruckOrders();
-        try {            
+        $simpleArray = [];
+        try {           
             $truckArrivalReport->setDriverName($reportData['driverName']);
             $truckArrivalReport->setKmout($reportData['kmout']);
             $date = new MyDateTime($reportData['departureDate'], 'America/Belem');
             $truckArrivalReport->setDepartureDate($date);
             foreach ($orders as $order) {
+                $simpleArray[$order['id']] = isset($order['isChecked'] )? (bool) $order['isChecked'] : false;
                 $manualOrderReport = $manualOrderRepository->find($order['id']);
                 $truckArrivalReport->addOrderId($manualOrderReport);
             }
+            $truckArrivalReport->setCheckedOrders($simpleArray);
             $truckArrivalReport->setActive(true);
             $entityManager->persist($truckArrivalReport);
         } catch (\Exception $error) {

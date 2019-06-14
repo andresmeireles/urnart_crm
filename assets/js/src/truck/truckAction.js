@@ -11,7 +11,15 @@ if (document.querySelector('#truckOrder')) {
                         inputField.removeAttribute('name');
                     }
                 }, 1000);
-            }   
+            }
+            if (element.target.classList.contains('changeValue')) {
+                console.log(element);
+                if (element.target.value === '0' || element.target.value === '') {
+                    element.target.value = '1';
+                    return true;
+                }
+                element.target.value = '0';
+            }
         })
         document.addEventListener('keyup', (element) => {
             if (element.target.classList.contains('insertOrder')) {

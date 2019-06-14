@@ -119,4 +119,24 @@ class TruckController extends AbstractController
         );
         return new Response($result);
     }
+
+    /**
+     * @Route("/truck/removeEv")
+     */
+    public function removeEverything()
+    {
+        $all = $this->getDoctrine()->getRepository(TravelTruckOrders::class)->findAll();
+        $entityManager = $this->getDoctrine()->getManager();
+        /** @var TravelTruckOrders $a */
+        foreach ($all as $a) {
+            $orders = $a->getOrderId();
+            foreach ($orders as $o) {
+                $a->removeOrderId($o);
+            }
+            $entityManager->remove($a);
+            $entityManager->flush();
+        }
+
+        return new Response("OK");
+    }
 }
