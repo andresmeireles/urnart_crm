@@ -156,6 +156,7 @@ class Form extends GenericContainer
         if ($formName == 'romaneio-board') {
             $clonedFields = array_reverse($clonedFields);
         }
+        
         $this->parsedFile = $this->twig->render($file, [
             'data' => $data,
             'prod' => $clonedFields,

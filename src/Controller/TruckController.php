@@ -10,7 +10,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Entity\TravelTruckOrders;
-use App\Model\FormModel;
 use App\Utils\Andresmei\Form;
 use App\Model\DepartureModel;
 
@@ -138,5 +137,18 @@ class TruckController extends AbstractController
         }
 
         return new Response("OK");
+    }
+
+    /**
+     * @Route("/truck/check")
+     */
+    public function x()
+    {
+        $x = $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find(7);
+        dump($x->getCheckedOrders());
+        foreach ($x->getOrderId() as $o) {
+            dump($o);
+        }
+        die;
     }
 }

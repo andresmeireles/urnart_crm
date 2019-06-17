@@ -750,9 +750,11 @@ class ReportModel extends Model
                 $truckReport->removeOrderId($value);
             });
             foreach ($orders as $order) {
+                $simpleArray[$order['id']] = isset($order['isChecked'] )? (bool) $order['isChecked'] : false;
                 $manualOrderReport = $manualOrderRepository->find($order['id']);
                 $truckReport->addOrderId($manualOrderReport);
             }
+            $truckReport->setCheckedOrders($simpleArray);
             $entityManager->merge($truckReport);
         } catch (\Exception $error) {
             throw new \Exception(
