@@ -1,12 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Utils\Andresmei;
 
+use Twig\Environment;
 use App\Config\NonStaticConfig;
-use App\Utils\Exceptions\BinaryNotFoundException;
 use App\Utils\GenericContainer;
 use Doctrine\ORM\EntityManagerInterface;
-use Twig\Environment;
+use App\Utils\Exceptions\BinaryNotFoundException;
+use Spatie\Browsershot\Browsershot;
 
 class Form extends GenericContainer
 {
@@ -91,34 +92,37 @@ class Form extends GenericContainer
      */
     public function pdf(string $formName, array $data): array
     {
-        exec('wkhtmltopdf --version', $opt, $result);
-        if ($result === 1) {
-            throw new BinaryNotFoundException(
-                'wkhtmltopdf não esta instaldado no sistama ou não está no PATH do sistema operacional.'
-            );
-        }
         $this->setParsedFile($formName, $data);
+        Browsershot::html($this->parsedFile)->save('xof.pdf');
+        die('fooooe');
+        // exec('wkhtmltopdf --version', $opt, $result);
+        // if ($result === 1) {
+        //     throw new BinaryNotFoundException(
+        //         'wkhtmltopdf não esta instaldado no sistama ou não está no PATH do sistema operacional.'
+        //     );
+        // }
+        // $this->setParsedFile($formName, $data);
 
-        if (!file_exists(__DIR__.'/../../../public/reportBuilder') &&
-            !is_dir(__DIR__.'/../../../public/reportBuilder')) {
-            mkdir(__DIR__.'/../../../public/reportBuilder');
-            file_put_contents(__DIR__.'/../../../public/reportBuilder/.gitignore', '/*');
-        }
-
-        $htmlReportFile = 'reportBuilder/report.html';
-        $pdfDir= 'reportBuilder/report.pdf';
-        file_put_contents($htmlReportFile, $this->parsedFile);
-        exec("wkhtmltopdf $htmlReportFile $pdfDir", $opt, $result);
-        if ($result === 1) {
-            throw new \Exception('Conversão não ocorrida. Por Algum erro no wkhtmltopdf.');
-        }
-        unset($result);
-        unset($opt);
-        unlink($htmlReportFile);
-        return [
-            'pdf_path' => $pdfDir,
-            'type' => 'success',
-        ];
+        // if (!file_exists(__DIR__.'/../../../public/reportBuilder') &&
+        //     !is_dir(__DIR__.'/../../../public/reportBuilder')) {
+        //     mkdir(__DIR__.'/../../../public/reportBuilder');
+        //     file_put_contents(__DIR__.'/../../../public/reportBuilder/.gitignore', '/*');
+        // }
+        // $htmlReportFile = 'reportBuilder/report.html';
+        // $pdfDir= sprintf('reportBuilder/report%s.pdf', $formName);
+        // file_put_contents($htmlReportFile, $this->parsedFile);
+        // exec("wkhtmltopdf --encoding 'utf-8' $htmlReportFile $pdfDir", $opt, $result);
+        // if ($result === 1) {
+        //     throw new \Exception('Conversão não ocorrida. Por Algum erro no wkhtmltopdf.');
+        // }
+        // unset($result);
+        // unset($opt);
+        // unlink($htmlReportFile);
+        
+        // return [
+        //     'pdf_path' => $pdfDir,
+        //     'type' => 'success',
+        // ];
     }
 
     private function checkFileExistence(string $formName): string

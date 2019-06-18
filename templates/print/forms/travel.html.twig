@@ -73,11 +73,10 @@
                 </div>
                 {% set itensCounter = 1 %}
                 {% set pageCounter = 1 %}
-                {% if prod %}
-                
-                    
+                {% if data.prod is defined %}
+                    {% set prod = data.prod %}
                 {% endif %}
-                {% for p in prod[0] %}
+                {% for p in prod %}
                 {% if itensCounter == 0 %}
                 <div class="footer">
                     <span class="pg_number">{{ pageCounter }}</span>

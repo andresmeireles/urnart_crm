@@ -239,7 +239,6 @@ class FormController extends AbstractController
 
         // send file to download
         $response =  new BinaryFileResponse($file);
-        //$response->trustXSendfileTypeHeader();
         $response->trustXSendfileTypeHeader();
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
 

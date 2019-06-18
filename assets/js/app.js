@@ -138,8 +138,9 @@ import "./src/register/cloneFieldCustomer";
 import "./src/register/config";
 import "./src/register/loadAjax";
 
-// FORM
+// TRUCK
 import "./src/truck/truckAction";
+import "./src/truck/truckIndex";
 
 // reports
 import "./src/reports/survey";

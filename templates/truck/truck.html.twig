@@ -3,7 +3,7 @@
 {% block content %}
     <h1 class="h3 mb-2 text-gray-800">Relatórios de Viagem do Caminhão</h1>
     <hr>
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-4" id="truckShowReports">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Relatórios</h6>
@@ -31,13 +31,43 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-file-pdf" aria-label="Our phone number" title="Exportar formulários para pdf"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-item">Imprimir relátorios</div>
+                        <div class="dropdown-divider"></div>   
+                        <a class="dropdown-item" href="/truck/create/report/tag/pdf/{{report.id}}" >Etiquetas</a>
+                        <a class="dropdown-item" href="/truck/create/report/fl/pdf/{{report.id}}" >carta frete</a>
+                        {# <a class="dropdown-item" href="/truck/create/report/remand/show/{{report.id}}">devolução</a> #}
+                        <a class="dropdown-item" href="/truck/create/report/rb/pdf/{{report.id}}" >Romaneio de embarque</a>
+                        <a class="dropdown-item" href="/truck/create/report/romaneio/pdf/{{report.id}}" >Romaneio</a>
+                        <a class="dropdown-item" href="/truck/create/report/travel/pdf/{{report.id}}" >Viagem</a>
+                    </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-print" title="Imprimir formularios" aria-label="Our phone number"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-item">Imprimir relátorios</div>
+                        <div class="dropdown-divider"></div>   
+                        <a class="dropdown-item generatePrintReport" href="/truck/create/report/tag/show/{{report.id}}" target="_blank">Etiquetas</a>
+                        <a class="dropdown-item generatePrintReport" href="/truck/create/report/fl/show/{{report.id}}" target="_blank">carta frete</a>
+                        {# <a class="dropdown-item" href="/truck/create/report/remand/show/{{report.id}}">devolução</a> #}
+                        <a class="dropdown-item generatePrintReport" href="/truck/create/report/rb/show/{{report.id}}" target="_blank">Romaneio de embarque</a>
+                        <a class="dropdown-item generatePrintReport" href="/truck/create/report/romaneio/show/{{report.id}}" target="_blank">Romaneio</a>
+                        <a class="dropdown-item generatePrintReport" href="/truck/create/report/travel/show/{{report.id}}" target="_blank">Viagem</a>
+                        <a class="dropdown-item generatorReports" href="javascript:;">Gerar todos os relatórios</a>
+                    </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Ações
                     </a>
                     <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/truck/edit/{{report.id}}">Editar</a>
                         <a class="dropdown-item" href="#">Visualizar</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/truck/reports/{{report.id}}">Criar relátorios</a>
                     </div>
                     </li>
                 </ul>

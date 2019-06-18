@@ -24,6 +24,24 @@ class DepartureModel extends Model
         return new ArrayCollection($orderOfObjects);
     }
 
+    public function generateAutomaticShowReportWithData(
+        object $entityClass,
+        Form $form,
+        string $typeReport
+    ): string {
+        $report = $this->generateAutomaticReportWithData($entityClass, $form, $typeReport, 'show');
+
+        return $report['template'];
+    }
+
+    public function generateAutomaticPdfReportWithData(
+        object $entityClass,
+        Form $form,
+        string $typeReport
+    ) {
+        return $this->generateAutomaticReportWithData($entityClass, $form, $typeReport, 'pdf');
+    }
+
     /**
      * Seleciona o gerador do ventilador
      *
@@ -31,11 +49,12 @@ class DepartureModel extends Model
      * @param Form $form
      * @return string
      */
-    public function generateAutomaticShowReportWithData(
+    public function generateAutomaticReportWithData(
         object $entityClass,
         Form $form,
-        string $typeReport
-    ): string {
+        string $typeReport,
+        string $methodType
+    ): array {
         $uncorrectPositionedCorders = $entityClass->getOrderId();
         $collectionOfOrders = $this->getCorrectOrderOfOrders($uncorrectPositionedCorders, $entityClass->getCheckedOrders());
         switch ($typeReport) {
@@ -65,14 +84,19 @@ class DepartureModel extends Model
             case 'travel':
                 $data = $this->generateTravelWithReportData($collectionOfOrders, $entityClass->getDriverName());
                 break;
+            case 'allInOne':
+            case 'all':
+                return $this->generateAllReportsWithReportData($entityClass, $form);
+                break;
             default:
                 throw new CustomException(
                     sprintf("O valor %s não é valido", $typeReport)
                 );
                 break;
         }
-        $result = $form->returnSelectedFromType('show', $typeReport, $data);
-        return $result['template'];
+        $result = $form->returnSelectedFromType($methodType, $typeReport, $data);
+        
+        return $result;
     }
 
     /**
@@ -250,5 +274,17 @@ class DepartureModel extends Model
         $formData['prod'] = $data;
 
         return $formData;
+    }
+
+    public function generateAllReportsWithReportData(object $reportData, Form $form)
+    {
+        $formString = '';
+        $formString .= $this->generateAutomaticShowReportWithData($reportData, $form, 'tag');
+        $formString .= $this->generateAutomaticShowReportWithData($reportData, $form, 'fl');
+        $formString .= $this->generateAutomaticShowReportWithData($reportData, $form, 'rb');
+        $formString .= $this->generateAutomaticShowReportWithData($reportData, $form, 'romaneio');
+        $formString .= $this->generateAutomaticShowReportWithData($reportData, $form, 'travel');
+
+        return $formString;
     }
 }

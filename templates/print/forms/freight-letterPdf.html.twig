@@ -1,0 +1,195 @@
+{#
+ * freight => frete dos pedidos somados
+ * number => id do pedido
+ * clienteName => nome do cliente
+ * clientCity => cidade do rapaz
+ * clientState => estado do amiginho
+ * orderNumber => numero identificador do pedido.
+#}
+<style>
+    :root {
+        --blue: #007bff;
+        --indigo: #6610f2;
+        --purple: #6f42c1;
+        --pink: #e83e8c;
+        --red: #dc3545;
+        --orange: #fd7e14;
+        --yellow: #ffc107;
+        --green: #28a745;
+        --teal: #20c997;
+        --cyan: #17a2b8;
+        --white: #fff;
+        --gray: #6c757d;
+        --gray-dark: #343a40;
+        --primary: #007bff;
+        --secondary: #6c757d;
+        --success: #28a745;
+        --info: #17a2b8;
+        --warning: #ffc107;
+        --danger: #dc3545;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --breakpoint-xs: 0;
+        --breakpoint-sm: 576px;
+        --breakpoint-md: 768px;
+        --breakpoint-lg: 992px;
+        --breakpoint-xl: 1200px;
+        --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace
+    }
+    *, ::after, ::before {box-sizing: border-box}
+    html {
+        font-family: sans-serif;
+        line-height: 1.15;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        -ms-overflow-style: scrollbar;
+        -webkit-tap-highlight-color: transparent
+    }
+    @-ms-viewport {
+        width: device-width
+    }
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        text-align: left;
+        background-color: #fff
+    }
+    .r-0, .r-t, .r-t-center {text-align: center}
+    p {
+        margin-top: 0;
+        margin-bottom: 1rem
+    }
+    ::-webkit-file-upload-button {
+        font: inherit;
+        -webkit-appearance: button
+    }
+    .r-head, .r-t, .rfoot {font-weight: 700}
+    .r-page {
+        width: 100%;
+        height: 95%
+    }
+    .r-h-page {
+        width: 100%;
+        height: 50%
+    }
+    .r-head {
+        margin: 5px 15px 0 20px;
+        font-size: 1.2em;
+        height: 15%
+    }
+    .r-body {
+        margin: 10px 30px 0 40px;
+        height: 45%
+    }
+    .rfoot {
+        margin: 20px 35px 0;
+        font-size: 1.1em;
+        height: 30%
+    }
+    .r-t {font-size: 1.9em}
+    .r-2, .r-3, .r-4 {font-size: 1.4em}
+    .r-body div {margin-bottom: 5px}
+    .rf-left {float: left}
+    .rf-right {float: right}
+    .rf-clear {clear: both}
+    .r-b-25 {width: 25%}
+    .r-b-75 {width: 75%}
+    .rf-2 {margin: 70px 0 0}
+    .b-sup {border-top: 1px solid #000}
+    .break-p {page-break-after: always}
+</style
+{% for clone in prod %}
+    <div class="r-page break-p">
+        <div class="r-h-page">
+            <div class="rform">
+                <div class="r-head">
+                    <span class="rf-right">Urnas Mart Ltda</span>
+                    <span class="rf-left r-b-75">05.020.839/0001-05</span>
+                    <span class="rf-left r-b-75">(91) 93256-1106</span>
+                    <div class="rf-clear"></div>
+                </div>
+                <div class="r-body my-5">
+                    <div class="r-0">
+                        <span class="r-t">Carta Frete</span>
+                    </div>
+                    <div class="r-1">À</div>
+                    <div class="r-2">
+                        {% set floatFreight = clone.freight | number_format(2, ',', '.') %}
+                        <span class="rf-right">R$ {{ floatFreight }}</span>
+                        <span class="rf-left r-b-75">{{ clone.number }} - {{ clone.clientName }}</span>
+                        <span class="rf-left r-b-75">{{ clone.clientCity }} - {{ clone.clientState }}</span>
+                        <div class="rf-clear"></div>
+                    </div>
+                    <div class="r-3">
+                        <p>
+                            {{ floatFreight }}
+                            Pagar ao portador o Valor de R$ {{ floatFreight }}
+                            ({{ clone.freight | extense | upper }}) referente ao frete de urnas do pedido de
+                            número {{ clone.orderNumber }}, conforme combinado.
+                        </p>
+                    </div>
+                    <div class="r-4">Atenciosamente</div>
+                </div>
+                <div class="rfoot">
+                    <div class="rf-1 ">
+                        <div class="r-t-center">
+                            <span class="">DATA: ______/______/___________</span>
+                        </div>
+                        <div class="rf-clear"></div>
+                    </div>
+                    <div class="rf-2">
+                        <span class="rf-left r-b-25 b-sup">Recebedor</span>
+                        <span class="rf-right r-b-25 b-sup">Cliente</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="r-h-page">
+            <div class="rform">
+                <div class="r-head">
+                    <span class="rf-right">Urnas Mart Ltda</span>
+                    <span class="rf-left r-b-75">05.020.839/0001-05</span>
+                    <span class="rf-left r-b-75">(91) 93256-1106</span>
+                    <div class="rf-clear"></div>
+                </div>
+                <div class="r-body my-5">
+                    <div class="r-0">
+                        <span class="r-t">Carta Frete</span>
+                    </div>
+                    <div class="r-1">À</div>
+                    <div class="r-2">
+                        <span class="rf-right">R$ {{ floatFreight }}</span>
+                        <span class="rf-left r-b-75">{{ clone.number }} - {{ clone.clientName }}</span>
+                        <span class="rf-left r-b-75">{{ clone.clientCity }} - {{ clone.clientState }}</span>
+                        <div class="rf-clear"></div>
+                    </div>
+                    <div class="r-3">
+                        <p>
+                            Pagar ao portador o Valor de R$ {{ floatFreight }}
+                            ({{ clone.freight | extense | upper }}) referente ao frete de urnas do pedido de
+                            número {{ clone.orderNumber }}, conforme combinado.
+                        </p>
+                    </div>
+                    <div class="r-4">Atenciosamente</div>
+                </div>
+                <div class="rfoot">
+                    <div class="rf-1 ">
+                        <div class="r-t-center">
+                            <span class="">DATA: ______/______/___________</span>
+                        </div>
+                        <div class="rf-clear"></div>
+                    </div>
+                    <div class="rf-2">
+                        <span class="rf-left r-b-25 b-sup">Recebedor</span>
+                        <span class="rf-right r-b-25 b-sup">Cliente</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

@@ -116,7 +116,44 @@ class TruckController extends AbstractController
             $form,
             $typeReport
         );
+
         return new Response($result);
+    }
+
+    /**
+     * @Route("/truck/create/report/{typeReport}/pdf/{entityId<\d+>}")
+     *
+     * Criar relatório a partir de informações enviadas
+     *
+     * @param Form $form
+     * @param DepartureModel $departureModel
+     * @param string $typeReport Nome da tag para criação do formulário.
+     * @param int $entityId
+     * @return Response
+     */
+    public function createSinglePdfReports(
+        Form $form,
+        DepartureModel $departureModel,
+        string $typeReport,
+        int $entityId
+    ): Response {
+        /** @var TravelTruckOrders $entityClass */
+        $entityClass = $this->getDoctrine()
+            ->getRepository(TravelTruckOrders::class)
+            ->find($entityId);
+        $result = $departureModel->generateAutomaticPdfReportWithData(
+            $entityClass,
+            $form,
+            $typeReport
+        );
+        /**
+         * $file = $result->file($result['pdf_path']);
+         * $response =  new BinaryFileResponse($file);
+         * $response->trustXSendfileTypeHeader();
+         * $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+         */
+
+        return $this->file($result['pdf_path']);
     }
 
     /**

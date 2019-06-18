@@ -101,6 +101,9 @@
             "./.php_cs.dist"
         ]
     },
+    "guzzlehttp/psr7": {
+        "version": "1.5.2"
+    },
     "h4cc/wkhtmltopdf-amd64": {
         "version": "0.12.4"
     },
@@ -143,6 +146,9 @@
     "hoa/zformat": {
         "version": "1.17.01.10"
     },
+    "intervention/image": {
+        "version": "2.4.2"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
@@ -164,11 +170,23 @@
     "league/container": {
         "version": "3.2.2"
     },
+    "league/flysystem": {
+        "version": "1.0.52"
+    },
+    "league/glide": {
+        "version": "1.5.0"
+    },
     "mikey179/vfsstream": {
         "version": "v1.6.5"
     },
     "monolog/monolog": {
         "version": "1.23.0"
+    },
+    "mpdf/mpdf": {
+        "version": "v8.0.2"
+    },
+    "myclabs/deep-copy": {
+        "version": "1.9.1"
     },
     "nette/bootstrap": {
         "version": "v2.4.6"
@@ -209,6 +227,9 @@
     "ocramius/proxy-manager": {
         "version": "2.2.0"
     },
+    "paragonie/random_compat": {
+        "version": "v9.99.99"
+    },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },
@@ -233,11 +254,17 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/log": {
         "version": "1.0.2"
     },
     "psr/simple-cache": {
         "version": "1.0.1"
+    },
+    "ralouphie/getallheaders": {
+        "version": "2.0.5"
     },
     "respect/validation": {
         "version": "1.1.16"
@@ -272,8 +299,23 @@
             "./config/packages/security_checker.yaml"
         ]
     },
+    "setasign/fpdi": {
+        "version": "v2.2.0"
+    },
     "slevomat/coding-standard": {
         "version": "5.0.4"
+    },
+    "spatie/browsershot": {
+        "version": "3.30.0"
+    },
+    "spatie/image": {
+        "version": "1.7.2"
+    },
+    "spatie/image-optimizer": {
+        "version": "1.1.5"
+    },
+    "spatie/temporary-directory": {
+        "version": "1.1.4"
     },
     "squizlabs/php_codesniffer": {
         "version": "3.0",
@@ -310,6 +352,9 @@
             "version": "3.3",
             "ref": "e3868d2f4a5104f19f844fe551099a00c6562527"
         }
+    },
+    "symfony/contracts": {
+        "version": "v1.1.0"
     },
     "symfony/css-selector": {
         "version": "v4.2.4"
@@ -535,14 +580,23 @@
             "ref": "6bdfa1a95f6b2e677ab985cd1af2eae35d62e0f6"
         }
     },
-    "symfony/webpack-encore-pack": {
+    "symfony/webpack-encore-bundle": {
         "version": "1.0",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "1.0",
-            "ref": "0e8ef1deeaef761e1defbec0be694237660ab13a"
-        }
+            "ref": "e33393e32759195f8e10c9d4faceb0d232a7e1de"
+        },
+        "files": [
+            "./assets/css/app.css",
+            "./assets/js/app.js",
+            "./config/packages/assets.yaml",
+            "./config/packages/prod/webpack_encore.yaml",
+            "./config/packages/webpack_encore.yaml",
+            "./package.json",
+            "./webpack.config.js"
+        ]
     },
     "symfony/yaml": {
         "version": "v4.0.10"
