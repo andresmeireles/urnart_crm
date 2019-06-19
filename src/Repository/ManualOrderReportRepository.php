@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method ManualOrderReport|null findOneBy(array $criteria, array $orderBy = null)
  * @method ManualOrderReport[]    findAll()
  * @method ManualOrderReport[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method someFieldsConsult($fields)
  */
 class ManualOrderReportRepository extends ServiceEntityRepository
 {
@@ -19,7 +20,13 @@ class ManualOrderReportRepository extends ServiceEntityRepository
         parent::__construct($registry, ManualOrderReport::class);
     }
 
-    public function someFieldsConsult(string ...$fields)
+    /**
+     * Undocumented function
+     *
+     * @param string ...$fields
+     * @return array
+     */
+    public function someFieldsConsult(string ...$fields): array
     {
         $queryConsult = '';
         $manager = $this->getEntityManager();

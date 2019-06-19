@@ -10,6 +10,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class DepartureModel extends Model
 {
+    /**
+     * Ordena de forma correta.
+     * 
+     * TEST OK
+     *
+     * @param Collection $unorganizedOrders
+     * @param array $correctOrder
+     * @return Collection
+     */
     public function getCorrectOrderOfOrders(Collection $unorganizedOrders, array $correctOrder): Collection
     {
         $orderOfObjects = [];
@@ -38,12 +47,60 @@ class DepartureModel extends Model
         object $entityClass,
         Form $form,
         string $typeReport
-    ) {
+    ): array {
         return $this->generateAutomaticReportWithData($entityClass, $form, $typeReport, 'pdf');
     }
 
     /**
+     * Criar todos os relatórios e cria um arquivo zip.
+     *
+     * TEST OK
+     * 
+     * @param object $orderReport
+     * @param Form $form
+     * @return string
+     */
+    public function exportAllPdfReports(object $orderReport, Form $form): string
+    {
+        $this->generateAutomaticPdfReportWithData($orderReport, $form, 'tag');
+        $this->generateAutomaticPdfReportWithData($orderReport, $form, 'fl');
+        $this->generateAutomaticPdfReportWithData($orderReport, $form, 'receipt');
+        $this->generateAutomaticPdfReportWithData($orderReport, $form, 'rb');
+        $this->generateAutomaticPdfReportWithData($orderReport, $form, 'romaneio');
+        $this->generateAutomaticPdfReportWithData($orderReport, $form, 'travel');
+        $this->generateAutomaticPdfReportWithData($orderReport, $form, 'romaneio');
+
+        $reportBuilderPath = __DIR__.'/../../public/reportBuilder/';
+        $zipReportName = sprintf('%srelatorio.zip', $reportBuilderPath);
+        $scanDir = scandir($reportBuilderPath);
+        $pdfFiles = [];
+        foreach ($scanDir as $value) {
+            if (strpos($value, 'pdf')) {
+                $pdfFiles[] = $value;
+                continue;
+            }
+        }
+        $zip = new \ZipArchive;
+        if ($zip->open($zipReportName, \ZipArchive::CREATE)) {
+            foreach ($pdfFiles as $pdfFile) {
+                $zip->addFile(sprintf('%s/%s', $reportBuilderPath, $pdfFile), $pdfFile);
+            }
+            $zip->close();
+        }
+        array_map(function ($file) use (&$reportBuilderPath) {
+            if (strpos($file, 'pdf')) {
+                $fileName = sprintf('%s/%s', $reportBuilderPath, $file);
+                unlink($fileName);
+            }
+        }, $scanDir);
+
+        return (string) $zipReportName;
+    }
+
+    /**
      * Seleciona o gerador do ventilador
+     *
+     * TEST OK
      *
      * @param TravelTruckOrders $entityClass
      * @param Form $form
@@ -102,6 +159,8 @@ class DepartureModel extends Model
     /**
      * Automatic tag report data creation
      *
+     * TEST OK
+     *
      * @param Collection $ordersCollection
      * @return array
      */
@@ -124,6 +183,8 @@ class DepartureModel extends Model
 
     /**
      * Freight letter
+     *
+     * TEST OK
      *
      * @param Collection $ordersCollection
      * @return array
@@ -150,6 +211,8 @@ class DepartureModel extends Model
     /**
      * receipt
      *
+     * TEST OK
+     *
      * @param Collection $ordersCollection
      * @return array
      */
@@ -172,6 +235,8 @@ class DepartureModel extends Model
 
     /**
      * romaneio board
+     *
+     * TEST OK
      *
      * @param Collection $ordersCollection
      * @return array
@@ -213,6 +278,8 @@ class DepartureModel extends Model
 
     /**
      * romaneio
+     * 
+     * TEST OK
      *
      * @param Collection $ordersCollection
      * @return array
@@ -256,6 +323,8 @@ class DepartureModel extends Model
 
     /**
      * travel
+     * 
+     * TEST OK
      *
      * @param object $departureReport
      * @param Collection $ordersCollection
@@ -274,17 +343,5 @@ class DepartureModel extends Model
         $formData['prod'] = $data;
 
         return $formData;
-    }
-
-    public function generateAllReportsWithReportData(object $reportData, Form $form)
-    {
-        $formString = '';
-        $formString .= $this->generateAutomaticShowReportWithData($reportData, $form, 'tag');
-        $formString .= $this->generateAutomaticShowReportWithData($reportData, $form, 'fl');
-        $formString .= $this->generateAutomaticShowReportWithData($reportData, $form, 'rb');
-        $formString .= $this->generateAutomaticShowReportWithData($reportData, $form, 'romaneio');
-        $formString .= $this->generateAutomaticShowReportWithData($reportData, $form, 'travel');
-
-        return $formString;
     }
 }

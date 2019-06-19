@@ -28,7 +28,8 @@ class Form extends GenericContainer
      *
      * @var string
      */
-    protected $parsedFile;
+    public $parsedFile;
+    
     protected $config;
 
     protected $nonStaticConfig;
@@ -62,6 +63,7 @@ class Form extends GenericContainer
             throw new \Exception(sprintf('Tipo %s não é um tipo valido', $type));
         }
         $template = $type === 'pdf' ? sprintf('%sPdf', $formName) : $formName;
+        
         return $this->$type($template, $data);
     }
 
@@ -76,6 +78,7 @@ class Form extends GenericContainer
     public function show(string $formName, array $data): array
     {
         $this->setParsedFile($formName, $data);
+        
         return [
             'template' => $this->parsedFile
         ];
@@ -90,39 +93,47 @@ class Form extends GenericContainer
      *
      * @return array array associativo com parametros [pdf_path] com caminho do pdf gerado e [type] com tipo de mensagem
      */
-    public function pdf(string $formName, array $data): array
+    public function pdf(string $formName, array $data)
     {
         $this->setParsedFile($formName, $data);
-        Browsershot::html($this->parsedFile)->save('xof.pdf');
-        die('fooooe');
-        // exec('wkhtmltopdf --version', $opt, $result);
-        // if ($result === 1) {
-        //     throw new BinaryNotFoundException(
-        //         'wkhtmltopdf não esta instaldado no sistama ou não está no PATH do sistema operacional.'
-        //     );
-        // }
-        // $this->setParsedFile($formName, $data);
+        $pdfDir= sprintf('reportBuilder/report%s.pdf', $formName);
+        Browsershot::html($this->parsedFile)->save($pdfDir);    
 
-        // if (!file_exists(__DIR__.'/../../../public/reportBuilder') &&
-        //     !is_dir(__DIR__.'/../../../public/reportBuilder')) {
-        //     mkdir(__DIR__.'/../../../public/reportBuilder');
-        //     file_put_contents(__DIR__.'/../../../public/reportBuilder/.gitignore', '/*');
-        // }
-        // $htmlReportFile = 'reportBuilder/report.html';
-        // $pdfDir= sprintf('reportBuilder/report%s.pdf', $formName);
-        // file_put_contents($htmlReportFile, $this->parsedFile);
-        // exec("wkhtmltopdf --encoding 'utf-8' $htmlReportFile $pdfDir", $opt, $result);
-        // if ($result === 1) {
-        //     throw new \Exception('Conversão não ocorrida. Por Algum erro no wkhtmltopdf.');
-        // }
-        // unset($result);
-        // unset($opt);
-        // unlink($htmlReportFile);
-        
-        // return [
-        //     'pdf_path' => $pdfDir,
-        //     'type' => 'success',
-        // ];
+        return [
+            'pdf_path' => $pdfDir,
+            'type' => 'success'
+        ];
+    }
+
+    public function pdfWkhymltoPdf(string $formName, array $data)
+    {
+        exec('wkhtmltopdf --version', $opt, $result);
+        if ($result === 1) {
+            throw new BinaryNotFoundException(
+                'wkhtmltopdf não esta instaldado no sistama ou não está no PATH do sistema operacional.'
+            );
+        }
+        $this->setParsedFile($formName, $data);
+        if (!file_exists(__DIR__.'/../../../public/reportBuilder') &&
+            !is_dir(__DIR__.'/../../../public/reportBuilder')) {
+            mkdir(__DIR__.'/../../../public/reportBuilder');
+            file_put_contents(__DIR__.'/../../../public/reportBuilder/.gitignore', '/*');
+        }
+        $htmlReportFile = 'reportBuilder/report.html';
+        $pdfDir= sprintf('reportBuilder/report%s.pdf', $formName);
+        file_put_contents($htmlReportFile, $this->parsedFile);
+        exec("wkhtmltopdf --encoding 'utf-8' $htmlReportFile $pdfDir", $opt, $result);
+        if ($result === 1) {
+            throw new \Exception('Conversão não ocorrida. Por Algum erro no wkhtmltopdf.');
+        }
+        unset($result);
+        unset($opt);
+        unlink($htmlReportFile);
+
+        return [
+            'pdf_path' => $pdfDir,
+            'type' => 'success'
+        ];
     }
 
     private function checkFileExistence(string $formName): string
@@ -138,6 +149,7 @@ class Form extends GenericContainer
                 )
             );
         }
+
         return $completeFilePath;
     }
 

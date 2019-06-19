@@ -34,14 +34,16 @@
                         <i class="fas fa-file-pdf" aria-label="Our phone number" title="Exportar formulários para pdf"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
-                        <div class="dropdown-item">Imprimir relátorios</div>
-                        <div class="dropdown-divider"></div>   
+                        <div class="dropdown-item">Relátorios em pdf</div>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/truck/create/report/tag/pdf/{{report.id}}" >Etiquetas</a>
                         <a class="dropdown-item" href="/truck/create/report/fl/pdf/{{report.id}}" >carta frete</a>
                         {# <a class="dropdown-item" href="/truck/create/report/remand/show/{{report.id}}">devolução</a> #}
                         <a class="dropdown-item" href="/truck/create/report/rb/pdf/{{report.id}}" >Romaneio de embarque</a>
                         <a class="dropdown-item" href="/truck/create/report/romaneio/pdf/{{report.id}}" >Romaneio</a>
                         <a class="dropdown-item" href="/truck/create/report/travel/pdf/{{report.id}}" >Viagem</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/truck/create/report/export/allreports/{{report.id}}">Todos os relatorios</a>
                     </div>
                     </li>
                     <li class="nav-item dropdown">

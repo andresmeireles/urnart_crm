@@ -29,6 +29,7 @@ class TruckController extends AbstractController
 
     /**
      * @Route("/truck/create", methods="GET", name="create.truck.report")
+     * @method \App\Repository\ManualOrderReportRepository getRepository()
      */
     public function viewCreateForm(): Response
     {        
@@ -157,6 +158,17 @@ class TruckController extends AbstractController
     }
 
     /**
+     * @Route("/truck/create/report/export/allreports/{entityId<\d+>}")
+     */
+    public function getAllReportsInZipFile(Form $form, DepartureModel $model, int $entityId): Response
+    {
+        $order = $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find($entityId);
+        $result = $model->exportAllPdfReports($order, $form);
+
+        return $this->file($result);
+    }
+
+    /**
      * @Route("/truck/removeEv")
      */
     public function removeEverything()
@@ -174,18 +186,5 @@ class TruckController extends AbstractController
         }
 
         return new Response("OK");
-    }
-
-    /**
-     * @Route("/truck/check")
-     */
-    public function x()
-    {
-        $x = $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find(7);
-        dump($x->getCheckedOrders());
-        foreach ($x->getOrderId() as $o) {
-            dump($o);
-        }
-        die;
     }
 }
