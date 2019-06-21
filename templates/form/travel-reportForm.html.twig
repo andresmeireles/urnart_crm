@@ -11,13 +11,17 @@
             <p class="col-12">Todos os campos são obrigatorios de ser preenchidos</p>
             <hr>
         </div>
-        <div class="col" id="travel-report">
-            <form method="POST">
+        <div class="col">
+            <form method="POST" id="closeOrder">
                 {% include "components/csrfToken.html.twig" with {'tokenText': 'saveOnDb'} %}
                 <div class="form-row">
                     {% if dataFill is not defined %}
                     <div class="form=group col">
                         <input type="submit" class="btn btn-primary btn-lg btn-block disable-on-submit" value="realizar prestação de contas">
+                    </div>
+                    {% elseif customId is defined %}
+                    <div class="form=group col">
+                        <input type="submit" id="travel-report" closeTruck="{{customId}}" class="btn btn-primary btn-lg btn-block disable-on-submit" value="realizar prestação de contas">
                     </div>
                     {% else %}
                     <div class="form=group col">
@@ -25,7 +29,7 @@
                     </div>
                     <div class="form=group col">
                         <input type="submit" class="btn btn-secondary btn-lg btn-block disable-on-submit" onclick="javascript: form.action='/forms/travel-report/{{dataFill.id}}/edit';" value="editar prestação de contas">
-                    </div>          
+                    </div>
                     {% endif %}
                 </div>
                 <hr>
@@ -55,7 +59,7 @@
                     <div class="form-row col">
                         <div class="form-group col">
                             <label for="km-out">KM Saida</label>
-                            <input type="text" class="form-control numbers-only" name="km-out" data-target="#km-out" placeholder="KM de saída" value="{{ dataFill.departureKm ?? '' }}" requried>
+                            <input type="text" class="form-control numbers-only" name="km-out" data-target="#km-out" placeholder="KM de saída" value="{{ dataFill.departureKm ?? '' }}{{ dataFill.kmout ?? ''}}" requried>
                         </div>
                         <div class="form-group col">
                             <label for="km-in">KM Chegada</label>
@@ -68,32 +72,38 @@
                     <div class="form-row col">
                         <div class="form-group col">
                         {% if dataFill.travelEntries is defined %}
-                            {% for entry in dataFill.travelEntries %}
+                            {% set travelEntries = dataFill.travelEntries %}
+                        {% endif %}
+                        {% if dataFill.orderId is defined %}
+                            {% set travelEntries = dataFill.orderId %}
+                        {% endif %}
+                        {% if travelEntries is defined %}
+                            {% for entry in travelEntries %}
                             <div class="row my-2" id="cloneableField">
                                 <input type="hidden" input-number input-name="customerArr" value="{{ loop.index - 1}}" />
                                 <div class="col">
                                     <label for="customer" no-clone>Cliente</label>
-                                    <input type="text" name="customerArr{{ loop.index - 1}}[customer]" id="customer" class="form-control" placeholder="Nome do cliente" value="{{ entry.nome }}" required />
+                                    <input type="text" name="customerArr{{ loop.index - 1}}[customer]" id="customer" class="form-control" placeholder="Nome do cliente" value="{{ entry.nome ?? '' }}{{ entry.customerName ?? '' }}" required />
                                 </div>
                                 <div class="col">
                                     <label for="freight" no-clone>Frete</label>
                                     <input type="hidden" class="entrada" converted-value name="customerArr{{ loop.index - 1}}[freight]" id="freight" sum-target="#f-freight">
-                                    <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do frete" value="R$ {{ entry.freight | number_format(2, ',', '.') }}" required />
+                                    <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do frete" value="R$ {{ entry.freight is defined ? entry.freight | number_format(2, ',', '.') : '' }}" required />
                                 </div>
                                 <div class="col">
                                     <label for="order" no-clone>Pedido</label>
                                     <input type="hidden" class="entrada" converted-value name="customerArr{{ loop.index - 1}}[order-value]" id="order-value" sum-target="#f-order">
-                                    <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="R$ {{ entry.orderValue  | number_format(2, ',', '.')}}" required />
+                                    <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="R$ {{ entry.orderValue is defined ? entry.orderValue  | number_format(2, ',', '.') : '' }}" required />
                                 </div>
                                 <div class="col">
                                     <label for="check" no-clone>Cheque</label>
                                     <input type="hidden" converted-value name="customerArr{{ loop.index - 1}}[check]" id="check" sum-target="#f-check">
-                                    <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="R$ {{ entry.checkValue | number_format(2, ',', '.') }}" required />
+                                    <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="R$ {{ entry.checkValue is defined ? entry.checkValue | number_format(2, ',', '.') : '' }}" required />
                                 </div>
                                 <div class="col">
                                     <label for="other" no-clone>Por Conta</label>
                                     <input type="hidden" class="entrada" converted-value name="customerArr{{ loop.index - 1}}[other]" id="other" sum-target="#f-other">
-                                    <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="R$ {{ entry.byCountValue | number_format(2, ',', '.') }}" required />
+                                    <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="R$ {{ entry.byCountValue is defined ? entry.byCountValue | number_format(2, ',', '.') : '' }}" required />
                                 </div>
                                 <div class="col">
                                     <label for="btn">&nbsp;</label><br>
@@ -241,8 +251,8 @@
                         <div class="form-group row col">
                             <div class="col">
                                 <label>Valor</label>
-                                <input type="hidden" converted-value name="caixa" value="{{ dataFill is not defined ? '' : dataFill.cash | number_format(2, ',', '.') }}" />
-                                <input type="text" class="form-control auto-float-convert-blur auto-clear numbers-float-only" id="cx" placeholder="Valor do caixa" value="R$ {{ dataFill is not defined ? '' : dataFill.cash | number_format(2, ',', '.') }}" required />
+                                <input type="hidden" converted-value name="caixa" value="{{ dataFill is not defined or dataFill.cash is not defined ? '' : dataFill.cash | number_format(2, ',', '.') }}" />
+                                <input type="text" class="form-control auto-float-convert-blur auto-clear numbers-float-only" id="cx" placeholder="Valor do caixa" value="R$ {{ dataFill is not defined or dataFill.cash is not defined ? '' : dataFill.cash | number_format(2, ',', '.') }}" required />
                             </div>
                             <div class="col-1">
                                 <label for="btn">&nbsp;</label><br>

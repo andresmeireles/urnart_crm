@@ -7,6 +7,8 @@ use PHPUnit\Framework\TestCase;
 use App\Model\DepartureModel;
 use App\Entity\TravelTruckOrders;
 use App\Utils\Andresmei\Form;
+use App\Utils\Andresmei\StdResponse;
+use App\Kernel;
 
 class DepartureModelTest extends TestCase
 {
@@ -28,7 +30,6 @@ class DepartureModelTest extends TestCase
     public function testExportAllPdfReports()
     {
         $entityManager = $this->getTestEntityManager();
-        // $form = new Form($entityManager, $twig, new \App\Config\NonStaticConfig);
         /** @var Form $form */
         $form = $this->createMock(Form::class);
         $form->parsedFile = '';
@@ -36,8 +37,9 @@ class DepartureModelTest extends TestCase
         $entityObject->setDriverName('josé');
         $model = new DepartureModel($entityManager);
         $result = $model->exportAllPdfReports($entityObject, $form);
+        $rootDir = str_replace('tests', 'src', __DIR__);
 
-        $this->assertEquals('C:\Projects\sysadmin\src\Model/../../public/reportBuilder/relatorio.zip', $result);
+        $this->assertEquals($rootDir.'/../../public/reportBuilder/relatorio.zip', $result);
     }
 
     public function testGenerateAutomaticReportWithDataTag()

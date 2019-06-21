@@ -34,7 +34,7 @@ class DepartureModel extends Model
     }
 
     public function generateAutomaticShowReportWithData(
-        object $entityClass,
+        TravelTruckOrders $entityClass,
         Form $form,
         string $typeReport
     ): string {
@@ -44,7 +44,7 @@ class DepartureModel extends Model
     }
 
     public function generateAutomaticPdfReportWithData(
-        object $entityClass,
+        TravelTruckOrders $entityClass,
         Form $form,
         string $typeReport
     ): array {
@@ -56,11 +56,11 @@ class DepartureModel extends Model
      *
      * TEST OK
      * 
-     * @param object $orderReport
+     * @param TravelTruckOrders $orderReport
      * @param Form $form
      * @return string
      */
-    public function exportAllPdfReports(object $orderReport, Form $form): string
+    public function exportAllPdfReports(TravelTruckOrders $orderReport, Form $form): string
     {
         $this->generateAutomaticPdfReportWithData($orderReport, $form, 'tag');
         $this->generateAutomaticPdfReportWithData($orderReport, $form, 'fl');
@@ -72,10 +72,10 @@ class DepartureModel extends Model
 
         $reportBuilderPath = __DIR__.'/../../public/reportBuilder/';
         $zipReportName = sprintf('%srelatorio.zip', $reportBuilderPath);
-        $scanDir = scandir($reportBuilderPath);
+        $scanDir = (array) scandir($reportBuilderPath);
         $pdfFiles = [];
         foreach ($scanDir as $value) {
-            if (strpos($value, 'pdf')) {
+            if ($value && strpos($value, 'pdf')) {
                 $pdfFiles[] = $value;
                 continue;
             }
@@ -83,6 +83,9 @@ class DepartureModel extends Model
         $zip = new \ZipArchive;
         if ($zip->open($zipReportName, \ZipArchive::CREATE)) {
             foreach ($pdfFiles as $pdfFile) {
+                if (!$pdfFile) {
+                    throw new \Exception('não é um arquivo.');
+                }
                 $zip->addFile(sprintf('%s/%s', $reportBuilderPath, $pdfFile), $pdfFile);
             }
             $zip->close();
@@ -94,7 +97,7 @@ class DepartureModel extends Model
             }
         }, $scanDir);
 
-        return (string) $zipReportName;
+        return $zipReportName;
     }
 
     /**
@@ -104,7 +107,7 @@ class DepartureModel extends Model
      *
      * @param TravelTruckOrders $entityClass
      * @param Form $form
-     * @return string
+     * @return array
      */
     public function generateAutomaticReportWithData(
         object $entityClass,
@@ -113,10 +116,11 @@ class DepartureModel extends Model
         string $methodType
     ): array {
         $uncorrectPositionedCorders = $entityClass->getOrderId();
-        $collectionOfOrders = $this->getCorrectOrderOfOrders($uncorrectPositionedCorders, $entityClass->getCheckedOrders());
+        $orderOfElements = (array) $entityClass->getCheckedOrders();
+        $collectionOfOrders = $this->getCorrectOrderOfOrders($uncorrectPositionedCorders, $orderOfElements);
         switch ($typeReport) {
             case 'tag':
-                $data = $this->generateTagReportWithReportData($collectionOfOrders, $entityClass->getCheckedOrders());
+                $data = $this->generateTagReportWithReportData($collectionOfOrders, $orderOfElements);
                 break;
             case 'fl':
             case 'freightletter':
@@ -139,11 +143,10 @@ class DepartureModel extends Model
                 $data = $this->generateRomaneioWithReportData($collectionOfOrders);
                 break;
             case 'travel':
+                if (!is_string($entityClass->getDriverName())) {
+                    throw new \Exception('Nome do motorista não enviado');
+                }
                 $data = $this->generateTravelWithReportData($collectionOfOrders, $entityClass->getDriverName());
-                break;
-            case 'allInOne':
-            case 'all':
-                return $this->generateAllReportsWithReportData($entityClass, $form);
                 break;
             default:
                 throw new CustomException(
@@ -326,7 +329,7 @@ class DepartureModel extends Model
      * 
      * TEST OK
      *
-     * @param object $departureReport
+     * @param string $driverName
      * @param Collection $ordersCollection
      * @return array
      */

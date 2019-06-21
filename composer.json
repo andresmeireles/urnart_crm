@@ -9,7 +9,6 @@
         "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "jms/serializer": "^2.2",
         "knplabs/knp-paginator-bundle": "^3.0",
-        "mpdf/mpdf": "^8.0",
         "respect/validation": "^1.1",
         "sensio/framework-extra-bundle": "^5.2",
         "spatie/browsershot": "^3.30",
@@ -20,6 +19,7 @@
         "symfony/framework-bundle": "^4.0",
         "symfony/monolog-bundle": "^3.3",
         "symfony/orm-pack": "^1.0",
+        "symfony/phpunit-bridge": "*@dev",
         "symfony/security-bundle": "^4.0",
         "symfony/translation": "^4.0",
         "symfony/twig-bundle": "^4.0",
@@ -33,6 +33,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.1",
         "mikey179/vfsstream": "^1.6",
         "nunomaduro/phpinsights": "^1.5",
+        "phan/phan": "^2.2",
         "phpstan/phpstan": "^0.10.5",
         "phpstan/phpstan-doctrine": "^0.10.0",
         "phpstan/phpstan-symfony": "^0.10.2",
@@ -40,7 +41,6 @@
         "symfony/css-selector": "^4.0",
         "symfony/debug": "^4.0",
         "symfony/maker-bundle": "^1.5",
-        "symfony/phpunit-bridge": "^4.0",
         "symfony/profiler-pack": "^1.0",
         "symfony/templating": "^4.0",
         "symfony/var-dumper": "^4.0",
@@ -94,7 +94,7 @@
     "repositories": {
         "phpunit-bridge": {
             "type": "path",
-            "url": "C:\\Projects\\sysadmin\\vendor\\symfony\\phpunit-bridge"
+            "url": "C:\\Users\\yasmi\\projects\\sysadmin\\vendor\\symfony\\phpunit-bridge"
         }
     }
 }

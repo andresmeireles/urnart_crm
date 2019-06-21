@@ -89,6 +89,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "felixfbecker/advanced-json-rpc": {
+        "version": "v3.0.3"
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
         "recipe": {
@@ -176,6 +179,9 @@
     "league/glide": {
         "version": "1.5.0"
     },
+    "microsoft/tolerant-php-parser": {
+        "version": "v0.0.17"
+    },
     "mikey179/vfsstream": {
         "version": "v1.6.5"
     },
@@ -187,6 +193,9 @@
     },
     "myclabs/deep-copy": {
         "version": "1.9.1"
+    },
+    "netresearch/jsonmapper": {
+        "version": "v1.4.0"
     },
     "nette/bootstrap": {
         "version": "v2.4.6"
@@ -230,8 +239,20 @@
     "paragonie/random_compat": {
         "version": "v9.99.99"
     },
+    "phan/phan": {
+        "version": "2.2.3"
+    },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
+    },
+    "phpdocumentor/reflection-common": {
+        "version": "1.0.1"
+    },
+    "phpdocumentor/reflection-docblock": {
+        "version": "4.3.1"
+    },
+    "phpdocumentor/type-resolver": {
+        "version": "0.4.0"
     },
     "phploc/phploc": {
         "version": "5.0.0"
@@ -268,6 +289,9 @@
     },
     "respect/validation": {
         "version": "1.1.16"
+    },
+    "sabre/event": {
+        "version": "5.0.3"
     },
     "sebastian/finder-facade": {
         "version": "1.2.2"
@@ -636,6 +660,9 @@
         "files": [
             "./config/packages/vich_uploader.yaml"
         ]
+    },
+    "webmozart/assert": {
+        "version": "1.4.0"
     },
     "wgenial/numeroporextenso": {
         "version": "2.0.0"

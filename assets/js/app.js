@@ -141,6 +141,7 @@ import "./src/register/loadAjax";
 // TRUCK
 import "./src/truck/truckAction";
 import "./src/truck/truckIndex";
+import "./src/truck/closeTruckOrder";
 
 // reports
 import "./src/reports/survey";

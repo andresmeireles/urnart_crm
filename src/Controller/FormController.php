@@ -10,26 +10,27 @@
  */
 namespace App\Controller;
 
-use App\Config\NonStaticConfig;
-use App\Entity\PaymentType;
 use App\Entity\Product;
-use App\Entity\Transporter;
-use App\Entity\TravelAccountability;
 use App\Model\FormModel;
-use App\Utils\Andresmei\FileFunctions;
+use App\Entity\PaymentType;
+use App\Entity\Transporter;
 use App\Utils\Andresmei\Form;
-use App\Utils\Andresmei\NestedArraySeparator;
-use App\Utils\Andresmei\StringConvertions;
+use App\Config\NonStaticConfig;
+use Symfony\Component\Yaml\Yaml;
+use App\Entity\TravelTruckOrders;
+use App\Entity\TravelAccountability;
+use App\Utils\Andresmei\FileFunctions;
 use App\Utils\Exceptions\CustomException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use App\Utils\Andresmei\StringConvertions;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use App\Utils\Andresmei\NestedArraySeparator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 /**
  * Controller das paginas de formulário
@@ -120,43 +121,48 @@ class FormController extends AbstractController
     public function findFormTemplate(Request $request, string $formName): Response
     {
         $fileNamePath = __DIR__.'/../../templates/form/'.$formName.'Form.html.twig';
-        if (file_exists($fileNamePath)) {
-            if (null !== $request->query->get('repofile')) {
-                $reportFolder = sprintf(
-                    '%s/%s/%s/%s.yaml',
-                    $this->getParameter('kernel.root_dir'),
-                    $this->getParameter('app.path.report_folder'),
-                    ucwords($formName),
-                    $request->query->get('repofile')
-                );
-                if (!is_string(file_get_contents($reportFolder))) {
-                    throw new \Exception("Arquivo incorreto");
-                }
-                $reportData = Yaml::parse(file_get_contents($reportFolder));
-                $formAllData = new NestedArraySeparator($reportData);
+        if (!file_exists($fileNamePath)) {
+            throw new \Exception('Page not found');
+        }
+        if (null !== $request->query->get('repofile')) {
+            $reportFolder = sprintf(
+                '%s/%s/%s/%s.yaml',
+                $this->getParameter('kernel.root_dir'),
+                $this->getParameter('app.path.report_folder'),
+                ucwords($formName),
+                $request->query->get('repofile')
+            );
+            if (!is_string(file_get_contents($reportFolder))) {
+                throw new \Exception("Arquivo incorreto");
             }
-
-            $requestData = [
-                'formName' => $formName,
-                'config' => new NonStaticConfig,
-                'formFill' => isset($formAllData) ? $formAllData->getArrayInArray() : null,
-                'formData' => isset($formAllData) ? $formAllData->getSimpleArray() : null
-            ];
-            if ($formName === 'order') {
-                $requestData['products'] = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
-                $requestData['payments'] = $this->getDoctrine()
+            $reportData = Yaml::parse(file_get_contents($reportFolder));
+            $formAllData = new NestedArraySeparator($reportData);
+        }
+        $requestData = [
+            'formName' => $formName,
+            'config' => new NonStaticConfig,
+            'formFill' => isset($formAllData) ? $formAllData->getArrayInArray() : null,
+            'formData' => isset($formAllData) ? $formAllData->getSimpleArray() : null
+        ];
+        if ($formName === 'order') {
+            $requestData['products'] = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
+            $requestData['payments'] = $this->getDoctrine()
+                                            ->getManager()
+                                            ->getRepository(PaymentType::class)
+                                            ->findAll();
+            $requestData['transporters'] = $this->getDoctrine()
                                                 ->getManager()
-                                                ->getRepository(PaymentType::class)
+                                                ->getRepository(Transporter::class)
                                                 ->findAll();
-                $requestData['transporters'] = $this->getDoctrine()
-                                                    ->getManager()
-                                                    ->getRepository(Transporter::class)
-                                                    ->findAll();
-            }
-            return $this->render('form/'.$formName.'Form.html.twig', $requestData);
+        }
+        if ($formName === 'travel-report' && $request->query->get('p') !== null) {
+            $requestData['dataFill'] = $this->getDoctrine()
+                    ->getRepository(TravelTruckOrders::class)
+                    ->find($request->query->get('p'));
+            $requestData['customId'] = $request->query->get('p');
         }
 
-        throw new \Exception('Page not found');
+        return $this->render('form/'.$formName.'Form.html.twig', $requestData);
     }
 
     /**
@@ -199,11 +205,11 @@ class FormController extends AbstractController
             $data['formName'] = $formName;
             return $this->redirectToRoute('save_report', $data);
         }
-
         if (empty($data)) {
             throw new \Exception('Nenhum dado enviado');
         }
         $result = $form->returnSelectedFromType('show', $formName, $data);
+
         return new Response($result['template']);
     }
 

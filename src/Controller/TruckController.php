@@ -33,8 +33,11 @@ class TruckController extends AbstractController
      */
     public function viewCreateForm(): Response
     {        
+        /** @var \App\Repository\ManualOrderReportRepository $manualRepository */
+        $manualRepository = $this->getDoctrine()->getRepository(ManualOrderReport::class);
+
         return $this->render('truck/pages/createTruckRepo.html.twig', [
-            'orders' => $this->getDoctrine()->getRepository(ManualOrderReport::class)->someFieldsConsult('id', 'customerName')
+            'orders' => $manualRepository->someFieldsConsult('id', 'customerName')
         ]);
     }
 
@@ -61,8 +64,11 @@ class TruckController extends AbstractController
      */
     public function viewEditForm(int $id): Response
     {
+        /** @var \App\Repository\ManualOrderReportRepository $manualRepository */
+        $manualRepository = $this->getDoctrine()->getRepository(ManualOrderReport::class);
+        
         return $this->render('truck/pages/editTruckRepo.html.twig', [
-            'orders' => $this->getDoctrine()->getRepository(ManualOrderReport::class)->someFieldsConsult('id', 'customerName'),
+            'orders' => $manualRepository->someFieldsConsult('id', 'customerName'),
             'data' => $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find($id)
         ]);
     }
@@ -132,7 +138,7 @@ class TruckController extends AbstractController
      * @param int $entityId
      * @return Response
      */
-    public function createSinglePdfReports(
+    public function createPdfReport(
         Form $form,
         DepartureModel $departureModel,
         string $typeReport,
@@ -162,6 +168,7 @@ class TruckController extends AbstractController
      */
     public function getAllReportsInZipFile(Form $form, DepartureModel $model, int $entityId): Response
     {
+        /** @var TravelTruckOrders $order */
         $order = $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find($entityId);
         $result = $model->exportAllPdfReports($order, $form);
 
