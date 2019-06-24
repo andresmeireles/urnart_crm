@@ -133,7 +133,7 @@ class DepartureModel extends Model
             case 'romaneioboard':
             case 'romaneio-board':
                 $typeReport = 'romaneio-board';
-                $data = $this->generateRomaneioBoardWithReportData($collectionOfOrders);
+                $data = $this->generateRomaneioWithReportData($collectionOfOrders);
                 break;
             case 'romaneio':
             case 'rom':
@@ -280,6 +280,9 @@ class DepartureModel extends Model
             ];
         });
 
+        dump($formData);
+        die;
+
         return $formData;
     }
 
@@ -297,10 +300,10 @@ class DepartureModel extends Model
         $urnG = ['210', '190', '180', '170', '160'];
         $urnM = ['150', '130', '110'];
         $urnP = ['090', '070', '050'];
-        $urnGA = 0;
-        $urnMA = 0;
-        $urnPA = 0;
-        $ordersCollection->map(function ($value) use (&$formData, &$urnG, &$urnM, &$urnP, &$urnGA, &$urnMA, &$urnPA) {
+        $ordersCollection->map(function ($value) use (&$formData, &$urnG, &$urnM, &$urnP) {
+            $urnGA = 0;
+            $urnMA = 0;
+            $urnPA = 0;
             $value->getManualProductCarts()->map(function ($prod) use (&$urnG, &$urnM, &$urnP, &$urnGA, &$urnMA, &$urnPA) {
                 $productName = $prod->getProductName();
                 $productAmount = $prod->getProductAmount();
