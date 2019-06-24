@@ -68,7 +68,6 @@ class DepartureModel extends Model
         $this->generateAutomaticPdfReportWithData($orderReport, $form, 'rb');
         $this->generateAutomaticPdfReportWithData($orderReport, $form, 'romaneio');
         $this->generateAutomaticPdfReportWithData($orderReport, $form, 'travel');
-
         $reportBuilderPath = __DIR__.'/../../public/reportBuilder/';
         $zipReportName = sprintf('%srelatorio.zip', $reportBuilderPath);
         $scanDir = (array) scandir($reportBuilderPath);
