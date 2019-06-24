@@ -256,13 +256,19 @@ class DepartureModel extends Model
                 $productName = $prod->getProductName();
                 $productAmount = $prod->getProductAmount();
                 array_map(function ($amounts) use (&$urnGA, &$productName, &$productAmount) {
-                    $urnGA += strpos($productName, $amounts) ? $productAmount : 0;
+                    if (strpos($productName, $amounts)) {
+                        $urnGA += $productAmount;
+                    }
                 }, $urnG);
                 array_map(function ($amounts) use (&$urnMA, &$productName, &$productAmount) {
-                    $urnMA += strpos($productName, $amounts) ? $productAmount : 0;
+                    if (strpos($productName, $amounts)) {
+                        $urnMA += $productAmount;
+                    }
                 }, $urnM);
                 array_map(function ($amounts) use (&$urnPA, &$productName, &$productAmount) {
-                    $urnPA += strpos($productName, $amounts) ? $productAmount : 0;
+                    if (strpos($productName, $amounts)) {
+                        $urnPA += $productAmount;
+                    }
                 }, $urnP);
             });
             $formData[] = [
