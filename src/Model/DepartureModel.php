@@ -242,58 +242,6 @@ class DepartureModel extends Model
      * @param Collection $ordersCollection
      * @return array
      */
-    public function generateRomaneioBoardWithReportData(Collection $ordersCollection)
-    {
-        $formData = [];
-        $urnG = ['210', '190', '180', '170', '160'];
-        $urnM = ['150', '130', '110'];
-        $urnP = ['090', '070', '050'];
-        $urnGA = 0;
-        $urnMA = 0;
-        $urnPA = 0;
-        $ordersCollection->map(function ($value) use (&$formData, &$urnG, &$urnM, &$urnP, &$urnGA, &$urnMA, &$urnPA) {
-            $value->getManualProductCarts()->map(function ($prod) use (&$urnG, &$urnM, &$urnP, &$urnGA, &$urnMA, &$urnPA) {
-                $productName = $prod->getProductName();
-                $productAmount = $prod->getProductAmount();
-                array_map(function ($amounts) use (&$urnGA, &$productName, &$productAmount) {
-                    if (strpos($productName, $amounts)) {
-                        $urnGA += $productAmount;
-                    }
-                }, $urnG);
-                array_map(function ($amounts) use (&$urnMA, &$productName, &$productAmount) {
-                    if (strpos($productName, $amounts)) {
-                        $urnMA += $productAmount;
-                    }
-                }, $urnM);
-                array_map(function ($amounts) use (&$urnPA, &$productName, &$productAmount) {
-                    if (strpos($productName, $amounts)) {
-                        $urnPA += $productAmount;
-                    }
-                }, $urnP);
-            });
-            $formData[] = [
-                'name' => $value->getCustomerName(),
-                'city' => $value->getCustomerCity(),
-                'urnG' => $urnGA,
-                'urnM' => $urnMA,
-                'urnP' => $urnPA
-            ];
-        });
-
-        dump($formData);
-        die;
-
-        return $formData;
-    }
-
-    /**
-     * romaneio
-     * 
-     * TEST OK
-     *
-     * @param Collection $ordersCollection
-     * @return array
-     */
     public function generateRomaneioWithReportData(Collection $ordersCollection)
     {
         $formData = [];
@@ -318,7 +266,7 @@ class DepartureModel extends Model
                     }
                 }, $urnM);
                 array_map(function ($amounts) use (&$urnPA, &$productName, &$productAmount) {
-                     if (strpos($productName, $amounts)) {
+                    if (strpos($productName, $amounts)) {
                         $urnPA += $productAmount;
                     }
                 }, $urnP);
@@ -359,5 +307,23 @@ class DepartureModel extends Model
         $formData['prod'] = $data;
 
         return $formData;
+    }
+
+    public function generateReportByModel(Collection $ordersCollection, array $modelsNames): array
+    {
+        $modelsName = array_values($modelsNames);
+        $products[] = $ordersCollection->map(function ($order) {
+            return $order->getManualProductCarts();
+        });
+        array_map(function ($product) use (&$modelsName) {
+            if (array_key_exists($product->getProductName(), $modelsName)) {
+                $actualAmount = $modelsName[$product->getProductName()];
+                $modelsName[$product->getProductName()] = $actualAmount + $product->getProductAmount();
+            }
+        }, $products);
+        dump($modelsName);
+        die;
+
+        return $modelsName;
     }
 }

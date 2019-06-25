@@ -1,5 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+	if (document.querySelector('.multiselect')) {
+		$('.multiselect').selectize({
+			plugins: ['remove_button'],
+			delimiter: ',',
+			persist: false,
+			create: function(input) {
+				return {
+					value: input,
+					text: input
+				}
+			}
+		});
+	}
+
 	document.addEventListener('click', function (el) {
 		if (el.target.classList.contains('remover')) {
 			let targetTable = el.target.getAttribute('target-table');

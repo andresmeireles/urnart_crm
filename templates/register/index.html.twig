@@ -1,381 +1,390 @@
 {% extends 'index.html.twig' %}
-
 {% block title %}Registros{% endblock %}
+{% block content %}
+    {% include '/components/notification.html.twig' %}
+    {% include 'components/csrfToken.html.twig' with { 'tokenText': 'register' } %}
+    <div class="custom-alert-message" role="alert" id="alert-message"></div>
+    <div class="p-2" id="register">
+        <div class="col">
+            <h1>Registros</h1>
+            <hr>
+        </div>
+        <div class="row col">
+            <div class="col-md-12 m-1">
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="col-md-1 mx-1">
+                            <i class="fas fa-4x fa-address-card"></i>
+                        </div>
+                        <div class="col">
+                            <h5 class="card-title">Cliente</h5>
+                            <p class="card-text">Cradastrar e editar clientes do sistema.</p>
+                            <a href="/person/customer" class="card-link text-primary">Criar</a>
+                            <a href="javascript:;" data-fancybox data-src="#customer" load-table="pessoaJuridica" class="card-link text-primary">Visualizar</a>
+                        </div>
 
-    {% block content %}
-        {% include '/components/notification.html.twig' %}
-        {% include 'components/csrfToken.html.twig' with { 'tokenText': 'register' } %}
-        <div class="custom-alert-message" role="alert" id="alert-message"></div>
-        <div class="p-2" id="register">
-            <div class="col">
-                <h1>Registros</h1>
-                <hr>
+                        <div id="customer" class="p-2" style="display: none">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nome</th>  
+                                        <th scope="col">Cidade</th>
+                                        <th scope="col">CNPJ</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="pessoaJuridica">
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <div class="row col">
-                <div class="col-md-12 m-1">
-                    <div class="card">
-                        <div class="card-body row">
-                            <div class="col-md-1 mx-1">
-                                <i class="fas fa-4x fa-address-card"></i>
-                            </div>
-                            <div class="col">
-                                <h5 class="card-title">Cliente</h5>
-                                <p class="card-text">Cradastrar e editar clientes do sistema.</p>
-                                <a href="/person/customer" class="card-link text-primary">Criar</a>
-                                <a href="javascript:;" data-fancybox data-src="#customer" load-table="pessoaJuridica" class="card-link text-primary">Visualizar</a>
-                            </div>
-
-                            <div id="customer" class="p-2" style="display: none">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Nome</th>  
-                                            <th scope="col">Cidade</th>
-                                            <th scope="col">CNPJ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="pessoaJuridica">
-                                    </tbody>
-                                </table>
-                            </div>
-
+            <div class="col-md-12 m-1"> {# departamentos #}
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="col-md-1 mx-1">
+                            <i class="fas fa-4x fa-boxes"></i>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-12 m-1"> {# departamentos #}
-                    <div class="card">
-                        <div class="card-body row">
-                            <div class="col-md-1 mx-1">
-                                <i class="fas fa-4x fa-boxes"></i>
-                            </div>
-                            <div class="col">
-                                <h5>Departamentos</h5>
-                                <p class="card-text">Cria departamentos da empresa.</p>
-                                <a href="javascript:;" data-fancybox data-src="#add-departament" class="card-link text-primary">Criar</a>
-                                <a href="javascript:;" data-fancybox data-src="#departament" load-table="departament"  class="card-link text-primary">Visualizar e Editar</a>
-                            </div>
-
-                            {% include "components/windowPopup.html.twig" with {
-                                'el' : {
-                                    'name': 'add-departament',
-                                    title: 'Cadastrar departamento',
-                                    metapage: 'register',
-                                    'metadata': 'departament',
-                                    'fields' : {
-                                            0:[ 
-                                                {
-                                                    label: 'Nome do departamento',
-                                                    type: 'text',
-                                                    name: 'departamento',
-                                                    placeholder: 'Nome do departamento',
-                                                    class: ['form-control'],
-                                                    required: true,
-                                                    autocomplete: 'off'
-                                                }
-                                            ],
-                                        }
-                                    }
-                                }
-                            %}
-
-                            <div id="departament" class="p-4" style="display: none">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Nome do departamento</th>
-                                            <th scope="col">Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="departament"></tbody>
-                                </table>
-                            </div>
-                            
+                        <div class="col">
+                            <h5>Departamentos</h5>
+                            <p class="card-text">Cria departamentos da empresa.</p>
+                            <a href="javascript:;" data-fancybox data-src="#add-departament" class="card-link text-primary">Criar</a>
+                            <a href="javascript:;" data-fancybox data-src="#departament" load-table="departament"  class="card-link text-primary">Visualizar e Editar</a>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-12 m-1"> {# Preços por modelo #}
-                    <div class="card">
-                        <div class="card-body row">
-                            <div class="col-md-1 mx-1">
-                                <i class="fas fa-4x fa-shopping-basket"></i>
-                            </div>
-                            <div class="col">
-                                <h5>Modelos</h5>
-                                <p class="card-text">Lista de modelos.</p>
-                                <a href="javascript:;" data-fancybox data-src="#add-model" class="card-link text-primary">Criar</a>
-                                <a href="javascript:;" data-fancybox data-src="#model" load-table="paymentType" class="card-link text-primary">Visualizar e Editar</a>
-                            </div>
 
-                            {% include "components/windowPopup.html.twig" with {
-                                'el' : {
-                                    'name': 'add-model',
-                                    title: 'Cadastrar forma de pagamento',
-                                    'class': ['col-md-6'],
-                                    metapage: 'register',
-                                    'metadata': 'model',
-                                    'fields' : {
-                                            0:[ 
-                                                {
-                                                    label: 'Nome do modelo',
-                                                    type: 'text',
-                                                    placeholder: 'Tipo de pagamento',
-                                                    class: ['form-control', 'required', 'n1'],
-                                                    'required': true,
-                                                    'autocomplete': 'off'
-                                                },
-                                                {
-                                                    label: 'Tamanho',
-                                                    type: 'text',
-                                                    class: ['form-control', 'numbers-only', 'required', 'n1'],
-                                                    required: true,
-                                                    placeholder: 'Tamanho',
-                                                    autocomplete: 'off'
-                                                },
-                                                {
-                                                    'label': 'Especificidade',
-                                                    type: 'select',
-                                                    class: ['form-control', 'n1'],
-                                                    required: false,
-                                                    values: {
-                                                        'Gorda': 'Gorda',
-                                                        'Super Gorda': 'Super Gorda',
-                                                        'Baleia': 'Baleia'
-                                                    }
-                                                },
-                                                {
-                                                    label: 'Preço',
-                                                    type: 'text',
-                                                    name: 'price',
-                                                    class: ['form-control', 'numbers-float-only', 'auto-float-convert-blur', 'required'],
-                                                    required: true,
-                                                    autocomplete: 'off',
-                                                    placeholder: 'Valor'
-                                                },
-                                                {
-                                                    label: 'Nome que será salvo',
-                                                    type: 'text',
-                                                    name: 'name',
-                                                    class: ['form-control', 'col-12', 'disabled', 'no-keypress', 'inputNameShow'],
-                                                    placeholder: 'Nome',
-                                                    newLine: true,
-                                                    disabled: true
-                                                }
-                                            ],
-                                        },
-                                        jsFunc: "   
-                                        document.addEventListener('DOMContentLoaded', () => {
-                                            document.addEventListener('blur', (el) => {
-                                                if (el.target.classList.contains('n1')) {
-                                                    let words = document.querySelectorAll('.n1');
-                                                    let theName = '';
-                                                    for (let w of words) {
-                                                        theName += w.value + ' ';
-                                                    }
-
-                                                    document.querySelector('.inputNameShow').value = theName;
-                                                }
-                                            }, true);
-                                        });
-                                        "
-                                    }
-                                }
-                            %}
-
-                            <div id="model" class="p-4" style="display: none">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Nome do modelo</th>
-                                            <th scope="col">Valor</th>
-                                            <th scope="col">Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="paymentType"></tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 m-1"> {# Forma de pagamento #}
-                    <div class="card">
-                        <div class="card-body row">
-                            <div class="col-md-1 mx-1">
-                                <i class="fas fa-4x fa-credit-card"></i>
-                            </div>
-                            <div class="col">
-                                <h5>Formas de Pagamento</h5>
-                                <p class="card-text">Lista de tipos.</p>
-                                <a href="javascript:;" data-fancybox data-src="#add-paymentType" class="card-link text-primary">Criar</a>
-                                <a href="javascript:;" data-fancybox data-src="#paymentType" load-table="paymentType" class="card-link text-primary">Visualizar e Editar</a>
-                            </div>
-
-                            {% include "components/windowPopup.html.twig" with {
-                                'el' : {
-                                    'name': 'add-paymentType',
-                                    title: 'Cadastrar forma de pagamento',
-                                    'class': ['col-md-6'],
-                                    metapage: 'register',
-                                    'metadata': 'paymentType',
-                                    'fields' : {
-                                            0:[ 
-                                                {
-                                                    label: 'Nome da forma de pagamento',
-                                                    type: 'text',
-                                                    name: 'name',
-                                                    placeholder: 'Tipo de pagamento',
-                                                    class: ['form-control', 'col-md-10', 'required'],
-                                                    'required': true,
-                                                    'autocomplete': 'off'
-                                                },
-                                                {
-                                                    'label': 'É parcelável',
-                                                    type: 'select',
-                                                    name: 'plot',
-                                                    class: ['form-control'],
-                                                    required: true,
-                                                    values: {
-                                                        0: 'Não',
-                                                        1: 'Sim'
-                                                    }
-                                                }
-                                            ],
-                                        }
-                                    }
-                                }
-                            %}
-
-                            <div id="paymentType" class="p-4" style="display: none">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Forma de Pagamento</th>
-                                            <th scope="col">Parcelavel</th>
-                                            <th scope="col">Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="paymentType"></tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 m-1"> {# medidas #}
-                    <div class="card">
-                        <div class="card-body row">
-                            <div class="col-md-1 mx-1">
-                                <i class="fas fa-4x fa-ruler"></i>
-                            </div>
-                            <div class="col">
-                                <h5>Medidas</h5>
-                                <p class="card-text">Cadastra unidades metricas.</p>
-                                <a href="javascript:;" data-fancybox data-src="#add-unit" class="card-link text-primary">Criar</a>
-                                <a href="javascript:;" data-fancybox data-src="#unit" load-table="unit" class="card-link text-primary">Visualizar e Editar</a>
-                            </div>
-
-                            {% include "components/windowPopup.html.twig" with {
-                                'el': {
-                                    name: 'add-unit',
-                                    title: 'Cadastrar unidade',
-                                    class: ['col-md-6'],
-                                    metapage: 'register',
-                                    metadata: 'unit',
-                                    fields: {
-                                        0: [
+                        {% include "components/windowPopup.html.twig" with {
+                            'el' : {
+                                'name': 'add-departament',
+                                title: 'Cadastrar departamento',
+                                metapage: 'register',
+                                'metadata': 'departament',
+                                'fields' : {
+                                        0:[ 
                                             {
-                                                label: 'Nome da unidade',
+                                                label: 'Nome do departamento',
                                                 type: 'text',
-                                                name: 'name',
-                                                placeholder: 'Nome da unidade',
-                                                'class': ['form-control', 'col', 'required'],
-                                                'required': true,
-                                                autocomplete: 'on'
+                                                name: 'departamento',
+                                                placeholder: 'Nome do departamento',
+                                                class: ['form-control'],
+                                                required: true,
+                                                autocomplete: 'off'
                                             }
-                                        ]
+                                        ],
                                     }
                                 }
-                            } %}
+                            }
+                        %}
 
-                            <div id="unit" class="p-4" style="display: none">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Nome da Medida</th>
-                                            <th scope="col">Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="unit"></tbody>
-                                </table>
-                            </div>
-
+                        <div id="departament" class="p-4" style="display: none">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nome do departamento</th>
+                                        <th scope="col">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="departament"></tbody>
+                            </table>
                         </div>
+                        
                     </div>
                 </div>
-                <div class="col-md-12 m-1"> {# tranportadora #}
-                    <div class="card">
-                        <div class="card-body row">
-                            <div class="col-md-1 mx-1">
-                                <i class="fas fa-4x fa-car"></i>
-                            </div>
-                            <div class="col">
-                                <h5>Transportadoras</h5>
-                                <p class="card-text">Cadastra e visualizar transportadoras.</p>
-                                <a href="javascript:;" data-fancybox data-src="#add-transporter" class="card-link text-primary">Criar</a>
-                                <a href="javascript:;"data-fancybox data-src="#transporter" load-table="transporter" class="card-link text-primary">Visualizar e Editar</a>
-                            </div>
+            </div>
+            <div class="col-md-12 m-1"> {# Preços por modelo #}
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="col-md-1 mx-1">
+                            <i class="fas fa-4x fa-shopping-basket"></i>
+                        </div>
+                        <div class="col">
+                            <h5>Modelos</h5>
+                            <p class="card-text">Lista de modelos.</p>
+                            <a href="javascript:;" data-fancybox data-src="#add-model" class="card-link text-primary">Criar</a>
+                            <a href="javascript:;" data-fancybox data-src="#model" load-table="paymentType" class="card-link text-primary">Visualizar e Editar</a>
+                        </div>
 
-                            {% include "components/windowPopup.html.twig" with {
-                                'el': {
-                                    name: 'add-transporter',
-                                    title: 'Cadastrar transportadora e porto',
-                                    class: ['col-md-6'],
-                                    metapage: 'register',
-                                    metadata: 'transporter',
-                                    fields: {
-                                        0: [
+                        {% include "components/windowPopup.html.twig" with {
+                            'el' : {
+                                'name': 'add-model',
+                                title: 'Cadastrar modelo de produto',
+                                'class': ['col-md-10'],
+                                metapage: 'register',
+                                'metadata': 'model',
+                                'fields' : {
+                                        0:[ 
                                             {
-                                                label: 'Nome da transportadora',
+                                                label: 'Nome do modelo',
                                                 type: 'text',
                                                 name: 'name',
-                                                placeholder: 'Nome da unidade',
-                                                'class': ['form-control', 'col', 'required'],
+                                                placeholder: 'Nome do modelo',
+                                                class: ['form-control', 'required', 'n1'],
                                                 'required': true,
-                                                autocomplete: 'on'
+                                                'autocomplete': 'off'
+                                            },
+                                            {
+                                                label: 'Tamanhos',
+                                                type: 'input',
+                                                name: 'height',
+                                                class: ['form-control', 'col', 'required'],
+                                                required: true,
+                                                autocomplete: 'off',
+                                                placeholder: 'Altura'
+                                            },
+                                            {
+                                                'label': 'Especificidade',
+                                                type: 'select',
+                                                name: 'specificity',
+                                                class: ['form-control', 'n1'],
+                                                required: false,
+                                                values: {
+                                                    'Gorda': 'Gorda',
+                                                    'Super Gorda': 'Super Gorda',
+                                                    'Baleia': 'Baleia'
+                                                }
                                             }
                                         ],
                                         1: [
                                             {
-                                                label: 'Nome do porto',
-                                                name: 'port',
+                                                label: 'Preço',
                                                 type: 'text',
-                                                placeholder: 'Nome do porto',
-                                                class: ['form-control', 'col'],
+                                                name: 'suggestedPrice',
+                                                class: ['form-control', 'col', 'numbers-float-only', 'auto-float-convert-blur', 'required'],
+                                                required: true,
+                                                autocomplete: 'off',
+                                                placeholder: 'Valor'
+                                            },
+                                            {
+                                                label: 'Cores',
+                                                type: 'multiselect',
+                                                name: 'colors[]',
+                                                class: ['multiselect', 'col', 'required'],
                                                 required: false,
-                                                autocomplete: 'off'                                                
+                                                autocomplete: 'off',
+                                                placeholder: 'Cores',
+                                                values: {
+                                                    'Magno': 'Magno',
+                                                    'Marfim': 'Marfim',
+                                                    'Castanho': 'Castanho',
+                                                    'Dourado': 'Dourado',
+                                                    'Creme': 'Creme'
+                                                }
                                             }
                                         ]
+                                    },
+                                    jsFunc: "   
+                                    document.addEventListener('DOMContentLoaded', () => {
+                                        document.addEventListener('blur', (el) => {
+                                            if (el.target.classList.contains('n1')) {
+                                                let words = document.querySelectorAll('.n1');
+                                                let theName = '';
+                                                for (let w of words) {
+                                                    theName += w.value + ' ';
+                                                }
+
+                                                document.querySelector('.inputNameShow').value = theName;
+                                            }
+                                        }, true);
+                                    });
+                                    "
+                                }
+                            }
+                        %}
+
+                        <div id="model" class="p-4" style="display: none">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nome do modelo</th>
+                                        <th scope="col">Valor</th>
+                                        <th scope="col">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="paymentType"></tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 m-1"> {# Forma de pagamento #}
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="col-md-1 mx-1">
+                            <i class="fas fa-4x fa-credit-card"></i>
+                        </div>
+                        <div class="col">
+                            <h5>Formas de Pagamento</h5>
+                            <p class="card-text">Lista de tipos.</p>
+                            <a href="javascript:;" data-fancybox data-src="#add-paymentType" class="card-link text-primary">Criar</a>
+                            <a href="javascript:;" data-fancybox data-src="#paymentType" load-table="paymentType" class="card-link text-primary">Visualizar e Editar</a>
+                        </div>
+
+                        {% include "components/windowPopup.html.twig" with {
+                            'el' : {
+                                'name': 'add-paymentType',
+                                title: 'Cadastrar forma de pagamento',
+                                'class': ['col-md-6'],
+                                metapage: 'register',
+                                'metadata': 'paymentType',
+                                'fields' : {
+                                        0:[ 
+                                            {
+                                                label: 'Nome da forma de pagamento',
+                                                type: 'text',
+                                                name: 'name',
+                                                placeholder: 'Tipo de pagamento',
+                                                class: ['form-control', 'col-md-10', 'required'],
+                                                'required': true,
+                                                'autocomplete': 'off'
+                                            },
+                                            {
+                                                'label': 'É parcelável',
+                                                type: 'select',
+                                                name: 'plot',
+                                                class: ['form-control'],
+                                                required: true,
+                                                values: {
+                                                    0: 'Não',
+                                                    1: 'Sim'
+                                                }
+                                            }
+                                        ],
                                     }
                                 }
-                            } %}
+                            }
+                        %}
 
-                            <div id="transporter" class="p-2" style="display: none">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Nome da Transportadora</th>
-                                            <th scope="col">Nome Porto</th>
-                                            <th scope="col">Ações</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="transporter"></tbody>
-                                </table>
-                            </div>
-
+                        <div id="paymentType" class="p-4" style="display: none">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Forma de Pagamento</th>
+                                        <th scope="col">Parcelavel</th>
+                                        <th scope="col">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="paymentType"></tbody>
+                            </table>
                         </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 m-1"> {# medidas #}
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="col-md-1 mx-1">
+                            <i class="fas fa-4x fa-ruler"></i>
+                        </div>
+                        <div class="col">
+                            <h5>Medidas</h5>
+                            <p class="card-text">Cadastra unidades metricas.</p>
+                            <a href="javascript:;" data-fancybox data-src="#add-unit" class="card-link text-primary">Criar</a>
+                            <a href="javascript:;" data-fancybox data-src="#unit" load-table="unit" class="card-link text-primary">Visualizar e Editar</a>
+                        </div>
+
+                        {% include "components/windowPopup.html.twig" with {
+                            'el': {
+                                name: 'add-unit',
+                                title: 'Cadastrar unidade',
+                                class: ['col-md-6'],
+                                metapage: 'register',
+                                metadata: 'unit',
+                                fields: {
+                                    0: [
+                                        {
+                                            label: 'Nome da unidade',
+                                            type: 'text',
+                                            name: 'name',
+                                            placeholder: 'Nome da unidade',
+                                            'class': ['form-control', 'col', 'required'],
+                                            'required': true,
+                                            autocomplete: 'on'
+                                        }
+                                    ]
+                                }
+                            }
+                        } %}
+
+                        <div id="unit" class="p-4" style="display: none">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nome da Medida</th>
+                                        <th scope="col">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="unit"></tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 m-1"> {# tranportadora #}
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="col-md-1 mx-1">
+                            <i class="fas fa-4x fa-car"></i>
+                        </div>
+                        <div class="col">
+                            <h5>Transportadoras</h5>
+                            <p class="card-text">Cadastra e visualizar transportadoras.</p>
+                            <a href="javascript:;" data-fancybox data-src="#add-transporter" class="card-link text-primary">Criar</a>
+                            <a href="javascript:;"data-fancybox data-src="#transporter" load-table="transporter" class="card-link text-primary">Visualizar e Editar</a>
+                        </div>
+
+                        {% include "components/windowPopup.html.twig" with {
+                            'el': {
+                                name: 'add-transporter',
+                                title: 'Cadastrar transportadora e porto',
+                                class: ['col-md-6'],
+                                metapage: 'register',
+                                metadata: 'transporter',
+                                fields: {
+                                    0: [
+                                        {
+                                            label: 'Nome da transportadora',
+                                            type: 'text',
+                                            name: 'name',
+                                            placeholder: 'Nome da unidade',
+                                            'class': ['form-control', 'col', 'required'],
+                                            'required': true,
+                                            autocomplete: 'on'
+                                        }
+                                    ],
+                                    1: [
+                                        {
+                                            label: 'Nome do porto',
+                                            name: 'port',
+                                            type: 'text',
+                                            placeholder: 'Nome do porto',
+                                            class: ['form-control', 'col'],
+                                            required: false,
+                                            autocomplete: 'off'                                                
+                                        }
+                                    ]
+                                }
+                            }
+                        } %}
+                        <div id="transporter" class="p-2" style="display: none">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nome da Transportadora</th>
+                                        <th scope="col">Nome Porto</th>
+                                        <th scope="col">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="transporter"></tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-    {% endblock %}
+{% endblock %}

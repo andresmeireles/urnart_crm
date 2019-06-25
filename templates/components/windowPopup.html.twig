@@ -3,7 +3,7 @@
     <hr>
     <form action="/{{ el.metapage }}/add/{{ el.metadata }}" method="POST">
         {% for item in el.fields %}
-            <div class="form-row">
+            <div class="form-row col-12">
             {% for r in item %}
                 {% if r.type is same as('hidden') %}
                     <input  type="{{ r.type }}" 
@@ -34,6 +34,20 @@
                         {% for k, v in r.values %}
                             <option value="{{ k }}">{{ v }}</option>
                         {% endfor %}
+                    </select>
+                {% elseif r.type is same as('multiselect') %}
+                    <select {% if r.name is defined %}name="{{ r.name }}"{% endif %} 
+                            class="{% for class in r.class %}{{ class ~ ' ' }}{% endfor %}"
+                            {% if r.required is defined and r.required is same as(true) %}
+                                required=""
+                            {% endif %}
+                            multiple="multiple"
+                    >
+                    {% if r.values is defined  %}
+                        {% for k in r.values %}
+                            <option value="{{ k }}">{{ k }}</option>
+                        {% endfor %}
+                    {% endif %}
                     </select>
                 {% elseif 'auto-float-convert-blur' in r.class %}
                     <input type="hidden" converted-value name="{{ r.name }}">

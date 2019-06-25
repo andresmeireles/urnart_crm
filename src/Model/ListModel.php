@@ -46,9 +46,6 @@ class ListModel extends Model
             case 'reserved':
                 return $this->getParsedStatusOrderData(2);
                 break;
-            case 'currentYearOrderReport':
-                return $this->yearOrderReport($optionalParameter);
-                break;
             default:
                 throw new ListNotExistsException(
                     sprintf(
@@ -58,22 +55,6 @@ class ListModel extends Model
                 );
                 break;
         }
-    }
-
-    /**
-     * Retorna serie de valores relacionados a pedidos no ano selecionado .
-     * Resultados retornados
-     *
-     * @param string|null $year
-     *
-     * @return  StdResponse
-     */
-    public function yearOrderReport(?string $year): StdResponse
-    {
-        $result = new StdResponse();
-        $year = (new MyDateTime())->validOrNull($year) ?? (new \DateTime())->format('Y');
-
-        return $result;
     }
 
     /**

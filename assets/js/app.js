@@ -7,6 +7,7 @@
 require("bootstrap");
 require("jquery-mask-plugin");
 require("devbridge-autocomplete");
+require("selectize");
 
 const $ = require("jquery");
 const fancybox = require("@fancyapps/fancybox");

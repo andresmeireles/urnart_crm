@@ -19,6 +19,18 @@ class ManualProductCartRepository extends ServiceEntityRepository
         parent::__construct($registry, ManualProductCart::class);
     }
 
+    /**
+     * Return a array of strings
+     *
+     * @return array
+     */
+    public function findModelNames(): array
+    {
+        return $this->getEntityManager()->createQuery(
+            'SELECT DISTINCT(u.productName) FROM App\Entity\ManualProductCart u ORDER BY u.productName ASC'
+        )->execute();
+    }
+
     // /**
     //  * @return ManualProductCart[] Returns an array of ManualProductCart objects
     //  */

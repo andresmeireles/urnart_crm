@@ -12,6 +12,7 @@ use App\Utils\Andresmei\NestedArraySeparator;
 use App\Entity\TravelTruckOrders;
 use App\Utils\Andresmei\Form;
 use App\Model\DepartureModel;
+use App\Entity\ManualProductCart;
 
 class TruckController extends AbstractController
 {
@@ -95,6 +96,14 @@ class TruckController extends AbstractController
         );
 
         return $this->redirectToRoute('truck.index');
+    }
+
+    /**
+     * @Route("/truck/create/report/model/show/{truckReportId<\d+>}")
+     */
+    public function createModelsNamesReport(int $truckReportId): Response
+    {
+        return new Response('Trablho em andamento. calma que ja vai chegar.');
     }
 
     /**

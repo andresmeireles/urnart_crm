@@ -22,9 +22,24 @@ class Model extends BaseEntity
     private $name;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
-    private $price;
+    private $suggestedPrice;
+
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $colors = [];
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $height;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $specificity;
 
     public function getId(): ?int
     {
@@ -38,19 +53,66 @@ class Model extends BaseEntity
 
     public function setName(string $name): self
     {
-        $this->name = $name;
+        $sanitizedName = str_replace(' ', '', $name);
+        $allowedConvesionableNames = [
+            'ECOCV' => 'ECO CV',
+            'ECOCVSV' => 'ECO CV SV',
+            'ECOSVSV' => 'ECO SV SV',
+            'ECOSV' => 'ECO SV'
+        ];
+        $sanitizedName = strtoupper($sanitizedName);
+        $finalModelName = array_key_exists($sanitizedName, $allowedConvesionableNames)?
+            $allowedConvesionableNames[$sanitizedName]:
+            $sanitizedName;
+        $this->name = $finalModelName;
 
         return $this;
     }
 
-    public function getprice(): ?float
+    public function getSuggestedPrice(): ?float
     {
-        return $this->price;
+        return $this->suggestedPrice;
     }
 
-    public function setprice(float $price): self
+    public function setSuggestedPrice(?float $suggestedPrice): self
     {
-        $this->price = $price;
+        $this->suggestedPrice = $suggestedPrice;
+
+        return $this;
+    }
+
+    public function getColors(): ?array
+    {
+        return $this->colors;
+    }
+
+    public function setColors(?array $colors): self
+    {
+        $this->colors = $colors;
+
+        return $this;
+    }
+
+    public function getHeight(): ?string
+    {
+        return $this->height;
+    }
+
+    public function setHeight(?string $height): self
+    {
+        $this->height = $height;
+
+        return $this;
+    }
+
+    public function getSpecificity(): ?string
+    {
+        return $this->specificity;
+    }
+
+    public function setSpecificity(?string $specificity): self
+    {
+        $this->specificity = $specificity;
 
         return $this;
     }

@@ -34,7 +34,6 @@ class RegisterController extends AbstractController
     public function addGenericRegister(string $entity, Crud $setter, Request $request)
     {
         $setter->set($entity, $request->request->all());
-        
         $this->addFlash('success', 'Item adicionado com sucesso.');
 
         return $this->redirectToRoute('register');
@@ -51,6 +50,7 @@ class RegisterController extends AbstractController
     public function addGenericRegisterAjax(string $entity, Crud $setter, Request $request)
     {
         $setter->set($entity, $request->request->all());
+
         return new Response('Produto adicionado com sucesso', 200, [
             'type-message' => 'success'
         ]);
