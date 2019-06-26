@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\ModelName;
 
 class ReportController extends AbstractController
 {
@@ -91,17 +92,14 @@ class ReportController extends AbstractController
             $beginDate,
             $lastDate,
         );
-
         $data = $result->result;
         $nameResults = [];
         $modelResults = [];
         $heightResults = [];
         $finalTotal = 0;
-
         foreach ($data as $value) {
             $modelHeight = sprintf("%s%s%s", $value['model'], $value['height'], $value['obs'] ?? '');
             $modelHeight = trim($modelHeight);
-
             if (array_key_exists($modelHeight, $nameResults)) {
                 $number = $nameResults[$modelHeight];
                 $nameResults[$modelHeight] = $number + $value['amount'];
@@ -110,19 +108,15 @@ class ReportController extends AbstractController
 
             $nameResults[$modelHeight] = $value['amount'];
         }
-
         foreach ($data as $value) {
             $modelName = sprintf('%s', $value['model']);
-
             if (array_key_exists($modelName, $modelResults)) {
                 $number = $modelResults[$modelName];
                 $modelResults[$modelName] = $number + $value['amount'];
                 continue;
             }
-
             $modelResults[$modelName] = $value['amount'];
         }
-
         foreach ($data as $value) {
             $heightName = sprintf('%s%s', $value['height'], $value['obs']);
             $finalTotal += $value['amount'];
@@ -131,10 +125,8 @@ class ReportController extends AbstractController
                 $heightResults[$heightName] = $number + $value['amount'];
                 continue;
             }
-
             $heightResults[$heightName] = $value['amount'];
         }
-
         // $res = json_encode($nameResults);
         $res = $nameResults;
         $modelTotals = $modelResults;
@@ -163,10 +155,14 @@ class ReportController extends AbstractController
         $aYearnDate = (new MyDateTime())->minusDate('P1Y')->output('d-m-Y');
         $productionByDayOnMonth = $model->getByDateIntervalProductAmount($aMonthDate, $today);
         $monthChart = $model->getByDateIntervalProductAmount($aYearnDate, $today, 'm-Y');
-        
+        $modelNames = $this->getDoctrine()
+            ->getRepository(ModelName::class)
+            ->findBy([], ['name' => 'ASC']);
+
         return $this->render('report/pages/productionCount.html.twig', [
             'dateChart' => $productionByDayOnMonth,
-            'monthChart' => $monthChart
+            'monthChart' => $monthChart,
+            'modelNames' => $modelNames,
         ]);
     }
 
@@ -205,6 +201,7 @@ class ReportController extends AbstractController
             $repository
         ));
         $view = $query->getResult();
+        
         return $this->render($reportPage, [
             'simpleView' => $travel ?? $view
         ]);
@@ -225,9 +222,9 @@ class ReportController extends AbstractController
         if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Algo deu muito errado :(');
         }
-        
         $data = $request->request->all();
         $result = $model->createGenericReport($pageType, $data);
+        
         return new Response($result->getMessage(), $result->getHttpCode(), [
             'message-type' => $result->getType()
         ]);
@@ -248,16 +245,29 @@ class ReportController extends AbstractController
         if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Token incorreto.');
         }
-
         $data = $request->request->all();
         $routeLink = $request->headers->get('referer');
-
         if (!is_string($routeLink)) {
             $routeLink = '/';
         }
-
         $result = $model->createGenericReport($pageType, $data);
         $this->addFlash($result->getType(), $result->getMessage());
+        
+        return $this->redirect($routeLink);
+    }
+
+    /**
+     * @Route("/report/productionCount/createByCatchModel")
+     */
+    public function createByCatchModel(Request $request)
+    {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+            throw new CustomException('Token incorreto.');
+        }
+        $date = $request->request->get('date');
+        dump($$request->request->all());
+        die;
+
         return $this->redirect($routeLink);
     }
 

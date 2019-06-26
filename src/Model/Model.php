@@ -8,7 +8,6 @@ use JMS\Serializer\SerializerBuilder;
 use App\Utils\Andresmei\StringConvertions;
 use JMS\Serializer\Metadata\ClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Service Container for models
@@ -138,29 +137,27 @@ abstract class Model
         $queryBuilder = $this->em->createQueryBuilder();
         $result = null;
         $query = $queryBuilder->select($selectFieldsString)->from($repo, 'u');
+        
         if (is_null($convertedBeginDate) && is_null($convertedLastDate)) {
             $result = $query->orderBy(sprintf('u.%s', $orderBy ?? 'id'), sprintf('%s', $typeOfOrder ?? 'ASC'));
         }
-
-        if (!is_null($convertedBeginDate) && !is_null($convertedLastDate)) {
+        if (null !== $convertedBeginDate && null !== $convertedLastDate) {
             $result = $query->where(sprintf('u.%s BETWEEN :begin AND :last', $whereField))
-                            ->setParameter('begin', $convertedBeginDate)
-                            ->setParameter('last', sprintf("%s 23:00:00", $convertedLastDate))
+                            ->setParameter('begin', sprintf("%s 00:00:00", $convertedBeginDate))
+                            ->setParameter('last', sprintf("%s 00:00:00", $convertedLastDate))
                             ->orderBy(sprintf('u.%s', $orderBy ?? 'id'), sprintf('%s', $typeOfOrder ?? 'ASC'));
         }
-
         if (is_null($convertedBeginDate) && !is_null($convertedLastDate)) {
             $result = $query->where(sprintf('u.%s <= :date', $whereField))
                             ->setParameter('date', sprintf('%s 23:00:00', $convertedLastDate))
                             ->orderBy(sprintf('u.%s', $orderBy ?? 'id'), sprintf('%s', $typeOfOrder ?? 'ASC'));
         }
-
         if (!is_null($convertedBeginDate) && is_null($convertedLastDate)) {
             $result = $query->where(sprintf('u.%s >= :date', $whereField))
                             ->setParameter('date', $convertedBeginDate)
                             ->orderBy(sprintf('u.%s', $orderBy ?? 'id'), sprintf('%s', $typeOfOrder ?? 'ASC'));
         }
-
+        
         return $result->getQuery()->getResult();
     }
 
@@ -181,5 +178,15 @@ abstract class Model
     {
         $query = $this->em->createNativeQuery($sqlConsult);
         return $query->getResult();
+    }
+
+    public function checkIfExists(string $repositoryCalss, array $criteria): bool
+    {
+        $consultResult = $this->em->getRepository($repositoryCalss)->findBy($criteria);
+        if ($consultResult === []) {
+            return false;
+        }
+
+        return true;
     }
 }

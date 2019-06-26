@@ -47,6 +47,9 @@ const drawFunction = (tableDataName, tableData) => {
         case 'transporter':
             trEl = transporterDraw(tableData, tableDataName);
             break;
+        case 'modelName':
+            trEl = modelDraw(tableData, tableDataName);
+            break;
         default:
             console.log('não tem função meu amigo.');
             throw Error(`Não ha função para ação ${tableDataName.toUpperCase()}`);
@@ -147,6 +150,48 @@ const transporterDraw = (data, table) => {
     let port = data.port ? data.port : '';
     tdEl = document.createElement('td');
     tdText = document.createTextNode(port);
+    tdEl.appendChild(tdText);
+    trEl.appendChild(tdEl);
+
+    tdEl = document.createElement('td');
+    let rmvBtn = removeButton(table, data.id);
+    tdEl.appendChild(rmvBtn);
+    trEl.appendChild(tdEl);
+
+    return trEl;
+};
+
+const modelDraw = (data, table) => {
+    let trEl = document.createElement('tr');
+
+    let tdEl = document.createElement('td');
+    let tdText = document.createTextNode(data.name);
+    tdEl.appendChild(tdText);
+    trEl.appendChild(tdEl);
+
+    tdEl = document.createElement('td');
+    tdText = document.createTextNode(data.height);
+    tdEl.appendChild(tdText);
+    trEl.appendChild(tdEl);
+
+    tdEl = document.createElement('td');
+    let specificity = typeof data.specificity === 'undefined' ? '' : data.specificity;
+    tdText = document.createTextNode(specificity);
+    tdEl.appendChild(tdText);
+    trEl.appendChild(tdEl);
+
+    tdEl = document.createElement('td');
+    tdText = document.createTextNode(data.suggested_price);
+    tdEl.appendChild(tdText);
+    trEl.appendChild(tdEl);
+
+    let colorString = '';
+    for (let color of data.colors) {
+        colorString = colorString +  color + ', ';
+    }
+    let colorString2 = colorString.substr(',', colorString.lastIndexOf(','));
+    tdEl = document.createElement('td');
+    tdText = document.createTextNode(colorString2);
     tdEl.appendChild(tdText);
     trEl.appendChild(tdEl);
 

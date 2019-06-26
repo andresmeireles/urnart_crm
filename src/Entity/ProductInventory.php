@@ -102,7 +102,7 @@ class ProductInventory
     public function setReserved(int $reserved): self
     {
         $this->reserved = $reserved;
-        $this->nonReserved = $this->stock - $reserved;
+        // $this->nonReserved = $this->stock - $reserved;
 
         return $this;
     }

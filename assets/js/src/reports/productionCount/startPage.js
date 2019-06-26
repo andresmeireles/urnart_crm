@@ -3,6 +3,7 @@ if (document.querySelector('#addProdCount')) {
     document.addEventListener('DOMContentLoaded', () => {
 
         let ahref = document.querySelectorAll('.modal-transform');
+        reloadSelectFields();
 
         for (let el of ahref) {
             let href = el.getAttribute('href');
@@ -40,6 +41,17 @@ if (document.querySelector('#addProdCount')) {
             }, 500);
         }
 
+        if (el.target.id === 'replicate2') {
+            setTimeout(() => {
+                let dateFields = document.querySelectorAll('#date-auto');
+                let dateToReplicate = document.querySelector('#date-global-auto').value;
+                console.log(dateToReplicate);
+                for (let field of dateFields) {
+                    field.value = dateToReplicate;
+                }
+            }, 500);
+        }
+
     });
 
     document.addEventListener('focus', (el) => {
@@ -65,12 +77,37 @@ if (document.querySelector('#addProdCount')) {
             }, 500);
         }
 
+        if (el.target.id === 'replicate2') {
+            setTimeout(() => {
+                let dateFields = document.querySelectorAll('#date-auto');
+                let dateToReplicate = document.querySelector('#date-global-auto').value;
+                console.log(dateToReplicate);
+                for (let field of dateFields) {
+                    field.value = dateToReplicate;
+                }
+            }, 500);
+        }
+
         if (el.target.id === 'amount') {
             setTimeout(() => {
                 // let amount = el.target.value;
                 let prod = 0;
                 let calc = document.querySelector('.prod-calculator');
                 let amounts = document.querySelectorAll('#amount');
+                for (let am of amounts) {
+                    prod += Number(am.value);
+                }
+                // let prod = Number(amount) + Number(calc.innerHTML);
+                calc.innerHTML = prod;
+            }, 166);
+        }
+
+        if (el.target.id === 'amount-new') {
+            setTimeout(() => {
+                // let amount = el.target.value;
+                let prod = 0;
+                let calc = document.querySelector('.prod-calculator-new');
+                let amounts = document.querySelectorAll('#amount-new');
                 for (let am of amounts) {
                     prod += Number(am.value);
                 }
@@ -96,4 +133,9 @@ if (document.querySelector('#addProdCount')) {
 
     }, true);
 
+    const reloadSelectFields = () => {
+        $('.singleSelect').selectize({
+            sortField: 'text'
+        });
+    }
 }

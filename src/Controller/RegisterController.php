@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
+use App\Model\ModelsModel;
 
 class RegisterController extends AbstractController
 {
@@ -21,6 +22,25 @@ class RegisterController extends AbstractController
     public function index(): Response
     {
         return $this->render('register/index.html.twig');
+    }
+
+    /**
+     * @Route("/register/add/model", methods={"POST", "PUT"})
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function addModelRegister(Request $request, ModelsModel $modelsModel): Response
+    {
+        $name = $request->request->get('name');
+        $height = $request->request->get('height');
+        $specificity = $request->request->get('specificity') ?? null;
+        $colors = $request->request->get('colors') ?? null;
+        $suggestedPrice = $request->request->get('suggestedPrice');
+        $insertResult = $modelsModel->insertModel($name, $height, $suggestedPrice, $specificity, $colors);
+        $this->addFlash($insertResult->getType(), $insertResult->getMessage());
+
+        return $this->redirectToRoute('register');
     }
 
     /**

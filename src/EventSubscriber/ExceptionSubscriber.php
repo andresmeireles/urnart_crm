@@ -1,8 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
-use App\Config\NonStaticConfig;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,32 +12,28 @@ class ExceptionSubscriber implements EventSubscriberInterface
     /**
      * Evento que define ações para exceções do php
      *
-     * @param   GetResponseForExceptionEvent  $event  Objeto de evento
-     *
-     * @return  Response|ExceptionSubscriber                                [return description]
+     * @param   GetResponseForExceptionEvent $event
+     * @return  Response|ExceptionSubscriber
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        if ((new NonStaticConfig())->getEnv()) {
+        if (getEnv('APP_ENV') === 'dev') {
             return $this;
         }
-        
         $exceptionClass = get_class($event->getException());
-        
         $exception = $exceptionClass === 'Exception' ?
                         $exceptionClass :
                         substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
-        
         if ($event->getRequest()->server->get('APP_ENV') === 'dev') {
             $exception = $exceptionClass === 'Exception' || $exceptionClass === 'Twig_Error_Loader' ?
             $exceptionClass :
             substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
         }
-
         $refererLink = $event->getRequest()->headers->get('referer');
         if (!is_string($refererLink)) {
             $refererLink = '/';
         }
+        
         switch ($exception) {
             case 'AccessDeniedException':
             case 'AccessDeniedHttpException':
@@ -87,7 +82,6 @@ class ExceptionSubscriber implements EventSubscriberInterface
      */
     private function triggerFlashMessage(GetResponseForExceptionEvent $event, string $message, string $type): void
     {
-        /** @var Symfony\Component\HttpFoundation\Session\SessionInterface $event */
         $event->getRequest()->getSession()->getFlashBag()->add(
             $type,
             $message

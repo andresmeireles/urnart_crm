@@ -19,11 +19,6 @@ final class NonStaticConfig
      */
     private $config;
 
-    /**
-     * @var bool is dev or not.
-     */
-    private $env = true;
-
     public function __construct()
     {
         if (!file_exists(__DIR__.'/system-config.yaml')) {
@@ -68,15 +63,5 @@ final class NonStaticConfig
     public function writeImage(): self
     {
         return $this;
-    }
-
-    /**
-     * get env file.
-     *
-     * @return boolean
-     */
-    public function getEnv(): bool
-    {
-        return $this->env;
     }
 }

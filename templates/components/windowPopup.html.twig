@@ -21,7 +21,7 @@
                         {% endif %}
                     />
                 {% else %}
-                <div class="form-group {{ ( r.newLine is defined and r.newLine is same as(true)) ? 'col-12' : 'col' }} mx-1">
+                <div class="form-group {{ ( r.newLine is defined and r.newLine is same as(true)) ? 'col-12' : 'col' }}">
                 <label for="name" {{ r.required is defined and r.required is same as(true) ? 'class="required"' : '' }}>{{ r.label ?? '' }}&nbsp;</label>
                 {% if r.type is same as('select') %}
                     <select {% if r.name is defined %}name="{{ r.name }}"{% endif %} 

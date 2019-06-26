@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ModelRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ModelNameRepository")
  */
-class Model extends BaseEntity
+class ModelName extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -37,7 +37,7 @@ class Model extends BaseEntity
     private $height;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $specificity;
 
@@ -112,7 +112,7 @@ class Model extends BaseEntity
 
     public function setSpecificity(?string $specificity): self
     {
-        $this->specificity = $specificity;
+        $this->specificity = $specificity === null ? null : strtoupper($specificity);
 
         return $this;
     }

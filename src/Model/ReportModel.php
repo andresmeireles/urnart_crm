@@ -75,7 +75,7 @@ class ReportModel extends Model
             }
             $em->flush();
         } catch (\Exception $e) {
-            throw new CustomException($e->getMessage());
+            throw new CustomException(sprintf("%s, %s, %s", $e->getMessage(), $e->getFile(), $e->getLine()));
         }
 
         return new FlashResponse(200, 'success', 'Ação concluida com sucesso.');
@@ -85,7 +85,7 @@ class ReportModel extends Model
      * @param array $data
      *
      * @return FlashResponse
-     * @throws PDOException
+     * @throws \PDOException
      */
     public function createBoletoRegistry(array $data): FlashResponse
     {
@@ -128,7 +128,7 @@ class ReportModel extends Model
      * @param array $data
      *
      * @return FlashResponse
-     * @throws PDOException
+     * @throws \PDOException
      */
     public function editRegistryGeneric(string $entity, int $consultId, array $data): FlashResponse
     {
@@ -169,7 +169,7 @@ class ReportModel extends Model
      * @param string $entity
      * @param string $typeOfOrder
      * @return StdResponse
-     * @throws BadMethodCallException
+     * @throws \BadMethodCallException
      */
     public function getGenericList(string $entity, string $typeOfOrder): StdResponse
     {
@@ -233,7 +233,7 @@ class ReportModel extends Model
      * @param array $boletoData  Status and date info.
      *
      * @return FlashResponse
-     * @throws CustomException|PDOException
+     * @throws CustomException|\PDOException
      */
     public function boletoChangeStatus(int $boletoId, array $boletoData): FlashResponse
     {
@@ -293,7 +293,7 @@ class ReportModel extends Model
      * @param string|null $endingDate
      *
      * @return StdResponse
-     * @throws Exception
+     * @throws \Exception
      */
     public function generateBoletoPieChart(?string $startDate, ?string $endingDate): StdResponse
     {
@@ -386,7 +386,7 @@ class ReportModel extends Model
      * @param string|null $endingDate
      * 
      * @return StdResponse
-     * @throws Exception
+     * @throws \Exception
      */
     public function generateBoletoListReport(?string $startDate, ?string $endingDate): StdResponse
     {
@@ -491,7 +491,7 @@ class ReportModel extends Model
      * @param string $formatInterval
      *
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     public function getByDateIntervalProductAmount(
         string $intervalBeginDate,
@@ -665,7 +665,7 @@ class ReportModel extends Model
     /**
      * @param string $dateOne
      * @param string $dateTwo
-     * @param [type] ...$fields
+     * @param mixed ...$fields
      *
      * @return array
      */
@@ -698,7 +698,7 @@ class ReportModel extends Model
      * @param array $orders Array associativo contendo ids de ManualOrderReport
      *
      * @return FlashResponse
-     * @throws Exception
+     * @throws \Exception
      */
     public function createTruckDepartureReport(array $reportData, array $orders): FlashResponse
     {
@@ -728,12 +728,12 @@ class ReportModel extends Model
     }
 
     /**
-     * @param TravelTruckOrders $orderTruckId
+     * @param TravelTruckOrders $orderTruckEntity
      * @param array $reportData
      * @param array $orders
      *
      * @return FlashResponse
-     * @throws Exception
+     * @throws \Exception
      */
     public function editTruckDepartureReport(TravelTruckOrders $orderTruckEntity, array $reportData, array $orders): FlashResponse
     {
@@ -754,7 +754,7 @@ class ReportModel extends Model
                 $manualOrderReport = $manualOrderRepository->find($order['id']);
                 $truckReport->addOrderId($manualOrderReport);
             }
-            $truckReport->setCheckedOrders($simpleArray);
+            $truckReport->setCheckedOrders($simpleArray ?? []);
             $entityManager->merge($truckReport);
         } catch (\Exception $error) {
             throw new \Exception(

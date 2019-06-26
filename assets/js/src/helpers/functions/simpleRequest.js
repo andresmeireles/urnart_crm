@@ -25,10 +25,8 @@ module.exports = function (url, method, info = null, responseFunction = null, da
                 return;
 	})
 	.catch( (err) => {
-                console.log(err);
-		let response = err.response;
 		var notify = new noty({
-			text: `${response.data}`,
+			text: `${err}`,
 			layout: 'topCenter',
                     type: "error",
                     theme: 'bootstrap-v4',
