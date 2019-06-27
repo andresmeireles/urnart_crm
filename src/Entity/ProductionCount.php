@@ -43,6 +43,11 @@ class ProductionCount extends BaseEntity
      */
     private $date;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $color;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -134,14 +139,16 @@ class ProductionCount extends BaseEntity
         return $this->obs;
     }
 
-    public function setObs(string $obs): self
+    public function setObs(?string $obs): self
     {
-        $allowedHeights = ['SUPER GORDA', 'GORDA', 'BALEIA'];
-        $uObs = strtoupper($obs);
-        if (!in_array($uObs, $allowedHeights)) {
-            throw new \Exception('Observação não existe.');
+        if (null !== $obs) {
+            $allowedHeights = ['SUPER GORDA', 'GORDA', 'BALEIA'];
+            $obs = strtoupper($obs);
+            if (!in_array($obs, $allowedHeights)) {
+                throw new \Exception('Observação não existe.');
+            }
         }
-        $this->obs = $uObs;
+        $this->obs = $obs;
 
         return $this;
     }
@@ -167,6 +174,18 @@ class ProductionCount extends BaseEntity
     {
         $date = (new StringConvertions())->convertStringToDate($productionDate, '-', 'POR', '/');
         $this->date = new \DateTime($date, new \DateTimeZone('America/Belem'));
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): self
+    {
+        $this->color = $color;
 
         return $this;
     }

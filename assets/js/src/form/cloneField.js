@@ -115,9 +115,11 @@ $(function () {
             }
 
             // reseta todos os campos escrevedo um nome unico
-            var cloneElInputs = cloneEl.querySelectorAll('input');
+            var cloneElInputs = cloneEl.querySelectorAll('input, select');
+            // var cloneElInputs = cloneEl.querySelectorAll('input');
             let cloneName = cloneEl.querySelector('[input-name]').getAttribute('input-name');
             for (var c = 0; c < cloneElInputs.length; c++) {
+                console.log(cloneElInputs[c]);
                 cloneElInputs[c].value = '';
                 if (cloneElInputs[c].hasAttribute('input-number') ) {
                     let newValue = parseInt(document.querySelectorAll('[input-number]')[document.querySelectorAll('[input-number]').length - 1].value) + 1;

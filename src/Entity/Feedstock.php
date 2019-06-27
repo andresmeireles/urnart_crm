@@ -127,7 +127,7 @@ class Feedstock extends BaseEntity
 
     public function setPeriodicity(int $periodicity) : self
     {
-        $this->periodicity = $periodicity;
+        $this->periodicity = abs($periodicity);
 
         return $this;
     }
@@ -162,7 +162,8 @@ class Feedstock extends BaseEntity
 
     public function setMaxStock(?int $stock): self
     {
-        $this->feedstockInventory->setMaxStock($stock);
+        $absStock = null === $stock ? null : abs($stock);
+        $this->feedstockInventory->setMaxStock($absStock);
         return $this;
     }
 
@@ -173,17 +174,17 @@ class Feedstock extends BaseEntity
 
     public function setMinStock(?int $stock): self
     {
-        $this->feedstockInventory->setMinStock($stock);
+        $this->feedstockInventory = $stock !== null ? abs($stock) : null;
 
         return $this;
     }
 
-    public function getUnit() : ? Unit
+    public function getUnit() : ?Unit
     {
         return $this->unit;
     }
 
-    public function setUnit(? Unit $unit) : self
+    public function setUnit(?Unit $unit) : self
     {
         $this->unit = $unit;
 
@@ -195,7 +196,7 @@ class Feedstock extends BaseEntity
         return $this->departament;
     }
 
-    public function setDepartament(? Departament $departament) : self
+    public function setDepartament(?Departament $departament) : self
     {
         $this->departament = $departament;
 

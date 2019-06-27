@@ -60,7 +60,7 @@ class Estado
 
     public function setCodigoUf(int $codigoUf): self
     {
-        $this->codigoUf = $codigoUf;
+        $this->codigoUf = abs($codigoUf);
 
         return $this;
     }
@@ -96,7 +96,7 @@ class Estado
 
     public function setRegiao(int $regiao): self
     {
-        $this->regiao = $regiao;
+        $this->regiao = abs($regiao);
 
         return $this;
     }

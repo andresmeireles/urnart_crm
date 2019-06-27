@@ -61,7 +61,7 @@ class ManualProductCart
 
     public function setProductPrice(float $productPrice): self
     {
-        $this->productPrice = $productPrice;
+        $this->productPrice = abs($productPrice);
 
         return $this;
     }
@@ -73,7 +73,7 @@ class ManualProductCart
 
     public function setProductAmount(int $productAmount): self
     {
-        $this->productAmount = $productAmount;
+        $this->productAmount = abs($productAmount);
 
         return $this;
     }

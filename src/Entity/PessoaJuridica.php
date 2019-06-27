@@ -87,7 +87,7 @@ class PessoaJuridica extends BaseEntity
 
     public function setRazaoSocial(?string $razaoSocial): self
     {
-        $this->razaoSocial = trim(ltrim($razaoSocial));
+        $this->razaoSocial = $razaoSocial === null ? null : trim(ltrim($razaoSocial));
 
         return $this;
     }
@@ -168,7 +168,7 @@ class PessoaJuridica extends BaseEntity
      */
     public function setInscricaoMunicipal(?int $inscricaoMunicipal): ?self
     {
-        $this->inscricaoMunicipal = $inscricaoMunicipal;
+        $this->inscricaoMunicipal = $inscricaoMunicipal === null ? null : abs($inscricaoMunicipal);
 
         return $this;
     }
@@ -188,7 +188,7 @@ class PessoaJuridica extends BaseEntity
      */
     public function setNomeFantasia(?string $nomeFantasia): ?self
     {
-        $this->nomeFantasia = trim(ltrim($nomeFantasia));
+        $this->nomeFantasia = null === $nomeFantasia ? null : trim(ltrim($nomeFantasia));
 
         return $this;
     }
@@ -208,7 +208,7 @@ class PessoaJuridica extends BaseEntity
      */
     public function setInscricaoEstadual(?int $inscricaoEstadual): ?self
     {
-        $this->inscricaoEstadual = $inscricaoEstadual;
+        $this->inscricaoEstadual = null === $inscricaoEstadual ? null : abs($inscricaoEstadual);
 
         return $this;
     }
@@ -228,7 +228,7 @@ class PessoaJuridica extends BaseEntity
      */
     public function setCnpj(?string $cnpj): self
     {
-        $this->cnpj = str_replace('.', '', str_replace('/', '', str_replace('-', '', $cnpj)));
+        $this->cnpj = null === $cnpj ? null : str_replace('.', '', str_replace('/', '', str_replace('-', '', $cnpj)));
 
         return $this;
     }
@@ -248,7 +248,7 @@ class PessoaJuridica extends BaseEntity
      */
     public function setSituacaoCadastral(?int $situacaoCadastral): self
     {
-        $this->situacaoCadastral = $situacaoCadastral;
+        $this->situacaoCadastral = null === $situacaoCadastral ? null : abs($situacaoCadastral);
 
         return $this;
     }

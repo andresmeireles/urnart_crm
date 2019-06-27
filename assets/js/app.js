@@ -180,3 +180,4 @@ import "./src/helpers/classes/autoSubmit";
 import "./src/helpers/classes/autoBlur";
 import "./src/helpers/classes/numbersOnly";
 import "./src/helpers/classes/images";
+import "./src/helpers/classes/copyMachine";

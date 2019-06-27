@@ -95,6 +95,7 @@ class Boleto extends BaseEntity
     public function setBoletoNumber(string $boletoNumber): self
     {
         $this->setLastUpdate();
+        
         $this->boletoNumber = $boletoNumber;
 
         return $this;
@@ -129,7 +130,7 @@ class Boleto extends BaseEntity
     public function setBoletoStatus(int $boletoStatus): self
     {
         $this->setLastUpdate();
-        $this->boletoStatus = $boletoStatus;
+        $this->boletoStatus = abs($boletoStatus);
 
         return $this;
     }
@@ -161,7 +162,7 @@ class Boleto extends BaseEntity
     public function setBoletoValue(float $boletoValue): self
     {
         $this->setLastUpdate();
-        $this->boletoValue = $boletoValue;
+        $this->boletoValue = abs($boletoValue);
 
         return $this;
     }
@@ -174,7 +175,7 @@ class Boleto extends BaseEntity
     public function setBoletoInstallment(int $boletoInstallment): self
     {
         $this->setLastUpdate();
-        $this->boletoInstallment = $boletoInstallment;
+        $this->boletoInstallment = abs($boletoInstallment);
 
         return $this;
     }

@@ -109,7 +109,7 @@ class Order extends BaseEntity
 
     public function setTotalPrice(float $totalPrice): self
     {
-        $this->totalPrice = $totalPrice;
+        $this->totalPrice = abs($totalPrice);
 
         return $this;
     }
@@ -121,7 +121,7 @@ class Order extends BaseEntity
 
     public function setDiscount(?float $discount): self
     {
-        $this->discount = $discount;
+        $this->discount = $discount === null ? null : abs($discount);
 
         return $this;
     }
@@ -133,7 +133,7 @@ class Order extends BaseEntity
 
     public function setFreight(?float $freight): self
     {
-        $this->freight = $freight;
+        $this->freight = $freight === null ? null : abs($freight);
 
         return $this;
     }
@@ -145,7 +145,7 @@ class Order extends BaseEntity
 
     public function setInstallment(?int $installment): self
     {
-        $this->installment = $installment;
+        $this->installment = $installment === null ? null : abs($installment);
 
         return $this;
     }
@@ -162,7 +162,10 @@ class Order extends BaseEntity
         return $this;
     }
 
-    public function getAllCustomerData() : ?PessoaJuridica
+    /**
+     * @return Collection|PessoaJuridica[]
+     */
+    public function getAllCustomerData() : ?Collection
     {
         return $this->customer;
     }
@@ -239,7 +242,7 @@ class Order extends BaseEntity
         return $this;
     }
 
-    public function getReserved(): int
+    public function getReserved(): bool
     {
         return $this->reserved;
     }

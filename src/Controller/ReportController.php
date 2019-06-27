@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\ModelName;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Model\ProductionCountModel;
 
 class ReportController extends AbstractController
 {
@@ -257,18 +259,70 @@ class ReportController extends AbstractController
     }
 
     /**
-     * @Route("/report/productionCount/createByCatchModel")
+     * @Route("/report/productionCount/createByCatchModel", methods="POST")
      */
-    public function createByCatchModel(Request $request)
+    public function createByCatchModel(Request $request, ProductionCountModel $productionCountModel): Response
     {
         if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Token incorreto.');
         }
-        $date = $request->request->get('date');
-        dump($$request->request->all());
-        die;
+        $request->request->remove('_csrf_token');
+        $result = array_map(function ($value) {
+            return $value;
+        }, $request->request->all());
+        $insertionResult = $productionCountModel->createProductionCount($result);
+        $this->addFlash(
+            $insertionResult->getType(),
+            $insertionResult->getMessage()
+        );
+        $routeLink = $request->headers->get('referer');
 
-        return $this->redirect($routeLink);
+        return $this->redirect(is_string($routeLink) ? $routeLink : '/');
+    }
+
+    /**
+     * @Route("/get/ModelsModel")
+     */
+    public function coiso()
+    {
+        $res = $this->getDoctrine()->getRepository(ModelName::class)->findAll();
+        $modelNames = array_map(function ($value) {
+            if ([] !== $value->getColors()) {
+                $arrays = [];
+                foreach ($value->getColors() as $color) {
+                    $arrays[] = [
+                        'v' => sprintf("%s-%s", $value->getId(), $color),
+                        'n' => sprintf(
+                            '%s %s %s %s',
+                            $value->getName(),
+                            $value->getHeight(),
+                            $color,
+                            $value->getSpecificity(),
+                        ),
+                    ];
+                }
+                return $arrays;
+            }
+            return [
+                'v' => $value->getId(),
+                'n' => sprintf(
+                    '%s %s %s',
+                    $value->getName(),
+                    $value->getHeight(),
+                    $value->getSpecificity()
+                )
+            ];
+        }, $res);
+        foreach ($modelNames as $key => $value) {
+            if (!array_key_exists('n', $value)) {
+                array_map(function ($item) use (&$modelNames) {
+                    $modelNames[] = $item;
+                }, $value);
+                unset($modelNames[$key]);
+            }
+        }
+
+        return new Response(json_encode($modelNames));
     }
 
     /**

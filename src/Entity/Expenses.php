@@ -56,7 +56,7 @@ class Expenses
 
     public function setValor(float $valor): self
     {
-        $this->valor = $valor;
+        $this->valor = abs($valor);
 
         return $this;
     }

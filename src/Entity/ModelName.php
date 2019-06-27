@@ -46,7 +46,7 @@ class ModelName extends BaseEntity
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -76,7 +76,7 @@ class ModelName extends BaseEntity
 
     public function setSuggestedPrice(?float $suggestedPrice): self
     {
-        $this->suggestedPrice = $suggestedPrice;
+        $this->suggestedPrice = $suggestedPrice === null ? null : abs($suggestedPrice);
 
         return $this;
     }
@@ -93,12 +93,12 @@ class ModelName extends BaseEntity
         return $this;
     }
 
-    public function getHeight(): ?string
+    public function getHeight(): string
     {
         return $this->height;
     }
 
-    public function setHeight(?string $height): self
+    public function setHeight(string $height): self
     {
         $this->height = $height;
 
@@ -112,7 +112,7 @@ class ModelName extends BaseEntity
 
     public function setSpecificity(?string $specificity): self
     {
-        $this->specificity = $specificity === null ? null : strtoupper($specificity);
+        $this->specificity = $specificity === null || $specificity === ''  ? null : strtoupper($specificity);
 
         return $this;
     }

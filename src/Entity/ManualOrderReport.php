@@ -123,7 +123,7 @@ class ManualOrderReport extends BaseEntity
 
     public function setFreight(float $freight): self
     {
-        $this->freight = $freight;
+        $this->freight = abs($freight);
 
         return $this;
     }
@@ -135,7 +135,7 @@ class ManualOrderReport extends BaseEntity
 
     public function setDiscount(?float $discount): self
     {
-        $this->discount = $discount;
+        $this->discount = null === $discount ? null : abs($discount);
 
         return $this;
     }

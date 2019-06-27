@@ -59,7 +59,7 @@ class Municipio
 
     public function setCodigo(int $codigo): self
     {
-        $this->codigo = $codigo;
+        $this->codigo = abs($codigo);
 
         return $this;
     }
@@ -84,21 +84,6 @@ class Municipio
     public function setUf(string $uf): self
     {
         $this->uf = $uf;
-
-        return $this;
-    }
-
-    public function getIdUf()
-    {
-        return $this->idUf;
-    }
-
-    public function addEndereco(Address $endereco): self
-    {
-        if (!$this->contains($endereco)) {
-            $this->endereco[] = $endereco;
-            $endereco->setMunicipio($this);
-        }
 
         return $this;
     }

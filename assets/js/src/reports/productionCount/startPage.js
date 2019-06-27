@@ -1,9 +1,10 @@
+import Axios from "axios";
+
 if (document.querySelector('#addProdCount')) {
 
     document.addEventListener('DOMContentLoaded', () => {
 
         let ahref = document.querySelectorAll('.modal-transform');
-        reloadSelectFields();
 
         for (let el of ahref) {
             let href = el.getAttribute('href');
@@ -30,6 +31,16 @@ if (document.querySelector('#addProdCount')) {
             }, 700);
         }
 
+        if (el.target.classList.contains('makeClone')) {
+            setTimeout(() => {
+                let dateFields = document.querySelectorAll('#date-auto');
+                let dateToReplicate = document.querySelector('#date-global-auto').value;
+                for (let field of dateFields) {
+                    field.value = dateToReplicate;
+                }
+            }, 500);
+        }
+
         if (el.target.id === 'replicate') {
             setTimeout(() => {
                 let dateFields = document.querySelectorAll('#date');
@@ -45,7 +56,6 @@ if (document.querySelector('#addProdCount')) {
             setTimeout(() => {
                 let dateFields = document.querySelectorAll('#date-auto');
                 let dateToReplicate = document.querySelector('#date-global-auto').value;
-                console.log(dateToReplicate);
                 for (let field of dateFields) {
                     field.value = dateToReplicate;
                 }
@@ -63,6 +73,37 @@ if (document.querySelector('#addProdCount')) {
             let replicateDate = document.querySelector('#replicate');
             replicateDate.dispatchEvent(new Event('blur'));
         }
+        if (el.target.classList.contains('replicate')) {
+            let replicateDate = document.querySelector('#replicate2');
+            replicateDate.dispatchEvent(new Event('blur'));
+        }
+        if (el.target.classList.contains('singleSelect')) {
+            Axios({
+                method: 'POST',
+                url: '/get/ModelsModel',
+            })
+            .then((response) => {
+                let opt = [];
+                for (let res in response.data) {
+                    let value = {
+                        value: response.data[res].v,
+                        name: response.data[res].n,
+                        color: response.data[res].n || ''
+                    };
+                    opt.push(value);
+                }
+                el.target.classList.remove('form-control');
+                $(el.target).selectize({
+                    sortField: 'text',
+                    placeholder: 'Selecione um item.',
+                    valueField: 'value',
+                    labelField: 'name',
+                    searchField: ['value', 'name'],
+                    delimiter: ',',
+                    options: opt
+                });
+            });
+        }
     }, true);
 
     document.addEventListener('blur', (el) => {
@@ -79,9 +120,9 @@ if (document.querySelector('#addProdCount')) {
 
         if (el.target.id === 'replicate2') {
             setTimeout(() => {
-                let dateFields = document.querySelectorAll('#date-auto');
-                let dateToReplicate = document.querySelector('#date-global-auto').value;
-                console.log(dateToReplicate);
+                let domConsult = document.querySelector('#add2');
+                let dateFields = domConsult.querySelectorAll('.replicate-date');
+                let dateToReplicate = domConsult.querySelector('#date-global-auto').value;
                 for (let field of dateFields) {
                     field.value = dateToReplicate;
                 }
@@ -132,10 +173,4 @@ if (document.querySelector('#addProdCount')) {
         }
 
     }, true);
-
-    const reloadSelectFields = () => {
-        $('.singleSelect').selectize({
-            sortField: 'text'
-        });
-    }
 }

@@ -100,7 +100,7 @@ class Address
 
     public function setZipcode(?string $zipcode): self
     {
-        $zipcode = str_replace('.', '', str_replace('-', '', $zipcode));
+        $zipcode = null === $zipcode ? null : str_replace('.', '', str_replace('-', '', $zipcode));
         $zipcode = (int) $zipcode;
         $this->zipcode = $zipcode;
 
