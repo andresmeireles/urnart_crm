@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -54,41 +53,41 @@ class Feedstock extends BaseEntity
      */
     private $departament;
 
-    public function getId() : ? int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNome() : ? string
+    public function getNome(): ?string
     {
         return $this->nome;
     }
 
-    public function setNome(string $nome) : self
+    public function setNome(string $nome): self
     {
         $this->nome = $nome;
 
         return $this;
     }
 
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description) : self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getVendors() : ? array
+    public function getVendors(): ?array
     {
         return $this->vendors;
     }
 
-    public function setVendors(? array $vendors) : self
+    public function setVendors(?array $vendors): self
     {
         $this->vendors = $vendors;
 
@@ -100,7 +99,7 @@ class Feedstock extends BaseEntity
      *
      * @return string|null
      */
-    public function getMainVendor() : ?string
+    public function getMainVendor(): ?string
     {
         return $this->vendors[0];
     }
@@ -120,24 +119,24 @@ class Feedstock extends BaseEntity
         return [];
     }
 
-    public function getPeriodicity() : ? int
+    public function getPeriodicity(): ?int
     {
         return $this->periodicity;
     }
 
-    public function setPeriodicity(int $periodicity) : self
+    public function setPeriodicity(int $periodicity): self
     {
         $this->periodicity = abs($periodicity);
 
         return $this;
     }
 
-    public function getFeedstockInventory() : ? FeedstockInventory
+    public function getFeedstockInventory(): ?FeedstockInventory
     {
         return $this->feedstockInventory;
     }
 
-    public function setFeedstockInventory(?FeedstockInventory $feedstockInventory) : self
+    public function setFeedstockInventory(?FeedstockInventory $feedstockInventory): self
     {
         $this->feedstockInventory = $feedstockInventory;
 
@@ -167,36 +166,36 @@ class Feedstock extends BaseEntity
         return $this;
     }
 
-    public function getMinStock() : ?string
+    public function getMinStock(): ?string
     {
         return $this->feedstockInventory->getMinStock();
     }
 
     public function setMinStock(?int $stock): self
     {
-        $this->feedstockInventory = $stock !== null ? abs($stock) : null;
+        $this->feedstockInventory = $stock !== null ? abs($stock): null;
 
         return $this;
     }
 
-    public function getUnit() : ?Unit
+    public function getUnit(): ?Unit
     {
         return $this->unit;
     }
 
-    public function setUnit(?Unit $unit) : self
+    public function setUnit(?Unit $unit): self
     {
         $this->unit = $unit;
 
         return $this;
     }
 
-    public function getDepartament() : ? Departament
+    public function getDepartament(): ?Departament
     {
         return $this->departament;
     }
 
-    public function setDepartament(?Departament $departament) : self
+    public function setDepartament(?Departament $departament): self
     {
         $this->departament = $departament;
 

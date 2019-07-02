@@ -6,7 +6,6 @@ use Twig\Environment;
 
 abstract class GenericContainer
 {
-    
     /**
      * Entity Manager
      *

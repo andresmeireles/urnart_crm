@@ -45,11 +45,6 @@ class RegisterController extends AbstractController
 
     /**
      * @Route("/register/add/{entity}", methods={"POST", "PUT"})
-     *
-     * @param string $entity
-     * @param Crud $setter
-     * @param Request $request
-     * @return Response
      */
     public function addGenericRegister(string $entity, Crud $setter, Request $request)
     {
@@ -61,11 +56,6 @@ class RegisterController extends AbstractController
     
     /**
      * @Route("api/register/add/{entity}", methods={"POST", "PUT"})
-     *
-     * @param string $entity
-     * @param Crud $setter
-     * @param Request $request
-     * @return Response
      */
     public function addGenericRegisterAjax(string $entity, Crud $setter, Request $request)
     {
@@ -78,10 +68,6 @@ class RegisterController extends AbstractController
 
     /**
      * @Route("/register/get/{entity}", methods={"POST", "PATCH"})
-     *
-     * @param string $entity
-     * @param Crud $getter
-     * @return Response
      */
     public function getGenericRegister(string $entity, Crud $getter)
     {
@@ -91,11 +77,6 @@ class RegisterController extends AbstractController
 
     /**
      * @Route("/register/get/criteria/{entity}", methods="POST")
-     *
-     * @param string $entity
-     * @param Request $request
-     * @param Crud $getter
-     * @return Response
      */
     public function getRegisterWithSimpleCriteria(string $entity, Request $request, Crud $getter)
     {
@@ -110,10 +91,6 @@ class RegisterController extends AbstractController
 
     /**
      * @Route("/register/get", methods="GET")
-     *
-     * @param Request $request
-     * @param Crud $getter
-     * @return Response
      */
     public function getSingleRegiterById(Request $request, Crud $getter)
     {
@@ -125,11 +102,6 @@ class RegisterController extends AbstractController
 
     /**
      * @Route("/register/remove/{entity}", methods={"DELETE"})
-     *
-     * @param string $entity
-     * @param Request $request
-     * @param Crud $crud
-     * @return Response
      */
     public function getGenericRemover(string $entity, Request $request, Crud $crud)
     {
@@ -145,8 +117,6 @@ class RegisterController extends AbstractController
 
     /**
      * @Route("/register/configuration", methods="GET", name="config")
-     *
-     * @return Response
      */
     public function configuration(): Response
     {
@@ -162,35 +132,20 @@ class RegisterController extends AbstractController
 
     /**
      * @Route("/register/configuration", methods="POST")
-     *
-     * @param Request $request
-     * @param NonStaticConfig $config
-     * @return Response write new config
      */
-    public function writeConfiguration(Request $request, NonStaticConfig $config): Response
+    public function writeConfiguration(Request $request): Response
     {
         if (!$this->isCsrfTokenValid('configuration', $request->request->get('_csrf_token'))) {
             throw new CustomException('Token incorreto ou não enviado.');
         }
-
-        $images = $request->files->get('images');
-        // $result = $config->writeConfFile($request->request->all(), $images);
-
-        // $this->addFlash(
-        //     $result->getType(),
-        //     $result->getMessage()
-        // );
 
         return $this->redirectToRoute('config');
     }
 
     /**
      * @Route("/resetlogo", methods="PUT")
-     *
-     * @param NonStaticConfig $config
-     * @return Response
      */
-    public function resetlogo(NonStaticConfig $config, Request $request): Response
+    public function resetlogo(Request $request): Response
     {
         $hash = json_decode($request->getContent())->hash;
         if (!($hash == hash('ripemd160', 'valido'))) {

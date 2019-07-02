@@ -6,7 +6,6 @@
     "require": {
         "php": "^7.2",
         "ext-iconv": "*",
-        "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "jms/serializer": "^2.2",
         "knplabs/knp-paginator-bundle": "^3.0",
         "respect/validation": "^1.1",
@@ -19,7 +18,6 @@
         "symfony/framework-bundle": "^4.0",
         "symfony/monolog-bundle": "^3.3",
         "symfony/orm-pack": "^1.0",
-        "symfony/phpunit-bridge": "*@dev",
         "symfony/security-bundle": "^4.0",
         "symfony/translation": "^4.0",
         "symfony/twig-bundle": "^4.0",
@@ -27,13 +25,12 @@
         "symfony/yaml": "^4.0",
         "twig/extensions": "^1.5",
         "vich/uploader-bundle": "^1.9",
-        "wgenial/numeroporextenso": "^2.0"
+        "wgenial/numeroporextenso": "^2.0",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.1",
-        "mikey179/vfsstream": "^1.6",
         "nunomaduro/phpinsights": "^1.5",
-        "phan/phan": "^2.2",
         "phpstan/phpstan": "^0.10.5",
         "phpstan/phpstan-doctrine": "^0.10.0",
         "phpstan/phpstan-symfony": "^0.10.2",
@@ -41,6 +38,7 @@
         "symfony/css-selector": "^4.0",
         "symfony/debug": "^4.0",
         "symfony/maker-bundle": "^1.5",
+        "symfony/phpunit-bridge": "^4.3",
         "symfony/profiler-pack": "^1.0",
         "symfony/templating": "^4.0",
         "symfony/var-dumper": "^4.0",
@@ -81,7 +79,10 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+	"ecs" : "php vendor/bin/ecs check src",
+	"ecsfix": "php vendor/bin/ecs check src --fix",
+	"pins": "php vendor/bin/phpinsights"
     },
     "conflict": {
         "symfony/symfony": "*"

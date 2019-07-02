@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model;
 
@@ -15,10 +15,11 @@ class FeedstockModel extends Model
     /**
      * Função que persiste e atualiza produtos do inventário
      *
-     * @param array  $data Array associativo com dados a serem incluidos ou atualizados.
+     * @param array $data Array associativo com dados a serem incluidos ou atualizados.
      * @param string $type [INSERT] insere no banco de dados. [UPDATE] atualiza o produto no banco de dados.
-     * @param int    $id   Caso a TYPE [$type] for UPDATE, ID do produto.
+     * @param int $id Caso a TYPE [$type] for UPDATE, ID do produto.
      * @return void
+     * @throws \Exception
      */
     public function persist(array $data, string $type = 'insert', ?int $id = null)
     {
@@ -51,13 +52,13 @@ class FeedstockModel extends Model
             }
             $feedstock->setNome($data['name']);
             $feedstock->setDescription($data['description']);
-            $feedstock->setPeriodicity((int)$data['periocid']);
+            $feedstock->setPeriodicity((int) $data['periocid']);
             $unit = $this->em->getRepository(Unit::class)->find($data['unit']);
             $feedstock->setUnit($unit);
             $vendors = $data['otherVendors'] ?? '';
             isset($data['otherVendors']) ?
                 array_unshift($vendors, $data['mainVendor']) :
-                $vendors = (array)$data['mainVendor'];
+                $vendors = (array) $data['mainVendor'];
     
             $feedstock->setVendors($vendors);
             $departament = $this->em->getRepository(Departament::class)->find($data['departament']);
@@ -87,10 +88,11 @@ class FeedstockModel extends Model
     /**
      * Um wrapper para função PERSIST com atributos predefinidos
      *
-     * @param array   $data
-     * @param integer $productId
+     * @param array $data
+     * @param int $productId
      *
      * @return void
+     * @throws \Exception
      */
     public function update(array $data, int $productId)
     {

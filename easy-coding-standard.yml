@@ -1,6 +1,7 @@
 imports:
   - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/set/psr2.yaml' }
   - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/set/clean-code.yaml' }
+  - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/set/common.yaml' }
 services:
     PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer:
         syntax: short

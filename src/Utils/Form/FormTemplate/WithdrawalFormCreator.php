@@ -68,7 +68,7 @@ class WithdrawalFormCreator implements CreateFormInterface
               <th>Cliente</th>
               <th>'.$nonCloned['clientName'] .'</th>
               <th>Data</th>
-              <th>'. ($nonCloned['date'] == '__.__.____' ? $this->getDate(new \DateTime('now')) : $this->getDate(new \DateTime($nonCloned['date']))) .'</th>
+              <th>'. ($nonCloned['date'] === '__.__.____' ? $this->getDate(new \DateTime('now')) : $this->getDate(new \DateTime($nonCloned['date']))) .'</th>
             </tr>
             <tr id="bHead">
               <th>Quantidade</th>

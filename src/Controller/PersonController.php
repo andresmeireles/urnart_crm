@@ -145,7 +145,12 @@ class PersonController extends AbstractController
         }
 
         $entityManager = $this->getDoctrine()->getManager();
-        extract($data);
+
+        $person = $data['person'];
+        $customer = $data['customer'];
+        $phone = $data['phone'];
+        $email = $data['email'];
+        $address = $data['address'];
 
         $client = $pessoa;
         $pessoaFisica = $pessoa->getProprietarios()->first()->getPessoaFisica();
@@ -165,8 +170,8 @@ class PersonController extends AbstractController
         $pessoaFisica->setBirthDate($date);
         
         foreach ($phone as $phones) {
-            $telephone = new Phone;
-            $phones = (int)str_replace(' ', '', str_replace('(', '', str_replace(')', '', str_replace('-', '', $phones))));
+            $telephone = new Phone();
+            $phones = (int) str_replace(' ', '', str_replace('(', '', str_replace(')', '', str_replace('-', '', $phones))));
 
             $telephone->setNumber($phones);
             $pessoaFisica->addPhone($telephone);

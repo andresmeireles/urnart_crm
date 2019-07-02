@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Utils\Andresmei;
 
@@ -28,7 +28,7 @@ class Form extends GenericContainer
      *
      * @var string
      */
-    public $parsedFile;
+    private $parsedFile;
     
     protected $config;
 
@@ -40,13 +40,21 @@ class Form extends GenericContainer
         parent::__construct($entityManager, $twig);
     }
 
+    public function __get($name)
+    {
+        if ($name === 'parsedFile')
+        {
+            return $this->getParsedFile();
+        }
+    }
+
     /**
      * Função que criar formulario a partir de parametros enviados
      *
      * @param string $type Tipo de formulario desejado, parametros atuais [pdf, show]
      * @param string $formName Nome do formulário que pode ser criado. Lista de formularios são:
      *                          tag
-     *                          freight-letter                          
+     *                          freight-letter
      *                          order
      *                          receipt
      *                          remand
@@ -56,6 +64,7 @@ class Form extends GenericContainer
      *                          withdrawal
      * @param array $data Informações sobre o formulário
      * @return array
+     * @throws \Exception
      */
     public function returnSelectedFromType(string $type, string $formName, array $data): array
     {
@@ -65,6 +74,11 @@ class Form extends GenericContainer
         $template = $type === 'pdf' ? sprintf('%sPdf', $formName) : $formName;
         
         return $this->$type($template, $data);
+    }
+
+    public function getParsedFile(): string
+    {
+        return $this->parsedFile;
     }
 
     /**

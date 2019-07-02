@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Model\UserModel;
 use App\Utils\Exceptions\CustomException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -105,7 +106,7 @@ class ProfileController extends AbstractController
      */
     public function overload()
     {
-        /** @var \App\Entity\User */
+        /** @var User $user */
         $user = $this->getUser();
         $this->denyAccessUnlessGranted("ROLE_ADMIN", null, sprintf('%s não está autorizado a acessar pagina requerida.', $user->getEmail()));
         return new Response('Hellow');

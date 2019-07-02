@@ -1,17 +1,15 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Utils\Form\FormTemplate;
 
-use \App\Utils\Form\Interfaces\CreateFormInterface;
-use \App\Utils\Form\Interfaces\ResponseFormInterface;
-use \App\Utils\Form\ResponseForm;
-use \App\Utils\Validation\ValidatorJson;
-use \Respect\Validation\Validator as v;
 use App\Utils\Form\Parameters;
+use App\Utils\Form\ResponseForm;
+use App\Utils\Validation\ValidatorJson;
+use Respect\Validation\Validator as v;
 
-class TagFormCreator implements CreateFormInterface
+class TagFormCreator
 {
-	public function createForm(Parameters $params): ResponseFormInterface
+    public function createForm(Parameters $params)
     {
         $parameters = $params->getClonedParameters();
         foreach ($parameters as $param) {
@@ -22,7 +20,6 @@ class TagFormCreator implements CreateFormInterface
                 'check' => v::optional(v::boolVal())
             ]);
         }
-        $response = new ResponseForm();
         $image = file_get_contents(__DIR__.'/etiqueta/logo');
         $pageCounter = -1;
         $body = '
@@ -81,6 +78,6 @@ class TagFormCreator implements CreateFormInterface
         }
         $body .= '</div></div>';
 
-        return $response->setResponse($body);
+        return new ResponseForm($body);
     }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -9,8 +9,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method Proprietario|null find($id, $lockMode = null, $lockVersion = null)
  * @method Proprietario|null findOneBy(array $criteria, array $orderBy = null)
- * @method Proprietario[]    findAll()
- * @method Proprietario[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Proprietario      findAll()
+ * @method Proprietario      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ProprietarioRepository extends ServiceEntityRepository
 {

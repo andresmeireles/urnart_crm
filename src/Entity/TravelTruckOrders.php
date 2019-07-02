@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -68,7 +68,7 @@ class TravelTruckOrders extends BaseEntity
 
     public function setDriverName(?string $driverName): self
     {
-        $clearString = trim((string)$driverName);
+        $clearString = trim((string) $driverName);
         if (strlen($clearString) === 0) {
             throw new CustomException(
                 sprintf('Erro. Parametro %s não aceito como nome', $driverName)

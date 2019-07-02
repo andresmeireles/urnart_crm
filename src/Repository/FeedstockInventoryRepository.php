@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -9,8 +9,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method FeedstockInventory|null find($id, $lockMode = null, $lockVersion = null)
  * @method FeedstockInventory|null findOneBy(array $criteria, array $orderBy = null)
- * @method FeedstockInventory[]    findAll()
- * @method FeedstockInventory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method FeedstockInventory      findAll()
+ * @method FeedstockInventory      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class FeedstockInventoryRepository extends ServiceEntityRepository
 {

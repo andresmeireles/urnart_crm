@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model;
 
@@ -17,13 +16,10 @@ use App\Utils\Andresmei\StringConvertions;
 class OrderModel extends Model
 {
     /**
-     * Execute ação de criacao ou atualização de ordem de serviço e carrinho.
-     *
      * @param array $information
      * @param array $products
      * @param string $type
      * @throws \Exception
-     *
      * @return FlashResponse
      */
     public function executeActionOnOrder(array $information, array $products, string $type = 'insert'): FlashResponse
@@ -71,7 +67,7 @@ class OrderModel extends Model
                 }
             }
             foreach ($products as $product) {
-                $cart = new Cart;
+                $cart = new Cart();
                 $existentProduct = $this->em->getRepository(Product::class)->find($product['cod']);
                 if (is_null($existentProduct)) {
                     return new FlashResponse(
@@ -115,12 +111,9 @@ class OrderModel extends Model
     }
 
     /**
-     * Chama função executeActionOnOrder com ação update
-     *
      * @param array $information
      * @param array $products
      * @throws \Exception
-     *
      * @return FlashResponse
      */
     public function updateOrder(array $information, array $products): FlashResponse
@@ -129,13 +122,9 @@ class OrderModel extends Model
     }
 
     /**
-     * Chama função executeActionOnOrder com ação insert
-     *
      * @param array $information
      * @param array $products
-     *
      * @throws \Exception
-     *
      * @return FlashResponse
      */
     public function createOrder(array $information, array $products): FlashResponse
@@ -144,12 +133,8 @@ class OrderModel extends Model
     }
 
     /**
-     * Reserve products in cart or irder number.
-     *
      * @param int $orderId
-     *
      * @throws \Exception
-     *
      * @return FlashResponse
      */
     public function reserve(int $orderId): FlashResponse
@@ -213,9 +198,7 @@ class OrderModel extends Model
      * @param int|null $id
      * @param string $hash
      * @param string $type
-     *
      * @throws \Exception
-     *
      * @return FlashResponse
      */
     public function runUnreserveTypeAction(?int $id, string $hash, string $type = 'open'): FlashResponse
@@ -278,9 +261,7 @@ class OrderModel extends Model
     /**
      * @param int $orderId
      * @param string $hash
-     *
      * @throws \Exception
-     *
      * @return FlashResponse
      */
     public function closeOrder(int $orderId, string $hash): FlashResponse
@@ -290,7 +271,6 @@ class OrderModel extends Model
 
     /**
      * @param int $orderId
-     *
      * @return FlashResponse
      */
     public function removeOrder(int $orderId): FlashResponse
@@ -316,6 +296,11 @@ class OrderModel extends Model
         }
     }
 
+    /**
+     * @param string|null $hash
+     * @param string $message
+     * @return bool
+     */
     public function validate(?string $hash, string $message = 'valido'): bool
     {
         $trueHash = hash('ripemd160', $message);
@@ -328,16 +313,19 @@ class OrderModel extends Model
     /***************************************************************
      ******************** MANUAL REPORT CREATION *******************
      ***************************************************************/
-    
 
+    /**
+     * @param array $orderData
+     * @param array $products
+     * @return FlashResponse
+     * @throws \Exception
+     */
     public function createManualReport(array $orderData, array $products)
     {
         $entityManager = $this->em;
-        
         $entityManager->getConnection()->beginTransaction();
-
         try {
-            $report = new ManualOrderReport;
+            $report = new ManualOrderReport();
             $report->setCustomerName($orderData['clientName']);
             $report->setCustomerCity($orderData['clientCity']);
             $discount = (float) trim(str_replace('R$', '', $orderData['discount']));
@@ -367,19 +355,15 @@ class OrderModel extends Model
     }
     
     /**
-     * Edit order by id in database.
-     *
      * @param array $orderData
      * @param array $products
      * @param int $orderId
      * @throws \Exception
-     *
      * @return FlashResponse
      */
     public function editManualOrder(array $orderData, array $products, int $orderId): FlashResponse
     {
         $entityManager = $this->em;
-        
         $entityManager->getConnection()->beginTransaction();
         
         try {
@@ -397,11 +381,9 @@ class OrderModel extends Model
             $report->setComments($observation);
             $paymentType = $entityManager->getRepository(PaymentType::class)->find($orderData['formPg']);
             $report->setPaymentType($paymentType);
-            
             $removeCart = $entityManager->getRepository(ManualProductCart::class)
                                 ->findBy(['manualOrderReport' => $orderId]);
             $this->removeManualProductCart($removeCart);
-            
             foreach ($products as $product) {
                 $cart = $this->actionOnManualCart($product, $report);
                 $entityManager->merge($cart);
@@ -417,6 +399,11 @@ class OrderModel extends Model
         return new FlashResponse(200, 'success', sprintf('Pedido %d alterado com sucesso.', $orderId));
     }
 
+    /**
+     * @param array $product
+     * @param ManualOrderReport $report
+     * @return ManualProductCart
+     */
     public function actionOnManualCart(array $product, ManualOrderReport $report): ManualProductCart
     {
         $cart = new ManualProductCart();
@@ -427,6 +414,10 @@ class OrderModel extends Model
         return $cart;
     }
 
+    /**
+     * @param ManualOrderReport $orderReport
+     * @return OrderModel
+     */
     public function closeManualOrder(ManualOrderReport $orderReport): self
     {
         $orderReport->setActive(false);
@@ -436,6 +427,11 @@ class OrderModel extends Model
         return $this;
     }
 
+    /**
+     * @param array $cart
+     * @return OrderModel
+     * @throws \Exception
+     */
     public function removeManualProductCart(array $cart): self
     {
         try {
@@ -450,6 +446,11 @@ class OrderModel extends Model
         return $this;
     }
 
+    /**
+     * @param ManualOrderReport $object
+     * @return OrderModel
+     * @throws \Exception
+     */
     public function removeManualOrder(ManualOrderReport $object): self
     {
         try {

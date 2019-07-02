@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -85,7 +85,7 @@ class Departament
        } */
 
     /**
-     * @return Collection|Feedstock[]
+     * @return Collection|Feedstock
      */
     public function getFeedstocks(): Collection
     {

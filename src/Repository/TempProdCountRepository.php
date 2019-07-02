@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -9,8 +9,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method TempProdCount|null find($id, $lockMode = null, $lockVersion = null)
  * @method TempProdCount|null findOneBy(array $criteria, array $orderBy = null)
- * @method TempProdCount[]    findAll()
- * @method TempProdCount[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TempProdCount      findAll()
+ * @method TempProdCount      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class TempProdCountRepository extends ServiceEntityRepository
 {

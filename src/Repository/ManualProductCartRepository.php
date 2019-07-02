@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -9,8 +9,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method ManualProductCart|null find($id, $lockMode = null, $lockVersion = null)
  * @method ManualProductCart|null findOneBy(array $criteria, array $orderBy = null)
- * @method ManualProductCart[]    findAll()
- * @method ManualProductCart[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ManualProductCart    findAll()
+ * @method ManualProductCart    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ManualProductCartRepository extends ServiceEntityRepository
 {
@@ -20,9 +20,7 @@ class ManualProductCartRepository extends ServiceEntityRepository
     }
 
     /**
-     * Return a array of strings
-     *
-     * @return array
+     * @return array|ManualProductCart
      */
     public function findModelNames(): array
     {

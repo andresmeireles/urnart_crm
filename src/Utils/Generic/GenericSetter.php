@@ -1,11 +1,12 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace App\Utils\Generic;
 
 trait GenericSetter
 {
     public function setFields(array $parameters): self
     {
-        $this->entity = new $this->entity;
+        $this->entity = new $this->entity();
         foreach ($parameters as $field => $value) {
             $setterFunction = 'set'.ucfirst($field);
             $this->entity->$setterFunction($value);

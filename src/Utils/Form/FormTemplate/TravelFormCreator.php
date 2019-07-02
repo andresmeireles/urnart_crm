@@ -93,7 +93,7 @@ class TravelFormCreator implements CreateFormInterface
 		</div>';
 
         foreach ($clonedParameters as $param) {
-            if ($itemsCounter == 0) {
+            if ($itemsCounter === 0) {
                 $body .= '<div class="footer">
 				<span class="pg_number">'. $pageCounter .'</span>
 				<div class="f-content center">
@@ -124,7 +124,7 @@ class TravelFormCreator implements CreateFormInterface
                 continue;
             }
 
-            if ($itemsCounter == 4) {
+            if ($itemsCounter === 4) {
                 $body .= '<div class="row-f center">
 				<div><span class="title">'. $param['city'] .'</span></div>
 				<div class="c-name"><span>'. $param['name'] .'</span></div>

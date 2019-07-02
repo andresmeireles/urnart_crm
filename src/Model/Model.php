@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 namespace App\Model;
 
 use Doctrine\DBAL\Connection;
@@ -103,15 +103,16 @@ abstract class Model
     /**
      * Lista a partir de uma data dados de um repositorio.
      *
-     * @param string      $repository
-     * @param string      $whereField
-     * @param array       $selectFields
-     * @param string      $beginDate    Formato da data é DIA/MÊS/ANO
-     * @param string      $lastDate     Formato da data é DIA/MÊS/ANO
+     * @param string $repository
+     * @param string $whereField
+     * @param array $selectFields
+     * @param string $beginDate Formato da data é DIA/MÊS/ANO
+     * @param string $lastDate Formato da data é DIA/MÊS/ANO
      * @param string|null $orderBy
      * @param string|null $typeOfOrder
      *
      * @return array
+     * @throws \Exception
      */
     public function getGenericListByDateArrayFields(
         string $repository,
@@ -126,7 +127,7 @@ abstract class Model
         foreach ($selectFields as $value) {
             $selectFieldsString .= sprintf("u.%s,", $value);
         }
-        if (empty($selectFields)) {
+        if ($selectFields === []) {
             $selectFieldsString = "u";
         }
         $selectFieldsString = trim($selectFieldsString, ',');
@@ -141,7 +142,7 @@ abstract class Model
         if (is_null($convertedBeginDate) && is_null($convertedLastDate)) {
             $result = $query->orderBy(sprintf('u.%s', $orderBy ?? 'id'), sprintf('%s', $typeOfOrder ?? 'ASC'));
         }
-        if (null !== $convertedBeginDate && null !== $convertedLastDate) {
+        if ($convertedBeginDate !== null && $convertedLastDate !== null) {
             $result = $query->where(sprintf('u.%s BETWEEN :begin AND :last', $whereField))
                             ->setParameter('begin', sprintf("%s 00:00:00", $convertedBeginDate))
                             ->setParameter('last', sprintf("%s 00:00:00", $convertedLastDate))

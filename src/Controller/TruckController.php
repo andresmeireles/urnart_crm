@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -65,7 +65,7 @@ class TruckController extends AbstractController
      */
     public function viewEditForm(int $id): Response
     {
-        /** @var \App\Repository\ManualOrderReportRepository $manualRepository */
+        /** @var ManualOrderReportRepository $manualRepository */
         $manualRepository = $this->getDoctrine()->getRepository(ManualOrderReport::class);
         
         return $this->render('truck/pages/editTruckRepo.html.twig', [
@@ -103,19 +103,11 @@ class TruckController extends AbstractController
      */
     public function createModelsNamesReport(int $truckReportId): Response
     {
-        return new Response('Trablho em andamento. calma que ja vai chegar.');
+        return new Response(sprintf('Trablho em andamento. calma que ja vai chegar. Id é %s', $truckReportId));
     }
 
     /**
      * @Route("/truck/create/report/{typeReport}/show/{entityId<\d+>}")
-     *
-     * Criar relatório a partir de informações enviadas
-     *
-     * @param Form $form
-     * @param DepartureModel $departureModel
-     * @param string $typeReport Nome da tag para criação do formulário.
-     * @param int $entityId
-     * @return Response
      */
     public function createSingleReports(
         Form $form,
@@ -138,14 +130,6 @@ class TruckController extends AbstractController
 
     /**
      * @Route("/truck/create/report/{typeReport}/pdf/{entityId<\d+>}")
-     *
-     * Criar relatório a partir de informações enviadas
-     *
-     * @param Form $form
-     * @param DepartureModel $departureModel
-     * @param string $typeReport Nome da tag para criação do formulário.
-     * @param int $entityId
-     * @return Response
      */
     public function createPdfReport(
         Form $form,

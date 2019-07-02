@@ -12,8 +12,7 @@ use Respect\Validation\Validator as v;
 class OrderFormCreator implements CreateFormInterface
 {
     /**
-     * Create Form and save on database
-     * @param  array  $parameters parameters for Form
+     * @param  Parameters $parameters
      * @return ResponseFormInterface
      */
     public function createForm(Parameters $parameters): ResponseFormInterface
@@ -48,11 +47,18 @@ class OrderFormCreator implements CreateFormInterface
         return $response->setResponse($FormBody);
     }
 
+    /**
+     * @return array
+     */
     public function getMessage(): array
     {
         return ValidatorJson::getErrors();
     }
 
+    /**
+     * @param Parameters $parameters
+     * @return string
+     */
     private function createBodyForm(Parameters $parameters): string
     {
         $information = $parameters->getNonClonedParameters();

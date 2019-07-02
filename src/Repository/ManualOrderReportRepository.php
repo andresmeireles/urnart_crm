@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -9,9 +9,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method ManualOrderReport|null find($id, $lockMode = null, $lockVersion = null)
  * @method ManualOrderReport|null findOneBy(array $criteria, array $orderBy = null)
- * @method ManualOrderReport[]    findAll()
- * @method ManualOrderReport[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @method someFieldsConsult($fields)
+ * @method ManualOrderReport      findAll()
+ * @method ManualOrderReport      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ManualOrderReportRepository extends ServiceEntityRepository
 {
@@ -24,7 +23,7 @@ class ManualOrderReportRepository extends ServiceEntityRepository
      * Undocumented function
      *
      * @param string ...$fields
-     * @return array
+     * @return array|ManualOrderReport
      */
     public function someFieldsConsult(string ...$fields): array
     {

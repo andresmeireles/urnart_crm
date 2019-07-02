@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Utils\Andresmei;
 
@@ -30,7 +30,7 @@ class WriteBoletoReport
     {
         $result = [];
 
-        if (is_null($titles) || empty($titles)) {
+        if (is_null($titles) || $titles === []) {
             return [];
         }
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -34,7 +34,7 @@ class PaymentType
 
     public function __construct()
     {
-        $this->orderNumber = new ArrayCollection;
+        $this->orderNumber = new ArrayCollection();
     }
 
     public function __toString(): ?string
@@ -78,7 +78,7 @@ class PaymentType
         return (bool) $this->plot;
     }
 
-    public function addOrderNumber(Order $orderNumber) : self
+    public function addOrderNumber(Order $orderNumber): self
     {
         if (!$this->orderNumber->contains($orderNumber)) {
             $this->orderNumber[] = $orderNumber;
@@ -88,7 +88,7 @@ class PaymentType
         return $this;
     }
 
-    public function removeOrderNumber(Order $orderNumber) : self
+    public function removeOrderNumber(Order $orderNumber): self
     {
         if ($this->orderNumber->contains($orderNumber)) {
             $this->orderNumber->removeElement($orderNumber);

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Model;
 
@@ -34,6 +34,7 @@ class FormModel extends Model
 
     /**
      * @return FlashResponse
+     * @throws \Exception
      */
     public function reportResolver(string $formName, array $data): FlashResponse
     {
@@ -63,13 +64,14 @@ class FormModel extends Model
      * Editar relatório.
      *
      * @param object $entity
-     * @param array  $data
+     * @param array $data
      *
      * @return  FlashResponse
+     * @throws \Exception
      */
     public function editAcountabilityReport(object $entity, array $data): FlashResponse
     {
-        /** @var TravelAccountability */
+        /** @var TravelAccountability $report */
         $report = $entity; // over ride type hint for intellisense
         $entityManager = $this->em;
         $nestedData = new NestedArraySeparator($data);
@@ -91,7 +93,7 @@ class FormModel extends Model
             $report->setArrivalDate(
                 new \DateTime($accountabilityData['dt-in'], new \DateTimeZone('America/Sao_Paulo'))
             );
-            if (null === $entries) {
+            if ($entries === null) {
                 throw new NotFoundParameterException(sprintf('Varaibel %s não existe', $$entity));
             }
             $this->editTravelEntryReport($entries, $report);

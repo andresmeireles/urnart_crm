@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -262,13 +263,13 @@ class PessoaJuridica extends BaseEntity
     public function getEstado(): ?string
     {
         $estado = $this->getProprietarios()->first()->getPessoaFisica()->getAddress()->getEstado();
-        return $estado == null ? '' : $estado->getNome();
+        return $estado === null ? '' : $estado->getNome();
     }
 
-    public function getMunicipio() : ? string
+    public function getMunicipio(): ?string
     {
         $municipio = $this->getProprietarios()->first()->getPessoaFisica()->getAddress()->getMunicipio();
-        return $municipio == null ? '' : $municipio->getNome();
+        return $municipio === null ? '' : $municipio->getNome();
     }
 
     /**

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -9,8 +9,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method Departament|null find($id, $lockMode = null, $lockVersion = null)
  * @method Departament|null findOneBy(array $criteria, array $orderBy = null)
- * @method Departament[]    findAll()
- * @method Departament[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Departament      findAll()
+ * @method Departament      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class DepartamentRepository extends ServiceEntityRepository
 {

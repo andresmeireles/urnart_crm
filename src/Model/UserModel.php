@@ -15,12 +15,13 @@ class UserModel extends Model
     /**
      * Ação faz ação na tabela user do banco de dados
      *
-     * @param array                             $data    Dados para alteração
-     * @param UploadedFile|null                 $file    Instancia de UploadFile
+     * @param array $data Dados para alteração
+     * @param UploadedFile|null $file Instancia de UploadFile
      * @param UserPasswordEncoderInterface|null $encoder Endoder do password
-     * @param bool                              $insert  Tipo de inserção
+     * @param bool $insert Tipo de inserção
      *
      * @return FlashResponse                              Objeto de resposta
+     * @throws \Exception
      */
     public function runUserAction(
         array $data,
@@ -29,37 +30,29 @@ class UserModel extends Model
         bool $insert = true
     ): FlashResponse {
         $entityManager = $this->em;
-
         try {
-            // check if password is the same
             if (array_key_exists('password', $data)) {
                 $this->passwordVerification($data['password'], $data['retype']);
             }
-
             $user =  $insert ? new User() : $entityManager->getRepository(User::class)->find($data['identificator']);
             $user->setEmail($data['email']);
             $user->setUserNickname($data['userNickname']);
-
-            if (null !== $encoder) {
+            if ($encoder !== null) {
                 $password = $encoder->encodePassword($user, $data['password']);
                 $user->setPassword($password);
             }
-
-            //image
             if ($file !== null) {
                 /* $user->setProfileImageFile($file);
                 $imageName = sprintf('%s-profile.%s', $data['userNickName'], $file->getExtension());
                 $user->setProfileImage($imageName); */
                 $this->uploadProfileImage($user, $file);
             }
-
             $entityManager->persist($user);
         } catch (UniqueConstraintViolationException $e) {
             throw new \Exception('Email já cadastrado.');
         } catch (\PDOException $e) {
             throw new \Exception($e->getMessage());
         }
-
         $entityManager->flush();
 
         return new FlashResponse(200, 'success', 'Alteração das informações feita com sucesso!');
@@ -68,17 +61,24 @@ class UserModel extends Model
     /**
      * Alias to runUser action with add command
      *
-     * @param array                        $data    Dados do usuario
-     * @param UploadedFile|null            $file    Arquivo da imagem
+     * @param array $data Dados do usuario
+     * @param UploadedFile|null $file Arquivo da imagem
      * @param UserPasswordEncoderInterface $encoder Encoder de senha
      *
      * @return FlashResponse                           [return description]
+     * @throws \Exception
      */
     public function addUser(array $data, ?UploadedFile $file, UserPasswordEncoderInterface $encoder): FlashResponse
     {
         return $this->runUserAction($data, $file, $encoder);
     }
 
+    /**
+     * @param array $data
+     * @param UploadedFile|null $file
+     * @return FlashResponse
+     * @throws \Exception
+     */
     public function editUser(array $data, ?UploadedFile $file): FlashResponse
     {
         return $this->runUserAction($data, $file, null, false);
@@ -87,11 +87,12 @@ class UserModel extends Model
     /**
      * Altera senha do usuario.
      *
-     * @param   User                          $user     Objeto contendo informações do usuario.
-     * @param   array                         $data     Informações para alterar senhas
-     * @param   UserPasswordEncoderInterface  $encoder  Encoder de para senha
+     * @param User $user Objeto contendo informações do usuario.
+     * @param array $data Informações para alterar senhas
+     * @param UserPasswordEncoderInterface $encoder Encoder de para senha
      *
      * @return  FlashResponse
+     * @throws NotSamePasswordException
      */
     public function changePassword(User $user, array $data, UserPasswordEncoderInterface $encoder): FlashResponse
     {
@@ -169,7 +170,7 @@ class UserModel extends Model
             ['id' => $userId, 'email' => $userName]
         );
 
-        if (null === $user) {
+        if ($user === null) {
             throw new UsernameNotFoundException(sprintf('Usuario %s não encontrado ou não existe', $userName));
         }
 

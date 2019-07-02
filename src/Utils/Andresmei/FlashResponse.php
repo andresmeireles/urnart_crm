@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Utils\Andresmei;
 
@@ -8,7 +8,7 @@ class FlashResponse
     /**
      * HTTP STATUS CODE
      *
-     * @var integer
+     * @var int
      */
     protected $http_code = 200;
 
@@ -52,7 +52,7 @@ class FlashResponse
      *
      * @return array
      */
-    public function nonStaticResponse(int $http_code = null, string $type = null, string $message = null): array
+    public function nonStaticResponse(?int $http_code = null, ?string $type = null, ?string $message = null): array
     {
         return [
             'http_code' => $http_code ?? $this->http_code,

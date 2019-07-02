@@ -8,6 +8,7 @@ use App\Utils\Andresmei\MyDateTime;
 use App\Utils\Andresmei\StdResponse;
 use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\ListNotExistsException;
+use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
  * TEST 
@@ -25,10 +26,12 @@ class ListModel extends Model
 {
     /**
      * @param string $type
-     * @param null   $optionalParameter
+     * @param null $optionalParameter
      *
+     * @return string|array
+     * @throws ListNotExistsException
      */
-    public function select(string $type, $optionalParameter = null)
+    public function select(string $type)
     {
         switch ($type) {
             case 'client':

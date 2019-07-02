@@ -1,9 +1,10 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model;
 
 use App\Entity\Boleto;
 use App\Entity\ManualOrderReport;
+use App\Entity\ProductionCount;
 use App\Entity\TravelTruckOrders;
 use App\Utils\Andresmei\FileFunctions;
 use App\Utils\Andresmei\FlashResponse;
@@ -17,12 +18,10 @@ use App\Utils\Andresmei\MyDateTime;
 class ReportModel extends Model
 {
     /**
-     * Select the create function and do the action.
-     *
      * @param string $entity
-     * @param array  $data
-     *
+     * @param array $data
      * @return FlashResponse
+     * @throws CustomException
      */
     public function createGenericReport(string $entity, array $data): FlashResponse
     {
@@ -48,7 +47,6 @@ class ReportModel extends Model
     /**
      * @param string $entityName
      * @param array $data
-     *
      * @return FlashResponse
      * @throws CustomException
      */
@@ -60,7 +58,7 @@ class ReportModel extends Model
         $entityData = $info->getArrayInArray();
         try {
             foreach ($entityData as $data) {
-                $class = new $entity;
+                $class = new $entity();
                 foreach ($data as $key => $value) {
                     $methodName = sprintf('set%s', ucfirst($key));
                     $reflectFunc = new \ReflectionClass($class);
@@ -83,15 +81,12 @@ class ReportModel extends Model
 
     /**
      * @param array $data
-     *
      * @return FlashResponse
      * @throws \PDOException
      */
     public function createBoletoRegistry(array $data): FlashResponse
     {
-        $entity = new Boleto;
-        $entityManager = $this->em;
-        $entityManager->getConnection()->beginTransaction();
+        $entity = new Boleto();
         try {
             $entity->setBoletoCustomerOwner($data['boletoCustomerOwner']);
             $entity->setBoletoNumber($data['boletoNumber']);
@@ -102,7 +97,6 @@ class ReportModel extends Model
 
             $this->em->persist($entity);
             $this->em->flush();
-            $this->em->getConnection()->commit();
 
             $httpCode = 200;
             $type = 'success';
@@ -113,7 +107,6 @@ class ReportModel extends Model
                 $data['boletoInstallment']
             );
         } catch (\PDOException $e) {
-            $this->em->getConnection()->rollback();
             $httpCode = 301;
             $type = 'danger';
             $message = 'Peido não foi criado.';
@@ -124,9 +117,8 @@ class ReportModel extends Model
 
     /**
      * @param string $entity
-     * @param integer $consultId
+     * @param int $consultId
      * @param array $data
-     *
      * @return FlashResponse
      * @throws \PDOException
      */
@@ -135,7 +127,6 @@ class ReportModel extends Model
         $entityManager = $this->em;
         $entityClass = sprintf('App\Entity\%s', ucwords($entity));
         $entityToEdit = $entityManager->getRepository($entityClass)->find($consultId);
-        $entityManager->getConnection()->beginTransaction();
         try {
             foreach ($data as $key => $value) {
                 $methodName = sprintf('set%s', ucwords($key));
@@ -152,9 +143,7 @@ class ReportModel extends Model
             }
             $entityManager->merge($entityToEdit);
             $entityManager->flush();
-            $entityManager->getConnection()->commit();
         } catch (\PDOException $e) {
-            $entityManager->getConnection()->rollback();
             throw new \PDOException($e->getMessage(), $e->getCode());
         }
 
@@ -200,7 +189,7 @@ class ReportModel extends Model
                 break;
         }
         $entity = sprintf('App\Entity\%s', ucwords($entity));
-        $returnObject = new StdResponse;
+        $returnObject = new StdResponse();
         $returnObject->typeOfList = $list;
         $returnObject->consultResults = $this->em->getRepository($entity)->findBy([], $order);
 
@@ -208,11 +197,8 @@ class ReportModel extends Model
     }
 
     /**
-     * Return a serializaed register from database.
-     *
      * @param string $entity    Entidade para consultar.
      * @param int    $consultId Id to consult registry.
-     *
      * @return string
      */
     public function serializedGenericConsult(string $entity, int $consultId): string
@@ -227,11 +213,8 @@ class ReportModel extends Model
     *****************************************************/
 
     /**
-     * Boleto entity specific. Change status and do some operation.
-     *
      * @param int $boletoId    Identificaction of Boleto entity
      * @param array $boletoData  Status and date info.
-     *
      * @return FlashResponse
      * @throws CustomException|\PDOException
      */
@@ -262,7 +245,7 @@ class ReportModel extends Model
                         $boletoRegistry->getBoletoInstallment()
                     ));
                 }
-                $porContaArray[] = [
+                $porContaArray = [
                     'statusDate' => (new \DateTime('now'))->format('d/m/Y'),
                     'porContaValue' => $boletoData['porContaValue'],
                     'porContaDate' => $boletoData['porContaDate']
@@ -287,11 +270,8 @@ class ReportModel extends Model
     }
 
     /**
-     * Lista por data dados de um repositorio.
-     *
      * @param string|null $startDate
      * @param string|null $endingDate
-     *
      * @return StdResponse
      * @throws \Exception
      */
@@ -314,18 +294,19 @@ class ReportModel extends Model
         $res = [];
         if (!is_null($pastReportRegister)) {
             foreach ($pastReportRegister as $value) {
-                foreach ($value as $v) {
-                    $res[] = $v;
-                }
+                $res[] = $value;
             }
         }
         foreach ($res as $r) {
             foreach ($c as $key => $value) {
-                if ($r['id'] === $value['id']) {
-                    $resultData[$key] = $r;
-                    continue;
-                }
-                $resultData[$key] = $value;
+                $r['id'] === $value['id']?
+                    $resultData[$key] = $r:
+                    $resultData[$key] = $value;
+//                if ($r['id'] === $value['id']) {
+//                    $resultData[$key] = $r;
+//                    continue;
+//                }
+//                $resultData[$key] = $value;
             }
         }
         foreach ($resultData as $value) {
@@ -362,13 +343,11 @@ class ReportModel extends Model
 
     /**
      * Return required fields from databse by start and ending date, if has.
-     *
      * @param   string       $entity          Entity for search.
      * @param   string       $whereField      fields to WHERE condition.
      * @param   string|null  $requiredFields  Fields required to return.
      * @param   string|null  $startDate       Start consult date.
      * @param   string|null  $endingDate      Ending cosult date.
-     *
      * @return  array                         Array with results of consult.
      */
     public function searchByDate(
@@ -384,7 +363,6 @@ class ReportModel extends Model
     /**
      * @param string|null $startDate
      * @param string|null $endingDate
-     * 
      * @return StdResponse
      * @throws \Exception
      */
@@ -405,18 +383,19 @@ class ReportModel extends Model
         $data = [];
         if (!is_null($pastReportFile)) {
             foreach ($reportResults as $key => $value) {
-                foreach ($value as $v) {
-                    $pastResponse[] = $v;
-                }
+                $pastResponse[] = $value;
             }
         }
         foreach ($pastResponse as $r) {
             foreach ($c as $key => $value) {
-                if ($r['id'] === $value['id']) {
-                    $reportResults[$key] = $r;
-                    continue;
-                }
-                $reportResults[$key] = $value;
+                $r['id'] === $value['id'] ?
+                    $reportResults[$key] = $r:
+                    $reportResults[$key] = $value;
+//                if ($r['id'] === $value['id']) {
+//                    $reportResults[$key] = $r;
+//                    continue;
+//                }
+//                $reportResults[$key] = $value;
             }
         }
         foreach ($reportResults as $key => $value) {
@@ -442,7 +421,7 @@ class ReportModel extends Model
                     throw new \Exception('Tem algo muito errado.');
             }
         }
-        $response = new StdResponse;
+        $response = new StdResponse();
         $response->boletosStatusCount = $data;
         $response->totalValue = $totalValue;
         $response->boletoPayedValue = $paymentValue;
@@ -452,7 +431,6 @@ class ReportModel extends Model
 
     /**
      * @param string $date
-     *
      * @return array
      */
     public function getNonPayedBoletosByDate(string $date): array
@@ -468,16 +446,15 @@ class ReportModel extends Model
     /**
      * @param string $path
      * @param string|null $date
-     *
      * @return array|null
      */
     private function getReportFile(string $path, ?string $date): ?array
     {
         $response = null;
-        $reportName = empty($date) ?
-            (new FileFunctions)->getLastCreateFileFromFolder($path):
-            (new FileFunctions)->getFileByDate($path, $date);
-        if (!is_null($reportName) && file_exists($reportName)) {
+        $reportName = $date === null ?
+            (new FileFunctions())->getLastCreateFileFromFolder($path):
+            (new FileFunctions())->getFileByDate($path, $date);
+        if ($reportName !== null && file_exists($reportName)) {
             $dataFile = file_get_contents($reportName);
             $response = Yaml::parse((string) $dataFile);
         }
@@ -489,7 +466,6 @@ class ReportModel extends Model
      * @param string $intervalBeginDate
      * @param string $intervalLastDate
      * @param string $formatInterval
-     *
      * @return array
      * @throws \Exception
      */
@@ -509,7 +485,7 @@ class ReportModel extends Model
             'date',
             'ASC'
         );
-        /** @var \App\Entity\ProductionCount $value */
+        /** @var ProductionCount $value */
         foreach ($result as $value) {
             if ($value->getDate() === null) {
                 throw new \Exception('Algo de errado não está certo. Não deveria haver um date null.');
@@ -531,8 +507,8 @@ class ReportModel extends Model
     /**
      * @param string $beginDate
      * @param string $lastDate
-     *
      * @return StdResponse
+     * @throws \Exception
      */
     public function getProductsByModelName(string $beginDate, string $lastDate): StdResponse
     {
@@ -557,7 +533,6 @@ class ReportModel extends Model
 
     /**
      * @param string $date
-     *
      * @return array
      * @throws CustomException
      */
@@ -566,7 +541,7 @@ class ReportModel extends Model
         $reportDate = $date;
         $todayTotal = 0;
         $yesterdayTotal = 0;
-        if ('' === $reportDate) {
+        if ($reportDate === '') {
             throw new CustomException('Não é possível criar relátorio sem datas');
         }
         $explodedDate = explode('-', $reportDate);
@@ -604,7 +579,6 @@ class ReportModel extends Model
      * @param string $type
      * @param string $dateOne
      * @param string $dateTwo
-     *
      * @return StdResponse Ira retornar os valores [template] e [result]
      * @throws CustomException
      */
@@ -634,25 +608,21 @@ class ReportModel extends Model
             $startDate,
             $lastDate
         );
-        /** @var \App\Entity\ProductionCount $r */
+        /** @var ProductionCount $r */
         if ($typeName === 'm') {
             foreach ($report as $r) {
                 $resultRepo['total'] += $r->getAmount();
-                if (array_key_exists($r->getModel(), $resultRepo)) {
-                    $resultRepo[$r->getModel()] += $r->getAmount();
-                    continue;
-                }
-                $resultRepo[$r->getModel()] = $r->getAmount();
+                array_key_exists($r->getModel(), $resultRepo)?
+                    $resultRepo[$r->getModel()] += $r->getAmount():
+                    $resultRepo[$r->getModel()] = $r->getAmount();
             }
         }
         if ($typeName === 'h') {
             foreach ($report as $r) {
                 $resultRepo['total'] += $r->getAmount();
-                if (array_key_exists($r->getHeight(), $resultRepo)) {
-                    $resultRepo[$r->getHeight()] += $r->getAmount();
-                    continue;
-                }
-                $resultRepo[$r->getModel()] = $r->getAmount();
+                array_key_exists($r->getHeight(), $resultRepo)?
+                    $resultRepo[$r->getHeight()] += $r->getAmount():
+                    $resultRepo[$r->getModel()] = $r->getAmount();
             }
         }
         $response = new StdResponse();
@@ -665,11 +635,10 @@ class ReportModel extends Model
     /**
      * @param string $dateOne
      * @param string $dateTwo
-     * @param mixed ...$fields
-     *
+     * @param string ...$fields
      * @return array
      */
-    public function dumpFields(string $dateOne, string $dateTwo, ...$fields): array
+    public function dumpFields(string $dateOne, string $dateTwo, string ...$fields): array
     {
         $explodedDate = explode('-', $dateOne);
         $explodedDateTwo = explode('-', $dateTwo);
@@ -696,7 +665,6 @@ class ReportModel extends Model
      *                          'kmout' => null|'236599',
      *                          'departureDate => null|'2010/10/31' Formarto YYYY/MM/DD 
      * @param array $orders Array associativo contendo ids de ManualOrderReport
-     *
      * @return FlashResponse
      * @throws \Exception
      */
@@ -731,7 +699,6 @@ class ReportModel extends Model
      * @param TravelTruckOrders $orderTruckEntity
      * @param array $reportData
      * @param array $orders
-     *
      * @return FlashResponse
      * @throws \Exception
      */
@@ -746,11 +713,11 @@ class ReportModel extends Model
             $truckReport->setKmout($reportData['kmout']);
             $date = new MyDateTime($reportData['departureDate'], 'America/Belem');
             $truckReport->setDepartureDate($date);
-            $truckReport->getOrderId()->map(function ($value) use ($truckReport) {
+            $truckReport->getOrderId()->map(static function ($value) use ($truckReport) {
                 $truckReport->removeOrderId($value);
             });
             foreach ($orders as $order) {
-                $simpleArray[$order['id']] = isset($order['isChecked'] )? (bool) $order['isChecked'] : false;
+                $simpleArray = [$order['id'] => isset($order['isChecked'] )? (bool) $order['isChecked'] : false];
                 $manualOrderReport = $manualOrderRepository->find($order['id']);
                 $truckReport->addOrderId($manualOrderReport);
             }

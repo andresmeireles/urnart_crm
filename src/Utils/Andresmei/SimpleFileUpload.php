@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Utils\Andresmei;
 
@@ -52,7 +52,7 @@ class SimpleFileUpload
             return true;
         }
 
-        if (null === $file->getClientMimeType()) {
+        if ($file->getClientMimeType() === null) {
             throw new \Exception('Formato não envidado', 1);
         }
 

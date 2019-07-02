@@ -1,9 +1,10 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Model;
 
 use App\Config\Config;
+use App\Config\NonStaticConfig;
 use App\Entity\Address;
 use App\Entity\Email;
 use App\Entity\Estado;
@@ -17,7 +18,14 @@ use Respect\Validation\Validator as v;
 
 class PersonModel extends Model
 {
+    /**
+     * @var bool
+     */
     protected $error = false;
+
+    /**
+     * @var array
+     */
     protected $errorResponse = [];
 
     /**
@@ -27,11 +35,16 @@ class PersonModel extends Model
      */
     public function persist(array $data): array
     {
-        extract($data);
+        $config = new NonStaticConfig();
+        $person = $data['person'];
+        $customer = $data['customer'];
+        $email = $data['email'];
+        $phone = $data['phone'];
+        $address = $data['address'];
         //$person['cpf'] = $person['cpf'] === "" ? null : $person['cpf'];
         $person['cpf'] = v::cpf()->validate($person['cpf']) === true ? $person['cpf'] : $this->error('cpf');
         $cnpj = $customer['cnpj'] === "" ? null : $customer['cnpj'];
-        if (Config::getProperty('check_cnpj')) {
+        if ($config->getProperty('check_cnpj')) {
             $cnpj = v::cnpj()->validate($cnpj) ? $customer['cnpj'] : $this->error('cnpj');
         }
         $person['birthDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $person['birthDate']))) == true ? $person['birthDate'] : $this->error('data de nascimento');
@@ -53,7 +66,7 @@ class PersonModel extends Model
             ];
         }
         if (!$this->config['allow_same_cpf']) {
-            $result = $this->checkSameField('cpf', $person['cpf']);
+            $result = $this->checkSameField('cpf', (string) $person['cpf']);
             if ($result['result'] !== 0) {
                 return [
                     'http_code' => 400,
@@ -64,10 +77,7 @@ class PersonModel extends Model
         }
         $person['birthDate'] = $person['birthDate'] === "" ? null : $person['birthDate'];
         $customer['foundationDate'] = $customer['foundationDate'] === "" ? null : $customer['foundationDate'];
-
         $em = $this->em;
-        $em->getConnection()->beginTransaction();
-
         try {
             $pessoaFisica = new PessoaFisica();
             $pessoaFisica->setFirstName($person['firstName']);
@@ -80,16 +90,14 @@ class PersonModel extends Model
             $pessoaFisica->setGenre($g);
             $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null;
             $pessoaFisica->setBirthDate($date);
-
             foreach ($phone as $phones) {
-                $telephone = new Phone;
-                $phones = (int)str_replace(' ', '', str_replace('(', '', str_replace(')', '', str_replace('-', '', $phones))));
+                $telephone = new Phone();
+                $phones = (int) str_replace(' ', '', str_replace('(', '', str_replace(')', '', str_replace('-', '', $phones))));
 
                 $telephone->setNumber($phones);
                 $em->persist($telephone);
                 $pessoaFisica->addPhone($telephone);
             }
-
             foreach ($email as $emails) {
                 $mail = new Email();
                 $emails = str_replace('(', '', str_replace(')', '', str_replace('-', '', $emails)));
@@ -97,10 +105,8 @@ class PersonModel extends Model
                 $em->persist($mail);
                 $pessoaFisica->addEmail($mail);
             }
-
             $proprietary = new Proprietario();
             $proprietary->setPessoaFisica($pessoaFisica);
-
             $client = new PessoaJuridica();
             $client->setRazaoSocial($customer['razaoSocial']);
             $client->setNomeFantasia($customer['nomeFantasia']);
@@ -112,10 +118,8 @@ class PersonModel extends Model
             $client->addProprietario($proprietary);
             $situcaoCadastral = $customer['situacaoCadastral'] === "" ? 3 : (int) $customer['situacaoCadastral'];
             $client->setSituacaoCadastral($situcaoCadastral);
-
             $state = isset($address['estado']) ? $em->getRepository(Estado::class)->find($address['estado']) : null;
             $city = isset($address['municipio']) ? $em->getRepository(Municipio::class)->find($address['municipio']) : null;
-
             $addr = new Address();
             $addr->setPessoaFisicaId($pessoaFisica);
             $addr->setMunicipio($city);
@@ -124,15 +128,12 @@ class PersonModel extends Model
             $addr->setNeighborhood($address['neightborhood']);
             $addr->setNumber($address['number']);
             $addr->setZipcode($address['cep']);
-
             $pessoaFisica->setAddress($addr);
-
             $em->persist($proprietary);
             $em->persist($client);
             $em->persist($pessoaFisica);
             $em->persist($addr);
             $em->flush();
-            $em->getConnection()->commit();
 
             return [
                 'http_code' => 200,
@@ -140,7 +141,6 @@ class PersonModel extends Model
                 'message'   => 'Cliente adicionado com sucesso'
             ];
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();
             return [
                 'http_code' => 400,
                 'type'      => 'error',
@@ -150,6 +150,10 @@ class PersonModel extends Model
         }
     }
 
+    /**
+     * @param string $type
+     * @return bool|null
+     */
     public function error(string $type): ?bool
     {
         $this->error = true;
@@ -158,15 +162,22 @@ class PersonModel extends Model
             'type' => 'warning',
             'message' => "Informação em {$type} não é valida"
         ];
+
         return false;
     }
 
+    /**
+     * @param string $field
+     * @param string $value
+     * @return array|null
+     */
     private function checkSameField(string $field, string $value): ?array
     {
         $connection = $this->em->getConnection();
         $statement = $connection->prepare("SELECT COUNT($field) AS result FROM pessoa_fisica WHERE $field = :$field");
         $statement->bindValue($field, $value);
         $statement->execute();
+
         return $statement->fetch();
     }
 }

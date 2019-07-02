@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 /**
  * TO-DO
  * 
@@ -12,10 +12,7 @@ use Symfony\Component\Yaml\Yaml;
 
 final class NonStaticConfig
 {
-    /**
-     * Arquivo de configuração parseado.
-     *
-     * @var array array associativo com strings de configuração;
+    /**@var array array associativo com strings de configuração;
      */
     private $config;
 
@@ -28,11 +25,7 @@ final class NonStaticConfig
     }
 
     /**
-     * Retorna um array com arquivo de configuração iniciado.
-     *
-     * @throws NotLoadedConfigException
-     *
-     * @return array array associativo com nomes das configurações e valor respoectivo.
+     * @return array
      */
     public function getConfig(): array
     {
@@ -40,11 +33,9 @@ final class NonStaticConfig
     }
 
     /**
-     * Função para recuperar o valor de alguma configuração.
-     *
      * @param string $param
-     *
-     * @return string
+     * @return mixed
+     * @throws NotFoundParameterException
      */
     public function getProperty(string $param)
     {
@@ -56,8 +47,6 @@ final class NonStaticConfig
     }
 
     /**
-     * Write images on paths.
-     *
      * @return self
      */
     public function writeImage(): self

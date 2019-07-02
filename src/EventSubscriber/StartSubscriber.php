@@ -12,7 +12,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class StartSubscriber extends AbstractController implements EventSubscriberInterface
 {
-    public function onKernelController(FilterControllerEvent $event)
+    public function onKernelController(/**FilterControllerEvent $event */)
     {
         $today = new \DateTime('now');
 

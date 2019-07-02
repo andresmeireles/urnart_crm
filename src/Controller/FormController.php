@@ -1,7 +1,5 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 /**
- * FormController
- *
  * @category Controller
  * @package  App\Controller
  * @author   André Meireles <andre2meireles@gmail.com>
@@ -31,10 +29,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
-
 /**
- * Controller das paginas de formulário
- *
  * @category Controller
  * @package  App\Controller\FormController
  * @author   André Meireles <andre2meireles@gmail.com>
@@ -44,11 +39,7 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 class FormController extends AbstractController
 {
     /**
-     * Reireciona para pagina inicial da sessão de formulários
-     *
      * @Route("/forms", name="form")
-     *
-     * @return Response
      */
     public function index()
     {
@@ -57,8 +48,6 @@ class FormController extends AbstractController
 
     /**
      * @Route("/forms/view", methods="GET", name="form_view")
-     *
-     * @return  Response
      */
     public function viewSaveReports(Request $request, FileFunctions $fileFunc): Response
     {
@@ -86,11 +75,6 @@ class FormController extends AbstractController
     
     /**
      * @Route("/forms/save", methods="GET", name="save_report")
-     *
-     * @param Request   $request
-     * @param FormModel $model   Nome do formulatio
-     *
-     * @return  Response
      */
     public function saveFunction(Request $request, FormModel $model): Response
     {
@@ -108,15 +92,10 @@ class FormController extends AbstractController
 
         return $this->redirect(sprintf('/forms/%s', $formName));
     }
-    
+
     /**
-     * Redireciona para o template de formulário requisitado
-     *
-     * @param string $formName Nome do furomulario usado para template
-     *
      * @Route("/forms/{formName}", methods={"GET"})
-     *
-     * @return Response
+     * @throws \Exception
      */
     public function findFormTemplate(Request $request, string $formName): Response
     {
@@ -140,7 +119,7 @@ class FormController extends AbstractController
         }
         $requestData = [
             'formName' => $formName,
-            'config' => new NonStaticConfig,
+            'config' => new NonStaticConfig(),
             'formFill' => isset($formAllData) ? $formAllData->getArrayInArray() : null,
             'formData' => isset($formAllData) ? $formAllData->getSimpleArray() : null
         ];
@@ -166,13 +145,8 @@ class FormController extends AbstractController
     }
 
     /**
-     * Redireciona para o template de formulário requisitado
-     *
-     * @param string $formName Nome do furomulario usado para template
-     *
      * @Route("/forms/{formName}", methods={"POST"})
-     *
-     * @return Response
+     * @throws CustomException
      */
     public function saveFormOnDb(Request $request, string $formName, FormModel $model): Response
     {
@@ -187,16 +161,8 @@ class FormController extends AbstractController
     }
 
     /**
-     * Cria e exporta arquivos para criação de formulários.
-     *
-     * @param Request $request      objeto de requisição.
-     * @param string  $formName     nome do formulário
-     *                              usado como template.
-     * @param Form    $form         objeto de formulário customizado.
-     *
      * @Route("/forms/{formName}/print", methods={"GET", "POST"}, name="overlord")
-     *
-     * @return Response
+     * @throws \Exception
      */
     public function printForm(Request $request, string $formName, Form $form): Response
     {
@@ -205,7 +171,7 @@ class FormController extends AbstractController
             $data['formName'] = $formName;
             return $this->redirectToRoute('save_report', $data);
         }
-        if (empty($data)) {
+        if ($data === []) {
             throw new \Exception('Nenhum dado enviado');
         }
         $result = $form->returnSelectedFromType('show', $formName, $data);
@@ -214,21 +180,14 @@ class FormController extends AbstractController
     }
 
     /**
-     * Recebe parametros, cria e envia para download arquivo pdf.
-     *
-     * @param Request $request  Objeto de requisição
-     * @param string  $formName Nome for fomulário usado como template
-     * @param Form    $form     Objeto de manipulação do Fourmulário
-     *
      * @Route("/forms/{formName}/print/pdf", methods={"POST"})
-     *
-     * @return Response
+     * @throws \Exception
      */
     public function sendPdfForm(Request $request, string $formName, Form $form): Response
     {
         $data = $request->request->all();
         
-        if (empty($data)) {
+        if ($data === []) {
             throw new \Exception('Nenhum dado enviado');
         }
         $result = $form->returnSelectedFromType('pdf', $formName, $data);
@@ -253,15 +212,12 @@ class FormController extends AbstractController
     }
 
     /**
-     * Redireciona para formulario e o completa com informações do banco de dados.
-     *
      * @Route("/forms/{formName}/{idOrder<\d+>}")
-     *
-     * @return  Response
+     * @throws CustomException
      */
     public function findFormFillWithId(string $formName, int $idOrder): Response
     {
-        /** @var TravelAccountability */
+        /** @var TravelAccountability $regitry */
         $regitry = $this->getDoctrine()->getRepository(TravelAccountability::class)->find($idOrder);
         if (!$regitry->getActive()) {
             throw new CustomException('Não se pode alterar item fechado.');
@@ -284,12 +240,13 @@ class FormController extends AbstractController
 
     /**
      * @Route("/forms/{formName}/{idReport<\d+>}/edit", methods={"POST"})
+     * @throws CustomException
      */
     public function editTravelAccountability(Request $request, string $formName, int $idReport, FormModel $model): Response
     {
-        /** @var TravelAccountability */
-        $regitry = $this->getDoctrine()->getRepository(TravelAccountability::class)->find($idReport);
-        if (!$regitry->getActive()) {
+        /** @var TravelAccountability $regitry */
+        $registry = $this->getDoctrine()->getRepository(TravelAccountability::class)->find($idReport);
+        if (!$registry->getActive()) {
             throw new CustomException('Não se pode alterar item fechado.');
         }
         $data = $request->request->all();
@@ -309,12 +266,12 @@ class FormController extends AbstractController
     public function terminateTravel(Request $request, string $formName, int $idORder, Form $form): Response
     {
         $data = $request->request->all();
-        $em = $this->getDoctrine()->getManager();
-        /** @var TravelAccountability */
-        $entity = $em->getRepository(TravelAccountability::class)->find($idORder);
+        $entityManager = $this->getDoctrine()->getManager();
+        /** @var TravelAccountability $entity */
+        $entity = $entityManager->getRepository(TravelAccountability::class)->find($idORder);
         $entity->setActive(false);
-        $em->merge($entity);
-        $em->flush();
+        $entityManager->merge($entity);
+        $entityManager->flush();
 
         $result = $form->returnSelectedFromType('show', $formName, $data);
         return new Response($result['template']);
@@ -323,11 +280,11 @@ class FormController extends AbstractController
     /**
      * @Route("/forms/overlord/{formName}/{repoId}")
      */
-    public function rxo(Request $request, $formName, $repoId)
+    public function rxo(string $formName, int $repoId)
     {
         $name = (new StringConvertions())->snakeToCamelCase($formName);
         $className = sprintf('App\Entity\%s', ucwords($name));
-        /** @var TravelAccountability */
+        /** @var TravelAccountability $entity */
         $entity = $this->getDoctrine()->getRepository($className)->find($repoId);
         /* dump($entity->__toString(), Yaml::parse($entity->__toString()));
         die(); */

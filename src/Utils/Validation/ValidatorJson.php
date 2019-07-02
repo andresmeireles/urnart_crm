@@ -2,29 +2,23 @@
 
 namespace App\Utils\Validation;
 
-use \Respect\Validation\Exceptions\NestedValidationException;
+use Respect\Validation\Exceptions\NestedValidationException;
 
-class ValidatorJson
+final class ValidatorJson
 {
     /**
-     * Lista de erros que podem ocorrer a um campo
-     *
      * @var static array
      */
     protected static $errors;
 
-    private function __construct()
-    {
-    }
+    private function __construct(){}
 
     /**
-     * Recebe um array associativo com campos e validações
-     *
-     * @param [array] $params Array com nomes e validadores
-     * @param array $validations Array associativo com nome do parametro e respectivos validadores
+     * @param array $params
+     * @param array $validations
      * @return void
      */
-    public static function validate($params, array $validations)
+    public static function validate(array $params, array $validations): void
     {
         foreach ($validations as $parameterName => $rule) {
             try {
@@ -35,7 +29,7 @@ class ValidatorJson
         }
     }
 
-    public static function getErrors()
+    public static function getErrors(): string
     {
         return self::$errors;
     }

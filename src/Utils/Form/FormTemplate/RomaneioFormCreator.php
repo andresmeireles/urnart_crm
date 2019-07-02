@@ -110,7 +110,7 @@ class RomaneioFormCreator implements CreateFormInterface
 			<td class="lp no-border" width="3%">R$</td>
 			<td class="no-border">'. $param['freight'] .'</td>
 			</tr>';
-            $number ++;
+            $number++;
             if (is_numeric($param['freight'])) {
                 $totalFreight += $param['freight'];
             }
@@ -142,7 +142,6 @@ class RomaneioFormCreator implements CreateFormInterface
     private function createBoardRomaneio(array $parameters): string
     {
         $number = 1;
-        $totalFreight = 0;
         $totalG = 0;
         $totalM = 0;
         $totalP = 0;
@@ -196,7 +195,7 @@ class RomaneioFormCreator implements CreateFormInterface
 			<td class="center">'. $param['urnP'] .'</td>
 			<td class="center no-border">'. ($param['urnG'] + $param['urnM'] + $param['urnP']) .'</td>
 			</tr>';
-            $number ++;
+            $number++;
             $totalP += $param['urnP'];
             $totalM += $param['urnM'];
             $totalG += $param['urnG'];

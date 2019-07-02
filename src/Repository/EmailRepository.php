@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -9,8 +9,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method Email|null find($id, $lockMode = null, $lockVersion = null)
  * @method Email|null findOneBy(array $criteria, array $orderBy = null)
- * @method Email[]    findAll()
- * @method Email[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Email      findAll()
+ * @method Email      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class EmailRepository extends ServiceEntityRepository
 {

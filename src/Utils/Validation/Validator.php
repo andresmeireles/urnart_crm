@@ -4,12 +4,12 @@ namespace App\Utils\Validation;
 
 use Respect\Validation\Exceptions\NestedValidationException;
 
-class Validator
+final class Validator
 {
     /**
      * Lista de erros que podem ocorrer a um campo
      *
-     * @var static array
+     * @var array
      */
     protected $errors;
 
@@ -23,9 +23,9 @@ class Validator
      *
      * @param [array] $params Array com nomes e validadores
      * @param array $validations Array associativo com nome do parametro e respectivos validadores
-     * @return void
+     * @return bool
      */
-    private function validate($params, array $validations)
+    private function validate($params, array $validations): bool
     {
         foreach ($validations as $parameterName => $rule) {
             try {
@@ -34,7 +34,6 @@ class Validator
                 $this->errors = $err->getMessages();
             }
         }
-        
         if ($this->getErrors()) {
             print_r($this->errors);
             die;
@@ -43,7 +42,7 @@ class Validator
         return true;
     }
 
-    private function getErrors()
+    private function getErrors(): array
     {
         return $this->errors;
     }

@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Utils\Exceptions;
 
 /**
  * Exception when register is not found.
  */
-class RegisterEntityNotFoundException extends \PDOException
+final class RegisterEntityNotFoundException extends \PDOException
 {
 }

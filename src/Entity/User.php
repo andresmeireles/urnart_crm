@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -198,10 +198,10 @@ class User extends BaseEntity implements UserInterface, \Serializable
 
     public function unserialize($serialized)
     {
-        list(
+        [
             $this->id,
             $this->email,
             $this->password,
-        ) = unserialize($serialized);
+        ] = unserialize($serialized);
     }
 }

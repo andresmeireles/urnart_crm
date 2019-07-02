@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -232,13 +232,13 @@ class ManualOrderReport extends BaseEntity
     /**
      * Calcula o total dos produtos do pedido e retorna somados
      *
-     * @return integer
+     * @return int
      */
     public function getProductsAmount(): int
     {
         $amount = 0;
         $products = $this->getManualProductCarts();
-        $products->map(function ($product) use (&$amount) {
+        $products->map(static function ($product) use (&$amount) {
             $amount += $product->getProductAmount();
         });
 

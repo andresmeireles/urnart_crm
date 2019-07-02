@@ -18,9 +18,6 @@ class StorageController extends AbstractController
 {
     /**
      * @Route("/storage", name="storage")
-     *
-     * @param Crud $getter
-     * @return Response
      */
     public function index(Crud $getter): Response
     {
@@ -32,9 +29,6 @@ class StorageController extends AbstractController
 
     /**
      * @Route("/storage/feedstock", name="feedstock", methods="GET")
-     *
-     * @param Crud $getter
-     * @return Response
      */
     public function feedstock(Crud $getter): Response
     {
@@ -48,11 +42,6 @@ class StorageController extends AbstractController
 
     /**
      * @Route("/storage/feedstockAction/{id}", name="feedstockAction", methods={"POST", "DELETE", "GET"}, defaults={"id"=null})
-     *
-     * @param Request $request
-     * @param int|null $productId
-     * @param Crud $getter
-     * @return Response
      * @throws \Exception
      */
     public function feedstockAction(Request $request, ?int $productId, Crud $getter): Response
@@ -84,8 +73,7 @@ class StorageController extends AbstractController
 
             return new Response(200, Response::HTTP_OK, [
                 'redirect-route' => '/storage/product'
-                ]
-            );
+            ]);
         }
         
         if ($method == 'GET') {
@@ -105,11 +93,6 @@ class StorageController extends AbstractController
 
     /**
      * @Route("/storage/feedstockAction/update/{id}", methods="POST")
-     *
-     * @param FeedstockModel $model
-     * @param Request        $request
-     * @param int            $productId
-     * @return Response
      */
     public function updateFeedStock(FeedstockModel $model, Request $request, int $productId): Response
     {
@@ -121,12 +104,6 @@ class StorageController extends AbstractController
 
     /**
      * @Route("/storage/feedstock/in", methods="POST")
-     *
-     * @param Feedstock $model
-     * @param Request $request
-     *
-     * @return Response
-     * @throws \Exception
      */
     public function feedIn(FeedstockModel $model, Request $request): Response
     {
@@ -138,11 +115,6 @@ class StorageController extends AbstractController
 
     /**
      * @Route("/storage/feedstock/out", methods="POST")
-     *
-     * @param FeedstockModel $model
-     * @param Request $request
-     * @return Response
-     * @throws \Exception
      */
     public function feedOut(FeedstockModel $model, Request $request): Response
     {
@@ -154,9 +126,6 @@ class StorageController extends AbstractController
 
     /**
      * @Route("/storage/product", name="showProd")
-     *
-     * @param Crud $getter
-     * @return Response
      */
     public function prodStock(Crud $getter): Response
     {
@@ -167,12 +136,6 @@ class StorageController extends AbstractController
 
     /**
      * @Route("/storage/productAction", methods="POST")
-     *
-     * @param ProductModel $model
-     * @param array $request
-     * @param Request $require
-     * @return Response
-     * @throws \Exception
      */
     public function addProduct(ProductModel $model, Request $request): Response
     {
@@ -182,35 +145,22 @@ class StorageController extends AbstractController
             $response['type'],
             $response['message']
         );
+
         return $this->redirectToRoute('showProd');
     }
 
     /**
-     * Redirect to update page.
-     *
      * @Route("/storage/productAction/{id<\d+?>}", methods="GET")
-     *
-     * @param string $productId
-     *
-     * @return Response
      */
     public function redirectToUpdate($productId): Response
     {
         return $this->render('/storage/forms/productForm.html.twig', [
             'product' => $this->getDoctrine()->getManager()->getRepository(Product::class)->find($productId)
-            ]
-        );
+        ]);
     }
     
     /**
-     * Update page. Accepts only numbers as id
-     *
      * @Route("/storage/product/update/{id}", methods="POST", requirements={"page"="\d+"})
-     *
-     * @param ProductModel $model
-     * @param string $productId
-     * @return Response
-     * @throws \Exception
      */
     public function updateProduct(ProductModel $model, Request $request, string $productId): Response
     {
@@ -229,13 +179,7 @@ class StorageController extends AbstractController
     }
     
     /**
-     * Remove page. Accepts only numbers as id
-     *
      * @Route("/storage/productAction/{id}", methods="DELETE", requirements={"page"="\d+"})
-     *
-     * @param ProductModel $model
-     * @param [type] $productId
-     * @return Response
      */
     public function removeProduct(ProductModel $model, $productId): Response
     {
@@ -249,9 +193,6 @@ class StorageController extends AbstractController
 
     /**
      * @Route("/storage/product/in", methods="PUT")
-     *
-     * @param Request $request
-     * @return Response
      */
     public function productIn(ProductModel $model, Request $request): Response
     {

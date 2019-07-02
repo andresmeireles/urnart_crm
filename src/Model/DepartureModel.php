@@ -1,20 +1,19 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model;
 
-use App\Utils\Andresmei\Form;
-use App\Entity\TravelTruckOrders;
+use App\Entity\ProductCart;
 use App\Utils\Exceptions\CustomException;
+use App\Utils\Andresmei\Form;
+use App\Entity\ManualOrderReport;
+use App\Entity\ManualProductCart;
+use App\Entity\TravelTruckOrders;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class DepartureModel extends Model
 {
     /**
-     * Ordena de forma correta.
-     * 
-     * TEST OK
-     *
      * @param Collection $unorganizedOrders
      * @param array $correctOrder
      * @return Collection
@@ -22,8 +21,8 @@ class DepartureModel extends Model
     public function getCorrectOrderOfOrders(Collection $unorganizedOrders, array $correctOrder): Collection
     {
         $orderOfObjects = [];
-        array_map(function ($id) use (&$unorganizedOrders, &$orderOfObjects) {
-            $unorganizedOrders->map(function ($val) use (&$id, &$orderOfObjects) {
+        array_map(static function ($id) use (&$unorganizedOrders, &$orderOfObjects) {
+            $unorganizedOrders->map(static function ($val) use (&$id, &$orderOfObjects) {
                 if ($id === $val->getId()) {
                     $orderOfObjects[] = $val;
                 }
@@ -33,6 +32,13 @@ class DepartureModel extends Model
         return new ArrayCollection($orderOfObjects);
     }
 
+    /**
+     * @param TravelTruckOrders $entityClass
+     * @param Form $form
+     * @param string $typeReport
+     * @return string
+     * @throws \Exception
+     */
     public function generateAutomaticShowReportWithData(
         TravelTruckOrders $entityClass,
         Form $form,
@@ -43,6 +49,13 @@ class DepartureModel extends Model
         return $report['template'];
     }
 
+    /**
+     * @param TravelTruckOrders $entityClass
+     * @param Form $form
+     * @param string $typeReport
+     * @return array
+     * @throws \Exception
+     */
     public function generateAutomaticPdfReportWithData(
         TravelTruckOrders $entityClass,
         Form $form,
@@ -52,13 +65,10 @@ class DepartureModel extends Model
     }
 
     /**
-     * Criar todos os relatórios e cria um arquivo zip.
-     *
-     * TEST OK
-     * 
      * @param TravelTruckOrders $orderReport
      * @param Form $form
      * @return string
+     * @throws \Exception
      */
     public function exportAllPdfReports(TravelTruckOrders $orderReport, Form $form): string
     {
@@ -78,7 +88,7 @@ class DepartureModel extends Model
                 continue;
             }
         }
-        $zip = new \ZipArchive;
+        $zip = new \ZipArchive();
         if ($zip->open($zipReportName, \ZipArchive::CREATE)) {
             foreach ($pdfFiles as $pdfFile) {
                 if (!$pdfFile) {
@@ -88,7 +98,7 @@ class DepartureModel extends Model
             }
             $zip->close();
         }
-        array_map(function ($file) use (&$reportBuilderPath) {
+        array_map(static function ($file) use (&$reportBuilderPath) {
             if (strpos($file, 'pdf')) {
                 $fileName = sprintf('%s/%s', $reportBuilderPath, $file);
                 unlink($fileName);
@@ -99,16 +109,13 @@ class DepartureModel extends Model
     }
 
     /**
-     * Seleciona o gerador do ventilador
-     *
-     * TEST OK
-     *
      * @param TravelTruckOrders $entityClass
      * @param Form $form
      * @return array
+     * @throws \Exception
      */
     public function generateAutomaticReportWithData(
-        object $entityClass,
+        TravelTruckOrders $entityClass,
         Form $form,
         string $typeReport,
         string $methodType
@@ -152,17 +159,13 @@ class DepartureModel extends Model
                 );
                 break;
         }
-        $result = $form->returnSelectedFromType($methodType, $typeReport, $data);
-        
-        return $result;
+
+        return $form->returnSelectedFromType($methodType, $typeReport, $data);
     }
 
     /**
-     * Automatic tag report data creation
-     *
-     * TEST OK
-     *
      * @param Collection $ordersCollection
+     * @param array $checkOrders
      * @return array
      */
     public function generateTagReportWithReportData(
@@ -170,7 +173,7 @@ class DepartureModel extends Model
         array $checkOrders
     ): array {
         $formData = [];
-        $ordersCollection->map(function ($value) use (&$formData, &$checkOrders) {
+        $ordersCollection->map(static function ($value) use (&$formData, &$checkOrders) {
             $formData[] = [
                 'city' => $value->getCustomerCity(),
                 'name' => $value->getCustomerName(),
@@ -183,10 +186,6 @@ class DepartureModel extends Model
     }
 
     /**
-     * Freight letter
-     *
-     * TEST OK
-     *
      * @param Collection $ordersCollection
      * @return array
      */
@@ -194,8 +193,8 @@ class DepartureModel extends Model
         Collection $ordersCollection
     ): array {
         $formData = [];
-        /** @var \App\Entity\ManualOrderReport $value */
-        $ordersCollection->map(function ($value) use (&$formData) {
+        $ordersCollection->map(static function ($value) use (&$formData) {
+            /** @var ManualOrderReport $value */
             $formData[] = [
                 'freight' => $value->getFreight(),
                 'number' => $value->getId(),
@@ -210,10 +209,6 @@ class DepartureModel extends Model
     }
 
     /**
-     * receipt
-     *
-     * TEST OK
-     *
      * @param Collection $ordersCollection
      * @return array
      */
@@ -221,7 +216,8 @@ class DepartureModel extends Model
         Collection $ordersCollection
     ): array {
         $formData = [];
-        $ordersCollection->map(function ($value) use (&$formData) {
+        $ordersCollection->map(static function ($value) use (&$formData) {
+            /** @var ManualOrderReport $value */
             $formData[] = [
                 'clientName' => $value->getCustomerName(),
                 'clientCity' => $value->getCustomerCity(),
@@ -248,24 +244,26 @@ class DepartureModel extends Model
         $urnG = ['210', '190', '180', '170', '160'];
         $urnM = ['150', '130', '110'];
         $urnP = ['090', '070', '050'];
-        $ordersCollection->map(function ($value) use (&$formData, &$urnG, &$urnM, &$urnP) {
+        $ordersCollection->map(static function ($value) use (&$formData, &$urnG, &$urnM, &$urnP) {
             $urnGA = 0;
             $urnMA = 0;
             $urnPA = 0;
-            $value->getManualProductCarts()->map(function ($prod) use (&$urnG, &$urnM, &$urnP, &$urnGA, &$urnMA, &$urnPA) {
+            /** @var ManualOrderReport $value */
+            $value->getManualProductCarts()->map(static function ($prod) use (&$urnG, &$urnM, &$urnP, &$urnGA, &$urnMA, &$urnPA) {
+                /** @var ManualProductCart $prod */
                 $productName = $prod->getProductName();
                 $productAmount = $prod->getProductAmount();
-                array_map(function ($amounts) use (&$urnGA, &$productName, &$productAmount) {
+                array_map(static function ($amounts) use (&$urnGA, &$productName, &$productAmount) {
                     if (strpos($productName, $amounts)) {
                         $urnGA += $productAmount;
                     }
                 }, $urnG);
-                array_map(function ($amounts) use (&$urnMA, &$productName, &$productAmount) {
+                array_map(static function ($amounts) use (&$urnMA, &$productName, &$productAmount) {
                     if (strpos($productName, $amounts)) {
                         $urnMA += $productAmount;
                     }
                 }, $urnM);
-                array_map(function ($amounts) use (&$urnPA, &$productName, &$productAmount) {
+                array_map(static function ($amounts) use (&$urnPA, &$productName, &$productAmount) {
                     if (strpos($productName, $amounts)) {
                         $urnPA += $productAmount;
                     }
@@ -298,7 +296,8 @@ class DepartureModel extends Model
     {
         $formData = [];
         $formData['driverName'] = $driverName;
-        $data = $ordersCollection->map(function ($value) {
+        $data = $ordersCollection->map(static function ($value) {
+            /** @var ManualOrderReport $value */
             return [
                 'name' => $value->getCustomerName(),
                 'city' => $value->getCustomerCity(),
@@ -309,13 +308,20 @@ class DepartureModel extends Model
         return $formData;
     }
 
+    /**
+     * @param Collection $ordersCollection
+     * @param array $modelsNames
+     * @return array
+     */
     public function generateReportByModel(Collection $ordersCollection, array $modelsNames): array
     {
         $modelsName = array_values($modelsNames);
-        $products[] = $ordersCollection->map(function ($order) {
+        $products = $ordersCollection->map(static function ($order) {
+            /** @var ManualOrderReport $order */
             return $order->getManualProductCarts();
         });
-        array_map(function ($product) use (&$modelsName) {
+        array_map(static function ($product) use (&$modelsName) {
+            /** @var ManualProductCart $product */
             if (array_key_exists($product->getProductName(), $modelsName)) {
                 $actualAmount = $modelsName[$product->getProductName()];
                 $modelsName[$product->getProductName()] = $actualAmount + $product->getProductAmount();

@@ -4,23 +4,9 @@
 version: "3.1"
 services:
 
-    mariadb:
-      image: mariadb:10.4
-      container_name: syadmin-mariadb
-      working_dir: /application
-      volumes:
-        - .:/application
-      environment:
-        - MYSQL_ROOT_PASSWORD=123
-        - MYSQL_DATABASE=sysadmin
-        - MYSQL_USER=fred
-        - MYSQL_PASSWORD=123
-      ports:
-        - "8003:3306"
-
     webserver:
       image: nginx:alpine
-      container_name: syadmin-webserver
+      container_name: sysadmin-webserver
       working_dir: /application
       volumes:
           - .:/application
@@ -30,7 +16,7 @@ services:
 
     php-fpm:
       build: phpdocker/php-fpm
-      container_name: syadmin-php-fpm
+      container_name: sysadmin-php-fpm
       working_dir: /application
       volumes:
         - .:/application

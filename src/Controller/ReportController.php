@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Config\NonStaticConfig;
@@ -20,11 +20,7 @@ use App\Model\ProductionCountModel;
 class ReportController extends AbstractController
 {
     /**
-     * Redirect to index pages of reports pages
-     *
      * @Route("/report", name="report")
-     *
-     * @return Response
      */
     public function index(): Response
     {
@@ -32,11 +28,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * Redirect survey routes
-     *
      * @Route("/report/survey", name="survey")
-     *
-     * @return Response
      */
     public function survey(NonStaticConfig $config, SurveyModel $surveyModel): Response
     {
@@ -92,7 +84,7 @@ class ReportController extends AbstractController
         $lastDate = $request->request->get('last-date');
         $result = $model->getProductsByModelName(
             $beginDate,
-            $lastDate,
+            $lastDate
         );
         $data = $result->result;
         $nameResults = [];
@@ -177,13 +169,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * Redirect to specific report page
-     *
      * @Route("/report/{reportType}", name="view_report_by_type")
-     *
-     * @param   string    $reportType  type of report to redirect
-     *
-     * @return  Response               report page
      */
     public function openReportPage(string $reportType): Response
     {
@@ -196,9 +182,9 @@ class ReportController extends AbstractController
         }
         $str = (new StringConvertions())->snakeToCamelCase($reportType);
         $repository = sprintf('App\Entity\%s', ucfirst($str));
-        /** @var \Doctrine\ORM\EntityManager */
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery(sprintf(
+        /** @var EntityManager $entityManager */
+        $entityManager = $this->getDoctrine()->getManager();
+        $query = $entityManager->createQuery(sprintf(
             'SELECT u.id, u.date FROM %s u',
             $repository
         ));
@@ -210,14 +196,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * Create some report registry. Give a json response.
-     *
      * @Route("/api/report/{pageType}/create", methods="POST")
-     *
-     * @param   Request   $request     Symfony Request object.
-     * @param   string    $pageType    type of page.
-     *
-     * @return  Response               rederized page.
      */
     public function createGenericReportRegistryAjax(Request $request, string $pageType, ReportModel $model): Response
     {
@@ -233,14 +212,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * Create some report registry.
-     *
      * @Route("/report/{pageType}/create", methods="POST")
-     *
-     * @param   Request   $request     Symfony Request object.
-     * @param   string    $pageType    Type of page.
-     *
-     * @return  Response               Return to last referer page.
      */
     public function createGenericReportRegistry(Request $request, string $pageType, ReportModel $model): Response
     {
@@ -267,7 +239,7 @@ class ReportController extends AbstractController
             throw new CustomException('Token incorreto.');
         }
         $request->request->remove('_csrf_token');
-        $result = array_map(function ($value) {
+        $result = array_map(static function ($value) {
             return $value;
         }, $request->request->all());
         $insertionResult = $productionCountModel->createProductionCount($result);
@@ -286,7 +258,7 @@ class ReportController extends AbstractController
     public function coiso()
     {
         $res = $this->getDoctrine()->getRepository(ModelName::class)->findAll();
-        $modelNames = array_map(function ($value) {
+        $modelNames = array_map(static function ($value) {
             if ([] !== $value->getColors()) {
                 $arrays = [];
                 foreach ($value->getColors() as $color) {
@@ -297,7 +269,7 @@ class ReportController extends AbstractController
                             $value->getName(),
                             $value->getHeight(),
                             $color,
-                            $value->getSpecificity(),
+                            $value->getSpecificity()
                         ),
                     ];
                 }
@@ -315,7 +287,7 @@ class ReportController extends AbstractController
         }, $res);
         foreach ($modelNames as $key => $value) {
             if (!array_key_exists('n', $value)) {
-                array_map(function ($item) use (&$modelNames) {
+                array_map(static function ($item) use (&$modelNames) {
                     $modelNames[] = $item;
                 }, $value);
                 unset($modelNames[$key]);
@@ -326,13 +298,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * Return registry type.
-     *
      * @Route("/report/{pageType}/list", methods="GET")
-     *
-     * @param   string    $pageType  Entity page.
-     *
-     * @return  Response             List of pages.
      */
     public function getGenericList(Request $request, string $pageType, ReportModel $model): Response
     {
@@ -357,14 +323,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * Return edit view.
-     *
      * @Route("/report/{entity}/edit/{idConsult<\d+>}", methods="GET")
-     *
-     * @param   string    $entity     Entity name.
-     * @param   int       $idConsult  Id to fetch data from database.
-     *
-     * @return  Response              Edit page.
      */
     public function viewEditGeneric(string $entity, int $idConsult): Response
     {
@@ -378,15 +337,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * Return edit view.
-     *
      * @Route("/report/{entity}/edit/{idConsult<\d+>}", methods="POST")
-     *
-     * @param   Request   $request    Symfony Request object.
-     * @param   string    $entity     Entity name.
-     * @param   int       $idConsult  Id to fetch data from database.
-     *
-     * @return  Response              Edit page.
      */
     public function editRegisterGeneric(Request $request, string $entity, int $idConsult, ReportModel $model): Response
     {
@@ -403,14 +354,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * Get data from entity.
-     *
      * @Route("/api/report/{entity}/{consultId}")
-     *
-     * @param   string    $entity     Entity for consult.
-     * @param   int       $consultId  Id for consult.
-     *
-     * @return  Response              Single registry data.
      */
     public function getSingleDataGenericAjax(string $entity, int $consultId, ReportModel $model): Response
     {
@@ -420,11 +364,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * Cria pesquisa de satisfação
-     *
      * @Route("/report/create/survey", name="createSurvey")
-     *
-     * @return Response
      */
     public function createSurvey(Request $request, SurveyModel $surveyModel): Response
     {
@@ -436,11 +376,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * Send surveys to databases
-     *
      * @Route("/report/survey/send", name="sendSurveys", methods="POST")
-     *
-     * @return Response
      */
     public function sendSurveys(Request $request, SurveyModel $surveyModel): Response
     {
@@ -463,14 +399,7 @@ class ReportController extends AbstractController
     *****************************************************/
 
     /**
-     * Change status of Boleto. Specific function.
-     *
      * @Route("/report/boleto/status/{boletoId}", methods="POST")
-     *
-     * @param   ReportModel  $model     Report with change functions.
-     * @param   int          $boletoId  Boleto identification.
-     *
-     * @return  Response             Redirect to page.
      */
     public function boletoChangeStatus(Request $request, int $boletoId, ReportModel $model): Response
     {
@@ -491,15 +420,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * Redirect To chart generator page.
-     *
      * @Route("/report/boleto/reportCreator/{reportName}", methods="GET")
-     *
-     * @param   Request      $request       Request model object.
-     * @param   string       $reportName    Name of report.
-     * @param   ReportModel  $model         ReportModel for search function.
-     *
-     * @return  Response                    Chart page.
      */
     public function createBoletoReport(Request $request, string $reportName, ReportModel $model): Response
     {

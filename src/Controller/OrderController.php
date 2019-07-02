@@ -40,15 +40,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderController extends AbstractController
 {
     /**
-     * Redireciona para a pagina inicial dos pedidos
-     *
      * @Route("/order", name="order")
-     *
      */
     public function index(Request $request, PaginatorInterface $paginator, OrderModel $orderModel): Response
     {
         $query = $request->query;
-        if (!empty($query->get('query'))) {
+        if ($query->get('query') !== null) {
             $entity = sprintf('App\Entity\%s', $query->get('entity'));
             $field = $query->get('field');
             $queryMessage = $query->get('query');
@@ -100,9 +97,6 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/list", defaults={"type"="last"})
-     *
-     * @param  Request $request
-     * @return Response
      */
     public function list(Request $request, ListModel $model): Response
     {
@@ -116,8 +110,6 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/create", name="createOrder", methods="GET")
-     *
-     * @return Response
      */
     public function viewCreateOrder(): Response
     {
@@ -133,11 +125,6 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/create", methods="POST")
-     *
-     * @param OrderModel $model
-     * @param Request $request
-     * @return Response
-     * @throws \Exception
      */
     public function createOrder(OrderModel $model, Request $request): Response
     {
@@ -164,10 +151,6 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/action/edit/{id}", methods="GET")
-     *
-     * @param string $orderId
-     *
-     * @return Response
      */
     public function redirectOrderActions(string $orderId): Response
     {
@@ -191,11 +174,6 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/action/edit/{id}", methods="POST")
-     *
-     * @param string $orderId
-     *
-     * @return Response
-     * @throws \Exception
      */
     public function updateOrder(OrderModel $model, Request $request, string $orderId): Response
     {
@@ -225,9 +203,6 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/action/reserve", methods="GET")
-     *
-     * @return Response
-     * @throws \Exception
      */
     public function reserveOrderProducts(OrderModel $model, Request $request): Response
     {
@@ -263,11 +238,6 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/action/order/{type}", methods="GET")
-     *
-     * @param OrderModel $model
-     * @param string $type
-     * @param Request $request
-     * @return Response
      */
     public function runTypeUnReserveAction(OrderModel $model, string $type, Request $request): Response
     {
@@ -286,15 +256,12 @@ class OrderController extends AbstractController
             $result['type'],
             $result['message']
         );
+
         return $this->redirectToRoute('order');
     }
 
     /**
      * @Route("/order/action/remove/{id}", methods="DELETE")
-     *
-     * @param OrderModel $model
-     * @param string $orderId
-     * @return Response
      */
     public function removeOrder(OrderModel $model, string $orderId): Response
     {
@@ -303,6 +270,7 @@ class OrderController extends AbstractController
             $result->getType(),
             $result->getMessage()
         );
+
         return new Response($result->getMessage(), $result->getHttpCode(), [
             'redirect-route' => '/order'
         ]);
@@ -310,17 +278,13 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/action/print", methods="GET")
-     *
-     * @param Request    $request
-     *
-     * @return Response
      */
     public function showOrderToOrder(Request $request): Response
     {
         $hash = $request->query->get('h');
         $orderId = $request->query->get('i');
         $printRepository = sprintf('App\Entity\%s', $request->query->get('r'));
-        if (empty($hash) || empty($orderId)) {
+        if ($hash === null || $orderId === null) {
             $this->addFlash(
                 'error',
                 'Alguma informação incosistente...'
@@ -338,10 +302,6 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/manual/list", name="manualList", methods="GET")
-     *
-     * @param   Request     $request
-     * @param   ListModel   $listModel
-     * @return  Response
      */
     public function manualListing(Request $request, ListModel $listModel, PaginatorInterface $paginator): Response
     {
@@ -350,7 +310,6 @@ class OrderController extends AbstractController
             [],
             [$typeOfList => 'ASC']
         );
-
         if ($request->query->get('beginDate') !== null || $request->query->get('lastDate') !== null) {
             $lists = $listModel->getListByDate(
                 'ManualOrderReport',
@@ -359,7 +318,6 @@ class OrderController extends AbstractController
             );
             $typeOfList = 'bydate';
         }
-
         $paginatorList = $paginator->paginate(
             $lists,
             $request->query->getInt('page', 1)
@@ -374,10 +332,6 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/manual/list/json", name="manualListJson")
-     *
-     * @param Request $request
-     * @param ListModel $listModel
-     * @return Response
      */
     public function manualListingJson(Request $request, ListModel $listModel): Response
     {
@@ -387,13 +341,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * Cria registro no banco de dados através do pedido manual.
-     *
      * @Route("/order/createmanualorder", name="createManualOrder", methods="POST")
-     *
-     * @param OrderModel    $model
-     * @param Request       $request
-     * @return Response
      */
     public function createManualOrder(OrderModel $model, Request $request): Response
     {
@@ -425,9 +373,6 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/manual/{orderId<\d+>}", methods={"POST"})
-     *
-     * @param int $orderId
-     * @return Response
      */
     public function editManualOrder(Request $request, OrderModel $model, int $orderId): Response
     {
@@ -447,13 +392,10 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/manual/{orderId<\d+>}", methods={"GET"})
-     *
-     * @param int $orderId
-     * @return Response
      */
     public function viewEditManualOrder(int $orderId): Response
     {
-        /** @var ManualOrderReport|null */
+        /** @var ManualOrderReport|null $orderToEdit */
         $orderToEdit = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
         
         if ($orderToEdit === null) {
@@ -471,7 +413,6 @@ class OrderController extends AbstractController
             ));
             return $this->redirectToRoute('manualList');
         }
-
         $transporters = $this->getDoctrine()->getRepository(Transporter::class)->findAll();
         $paymentType = $this->getDoctrine()->getRepository(PaymentType::class)->findAll();
 
@@ -484,11 +425,6 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/manual/{orderId<\d+>}", methods={"PUT"})
-     *
-     * @param int $orderId
-     * @param OrderModel $orderModel
-     * @throws \Exception
-     * @return Response
      */
     public function closeManualOrder(int $orderId, OrderModel $orderModel): Response
     {
@@ -502,9 +438,6 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/order/manual/{orderId<\d+>}", methods={"DELETE"})
-     *
-     * @param int $orderId
-     * @return Response
      */
     public function removeManualOrder(int $orderId, OrderModel $orderModel): Response
     {

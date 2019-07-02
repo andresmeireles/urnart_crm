@@ -1,11 +1,11 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Utils\Generic;
 
+use Doctrine\Common\Collections\Collection;
 use App\Utils\Andresmei\FlashResponse;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use JMS\Serializer\SerializerBuilder;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * Generic Crud functions.
@@ -45,6 +45,12 @@ class Crud extends GenericContainer
         $this->entity = $className;
     }
 
+    /**
+     * @param string $id
+     * @param string $entity
+     * @return FlashResponse
+     * @throws \Exception
+     */
     public function remove(string $id, string $entity): FlashResponse
     {
         $this->setEntity($entity);
@@ -64,11 +70,9 @@ class Crud extends GenericContainer
     /**
      * Remove grupo de entradas em uma entidade
      *
-     * @param string $id
-     * @param object $entity
-     * @return boolean
-     * 
-     * @throws Exception
+     * @param Collection $entries
+     * @return bool
+     * @throws \Exception
      */
     public function removeManyEntries(Collection $entries): bool
     {
@@ -78,7 +82,7 @@ class Crud extends GenericContainer
         //     dump($v);
         // });
         try {
-            $entries->forAll(function ($k, $value) use ($entityManager) {
+            $entries->forAll(static function ($value) use ($entityManager) {
                 $entityManager->remove($value);
             });
         } catch (\Exception $error) {
@@ -97,7 +101,7 @@ class Crud extends GenericContainer
         return true;
     }
 
-    public function commit($errorMessage = null): void
+    public function commit(): void
     {
         try {
             $this->em->flush();
@@ -112,28 +116,27 @@ class Crud extends GenericContainer
         return $this->typeMessage;
     }
 
-    public function getMessage() : string
+    public function getMessage(): string
     {
         return $this->userMessage;
     }
 
-    public function getDevMessage() : string
+    public function getDevMessage(): string
     {
         return $this->devMessage;
     }
 
-    public function get(string $entity, ? string $type = null) : ? array
+    public function get(string $entity, ?string $type = null): ?array
     {
         if ($type === 'json') {
             $this->getJsonData($entity);
         }
-
         $this->setEntity($entity);
 
         return $this->em->getRepository($this->entity)->findAll();
     }
 
-    public function getJsonData(string $entity)
+    public function getJsonData(string $entity): string
     {
         $this->setEntity($entity);
         $serializer = SerializerBuilder::create()->build();
