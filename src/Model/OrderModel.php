@@ -48,8 +48,8 @@ class OrderModel extends Model
             $order->setTransporter($transporter);
             $customPort = array_key_exists('port', $information) ? $information['port'] : null;
             if (!is_null($transporter) && !is_null($customPort)) {
-                $customPort = ltrim(trim($information['port'])) === $transporter->getPort()?
-                null:
+                $customPort = ltrim(trim($information['port'])) === $transporter->getPort() ?
+                null :
                 ltrim(trim($information['port']));
             }
             $order->setCustomPort($customPort);
@@ -101,7 +101,7 @@ class OrderModel extends Model
             //$entityManager->getConnection()->commit();
         } catch (\Exception $e) {
             // development message
-            throw new \Exception(sprintf('%s %s %s', $e->getMessage(), $e->getFile(), $e->getLine()));
+            //throw new \Exception(sprintf('%s %s %s', $e->getMessage(), $e->getFile(), $e->getLine()));
             //$entityManager->getConnection()->rollback();
 
             return new FlashResponse(401, 'error', $e->getMessage());

@@ -16,7 +16,6 @@ class RegisterController extends AbstractController
 {
     /**
      * @Route("/register", name="register")
-     *
      * @return Response
      */
     public function index(): Response
@@ -26,9 +25,9 @@ class RegisterController extends AbstractController
 
     /**
      * @Route("/register/add/model", methods={"POST", "PUT"})
-     *
      * @param Request $request
      * @return Response
+     * @throws \Exception
      */
     public function addModelRegister(Request $request, ModelsModel $modelsModel): Response
     {
@@ -116,30 +115,27 @@ class RegisterController extends AbstractController
     }
 
     /**
-     * @Route("/register/configuration", methods="GET", name="config")
+     * @Route("/register/configuration", methods={"GET", "POST"}, name="config")
      */
-    public function configuration(): Response
+    public function configuration(Request $request): Response
     {
-        //$this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Usuario não autorizado a acessar pagina');
+        if ($request->getMethod() === 'post') {
+            if (!$this->isCsrfTokenValid(
+                'configuration',
+                $request->request->get('_csrf_token')
+            )) {
+                throw new CustomException('Token incorreto ou não enviado.');
+            }
 
-        $config = Yaml::parse((string) file_get_contents(__DIR__.'/../Config/system-config.yaml'));
-        $draw = Yaml::parse((string) file_get_contents(__DIR__.'/../Config/draw-form.yaml'));
+            return $this->redirectToRoute('config');
+        }
+        $config = Yaml::parse((string) file_get_contents(__DIR__ . '/../Config/system-config.yaml'));
+        $draw = Yaml::parse((string) file_get_contents(__DIR__ . '/../Config/draw-form.yaml'));
+
         return $this->render('/register/configuration/index.html.twig', [
             'config' => $config,
             'draw' => $draw
         ]);
-    }
-
-    /**
-     * @Route("/register/configuration", methods="POST")
-     */
-    public function writeConfiguration(Request $request): Response
-    {
-        if (!$this->isCsrfTokenValid('configuration', $request->request->get('_csrf_token'))) {
-            throw new CustomException('Token incorreto ou não enviado.');
-        }
-
-        return $this->redirectToRoute('config');
     }
 
     /**

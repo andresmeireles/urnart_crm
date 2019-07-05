@@ -8,8 +8,6 @@
 /.vscode
 /.idea
 /public/form/*
-/phpdocker
-docker-composer.yml
 ###< symfony/framework-bundle ###
 
 ###> symfony/webpack-encore-pack ###

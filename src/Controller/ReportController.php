@@ -14,11 +14,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\ModelName;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Model\ProductionCountModel;
 
 class ReportController extends AbstractController
 {
+    use CSRFTokenCheckTrait;
+
     /**
      * @Route("/report", name="report")
      */
@@ -92,7 +93,12 @@ class ReportController extends AbstractController
         $heightResults = [];
         $finalTotal = 0;
         foreach ($data as $value) {
-            $modelHeight = sprintf("%s%s%s", $value['model'], $value['height'], $value['obs'] ?? '');
+            $modelHeight = sprintf(
+                "%s%s%s",
+                $value['model'],
+                $value['height'],
+                $value['obs'] ?? ''
+            );
             $modelHeight = trim($modelHeight);
             if (array_key_exists($modelHeight, $nameResults)) {
                 $number = $nameResults[$modelHeight];
@@ -141,7 +147,7 @@ class ReportController extends AbstractController
     /**
      * @Route("/report/productionCount", name="prod_count", methods="GET")
      */
-    public function openProductionCountReportIndex(ReportModel $model): Response
+    public function openProductionCountReportIndexPage(ReportModel $model): Response
     {
         /** @var string $today */
         $today = (new MyDateTime())->output('d-m-Y');
@@ -255,7 +261,7 @@ class ReportController extends AbstractController
     /**
      * @Route("/get/ModelsModel")
      */
-    public function coiso()
+    public function coiso(): Response
     {
         $res = $this->getDoctrine()->getRepository(ModelName::class)->findAll();
         $modelNames = array_map(static function ($value) {
@@ -325,8 +331,25 @@ class ReportController extends AbstractController
     /**
      * @Route("/report/{entity}/edit/{idConsult<\d+>}", methods="GET")
      */
-    public function viewEditGeneric(string $entity, int $idConsult): Response
-    {
+    public function viewEditGeneric(
+        Request $request,
+        ReportModel $model,
+        string $entity,
+        int $idConsult
+    ): Response {
+        if ($request->getMethod() === 'POST' &&
+            $this->isEncodedCSRFTokenValidPhrase(
+                $request->request->get('_csrf_token'),
+                'autenticateBoleto'
+            )
+        ) {
+            $data = $request->request->all();
+            $result = $model->editRegistryGeneric($entity, $idConsult, $data);
+            $this->addFlash($result->getType(), $result->getMessage());
+
+            return $this->redirect('/report/boleto/list');
+        }
+
         $fullQualifiedEntity = sprintf('App\Entity\%s', ucfirst($entity));
         $registryToEdit = $this->getDoctrine()->getRepository($fullQualifiedEntity)->find($idConsult);
         $template = sprintf('report/pages/%s/edit.html.twig', $entity);
@@ -334,23 +357,6 @@ class ReportController extends AbstractController
         return $this->render($template, [
             'registry' => $registryToEdit
         ]);
-    }
-
-    /**
-     * @Route("/report/{entity}/edit/{idConsult<\d+>}", methods="POST")
-     */
-    public function editRegisterGeneric(Request $request, string $entity, int $idConsult, ReportModel $model): Response
-    {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
-            throw new CustomException('Algo deu muito errado :(');
-        }
-
-        $data = $request->request->all();
-        $result = $model->editRegistryGeneric($entity, $idConsult, $data);
-
-        $this->addFlash($result->getType(), $result->getMessage());
-
-        return $this->redirect('/report/boleto/list');
     }
 
     /**
@@ -380,9 +386,10 @@ class ReportController extends AbstractController
      */
     public function sendSurveys(Request $request, SurveyModel $surveyModel): Response
     {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
-            throw new CustomException('Algo deu muito errado :(');
-        }
+        $this->isEncodedCSRFTokenValidPhrase(
+            $request->request->get('_csrf_token'),
+            'autenticateBoleto'
+        );
 
         $data = $request->request->all();
         $customerId = $data['customerId'];
@@ -392,52 +399,5 @@ class ReportController extends AbstractController
 
         $response = $surveyModel->saveData($data, $customerId, $surveyReferenceDate);
         return new Response($response->getMessage(), $response->getHttpCode());
-    }
-
-    /****************************************************
-    ************** SPECIFIC ENTITY METHODS **************
-    *****************************************************/
-
-    /**
-     * @Route("/report/boleto/status/{boletoId}", methods="POST")
-     */
-    public function boletoChangeStatus(Request $request, int $boletoId, ReportModel $model): Response
-    {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
-            throw new CustomException('Algo deu muito errado :(');
-        }
-
-        $boletoData = $request->request->all();
-        $refererLink = $request->headers->get('referer');
-        if (!is_string($refererLink)) {
-            throw new \Exception('O caminho dado não é valido.', 1);
-        }
-
-        $result = $model->boletoChangeStatus($boletoId, $boletoData);
-        $this->addFlash($result->getType(), $result->getMessage());
-
-        return $this->redirect($refererLink);
-    }
-
-    /**
-     * @Route("/report/boleto/reportCreator/{reportName}", methods="GET")
-     */
-    public function createBoletoReport(Request $request, string $reportName, ReportModel $model): Response
-    {
-        $beginDate = $request->query->get('beginDate');
-        $lastDate = $request->query->get('lastDate');
-
-        $functionName = sprintf('generateBoleto%s', ucwords($reportName));
-        $reportData = $model->$functionName($beginDate, $lastDate);
-        $template = sprintf('/report/pages/boleto/templates/%s.html.twig', $reportName);
-
-        return $this->render($template, [
-            'statusCount' => $reportData->boletosStatusCount,
-            'statusNames' => $reportData->statusNames ?? '',
-            'totalValue' => $reportData->totalValue,
-            'payedValue' => $reportData->boletoPayedValue,
-            'beginDate' => $beginDate,
-            'lastDate' => $lastDate
-        ]);
     }
 }

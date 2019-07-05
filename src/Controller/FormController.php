@@ -41,7 +41,7 @@ class FormController extends AbstractController
     /**
      * @Route("/forms", name="form")
      */
-    public function index()
+    public function index(): Response
     {
         return $this->render('form/index.html.twig');
     }
