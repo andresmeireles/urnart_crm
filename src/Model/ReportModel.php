@@ -4,18 +4,17 @@ namespace App\Model;
 
 use App\Entity\Boleto;
 use App\Entity\ManualOrderReport;
-use App\Entity\ProductionCount;
 use App\Entity\TravelTruckOrders;
 use App\Utils\Andresmei\FileFunctions;
 use App\Utils\Andresmei\FlashResponse;
+use App\Utils\Andresmei\MyDateTime;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\StdResponse;
 use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\CustomException;
 use Symfony\Component\Yaml\Yaml;
-use App\Utils\Andresmei\MyDateTime;
 
-class ReportModel extends Model
+final class ReportModel extends Model
 {
     /**
      * @param string $entity
@@ -53,30 +52,39 @@ class ReportModel extends Model
     public function createGenericRegistryArray(string $entityName, array $data): FlashResponse
     {
         $entity = sprintf('App\Entity\%s', ucfirst($entityName));
-        $em = $this->em;
+        $objectManager = $this->entityManager;
         $info = new NestedArraySeparator($data);
         $entityData = $info->getArrayInArray();
         try {
-            foreach ($entityData as $data) {
+            foreach (array_values($entityData) as $key => $value) {
                 $class = new $entity();
-                foreach ($data as $key => $value) {
-                    $methodName = sprintf('set%s', ucfirst($key));
-                    $reflectFunc = new \ReflectionClass($class);
-                    $classReflec = $reflectFunc->getMethod($methodName)->getParameters()[0]->getType();
-                    if ($classReflec !== null) {
-                        $type = $classReflec->getName();
-                        $value = (new StringConvertions())->convertValue($type, $value);
-                    }
-                    $class->$methodName($value);
-                }
-                $em->persist($class);
+                $methodName = sprintf('set%s', ucfirst($key));
+                $reflectFunc = new \ReflectionClass($class);
+                $functionParameter = $reflectFunc->getMethod($methodName)->getParameters()[0]->getType();
+                $typeForConversion = $functionParameter === null ?
+                    'none' :
+                    $functionParameter->getName();
+                $rightTypeValue = (new StringConvertions())->convertValue($typeForConversion, $value);
+                $class->{$methodName}($rightTypeValue);
+                $objectManager->persist($class);
             }
-            $em->flush();
+            $objectManager->flush();
         } catch (\Exception $e) {
-            throw new CustomException(sprintf("%s, %s, %s", $e->getMessage(), $e->getFile(), $e->getLine()));
+            throw new CustomException(
+                sprintf(
+                    '%s, %s, %s',
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                )
+            );
         }
 
-        return new FlashResponse(200, 'success', 'Ação concluida com sucesso.');
+        return new FlashResponse(
+            200,
+            'success',
+            'Ação concluida com sucesso.'
+        );
     }
 
     /**
@@ -95,8 +103,8 @@ class ReportModel extends Model
             $entity->setBoletoVencimento($data['boletoVencimento']);
             $entity->setActive(true);
 
-            $this->em->persist($entity);
-            $this->em->flush();
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush();
 
             $httpCode = 200;
             $type = 'success';
@@ -122,15 +130,18 @@ class ReportModel extends Model
      * @return FlashResponse
      * @throws \PDOException
      */
-    public function editRegistryGeneric(string $entity, int $consultId, array $data): FlashResponse
-    {
-        $entityManager = $this->em;
+    public function editRegistryGeneric(
+        string $entity,
+        int $consultId,
+        array $data
+    ): FlashResponse {
+        $entityManager = $this->entityManager;
         $entityClass = sprintf('App\Entity\%s', ucwords($entity));
         $entityToEdit = $entityManager->getRepository($entityClass)->find($consultId);
         try {
             foreach ($data as $key => $value) {
                 $methodName = sprintf('set%s', ucwords($key));
-                if (!method_exists($entityToEdit, $methodName)) {
+                if (! method_exists($entityToEdit, $methodName)) {
                     continue;
                 }
                 if (strpos($value, '.') !== false) {
@@ -139,7 +150,7 @@ class ReportModel extends Model
                 if (ctype_digit($value)) {
                     $value = (int) $value;
                 }
-                $entityToEdit->$methodName($value);
+                $entityToEdit->{$methodName}($value);
             }
             $entityManager->merge($entityToEdit);
             $entityManager->flush();
@@ -153,7 +164,7 @@ class ReportModel extends Model
             $entityToEdit->getBoletoInstallment()
         ));
     }
-    
+
     /**
      * @param string $entity
      * @param string $typeOfOrder
@@ -191,19 +202,21 @@ class ReportModel extends Model
         $entity = sprintf('App\Entity\%s', ucwords($entity));
         $returnObject = new StdResponse();
         $returnObject->typeOfList = $list;
-        $returnObject->consultResults = $this->em->getRepository($entity)->findBy([], $order);
+        $returnObject->consultResults = $this->entityManager
+            ->getRepository($entity)
+            ->findBy([], $order);
 
         return $returnObject;
     }
 
     /**
-     * @param string $entity    Entidade para consultar.
-     * @param int    $consultId Id to consult registry.
+     * @param string $entity
+     * @param int    $consultId
      * @return string
      */
     public function serializedGenericConsult(string $entity, int $consultId): string
     {
-        $result = $this->em->getRepository($entity)->find($consultId);
+        $result = $this->entityManager->getRepository($entity)->find($consultId);
 
         return $this->serializer->serialize($result, 'json');
     }
@@ -220,9 +233,9 @@ class ReportModel extends Model
      */
     public function boletoChangeStatus(int $boletoId, array $boletoData): FlashResponse
     {
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
         $boletoRegistry = $entityManager->getRepository(Boleto::class)->find($boletoId);
-        if (is_null($boletoRegistry)) {
+        if ($boletoRegistry === null) {
             throw new \PDOException('Não é uma instancia de Boleto entity.');
         }
         try {
@@ -248,7 +261,7 @@ class ReportModel extends Model
                 $porContaArray = [
                     'statusDate' => (new \DateTime('now'))->format('d/m/Y'),
                     'porContaValue' => $boletoData['porContaValue'],
-                    'porContaDate' => $boletoData['porContaDate']
+                    'porContaDate' => $boletoData['porContaDate'],
                 ];
                 $boletoRegistry->setBoletoPorContaStatus($porContaArray);
             }
@@ -277,7 +290,7 @@ class ReportModel extends Model
      */
     public function generateBoletoPieChart(?string $startDate, ?string $endingDate): StdResponse
     {
-        $pastReportRegister = $this->getReportFile(__DIR__.'/../Utils/ReportFile', $endingDate);
+        $pastReportRegister = $this->getReportFile(__DIR__ . '/../Utils/ReportFile', $endingDate);
         $resultData = $this->getGenericListByDate(
             'Boleto',
             'boletoVencimento',
@@ -292,15 +305,15 @@ class ReportModel extends Model
         $titlesPrices = 0;
         $payedValue = 0;
         $res = [];
-        if (!is_null($pastReportRegister)) {
+        if ($pastReportRegister !== null) {
             foreach ($pastReportRegister as $value) {
                 $res[] = $value;
             }
         }
         foreach ($res as $r) {
             foreach ($c as $key => $value) {
-                $r['id'] === $value['id']?
-                    $resultData[$key] = $r:
+                $r['id'] === $value['id'] ?
+                    $resultData[$key] = $r :
                     $resultData[$key] = $value;
 //                if ($r['id'] === $value['id']) {
 //                    $resultData[$key] = $r;
@@ -313,20 +326,20 @@ class ReportModel extends Model
             $titlesPrices += $value['boletoValue'];
             switch ($value['boletoStatus']) {
                 case 0:
-                    $data[0] += 1;
+                    ++$data[0];
                     break;
                 case 1: //pago
-                    $data[1] += 1;
+                    ++$data[1];
                     $payedValue += $value['boletoValue'];
                     break;
                 case 2:
-                    $data[2] += 1;
+                    ++$data[2];
                     break;
                 case 3:
-                    $data[3] += 1;
+                    ++$data[3];
                     break;
                 case 4:
-                    $data[4] += 1;
+                    ++$data[4];
                     break;
                 default:
                     throw new \Exception('Tem algo muito errado.');
@@ -342,13 +355,13 @@ class ReportModel extends Model
     }
 
     /**
-     * Return required fields from databse by start and ending date, if has.
-     * @param   string       $entity          Entity for search.
-     * @param   string       $whereField      fields to WHERE condition.
-     * @param   string|null  $requiredFields  Fields required to return.
-     * @param   string|null  $startDate       Start consult date.
-     * @param   string|null  $endingDate      Ending cosult date.
-     * @return  array                         Array with results of consult.
+     * @param string $entity
+     * @param string $whereField
+     * @param string|null $requiredFields
+     * @param string|null $startDate
+     * @param string|null $endingDate
+     * @return array
+     * @throws \Exception
      */
     public function searchByDate(
         string $entity,
@@ -368,7 +381,7 @@ class ReportModel extends Model
      */
     public function generateBoletoListReport(?string $startDate, ?string $endingDate): StdResponse
     {
-        $pastReportFile = $this->getReportFile(__DIR__.'/../Utils/ReportFile', $endingDate);
+        $pastReportFile = $this->getReportFile(__DIR__ . '/../Utils/ReportFile', $endingDate);
         $reportResults = $this->searchByDate(
             'Boleto',
             'boletoVencimento',
@@ -381,7 +394,7 @@ class ReportModel extends Model
         $totalValue = 0;
         $paymentValue = 0;
         $data = [];
-        if (!is_null($pastReportFile)) {
+        if ($pastReportFile !== null) {
             foreach ($reportResults as $key => $value) {
                 $pastResponse[] = $value;
             }
@@ -389,7 +402,7 @@ class ReportModel extends Model
         foreach ($pastResponse as $r) {
             foreach ($c as $key => $value) {
                 $r['id'] === $value['id'] ?
-                    $reportResults[$key] = $r:
+                    $reportResults[$key] = $r :
                     $reportResults[$key] = $value;
 //                if ($r['id'] === $value['id']) {
 //                    $reportResults[$key] = $r;
@@ -425,7 +438,7 @@ class ReportModel extends Model
         $response->boletosStatusCount = $data;
         $response->totalValue = $totalValue;
         $response->boletoPayedValue = $paymentValue;
-        
+
         return $response;
     }
 
@@ -441,25 +454,6 @@ class ReportModel extends Model
         );
 
         return $this->dqlConsult($consultString);
-    }
-
-    /**
-     * @param string $path
-     * @param string|null $date
-     * @return array|null
-     */
-    private function getReportFile(string $path, ?string $date): ?array
-    {
-        $response = null;
-        $reportName = $date === null ?
-            (new FileFunctions())->getLastCreateFileFromFolder($path):
-            (new FileFunctions())->getFileByDate($path, $date);
-        if ($reportName !== null && file_exists($reportName)) {
-            $dataFile = file_get_contents($reportName);
-            $response = Yaml::parse((string) $dataFile);
-        }
-
-        return $response;
     }
 
     /**
@@ -489,7 +483,7 @@ class ReportModel extends Model
         foreach ($result as $value) {
             if ($value->getDate() === null) {
                 throw new \Exception('Algo de errado não está certo. Não deveria haver um date null.');
-            }  
+            }
             $actualDate = $value->getDate()->format($formatInterval);
             if ($actualDate !== $productionDay) {
                 $productionDay = $actualDate;
@@ -522,7 +516,9 @@ class ReportModel extends Model
         $height = $this->dqlConsult(
             "SELECT DISTINCT u.height, u.obs FROM App\Entity\ProductionCount u ORDER BY u.obs ASC"
         );
-        $model = $this->dqlConsult("SELECT DISTINCT u.model FROM App\Entity\ProductionCount u ORDER BY u.model ASC");
+        $model = $this->dqlConsult(
+            "SELECT DISTINCT u.model FROM App\Entity\ProductionCount u ORDER BY u.model ASC"
+        );
         $response = new StdResponse();
         $response->result = $result;
         $response->height = $height;
@@ -545,10 +541,10 @@ class ReportModel extends Model
             throw new CustomException('Não é possível criar relátorio sem datas');
         }
         $explodedDate = explode('-', $reportDate);
-        $monthBegin = sprintf("%s-%s-%s", '01', $explodedDate[1], $explodedDate[2]);
-        $yesterday = sprintf("%s-%s-%s", ((int) $explodedDate[0]) - 1, $explodedDate[1], $explodedDate[2]);
+        $monthBegin = sprintf('%s-%s-%s', '01', $explodedDate[1], $explodedDate[2]);
+        $yesterday = sprintf('%s-%s-%s', ((int) $explodedDate[0]) - 1, $explodedDate[1], $explodedDate[2]);
         if (strtolower((new \DateTime($yesterday))->format('l')) === 'sunday') {
-            $yesterday = sprintf("%s-%s-%s", ((int) $explodedDate[0]) - 3, $explodedDate[1], $explodedDate[2]);
+            $yesterday = sprintf('%s-%s-%s', ((int) $explodedDate[0]) - 3, $explodedDate[1], $explodedDate[2]);
         }
         $todayReport = $this->getByDateIntervalProductAmount($monthBegin, $reportDate);
         $yesterdayReport = $this->getByDateIntervalProductAmount($monthBegin, $yesterday);
@@ -571,7 +567,7 @@ class ReportModel extends Model
             'today' => $reportDate,
             'todayVal' => $todayTotal,
             'yesterday' => $yesterday,
-            'yesterdayVal' => $yesterdayTotal
+            'yesterdayVal' => $yesterdayTotal,
         ];
     }
 
@@ -586,8 +582,8 @@ class ReportModel extends Model
     {
         $explodedDate = explode('-', $dateOne);
         $explodedDateTwo = explode('-', $dateTwo);
-        $startDate = sprintf("%s-%s-%s", $explodedDate[0], $explodedDate[1], $explodedDate[2]);
-        $lastDate = sprintf("%s-%s-%s", $explodedDateTwo[0], $explodedDateTwo[1], $explodedDateTwo[2]);
+        $startDate = sprintf('%s-%s-%s', $explodedDate[0], $explodedDate[1], $explodedDate[2]);
+        $lastDate = sprintf('%s-%s-%s', $explodedDateTwo[0], $explodedDateTwo[1], $explodedDateTwo[2]);
         $resultRepo = [];
         $resultRepo['total'] = 0;
         switch ($type) {
@@ -612,16 +608,16 @@ class ReportModel extends Model
         if ($typeName === 'm') {
             foreach ($report as $r) {
                 $resultRepo['total'] += $r->getAmount();
-                array_key_exists($r->getModel(), $resultRepo)?
-                    $resultRepo[$r->getModel()] += $r->getAmount():
+                array_key_exists($r->getModel(), $resultRepo) ?
+                    $resultRepo[$r->getModel()] += $r->getAmount() :
                     $resultRepo[$r->getModel()] = $r->getAmount();
             }
         }
         if ($typeName === 'h') {
             foreach ($report as $r) {
                 $resultRepo['total'] += $r->getAmount();
-                array_key_exists($r->getHeight(), $resultRepo)?
-                    $resultRepo[$r->getHeight()] += $r->getAmount():
+                array_key_exists($r->getHeight(), $resultRepo) ?
+                    $resultRepo[$r->getHeight()] += $r->getAmount() :
                     $resultRepo[$r->getModel()] = $r->getAmount();
             }
         }
@@ -642,8 +638,8 @@ class ReportModel extends Model
     {
         $explodedDate = explode('-', $dateOne);
         $explodedDateTwo = explode('-', $dateTwo);
-        $startDate = sprintf("%s-%s-%s", $explodedDate[0], $explodedDate[1], $explodedDate[2]);
-        $lastDate = sprintf("%s-%s-%s", $explodedDateTwo[0], $explodedDateTwo[1], $explodedDateTwo[2]);
+        $startDate = sprintf('%s-%s-%s', $explodedDate[0], $explodedDate[1], $explodedDate[2]);
+        $lastDate = sprintf('%s-%s-%s', $explodedDateTwo[0], $explodedDateTwo[1], $explodedDateTwo[2]);
         $results = [];
         foreach ($fields as $field) {
             $query = sprintf(
@@ -663,24 +659,24 @@ class ReportModel extends Model
      * @param array $reportData Mandar parametro com as sefintes informaçãoes no devido formato
      *                          'driverName' => 'Nome do rapaz',
      *                          'kmout' => null|'236599',
-     *                          'departureDate => null|'2010/10/31' Formarto YYYY/MM/DD 
+     *                          'departureDate => null|'2010/10/31' Formarto YYYY/MM/DD
      * @param array $orders Array associativo contendo ids de ManualOrderReport
      * @return FlashResponse
      * @throws \Exception
      */
     public function createTruckDepartureReport(array $reportData, array $orders): FlashResponse
     {
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
         $manualOrderRepository = $entityManager->getRepository(ManualOrderReport::class);
         $truckArrivalReport = new TravelTruckOrders();
         $simpleArray = [];
-        try {           
+        try {
             $truckArrivalReport->setDriverName($reportData['driverName']);
             $truckArrivalReport->setKmout($reportData['kmout']);
             $date = new MyDateTime($reportData['departureDate'], 'America/Belem');
             $truckArrivalReport->setDepartureDate($date);
             foreach ($orders as $order) {
-                $simpleArray[$order['id']] = isset($order['isChecked'] )? (bool) $order['isChecked'] : false;
+                $simpleArray[$order['id']] = isset($order['isChecked']) ? (bool) $order['isChecked'] : false;
                 $manualOrderReport = $manualOrderRepository->find($order['id']);
                 $truckArrivalReport->addOrderId($manualOrderReport);
             }
@@ -704,7 +700,7 @@ class ReportModel extends Model
      */
     public function editTruckDepartureReport(TravelTruckOrders $orderTruckEntity, array $reportData, array $orders): FlashResponse
     {
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
         $manualOrderRepository = $entityManager->getRepository(ManualOrderReport::class);
         /** @var TravelTruckOrders $truckReport */
         $truckReport = $entityManager->getRepository(TravelTruckOrders::class)->find($orderTruckEntity->getId());
@@ -717,7 +713,7 @@ class ReportModel extends Model
                 $truckReport->removeOrderId($value);
             });
             foreach ($orders as $order) {
-                $simpleArray = [$order['id'] => isset($order['isChecked'] )? (bool) $order['isChecked'] : false];
+                $simpleArray = [$order['id'] => isset($order['isChecked']) ? (bool) $order['isChecked'] : false];
                 $manualOrderReport = $manualOrderRepository->find($order['id']);
                 $truckReport->addOrderId($manualOrderReport);
             }
@@ -726,7 +722,7 @@ class ReportModel extends Model
         } catch (\Exception $error) {
             throw new \Exception(
                 sprintf(
-                    "%s, no arquivo %s e linha %s",
+                    '%s, no arquivo %s e linha %s',
                     $error->getMessage(),
                     $error->getFile(),
                     $error->getLine()
@@ -741,5 +737,24 @@ class ReportModel extends Model
             'success',
             sprintf('Relatorio %s editado com sucesso', $orderTruckEntity->getId())
         );
+    }
+
+    /**
+     * @param string $path
+     * @param string|null $date
+     * @return array|null
+     */
+    private function getReportFile(string $path, ?string $date): ?array
+    {
+        $response = null;
+        $reportName = $date === null ?
+            (new FileFunctions())->getLastCreateFileFromFolder($path) :
+            (new FileFunctions())->getFileByDate($path, $date);
+        if ($reportName !== null && file_exists($reportName)) {
+            $dataFile = file_get_contents($reportName);
+            $response = Yaml::parse((string) $dataFile);
+        }
+
+        return $response;
     }
 }

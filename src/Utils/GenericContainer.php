@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace App\Utils;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,16 +12,16 @@ abstract class GenericContainer
      *
      * @var EntityManagerInterface
      */
-    protected $em;
+    protected $entityManagerm;
 
     /**
      * @var  Environment
      */
     protected $twig;
 
-    public function __construct(EntityManagerInterface $em, Environment $twig)
+    public function __construct(EntityManagerInterface $entityManager, Environment $twig)
     {
-        $this->em = $em;
+        $this->entityManagerm = $entityManager;
         $this->twig = $twig;
     }
 }

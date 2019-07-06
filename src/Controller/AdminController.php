@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -10,13 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 
 /**
  * @IsGranted("ROLE_ADMIN")
  */
-class AdminController extends AbstractController
+final class AdminController extends AbstractController
 {
+    use CSRFTokenCheck;
+
     /**
      * @Route("/admin", name="admin")
      */
@@ -30,7 +31,11 @@ class AdminController extends AbstractController
      */
     public function viewUserPage()
     {
-        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Você não pode acessar está pagina.');
+        $this->denyAccessUnlessGranted(
+            'ROLE_SUPER_ADMIN',
+            null,
+            'Você não pode acessar está pagina.'
+        );
 
         return $this->render('admin/pages/user/index.html.twig');
     }
@@ -40,10 +45,16 @@ class AdminController extends AbstractController
      */
     public function viewUserPermission(): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Você não pode acessar está pagina.');
+        $this->denyAccessUnlessGranted(
+            'ROLE_SUPER_ADMIN',
+            null,
+            'Você não pode acessar está pagina.'
+        );
 
         return $this->render('admin/pages/user/userPermission.html.twig', [
-            'users' => $this->getDoctrine()->getRepository(User::class)->findAll()
+            'users' => $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findAll(),
         ]);
     }
 
@@ -52,20 +63,28 @@ class AdminController extends AbstractController
      */
     public function editUserPermissions(Request $request, UserModel $model, bool $asynchronous = false): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Você não pode acessar está pagina.');
-
-        if ($this->isCsrfTokenValid('permissions', $request->request->get('_csrf_token'))) {
-            throw new InvalidCsrfTokenException('Token incorreto ou invalido');
-        }
-
+        $this->denyAccessUnlessGranted(
+            'ROLE_SUPER_ADMIN',
+            null,
+            'Você não pode acessar está pagina.'
+        );
+        $this->isEncodedCSRFTokenValidPhrase(
+            $request->request->get('_csrf_token'),
+            'permissions'
+        );
         $userId = $request->request->get('identification');
         $userName = $request->request->get('name');
         $roles = $request->request->get('user_roles') ?? [];
-
         $response = $model->editRoles($userId, $userName, $roles);
 
         if ($asynchronous) {
-            return new Response($response->getMessage(), 200, ['type' => $response->getType()]);
+            return new Response(
+                $response->getMessage(),
+                200,
+                [
+                    'type' => $response->getType(),
+                ]
+            );
         }
 
         $this->addFlash($response->getType(), $response->getMessage());
@@ -76,8 +95,10 @@ class AdminController extends AbstractController
     /**
      * @Route("/api/admin/permission", methods="POST")
      */
-    public function asyncEditUserPermissions(Request $request, UserModel $model): Response
-    {
+    public function asyncEditUserPermissions(
+        Request $request,
+        UserModel $model
+    ): Response {
         return $this->editUserPermissions($request, $model, true);
     }
 
@@ -92,9 +113,16 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/user/add", name="add_post_user", methods="POST")
      */
-    public function addUser(Request $request, UserModel $model, UserPasswordEncoderInterface $encoder): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Você não está autorizado a está aqui.');
+    public function addUser(
+        Request $request,
+        UserModel $model,
+        UserPasswordEncoderInterface $encoder
+    ): Response {
+        $this->denyAccessUnlessGranted(
+            'ROLE_SUPER_ADMIN',
+            null,
+            'Você não está autorizado a está aqui.'
+        );
         $this->isCsrfTokenValid('add_user', $request->request->get('_csrf_token'));
         $request->request->remove('_csrf_token');
 
@@ -105,16 +133,5 @@ class AdminController extends AbstractController
         $this->addFlash($result->getType(), $result->getMessage());
 
         return $this->redirectToRoute('user_page');
-    }
-
-    /**
-     * ISSO SERÁ APAGADO
-     * @Route("/showuser", methods="GET", name="showuser")
-     */
-    public function showUser(): Response
-    {
-        return $this->render('admin/pages/user/x.html.twig', [
-            'users' => $this->getDoctrine()->getRepository(User::class)->findAll()
-        ]);
     }
 }

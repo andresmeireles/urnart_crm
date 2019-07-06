@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FeedstockRepository")
  */
-class Feedstock extends BaseEntity
+final class Feedstock extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -23,8 +23,6 @@ class Feedstock extends BaseEntity
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @var string|null
      */
     private $description;
 
@@ -93,7 +91,7 @@ class Feedstock extends BaseEntity
 
         return $this;
     }
-    
+
     /**
      * Return the first item of array
      *
@@ -105,8 +103,6 @@ class Feedstock extends BaseEntity
     }
 
     /**
-     * Return other vendors in an array
-     *
      * @return array|null
      */
     public function getOtherVendors(): ?array
@@ -161,7 +157,7 @@ class Feedstock extends BaseEntity
 
     public function setMaxStock(?int $stock): self
     {
-        $absStock = null === $stock ? null : abs($stock);
+        $absStock = $stock === null ? null : abs($stock);
         $this->feedstockInventory->setMaxStock($absStock);
         return $this;
     }
@@ -173,7 +169,7 @@ class Feedstock extends BaseEntity
 
     public function setMinStock(?int $stock): self
     {
-        $this->feedstockInventory = $stock !== null ? abs($stock): null;
+        $this->feedstockInventory = $stock !== null ? abs($stock) : null;
 
         return $this;
     }

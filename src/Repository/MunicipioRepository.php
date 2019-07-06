@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Municipio      findAll()
  * @method Municipio      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MunicipioRepository extends ServiceEntityRepository
+final class MunicipioRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

@@ -2,15 +2,20 @@
 
 namespace App\Model;
 
-use App\Entity\ProductionCount;
 use App\Entity\ModelName;
+use App\Entity\ProductionCount;
 use App\Utils\Andresmei\FlashResponse;
 
-class ProductionCountModel extends Model
+final class ProductionCountModel extends Model
 {
-    public function createProductionCount(array $productionInformation)
+    /**
+     * @param array $productionInformation
+     * @return FlashResponse
+     * @throws \Exception
+     */
+    public function createProductionCount(array $productionInformation): FlashResponse
     {
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
         $modelRepository = $entityManager->getRepository(ModelName::class);
         try {
             foreach ($productionInformation as $productionItem) {
@@ -21,8 +26,8 @@ class ProductionCountModel extends Model
                 $production->setModel($modelItem->getName());
                 $production->setHeight($modelItem->getHeight());
                 $production->setObs(
-                    $modelItem->getSpecificity() === ''?
-                    null:
+                    $modelItem->getSpecificity() === '' ?
+                    null :
                     $modelItem->getSpecificity()
                 );
                 $production->setAmount((int) $productionItem['amount']);

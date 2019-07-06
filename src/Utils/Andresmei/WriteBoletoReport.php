@@ -1,19 +1,14 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace App\Utils\Andresmei;
 
 use Symfony\Component\Yaml\Yaml;
 
-class WriteBoletoReport
+final class WriteBoletoReport
 {
     /**
-     * [write description]
-     *
-     * @param   \DateTimeInterface  $date  [$date description]
-     * @param   StdResponse         $data  [$data description]
-     *
-     * @return  void                    [return description]
+     * @param   \DateTimeInterface  $date
+     * @param   StdResponse         $data
      */
     public function write(\DateTimeInterface $date, StdResponse $data): void
     {
@@ -23,14 +18,19 @@ class WriteBoletoReport
         $res['provisionado'] = $this->writeArray($data->provisionado ?? null, 'provisionado');
         $res['porConta'] = $this->writeArray($data->conta ?? null, 'conta');
 
-        file_put_contents(__DIR__.'/../ReportFiles/'.$date->format('d-m-Y').'.yaml', Yaml::dump($res));
+        file_put_contents(__DIR__ . '/../ReportFiles/' . $date->format('d-m-Y') . '.yaml', Yaml::dump($res));
     }
 
+    /**
+     * @param array|null $titles
+     * @param string $action
+     * @return array
+     */
     private function writeArray(?array $titles, string $action = 'normal'): array
     {
         $result = [];
 
-        if (is_null($titles) || $titles === []) {
+        if ($titles === null || $titles === []) {
             return [];
         }
 
@@ -48,6 +48,10 @@ class WriteBoletoReport
         return $result;
     }
 
+    /**
+     * @param array $titles
+     * @return array
+     */
     private function normalAction(array $titles): array
     {
         $result = [];
@@ -64,6 +68,10 @@ class WriteBoletoReport
         return $result;
     }
 
+    /**
+     * @param array $titles
+     * @return array
+     */
     private function writeProvisionado(array $titles): array
     {
         $result = [];
@@ -81,6 +89,10 @@ class WriteBoletoReport
         return $result;
     }
 
+    /**
+     * @param array $titles
+     * @return array
+     */
     private function writeConta(array $titles): array
     {
         $result = [];

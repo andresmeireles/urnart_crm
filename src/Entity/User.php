@@ -11,48 +11,42 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @Vich\Uploadable
  */
-class User extends BaseEntity implements UserInterface, \Serializable
+final class User extends BaseEntity implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     *
      * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string")
-     *
      * @var  string Nome do usuário.
      */
     private $userNickname;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     *
      * @var string Email do usuário.
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     *
      * @var array Permissões do usuário.
      */
     private $roles = [];
 
     /**
      * @ORM\Column(type="string")
-     *
      * @var string The hashed password
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     *
      * @var string|null Name of image. Possible hashed.
      */
     private $profileImage;
@@ -145,10 +139,10 @@ class User extends BaseEntity implements UserInterface, \Serializable
     {
         $this->profileImageFile = $imageFile;
 
-        if (null !== $imageFile) {
+        if ($imageFile !== null) {
             $this->setLastUpdate();
         }
-        
+
         return $this;
     }
 

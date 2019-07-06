@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
-class Product extends BaseEntity
+final class Product extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -157,7 +157,7 @@ class Product extends BaseEntity
 
     public function addProductCart(ProductCart $productCart): self
     {
-        if (!$this->productCarts->contains($productCart)) {
+        if (! $this->productCarts->contains($productCart)) {
             $this->productCarts[] = $productCart;
             $productCart->setProduct($this);
         }

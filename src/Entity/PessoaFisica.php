@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PessoaFisicaRepository")
  */
-class PessoaFisica extends BaseEntity
+final class PessoaFisica extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -17,7 +17,7 @@ class PessoaFisica extends BaseEntity
      * @ORM\Column(type="integer")
      */
     private $id;
-    
+
     /**
      * @ORM\Column(type="string")
      */
@@ -183,7 +183,7 @@ class PessoaFisica extends BaseEntity
      */
     public function getBirthDate(): ?string
     {
-        if (is_null($this->birthDate)) {
+        if ($this->birthDate === null) {
             return null;
         }
         return $this->birthDate->format('d-m-Y');
@@ -211,7 +211,7 @@ class PessoaFisica extends BaseEntity
 
     public function addPhone(Phone $phone): self
     {
-        if (!$this->phones->contains($phone)) {
+        if (! $this->phones->contains($phone)) {
             $this->phones[] = $phone;
             $phone->setOwner($this);
         }
@@ -242,7 +242,7 @@ class PessoaFisica extends BaseEntity
 
     public function addEmail(Email $email): self
     {
-        if (!$this->emails->contains($email)) {
+        if (! $this->emails->contains($email)) {
             $this->emails[] = $email;
             $email->setOwner($this);
         }

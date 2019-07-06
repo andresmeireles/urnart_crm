@@ -2,19 +2,18 @@
 
 namespace App\Controller;
 
-use App\Model\ReportModel;
 use App\Entity\ManualOrderReport;
+use App\Entity\TravelTruckOrders;
+use App\Model\DepartureModel;
+use App\Model\ReportModel;
+use App\Utils\Andresmei\Form;
+use App\Utils\Andresmei\NestedArraySeparator;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Utils\Andresmei\NestedArraySeparator;
-use App\Entity\TravelTruckOrders;
-use App\Utils\Andresmei\Form;
-use App\Model\DepartureModel;
-use App\Entity\ManualProductCart;
 
-class TruckController extends AbstractController
+final class TruckController extends AbstractController
 {
     /**
      * @Route("/truck", name="truck.index")
@@ -24,7 +23,7 @@ class TruckController extends AbstractController
         $reports = $this->getDoctrine()->getRepository(TravelTruckOrders::class)->findAll();
 
         return $this->render('truck/truck.html.twig', [
-            'reports' => $reports
+            'reports' => $reports,
         ]);
     }
 
@@ -33,12 +32,12 @@ class TruckController extends AbstractController
      * @method \App\Repository\ManualOrderReportRepository getRepository()
      */
     public function viewCreateForm(): Response
-    {        
+    {
         /** @var \App\Repository\ManualOrderReportRepository $manualRepository */
         $manualRepository = $this->getDoctrine()->getRepository(ManualOrderReport::class);
 
         return $this->render('truck/pages/createTruckRepo.html.twig', [
-            'orders' => $manualRepository->someFieldsConsult('id', 'customerName')
+            'orders' => $manualRepository->someFieldsConsult('id', 'customerName'),
         ]);
     }
 
@@ -67,10 +66,10 @@ class TruckController extends AbstractController
     {
         /** @var ManualOrderReportRepository $manualRepository */
         $manualRepository = $this->getDoctrine()->getRepository(ManualOrderReport::class);
-        
+
         return $this->render('truck/pages/editTruckRepo.html.twig', [
             'orders' => $manualRepository->someFieldsConsult('id', 'customerName'),
-            'data' => $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find($id)
+            'data' => $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find($id),
         ]);
     }
 
@@ -185,6 +184,6 @@ class TruckController extends AbstractController
             $entityManager->flush();
         }
 
-        return new Response("OK");
+        return new Response('OK');
     }
 }

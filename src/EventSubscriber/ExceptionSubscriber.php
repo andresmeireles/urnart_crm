@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
-class ExceptionSubscriber implements EventSubscriberInterface
+final class ExceptionSubscriber implements EventSubscriberInterface
 {
     /**
      * Evento que define ações para exceções do php
@@ -23,17 +23,27 @@ class ExceptionSubscriber implements EventSubscriberInterface
         $exceptionClass = get_class($event->getException());
         $exception = $exceptionClass === 'Exception' ?
                         $exceptionClass :
-                        substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
+                        substr_replace(
+                            $exceptionClass,
+                            '',
+                            0,
+                            strrpos($exceptionClass, '\\') + 1
+                        );
         if ($event->getRequest()->server->get('APP_ENV') === 'dev') {
             $exception = $exceptionClass === 'Exception' || $exceptionClass === 'Twig_Error_Loader' ?
             $exceptionClass :
-            substr_replace($exceptionClass, '', 0, (strrpos($exceptionClass, '\\')+1));
+            substr_replace(
+                $exceptionClass,
+                '',
+                0,
+                strrpos($exceptionClass, '\\') + 1
+            );
         }
         $refererLink = $event->getRequest()->headers->get('referer');
-        if (!is_string($refererLink)) {
+        if (! is_string($refererLink)) {
             $refererLink = '/';
         }
-        
+
         switch ($exception) {
             case 'AccessDeniedException':
             case 'AccessDeniedHttpException':
@@ -41,7 +51,11 @@ class ExceptionSubscriber implements EventSubscriberInterface
             case 'CustomUserMessageAuthenticationException':
             case 'FieldAlreadExistsException':
             case 'InvalidCsrfTokenException':
-                $this->triggerFlashMessage($event, $event->getException()->getMessage(), 'error');
+                $this->triggerFlashMessage(
+                    $event,
+                    $event->getException()->getMessage(),
+                    'error'
+                );
                 return $event->setResponse(new RedirectResponse($refererLink));
                 break;
             case 'UniqueConstraintViolationException':
@@ -72,26 +86,28 @@ class ExceptionSubscriber implements EventSubscriberInterface
         }
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [
+            'kernel.exception' => 'onKernelException',
+        ];
+    }
+
     /**
      * Lança mensagens que serão disparadas em flash notification
      *
      * @param  GetResponseForExceptionEvent $event
      * @param  string                       $message
      * @param  string                       $type
-     * @return void
      */
-    private function triggerFlashMessage(GetResponseForExceptionEvent $event, string $message, string $type): void
-    {
+    private function triggerFlashMessage(
+        GetResponseForExceptionEvent $event,
+        string $message,
+        string $type
+    ): void {
         $event->getRequest()->getSession()->getFlashBag()->add(
             $type,
             $message
         );
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [
-            'kernel.exception' => 'onKernelException'
-        ];
     }
 }

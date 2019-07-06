@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AddressRepository")
  */
-class Address
+final class Address
 {
     /**
      * @ORM\Id()
@@ -100,7 +100,7 @@ class Address
 
     public function setZipcode(?string $zipcode): self
     {
-        $zipcode = null === $zipcode ? null : str_replace('.', '', str_replace('-', '', $zipcode));
+        $zipcode = $zipcode === null ? null : str_replace('.', '', str_replace('-', '', $zipcode));
         $zipcode = (int) $zipcode;
         $this->zipcode = $zipcode;
 
@@ -119,12 +119,12 @@ class Address
         return $this;
     }
 
-    public function getMunicipio() : ?Municipio
+    public function getMunicipio(): ?Municipio
     {
         return $this->municipio;
     }
 
-    public function setMunicipio(?Municipio $municipio) : self
+    public function setMunicipio(?Municipio $municipio): self
     {
         $this->municipio = $municipio;
 

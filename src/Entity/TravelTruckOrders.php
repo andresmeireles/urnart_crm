@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
+use App\Utils\Exceptions\CustomException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Utils\Exceptions\CustomException;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TravelTruckOrdersRepository")
  */
-class TravelTruckOrders extends BaseEntity
+final class TravelTruckOrders extends BaseEntity
 {
     /**
      * @var int
@@ -78,7 +78,7 @@ class TravelTruckOrders extends BaseEntity
 
         return $this;
     }
-    
+
     public function getDepartureDate(): ?\DateTime
     {
         return $this->departureDate;
@@ -86,7 +86,7 @@ class TravelTruckOrders extends BaseEntity
 
     public function setDepartureDate(?\DateTime $departureDate): self
     {
-        $this->departureDate = $departureDate; 
+        $this->departureDate = $departureDate;
 
         return $this;
     }
@@ -98,10 +98,11 @@ class TravelTruckOrders extends BaseEntity
 
     public function setKmout(?string $kmout): self
     {
-        $this->kmout = $kmout; 
+        $this->kmout = $kmout;
 
         return $this;
     }
+
     /**
      * @return Collection|ManualOrderReport[]
      */
@@ -112,7 +113,7 @@ class TravelTruckOrders extends BaseEntity
 
     public function addOrderId(ManualOrderReport $orderId): self
     {
-        if (!$this->orderId->contains($orderId)) {
+        if (! $this->orderId->contains($orderId)) {
             $this->orderId[] = $orderId;
             $orderId->setTravelTruckOrders($this);
         }

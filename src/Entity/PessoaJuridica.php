@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PessoaJuridicaRepository")
  */
-class PessoaJuridica extends BaseEntity
+final class PessoaJuridica extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -113,7 +113,7 @@ class PessoaJuridica extends BaseEntity
 
     public function addProprietario(Proprietario $proprietario): self
     {
-        if (!$this->proprietarios->contains($proprietario)) {
+        if (! $this->proprietarios->contains($proprietario)) {
             $this->proprietarios[] = $proprietario;
             $proprietario->addEmpresa($this);
         }
@@ -136,7 +136,7 @@ class PessoaJuridica extends BaseEntity
      */
     public function getDataDeFundacao(): ?string
     {
-        if (is_null($this->dataDeFundacao)) {
+        if ($this->dataDeFundacao === null) {
             return null;
         }
         return $this->dataDeFundacao->format('d-m-Y');
@@ -189,7 +189,7 @@ class PessoaJuridica extends BaseEntity
      */
     public function setNomeFantasia(?string $nomeFantasia): ?self
     {
-        $this->nomeFantasia = null === $nomeFantasia ? null : trim(ltrim($nomeFantasia));
+        $this->nomeFantasia = $nomeFantasia === null ? null : trim(ltrim($nomeFantasia));
 
         return $this;
     }
@@ -209,7 +209,7 @@ class PessoaJuridica extends BaseEntity
      */
     public function setInscricaoEstadual(?int $inscricaoEstadual): ?self
     {
-        $this->inscricaoEstadual = null === $inscricaoEstadual ? null : abs($inscricaoEstadual);
+        $this->inscricaoEstadual = $inscricaoEstadual === null ? null : abs($inscricaoEstadual);
 
         return $this;
     }
@@ -229,7 +229,7 @@ class PessoaJuridica extends BaseEntity
      */
     public function setCnpj(?string $cnpj): self
     {
-        $this->cnpj = null === $cnpj ? null : str_replace('.', '', str_replace('/', '', str_replace('-', '', $cnpj)));
+        $this->cnpj = $cnpj === null ? null : str_replace('.', '', str_replace('/', '', str_replace('-', '', $cnpj)));
 
         return $this;
     }
@@ -249,7 +249,7 @@ class PessoaJuridica extends BaseEntity
      */
     public function setSituacaoCadastral(?int $situacaoCadastral): self
     {
-        $this->situacaoCadastral = null === $situacaoCadastral ? null : abs($situacaoCadastral);
+        $this->situacaoCadastral = $situacaoCadastral === null ? null : abs($situacaoCadastral);
 
         return $this;
     }
@@ -282,7 +282,7 @@ class PessoaJuridica extends BaseEntity
 
     public function addOrderNumber(Order $orderNumber): self
     {
-        if (!$this->orderNumber->contains($orderNumber)) {
+        if (! $this->orderNumber->contains($orderNumber)) {
             $this->orderNumber[] = $orderNumber;
             $orderNumber->setCustomer($this);
         }
@@ -313,7 +313,7 @@ class PessoaJuridica extends BaseEntity
 
     public function addSurvey(Survey $survey): self
     {
-        if (!$this->surveys->contains($survey)) {
+        if (! $this->surveys->contains($survey)) {
             $this->surveys[] = $survey;
             $survey->setCustomer($this);
         }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Twig;
 
@@ -6,8 +6,11 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-class FormatExtension extends AbstractExtension
+final class FormatExtension extends AbstractExtension
 {
+    /**
+     * @return array
+     */
     public function getFilters(): array
     {
         return [
@@ -19,19 +22,30 @@ class FormatExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getFunctions(): array
     {
         return [
             new TwigFunction('function_name', [$this, 'formatBrl']),
-            new TwigFunction('function_name', [$this, 'monthConverter'])
+            new TwigFunction('function_name', [$this, 'monthConverter']),
         ];
     }
 
+    /**
+     * @param $number
+     * @return string
+     */
     public function formatBrl($number)
     {
         return number_format($number, 2, ',', '.');
     }
 
+    /**
+     * @param string $monthConverter
+     * @return string
+     */
     public function monthConverter(string $monthConverter)
     {
         $month = [
@@ -46,14 +60,14 @@ class FormatExtension extends AbstractExtension
             '09' => 'Setembro',
             '10' => 'Outubro',
             '11' => 'Novembro',
-            '12' => 'Dezembro'
+            '12' => 'Dezembro',
         ];
 
         $monthNumber = explode('-', $monthConverter);
         $monthNames = array_values($month);
-        $date = array_search($monthNumber[0], array_keys($month));
+        $date = array_search($monthNumber[0], array_keys($month), true);
         $monthName = $monthNames[$date];
 
-        return sprintf("%s/%s", $monthName, $monthNumber[1]);
+        return sprintf('%s/%s', $monthName, $monthNumber[1]);
     }
 }

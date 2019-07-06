@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method ProductionCount      findAll()
  * @method ProductionCount      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProductionCountRepository extends ServiceEntityRepository
+final class ProductionCountRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

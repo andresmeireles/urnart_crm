@@ -8,11 +8,11 @@
  * @license  MIT <https://mit-license.org>
  * @link     https://bitbucket.org/andresmeireles/sysadmin
  */
+
 namespace App\Controller;
 
 use App\Entity\Estado;
 use App\Entity\ManualOrderReport;
-use App\Entity\ManualProductCart;
 use App\Entity\Order;
 use App\Entity\PaymentType;
 use App\Entity\PessoaJuridica;
@@ -20,8 +20,6 @@ use App\Entity\Product;
 use App\Entity\Transporter;
 use App\Model\ListModel;
 use App\Model\OrderModel;
-use App\Utils\Andresmei\NestedArraySeparator;
-use App\Utils\Exceptions\CustomException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,9 +35,9 @@ use Symfony\Component\Routing\Annotation\Route;
  * @license  MIT <https://mit-license.org>
  * @link     https://bitbucket.org/andresmeireles/sysadmin
  */
-class OrderController extends AbstractController
+final class OrderController extends AbstractController
 {
-    use CSRFTokenCheckTrait;
+    use CSRFTokenCheck;
 
     /**
      * @Route("/order", name="order")
@@ -68,7 +66,7 @@ class OrderController extends AbstractController
         }
         $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
         $manualOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy([], [
-            'lastUpdate' => 'DESC'
+            'lastUpdate' => 'DESC',
         ]);
 
         $paginatedOrders = $paginator->paginate(
@@ -78,7 +76,7 @@ class OrderController extends AbstractController
 
         return $this->render('order/index.html.twig', [
             'orders' => $orders ?? [],
-            'manualOrder' => $manualOrderSearchResult ?? $paginatedOrders ?? []
+            'manualOrder' => $manualOrderSearchResult ?? $paginatedOrders ?? [],
         ]);
     }
 
@@ -104,7 +102,7 @@ class OrderController extends AbstractController
             $result,
             $request->query->getInt('page', 1)
         );
-        
+
         return $this->redirectToRoute($routeName, ['manualOrderSearch' => $manualOrderResult], 301);
     }
 
@@ -113,7 +111,7 @@ class OrderController extends AbstractController
      */
     public function list(Request $request, ListModel $model): Response
     {
-        $type = $request->query->get('type') == '' ? 'last' : $request->query->get('type');
+        $type = $request->query->get('type') === '' ? 'last' : $request->query->get('type');
         $order = $model->select($type);
         return $this->render('/order/lists/list.html.twig', [
             'listType' => $type,
@@ -226,7 +224,7 @@ class OrderController extends AbstractController
         );
 
         return new Response($result->getMessage(), $result->getHttpCode(), [
-            'redirect-route' => '/order'
+            'redirect-route' => '/order',
         ]);
     }
 
@@ -246,7 +244,7 @@ class OrderController extends AbstractController
             $this->redirectToRoute('order');
         }
         return $this->render('order/printOrder/print.html.twig', [
-            'order' => $this->getDoctrine()->getManager()->getRepository($printRepository)->find($orderId)
+            'order' => $this->getDoctrine()->getManager()->getRepository($printRepository)->find($orderId),
         ]);
     }
 }

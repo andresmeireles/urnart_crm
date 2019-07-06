@@ -1,10 +1,11 @@
 <?php declare(strict_types = 1);
 /**
  * TO-DO
- * 
+ *
  * Image saver
  * config file saver
  */
+
 namespace App\Config;
 
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
@@ -12,16 +13,17 @@ use Symfony\Component\Yaml\Yaml;
 
 final class NonStaticConfig
 {
-    /**@var array array associativo com strings de configuração;
+    /**
+     * @var array array associativo com strings de configuração;
      */
     private $config;
 
     public function __construct()
     {
-        if (!file_exists(__DIR__.'/system-config.yaml')) {
+        if (! file_exists(__DIR__ . '/system-config.yaml')) {
             throw new FileNotFoundException('Arquivo não enconrado.');
         }
-        $this->config = Yaml::parse((string) file_get_contents(__DIR__.'/system-config.yaml'));
+        $this->config = Yaml::parse((string) file_get_contents(__DIR__ . '/system-config.yaml'));
     }
 
     /**
@@ -34,13 +36,13 @@ final class NonStaticConfig
 
     /**
      * @param string $param
-     * @return mixed
+     * @return string
      * @throws NotFoundParameterException
      */
     public function getProperty(string $param)
     {
-        if (!array_key_exists($param, $this->getConfig())) {
-            throw new NotFoundParameterException("Configuração $param não existe");
+        if (! array_key_exists($param, $this->getConfig())) {
+            throw new NotFoundParameterException("Configuração ${param} não existe");
         }
 
         return $this->config[$param];

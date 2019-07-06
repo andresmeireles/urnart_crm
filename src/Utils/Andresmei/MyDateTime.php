@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Utils\Andresmei;
 
@@ -10,11 +10,9 @@ final class MyDateTime extends \DateTime
     }
 
     /**
-     * Incrimenta o valor das datas.
-     *
-     * @param  string $plusFormat
-     *
-     * @return self
+     * @param string $plusFormat
+     * @return MyDateTime
+     * @throws \Exception
      */
     public function plusDate(string $plusFormat): self
     {
@@ -24,11 +22,9 @@ final class MyDateTime extends \DateTime
     }
 
     /**
-     * Decrementa o valor da data
-     *
      * @param string $minusFormat
-     *
-     * @return self
+     * @return MyDateTime
+     * @throws \Exception
      */
     public function minusDate(string $minusFormat): self
     {
@@ -38,10 +34,7 @@ final class MyDateTime extends \DateTime
     }
 
     /**
-     * Retorna data formatada
-     *
-     * @param  string $format Formato proposto, padrão d-m-Y
-     *
+     * @param string $format
      * @return string
      */
     public function output(string $format = 'd-m-Y'): string
@@ -50,23 +43,21 @@ final class MyDateTime extends \DateTime
     }
 
     /**
-     * Retorna o nome em inglês do dia da semana
-     *
      * @return string
+     * @throws \Exception
      */
     public function getDayOfTheWeek(): string
     {
-        if (!is_int(strtotime($this->format('d-m-Y')))) {
+        if (! is_int(strtotime($this->format('d-m-Y')))) {
             throw new \Exception('Data informada não é valida');
         }
 
         return date('w', strtotime($this->format('d-m-Y')));
     }
-    
+
     /**
-     * Retorna o nome do dia da semana em português
-     *
      * @return string
+     * @throws \Exception
      */
     public function getNameOfDayOfTheWeek(): string
     {

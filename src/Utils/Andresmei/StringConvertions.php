@@ -1,20 +1,18 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace App\Utils\Andresmei;
 
 use Symfony\Component\Cache\Exception\LogicException;
 
 /**
- * Faz operações de conversão de strings em algo desejado.
+ * Class StringConvertions
+ *
+ * @package App\Utils\Andresmei
  */
-class StringConvertions
+final class StringConvertions
 {
     /**
-     * Convert snakeCase to camel case
-     *
      * @param string $snakeCaseString
-     *
      * @return string
      */
     public function snakeToCamelCase(string $snakeCaseString): string
@@ -28,13 +26,21 @@ class StringConvertions
         return $newStr;
     }
 
+    /**
+     * @param string $money
+     * @return float
+     */
     public function moneyToFloat(string $money): float
     {
         $commaToFloat = str_replace(',', '.', $money);
-        
+
         return (float) $commaToFloat;
     }
 
+    /**
+     * @param string $emptyString
+     * @return string|null
+     */
     public function emptyToNull(string $emptyString): ?string
     {
         if ($emptyString === '') {
@@ -44,11 +50,9 @@ class StringConvertions
     }
 
     /**
-     * Transforma uma string em uma data pre-definida pelo sistema
-     *
      * @param string|null $dateString
-     *
      * @return string|null
+     * @throws \Exception
      */
     public function strToDateString(?string $dateString): ?string
     {
@@ -67,8 +71,6 @@ class StringConvertions
     }
 
     /**
-     * Transforma string em data formatada
-     *
      * @param string $string
      * @param string $delimiter
      * @param string $type
@@ -87,7 +89,7 @@ class StringConvertions
                 $day = (int) $date[0];
                 $month = (int) $date[1];
                 $year = (int) $date[2];
-                if (!checkdate($month, $day, $year)) {
+                if (! checkdate($month, $day, $year)) {
                     throw new LogicException(
                         sprintf('Data informada DIA = %s, MES = %s, ANO = %s não é valida.', $day, $month, $year)
                     );
@@ -100,6 +102,12 @@ class StringConvertions
         }
     }
 
+    /**
+     * @param string $type
+     * @param $value
+     * @return array|bool|float|int|string
+     * @throws \Exception
+     */
     public function convertValue(string $type, $value)
     {
         switch ($type) {
@@ -118,8 +126,11 @@ class StringConvertions
             case 'float':
                 return (float) $value;
                 break;
+            case 'none':
+                return $value;
+                break;
             default:
-                throw new \Exception(sprintf("Tipo %s não reconhecido", $type));
+                throw new \Exception(sprintf('Tipo %s não reconhecido', $type));
                 break;
         }
     }

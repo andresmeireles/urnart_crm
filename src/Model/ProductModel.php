@@ -6,7 +6,7 @@ use App\Entity\Product;
 use App\Entity\ProductInventory;
 use App\Utils\Andresmei\FlashResponse;
 
-class ProductModel extends Model
+final class ProductModel extends Model
 {
     /**
      * @param array $data
@@ -35,26 +35,32 @@ class ProductModel extends Model
      */
     public function remove(int $productId): array
     {
-        $product = $this->em->getRepository(Product::class)->find($productId);
+        $product = $this->entityManager->getRepository(Product::class)->find($productId);
 
-        $this->em->remove($product);
-        $this->em->flush();
+        $this->entityManager->remove($product);
+        $this->entityManager->flush();
 
         return [
             'http_code' => 200,
-            'message' => sprintf("Produto %s removido com sucesso!", $product->getName())
+            'message' => sprintf(
+                'Produto %s removido com sucesso!',
+                $product->getName()
+            ),
         ];
     }
 
     /**
      * @param array $data
-     * @param int|null $id
+     * @param int|null $elementId
      * @param string $unclearType
      * @return FlashResponse
      * @throws \Exception
      */
-    public function runAction(array $data, ?int $id, string $unclearType): FlashResponse
-    {
+    public function runAction(
+        array $data,
+        ?int $elementId,
+        string $unclearType
+    ): FlashResponse {
         if ($data['name'] === null ||
             $data['maxStock'] === null ||
             $data['minStock'] === null ||
@@ -65,23 +71,28 @@ class ProductModel extends Model
         $type = strtolower($unclearType);
         $allowParameters = [
             'insert',
-            'update'
+            'update',
         ];
-        if (!in_array($type, $allowParameters)) {
-            throw new \Exception(sprintf("Operaçao %s não suportada, operações suportadas: INSERT e UPDATE", $type));
+        if (! in_array($type, $allowParameters, true)) {
+            throw new \Exception(
+                sprintf(
+                    'Operaçao %s não suportada, operações suportadas: INSERT e UPDATE',
+                    $type
+                )
+            );
         }
         try {
             $product = new Product();
             $name = strtolower($data['name']);
             if ($type === 'insert') {
-                $result = $this->em->getRepository(Product::class)->findOneBy(['name' => $name]);
-                if (!is_null($result)) {
+                $result = $this->entityManager->getRepository(Product::class)->findOneBy(['name' => $name]);
+                if ($result !== null) {
                     return new FlashResponse(400, 'warning', 'Produto com nome igual já cadastrado');
                 }
             }
             $productInventory = new ProductInventory();
-            if ($type == 'update') {
-                $product = $this->em->getRepository(Product::class)->find($id);
+            if ($type === 'update') {
+                $product = $this->entityManager->getRepository(Product::class)->find($elementId);
                 $productInventory = $product->getProductInventory();
             }
             $product->setName($name);
@@ -90,22 +101,22 @@ class ProductModel extends Model
             $color = $data['colors'] ?? [];
             $product->setColor($color);
             $product->setSeries($data['model']);
-            if ($type == 'insert') {
+            if ($type === 'insert') {
                 $productInventory->setProduct($product);
             }
             $minStock = (float) $data['maxStock'];
             $productInventory->setMinStock($minStock);
             $maxStock = (int) $data['maxStock'];
             $productInventory->setMaxStock($maxStock);
-            if ($type == 'insert') {
-                $this->em->persist($product);
-                $this->em->persist($productInventory);
+            if ($type === 'insert') {
+                $this->entityManager->persist($product);
+                $this->entityManager->persist($productInventory);
             }
-            if ($type == 'update') {
-                $this->em->merge($product);
-                $this->em->merge($productInventory);
+            if ($type === 'update') {
+                $this->entityManager->merge($product);
+                $this->entityManager->merge($productInventory);
             }
-            $this->em->flush();
+            $this->entityManager->flush();
 
             return new FlashResponse(200, 'success', 'Sucesso');
         } catch (\Exception $e) {
@@ -119,29 +130,29 @@ class ProductModel extends Model
      */
     public function productIn(array $data): array
     {
-        $this->em->getConnection()->beginTransaction();
+        $this->entityManager->getConnection()->beginTransaction();
         try {
             foreach ($data as $info) {
-                $productInventory = $this->em->getRepository(ProductInventory::class)->findOneBy([
-                    'product' => $info->product
+                $productInventory = $this->entityManager->getRepository(ProductInventory::class)->findOneBy([
+                    'product' => $info->product,
                 ]);
                 $oldStock = $productInventory->getStock();
                 $stock = (float) $info->amount;
                 $newStock = $stock + $oldStock;
                 $productInventory->setStock($newStock);
-                $this->em->merge($productInventory);
+                $this->entityManager->merge($productInventory);
             }
-            $this->em->flush();
-            $this->em->getConnection()->commit();
+            $this->entityManager->flush();
+            $this->entityManager->getConnection()->commit();
             return [
                 'http_code' => 200,
-                'message' => 'Sucesso!'
+                'message' => 'Sucesso!',
             ];
         } catch (\Exception $e) {
-            $this->em->getConnection()->rollback();
+            $this->entityManager->getConnection()->rollback();
             return [
                 'http_code' => 203,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ];
         }
     }

@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BoletoRepository")
  */
-class Boleto extends BaseEntity
+final class Boleto extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -95,7 +95,7 @@ class Boleto extends BaseEntity
     public function setBoletoNumber(string $boletoNumber): self
     {
         $this->setLastUpdate();
-        
+
         $this->boletoNumber = $boletoNumber;
 
         return $this;
@@ -143,9 +143,9 @@ class Boleto extends BaseEntity
     public function setBoletoPaymentDate(?string $boletoPaymentDate): self
     {
         $this->setLastUpdate();
-        $date = !is_null($boletoPaymentDate) ? new \DateTime($boletoPaymentDate) : $boletoPaymentDate;
+        $date = $boletoPaymentDate !== null ? new \DateTime($boletoPaymentDate) : $boletoPaymentDate;
 
-        if (!($date instanceof \DateTime) and !is_null($date)) {
+        if (! ($date instanceof \DateTime) and $date !== null) {
             throw new InvalidParameterException(sprintf('Parametro [%s] não é valido. Valores reconhecidos são instancia de \DateTIme e null', $date));
         }
 
@@ -197,7 +197,7 @@ class Boleto extends BaseEntity
         $this->setLastUpdate();
         $date = new \DateTime($boletoVencimento);
 
-        if (!($date instanceof \DateTime)) {
+        if (! ($date instanceof \DateTime)) {
             throw new InvalidParameterException(sprintf('Parametro [%s] não é valido. Preciso enviar instancia de \DateTime.', $date));
         }
 

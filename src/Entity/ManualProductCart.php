@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ManualProductCartRepository")
  */
-class ManualProductCart
+final class ManualProductCart
 {
     /**
      * @ORM\Id()
@@ -22,7 +22,6 @@ class ManualProductCart
     private $productName;
 
     /**
-     *
      * @ORM\Column(type="float")
      */
     private $productPrice;

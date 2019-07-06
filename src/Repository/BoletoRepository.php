@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Boleto    findAll()
  * @method Boleto    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class BoletoRepository extends ServiceEntityRepository
+final class BoletoRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

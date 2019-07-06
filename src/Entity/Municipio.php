@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MunicipioRepository")
  */
-class Municipio
+final class Municipio
 {
     /**
      * @ORM\Id()
@@ -93,7 +93,7 @@ class Municipio
         if ($this->endereco->contains($endereco)) {
             $this->endereco->removeElement($endereco);
 
-            if ($endereco->getMunicipio() == $this) {
+            if ($endereco->getMunicipio() === $this) {
                 $endereco->setMunicipio(null);
             }
         }

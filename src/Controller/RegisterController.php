@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Controller;
 
-use App\Config\NonStaticConfig;
+use App\Model\ModelsModel;
 use App\Utils\Exceptions\CustomException;
 use App\Utils\Generic\Crud;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,9 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
-use App\Model\ModelsModel;
 
-class RegisterController extends AbstractController
+final class RegisterController extends AbstractController
 {
     /**
      * @Route("/register", name="register")
@@ -52,7 +51,7 @@ class RegisterController extends AbstractController
 
         return $this->redirectToRoute('register');
     }
-    
+
     /**
      * @Route("api/register/add/{entity}", methods={"POST", "PUT"})
      */
@@ -61,7 +60,7 @@ class RegisterController extends AbstractController
         $setter->set($entity, $request->request->all());
 
         return new Response('Produto adicionado com sucesso', 200, [
-            'type-message' => 'success'
+            'type-message' => 'success',
         ]);
     }
 
@@ -79,7 +78,7 @@ class RegisterController extends AbstractController
      */
     public function getRegisterWithSimpleCriteria(string $entity, Request $request, Crud $getter)
     {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+        if (! $this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Algo deu muito errado :(');
         }
 
@@ -120,7 +119,7 @@ class RegisterController extends AbstractController
     public function configuration(Request $request): Response
     {
         if ($request->getMethod() === 'post') {
-            if (!$this->isCsrfTokenValid(
+            if (! $this->isCsrfTokenValid(
                 'configuration',
                 $request->request->get('_csrf_token')
             )) {
@@ -134,7 +133,7 @@ class RegisterController extends AbstractController
 
         return $this->render('/register/configuration/index.html.twig', [
             'config' => $config,
-            'draw' => $draw
+            'draw' => $draw,
         ]);
     }
 
@@ -144,7 +143,7 @@ class RegisterController extends AbstractController
     public function resetlogo(Request $request): Response
     {
         $hash = json_decode($request->getContent())->hash;
-        if (!($hash == hash('ripemd160', 'valido'))) {
+        if (! ($hash === hash('ripemd160', 'valido'))) {
             return new Response('false', 400);
         }
         // $config->resetLogoImage();

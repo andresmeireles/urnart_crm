@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Email      findAll()
  * @method Email      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EmailRepository extends ServiceEntityRepository
+final class EmailRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

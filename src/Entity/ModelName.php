@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ModelNameRepository")
  */
-class ModelName extends BaseEntity
+final class ModelName extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -58,11 +58,11 @@ class ModelName extends BaseEntity
             'ECOCV' => 'ECO CV',
             'ECOCVSV' => 'ECO CV SV',
             'ECOSVSV' => 'ECO SV SV',
-            'ECOSV' => 'ECO SV'
+            'ECOSV' => 'ECO SV',
         ];
         $sanitizedName = strtoupper($sanitizedName);
-        $finalModelName = array_key_exists($sanitizedName, $allowedConvesionableNames)?
-            $allowedConvesionableNames[$sanitizedName]:
+        $finalModelName = array_key_exists($sanitizedName, $allowedConvesionableNames) ?
+            $allowedConvesionableNames[$sanitizedName] :
             $sanitizedName;
         $this->name = $finalModelName;
 
@@ -112,7 +112,7 @@ class ModelName extends BaseEntity
 
     public function setSpecificity(?string $specificity): self
     {
-        $this->specificity = $specificity === null || $specificity === ''  ? null : strtoupper($specificity);
+        $this->specificity = $specificity === null || $specificity === '' ? null : strtoupper($specificity);
 
         return $this;
     }

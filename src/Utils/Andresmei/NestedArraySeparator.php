@@ -1,27 +1,20 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace App\Utils\Andresmei;
 
-class NestedArraySeparator
+final class NestedArraySeparator
 {
     /**
-     * Array associativo com os array simples
-     *
      * @var array
      */
     private $simpleArray;
 
     /**
-     * Array asspciativo com os arrays de arrays
-     *
      * @var array
      */
     private $arrayInArray;
 
     /**
-     * Array Associativo com divisões
-     *
      * @var array
      */
     private $associativeArray;
@@ -29,7 +22,7 @@ class NestedArraySeparator
     public function __construct(array $nestedArray)
     {
         foreach ($nestedArray as $key => $value) {
-            if (!is_array($value)) {
+            if (! is_array($value)) {
                 $this->setSimpleArray($key, $value);
                 continue;
             }
@@ -39,32 +32,65 @@ class NestedArraySeparator
         $this->setArrayGroup($nestedArray);
     }
 
+    /**
+     * @return array
+     */
     public function getSimpleArray(): array
     {
         return $this->simpleArray;
     }
 
+    /**
+     * @return array
+     */
     public function getArrayInArray(): array
     {
         return $this->arrayInArray;
     }
-    
+
+    /**
+     * @return array
+     */
+    public function getAssoativeArray(): array
+    {
+        return $this->associativeArray;
+    }
+
+    /**
+     * @param string $name
+     * @return array|null
+     */
+    public function getAssoativeArrayGroup(string $name): ?array
+    {
+        return $this->associativeArray[$name] ?? null;
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     */
     private function setSimpleArray(string $key, string $value): void
     {
         $this->simpleArray[$key] = $value;
     }
-    
+
+    /**
+     * @param array $value
+     */
     private function setArrayInArray(array $value): void
     {
         $this->arrayInArray[] = $value;
     }
 
+    /**
+     * @param array $value
+     */
     private function setArrayGroup(array $value): void
     {
         $keyName = '';
         $arrayResult = [];
         foreach ($value as $key => $val) {
-            if (!is_array($val)) {
+            if (! is_array($val)) {
                 continue;
             }
 
@@ -78,15 +104,5 @@ class NestedArraySeparator
         }
 
         $this->associativeArray = $arrayResult;
-    }
-
-    public function getAssoativeArray(): array
-    {
-        return $this->associativeArray;
-    }
-
-    public function getAssoativeArrayGroup(string $name): ?array
-    {
-        return $this->associativeArray[$name] ?? null;
     }
 }

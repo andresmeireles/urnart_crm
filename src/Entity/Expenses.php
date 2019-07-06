@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ExpensesRepository")
  */
-class Expenses
+final class Expenses
 {
     /**
      * @ORM\Id()

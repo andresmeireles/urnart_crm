@@ -1,51 +1,51 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace App\Utils\Andresmei;
 
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class SimpleFileUpload
+final class SimpleFileUpload
 {
-    /**
-     * Tamanho maximo do arquivo
-     */
     private const MAX_SIZE_FILE = 400000;
 
     /**
      * @var string
-     *
-     * Caminho absoluto da imagem
      */
-    protected static $logoDir = __DIR__ . '/../../../public/sys/logo_img';
+    private static $logoDir = __DIR__ . '/../../../public/sys/logo_img';
 
     /**
      * @var array
-     *
-     * Array com tipos de imagem suportados.
      */
-    protected static $supportedImages = [
+    private static $supportedImages = [
         'image/jpeg',
         'image/png',
         'image/svg+xml',
-        'image/webp'
+        'image/webp',
     ];
 
     /**
      * @var string
-     *
-     * String com caminho da imagem
      */
-    protected static $filePath;
+    private static $filePath;
 
-    protected static $message;
+    /**
+     * @var string
+     */
+    private static $message;
 
-    protected static $status = false;
+    /**
+     * @var bool
+     */
+    private static $status = false;
 
+    /**
+     * @param UploadedFile|null $file
+     * @return bool
+     * @throws \Exception
+     */
     public static function uploadLogoImage(?UploadedFile $file): bool
     {
-        if (is_null($file)) {
+        if ($file === null) {
             //self::$filePath = "sys/logo_img/logo.png";
             self::$status = true;
 
@@ -56,50 +56,59 @@ class SimpleFileUpload
             throw new \Exception('Formato não envidado', 1);
         }
 
-        if (!self::checkImage($file->getClientMimeType()) && !self::checkFileSize($file->getSize())) {
+        if (! self::checkImage($file->getClientMimeType()) && ! self::checkFileSize($file->getSize())) {
             return false;
         }
         self::clearFolder();
-        $uploadPath = self::$logoDir.'/custom/'.$file->getClientOriginalName();
+        $uploadPath = self::$logoDir . '/custom/' . $file->getClientOriginalName();
 
-        if (!is_string($file->getRealPath())) {
-            throw new \Exception("Path não enviado ou não existe", 1);
+        if (! is_string($file->getRealPath())) {
+            throw new \Exception('Path não enviado ou não existe', 1);
         }
 
         $uploadFile = move_uploaded_file($file->getRealPath(), $uploadPath);
-        if (!$uploadFile) {
+        if (! $uploadFile) {
             self::$message = 'Erro ao enviar imagem.';
             return false;
         }
-        self::$filePath = '/sys/logo_img/custom/'.$file->getClientOriginalName();
+        self::$filePath = '/sys/logo_img/custom/' . $file->getClientOriginalName();
         self::$message = "Imagem {$file->getClientOriginalName()} enviada com sucesso";
         self::$status = true;
 
         return true;
     }
 
-    /* public function uploadFile(File $fileToUpload, ?string $uploadPath)
-    {
-    } */
-
+    /**
+     * @return bool
+     */
     public static function getStatus(): bool
     {
         return self::$status;
     }
 
+    /**
+     * @return string|null
+     */
     public static function getMessage(): ?string
     {
         return self::$message;
     }
 
+    /**
+     * @return string|null
+     */
     public static function getFilePath(): ?string
     {
         return self::$filePath;
     }
 
+    /**
+     * @param string $type
+     * @return bool
+     */
     private static function checkImage(string $type): bool
     {
-        if (!in_array($type, self::$supportedImages)) {
+        if (! in_array($type, self::$supportedImages, true)) {
             self::$message = "Tipo {$type} não supportado";
             self::$status = false;
             return false;
@@ -108,21 +117,25 @@ class SimpleFileUpload
         return true;
     }
 
+    /**
+     * @param int $fileSize
+     * @return bool
+     */
     private static function checkFileSize(int $fileSize): bool
     {
         if ($fileSize > self::MAX_SIZE_FILE || $fileSize === 0) {
-            self::$message = "Imagem maior que o suportado";
+            self::$message = 'Imagem maior que o suportado';
             return false;
         }
 
         return true;
     }
-    
+
     private static function clearFolder(): void
     {
-        $files = glob(self::$logoDir.'/custom/*');
+        $files = glob(self::$logoDir . '/custom/*');
         foreach ($files as $file) {
-            if (!is_dir($file) && file_exists($file)) {
+            if (! is_dir($file) && file_exists($file)) {
                 unlink($file);
             }
         }

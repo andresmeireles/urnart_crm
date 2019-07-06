@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TransporterRepository")
  */
-class Transporter
+final class Transporter
 {
     /**
      * @ORM\Id()
@@ -82,7 +82,7 @@ class Transporter
 
     public function addOrderNumber(Order $orderNumber): self
     {
-        if (!$this->orderNumber->contains($orderNumber)) {
+        if (! $this->orderNumber->contains($orderNumber)) {
             $this->orderNumber[] = $orderNumber;
             $orderNumber->setTransporter($this);
         }

@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method ManualOrderReport      findAll()
  * @method ManualOrderReport      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ManualOrderReportRepository extends ServiceEntityRepository
+final class ManualOrderReportRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

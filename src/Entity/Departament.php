@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DepartamentRepository")
  */
-class Departament
+final class Departament
 {
     /**
      * @ORM\Id()
@@ -94,7 +94,7 @@ class Departament
 
     public function addFeedstock(Feedstock $feedstock): self
     {
-        if (!$this->feedstocks->contains($feedstock)) {
+        if (! $this->feedstocks->contains($feedstock)) {
             $this->feedstocks[] = $feedstock;
             $feedstock->setDepartament($this);
         }

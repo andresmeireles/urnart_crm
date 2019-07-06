@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PaymentTypeRepository")
  */
-class PaymentType
+final class PaymentType
 {
     /**
      * @ORM\Id()
@@ -80,7 +80,7 @@ class PaymentType
 
     public function addOrderNumber(Order $orderNumber): self
     {
-        if (!$this->orderNumber->contains($orderNumber)) {
+        if (! $this->orderNumber->contains($orderNumber)) {
             $this->orderNumber[] = $orderNumber;
             $orderNumber->setPaymentType()($this);
         }

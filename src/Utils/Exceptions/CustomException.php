@@ -2,6 +2,6 @@
 
 namespace App\Utils\Exceptions;
 
-class CustomException extends \Exception
+final class CustomException extends \Exception
 {
 }

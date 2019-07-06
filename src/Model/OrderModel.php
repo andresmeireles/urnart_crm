@@ -13,7 +13,7 @@ use App\Entity\Transporter;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Andresmei\StringConvertions;
 
-class OrderModel extends Model
+final class OrderModel extends Model
 {
     /**
      * @param array $information
@@ -22,12 +22,15 @@ class OrderModel extends Model
      * @throws \Exception
      * @return FlashResponse
      */
-    public function executeActionOnOrder(array $information, array $products, string $type = 'insert'): FlashResponse
-    {
-        $entityManager = $this->em;
+    public function executeActionOnOrder(
+        array $information,
+        array $products,
+        string $type = 'insert'
+    ): FlashResponse {
+        $entityManager = $this->entityManager;
         //$entityManager->getConnection()->beginTransaction();
         try {
-            if ($type == 'update') {
+            if ($type === 'update') {
                 $id = $information['id'];
                 $order = $entityManager->getRepository(Order::class)->find($id);
                 if ($order->isClosed()) {
@@ -37,39 +40,39 @@ class OrderModel extends Model
                 $order = new Order();
             }
             $totalPrice = 0;
-            $customer = $this->em->getRepository(PessoaJuridica::class)->find($information['clientName']);
+            $customer = $this->entityManager->getRepository(PessoaJuridica::class)->find($information['clientName']);
             $order->setCustomer($customer);
             $freight = $information['freight'] === '' ? null : (float) $information['freight'];
             $order->setFreight($freight);
             $discount = $information['discount'] === '' ? null : (float) $information['discount'];
             $order->setDiscount($discount);
-            $transporter = $this->em->getRepository(Transporter::class)->find($information['transporter']);
+            $transporter = $this->entityManager->getRepository(Transporter::class)->find($information['transporter']);
             $transporter = $transporter ?? null;
             $order->setTransporter($transporter);
             $customPort = array_key_exists('port', $information) ? $information['port'] : null;
-            if (!is_null($transporter) && !is_null($customPort)) {
+            if ($transporter !== null && $customPort !== null) {
                 $customPort = ltrim(trim($information['port'])) === $transporter->getPort() ?
                 null :
                 ltrim(trim($information['port']));
             }
             $order->setCustomPort($customPort);
-            $paymentType = $this->em->getRepository(PaymentType::class)->find($information['formPg']);
+            $paymentType = $this->entityManager->getRepository(PaymentType::class)->find($information['formPg']);
             $order->setPaymentType($paymentType);
             $installments = array_key_exists('installments', $information) ? (int) $information['installments'] : null;
             $order->setInstallment($installments);
             $comments = trim(ltrim(filter_var($information['observation'], FILTER_SANITIZE_STRING)));
             $order->setComments($comments);
-            if ($type == 'update' && isset($id)) {
+            if ($type === 'update' && isset($id)) {
                 $productCart = $entityManager->getRepository(Cart::class)
-                                            ->findBy(['orderNumber' => $id]);
+                    ->findBy(['orderNumber' => $id]);
                 foreach ($productCart as $p) {
                     $entityManager->remove($p);
                 }
             }
             foreach ($products as $product) {
                 $cart = new Cart();
-                $existentProduct = $this->em->getRepository(Product::class)->find($product['cod']);
-                if (is_null($existentProduct)) {
+                $existentProduct = $this->entityManager->getRepository(Product::class)->find($product['cod']);
+                if ($existentProduct === null) {
                     return new FlashResponse(
                         400,
                         'error',
@@ -91,7 +94,7 @@ class OrderModel extends Model
                 $totalPrice += ($price * (float) $product['qnt']);
             }
             $order->setTotalPrice($totalPrice);
-            if ($type == 'update') {
+            if ($type === 'update') {
                 $entityManager->merge($order);
             } else {
                 $order->setActive(true);
@@ -100,14 +103,10 @@ class OrderModel extends Model
             $entityManager->flush();
             //$entityManager->getConnection()->commit();
         } catch (\Exception $e) {
-            // development message
-            //throw new \Exception(sprintf('%s %s %s', $e->getMessage(), $e->getFile(), $e->getLine()));
-            //$entityManager->getConnection()->rollback();
-
             return new FlashResponse(401, 'error', $e->getMessage());
         }
 
-        return new FlashResponse(301, 'error', sprintf("Pedido %s criado com sucesso", $order->getId()));
+        return new FlashResponse(301, 'error', sprintf('Pedido %s criado com sucesso', $order->getId()));
     }
 
     /**
@@ -139,16 +138,16 @@ class OrderModel extends Model
      */
     public function reserve(int $orderId): FlashResponse
     {
-        if (!$this->settings->getProperty('allow_reserve')) {
+        if (! $this->settings->getProperty('allow_reserve')) {
             return new FlashResponse(400, 'warning', 'Operação desabilitada pelo sistema.');
         }
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
         //$entityManager->getConnection()->beginTransaction();
         $order = $entityManager->getRepository(Order::class)->find($orderId);
-        if (!$order->isOpen()) {
+        if (! $order->isOpen()) {
             $message = $order->isReserved() ?
-            sprintf("Pedido %s já tem os produtos reservados", $order->getId()) :
-            sprintf("Pedido %s já foi fechado e não pode ser modificado", $order->getId());
+            sprintf('Pedido %s já tem os produtos reservados', $order->getId()) :
+            sprintf('Pedido %s já foi fechado e não pode ser modificado', $order->getId());
 
             return new FlashResponse(400, 'error', $message);
         }
@@ -157,15 +156,15 @@ class OrderModel extends Model
             $order->reserve();
             foreach ($productCarts as $cart) {
                 $product = $cart->getProduct();
-                if (!$this->settings->getProperty('allow_negative_stock')) {
+                if (! $this->settings->getProperty('allow_negative_stock')) {
                     if ($product->getStock() < $cart->getAmount()) {
                         $entityManager->getConnection()->rollback();
-                        
+
                         return new FlashResponse(
                             400,
                             'error',
                             sprintf(
-                                "Produto %s não tem estoque suficiente para reservar.",
+                                'Produto %s não tem estoque suficiente para reservar.',
                                 $product->getName()
                             )
                         );
@@ -181,14 +180,14 @@ class OrderModel extends Model
             $entityManager->getConnection()->commit();
         } catch (\Exception $e) {
             $entityManager->getConnection()->rollback();
-            throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+            throw new \Exception($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getLine());
         }
 
         return new FlashResponse(
             301,
             'success',
             sprintf(
-                "Produtos do pedido %s foram reservados com sucesso",
+                'Produtos do pedido %s foram reservados com sucesso',
                 $orderId
             )
         );
@@ -203,24 +202,24 @@ class OrderModel extends Model
      */
     public function runUnreserveTypeAction(?int $id, string $hash, string $type = 'open'): FlashResponse
     {
-        $entityManager = $this->em;
-        if (!$this->validate($hash) || is_null($id)) {
+        $entityManager = $this->entityManager;
+        if (! $this->validate($hash) || $id === null) {
             return new FlashResponse(400, 'error', 'erro, operação não autorizada...');
         }
         //$entityManager->getConnection()->beginTransaction();
         $order = $entityManager->getRepository(Order::class)->find($id);
-        if ($type == 'open' && $order->isOpen()) {
-            return new FlashResponse(400, 'error', sprintf("Pedido %s já está aberto...", $id));
+        if ($type === 'open' && $order->isOpen()) {
+            return new FlashResponse(400, 'error', sprintf('Pedido %s já está aberto...', $id));
         }
-        if ($type == 'close' && $order->isClosed()) {
+        if ($type === 'close' && $order->isClosed()) {
             $order->setAtive(false);
-            return new FlashResponse(400, 'error', sprintf("Pedido %s já está fechado...", $id));
+            return new FlashResponse(400, 'error', sprintf('Pedido %s já está fechado...', $id));
         }
         try {
             $productCarts = $order->getProductCarts();
             $actualStatus = $order->getReserved();
             $order->reOpen();
-            if ($type == 'close') {
+            if ($type === 'close') {
                 $order->close();
             }
             foreach ($productCarts as $cart) {
@@ -238,11 +237,11 @@ class OrderModel extends Model
             //$entityManager->getConnection()->commit();
         } catch (\Exception $e) {
             //$entityManager->getConnection()->rollback();
-            throw new \Exception($e->getMessage().' '.$e->getFile().' '.$e->getLine());
+            throw new \Exception($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getLine());
         }
         $message = $order->isClosed() ?
-                    sprintf("Pedido %s fechado com sucesso", $id) :
-                    sprintf("Produtos do pedido %s foi aberto novamento", $id);
+                    sprintf('Pedido %s fechado com sucesso', $id) :
+                    sprintf('Produtos do pedido %s foi aberto novamento', $id);
 
         return new FlashResponse(301, 'success', $message);
     }
@@ -275,24 +274,32 @@ class OrderModel extends Model
      */
     public function removeOrder(int $orderId): FlashResponse
     {
-        $removeOrder = $this->em->getRepository(Order::class)->find($orderId);
+        $removeOrder = $this->entityManager->getRepository(Order::class)->find($orderId);
         $order = $removeOrder->getId();
-        if (is_null($removeOrder)) {
+        if ($removeOrder === null) {
             return new FlashResponse(200, 'error', 'Erro interno');
         }
         $cartsToRemove = $removeOrder->getProductCarts();
         //$this->em->getConnection()->beginTransaction();
         try {
             foreach ($cartsToRemove as $cart) {
-                $this->em->remove($cart);
+                $this->entityManager->remove($cart);
             }
-            $this->em->remove($removeOrder);
-            $this->em->flush();
+            $this->entityManager->remove($removeOrder);
+            $this->entityManager->flush();
             //$this->em->getConnection()->commit();
-            return new FlashResponse(200, 'warning', sprintf("Pedido %s removido com sucesso!", $orderId));
+            return new FlashResponse(
+                200,
+                'warning',
+                sprintf('Pedido %s removido com sucesso!', $orderId)
+            );
         } catch (\Exception $e) {
             //$this->em->getConnection()->rollback();
-            return new FlashResponse(200, 'danger', sprintf("Erro ao remove pedido %s.", $order));
+            return new FlashResponse(
+                200,
+                'danger',
+                sprintf('Erro ao remove pedido %s.', $order)
+            );
         }
     }
 
@@ -304,7 +311,7 @@ class OrderModel extends Model
     public function validate(?string $hash, string $message = 'valido'): bool
     {
         $trueHash = hash('ripemd160', $message);
-        if (is_null($hash) || $hash !== $trueHash) {
+        if ($hash === null || $hash !== $trueHash) {
             return false;
         }
         return true;
@@ -322,7 +329,7 @@ class OrderModel extends Model
      */
     public function createManualReport(array $orderData, array $products)
     {
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
         $entityManager->getConnection()->beginTransaction();
         try {
             $report = new ManualOrderReport();
@@ -353,7 +360,7 @@ class OrderModel extends Model
 
         return new FlashResponse(200, 'success', 'Sucesso!');
     }
-    
+
     /**
      * @param array $orderData
      * @param array $products
@@ -363,9 +370,9 @@ class OrderModel extends Model
      */
     public function editManualOrder(array $orderData, array $products, int $orderId): FlashResponse
     {
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
         $entityManager->getConnection()->beginTransaction();
-        
+
         try {
             $report = $entityManager->getRepository(ManualOrderReport::class)->find($orderId);
             $report->setCustomerName($orderData['clientName']);
@@ -382,7 +389,7 @@ class OrderModel extends Model
             $paymentType = $entityManager->getRepository(PaymentType::class)->find($orderData['formPg']);
             $report->setPaymentType($paymentType);
             $removeCart = $entityManager->getRepository(ManualProductCart::class)
-                                ->findBy(['manualOrderReport' => $orderId]);
+                ->findBy(['manualOrderReport' => $orderId]);
             $this->removeManualProductCart($removeCart);
             foreach ($products as $product) {
                 $cart = $this->actionOnManualCart($product, $report);
@@ -395,7 +402,7 @@ class OrderModel extends Model
             $entityManager->getConnection()->rollback();
             throw new \Exception($e->getMessage());
         }
-        
+
         return new FlashResponse(200, 'success', sprintf('Pedido %d alterado com sucesso.', $orderId));
     }
 
@@ -421,8 +428,8 @@ class OrderModel extends Model
     public function closeManualOrder(ManualOrderReport $orderReport): self
     {
         $orderReport->setActive(false);
-        $this->em->merge($orderReport);
-        $this->em->flush();
+        $this->entityManager->merge($orderReport);
+        $this->entityManager->flush();
 
         return $this;
     }
@@ -436,9 +443,9 @@ class OrderModel extends Model
     {
         try {
             foreach ($cart as $product) {
-                $this->em->remove($product);
+                $this->entityManager->remove($product);
             }
-            $this->em->flush();
+            $this->entityManager->flush();
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
@@ -454,8 +461,8 @@ class OrderModel extends Model
     public function removeManualOrder(ManualOrderReport $object): self
     {
         try {
-            $this->em->remove($object);
-            $this->em->flush();
+            $this->entityManager->remove($object);
+            $this->entityManager->flush();
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }

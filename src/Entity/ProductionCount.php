@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductionCountRepository")
  */
-class ProductionCount extends BaseEntity
+final class ProductionCount extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -64,7 +64,7 @@ class ProductionCount extends BaseEntity
             'ECOCVSV' => 'ECO CV SV',
             'ECOSVSV' => 'ECO SV SV',
             'ECOCV' => 'ECO CV',
-            'ECOSV' => 'ECO SV'
+            'ECOSV' => 'ECO SV',
         ];
         $cleanedModel = strtoupper($model);
         $cleanedModel = ltrim(trim($cleanedModel));
@@ -105,12 +105,12 @@ class ProductionCount extends BaseEntity
             18 => '180',
             19 => '190',
             21 => '210',
-            1  => 'T1',
-            2  => 'T2',
-            3  => 'T3',
+            1 => 'T1',
+            2 => 'T2',
+            3 => 'T3',
             'T1' => 'T1',
             'T2' => 'T2',
-            'T3' => 'T3'
+            'T3' => 'T3',
         ];
         $cleanedHeight = ltrim(trim($height));
         $cleanedHeight = strtoupper($cleanedHeight);
@@ -121,7 +121,7 @@ class ProductionCount extends BaseEntity
             ));
         }
         if (strlen($cleanedHeight) <= 2) {
-            if (!array_key_exists((int) $cleanedHeight, $smallHeights)) {
+            if (! array_key_exists((int) $cleanedHeight, $smallHeights)) {
                 throw new CustomException(sprintf(
                     'Tamanho %s não é reconhecido, insira um tamanho valido.',
                     $cleanedHeight
@@ -141,10 +141,10 @@ class ProductionCount extends BaseEntity
 
     public function setObs(?string $obs): self
     {
-        if (null !== $obs) {
+        if ($obs !== null) {
             $allowedHeights = ['SUPER GORDA', 'GORDA', 'BALEIA'];
             $obs = strtoupper($obs);
-            if (!in_array($obs, $allowedHeights)) {
+            if (! in_array($obs, $allowedHeights, true)) {
                 throw new \Exception('Observação não existe.');
             }
         }

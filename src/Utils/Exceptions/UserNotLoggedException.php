@@ -2,6 +2,6 @@
 
 namespace App\Utils\Exceptions;
 
-class UserNotLoggedException extends \Exception
+final class UserNotLoggedException extends \Exception
 {
 }

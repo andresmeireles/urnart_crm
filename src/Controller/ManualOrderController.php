@@ -16,11 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ManualOrderController
+ *
  * @package App\Controller
  */
-class ManualOrderController extends AbstractController
+final class ManualOrderController extends AbstractController
 {
-    use CSRFTokenCheckTrait;
+    use CSRFTokenCheck;
 
     /**
      * @Route("/order/manual/{orderId<\d+>}", methods={"DELETE"})
@@ -31,7 +32,7 @@ class ManualOrderController extends AbstractController
         $cart = $this->getDoctrine()->getRepository(ManualProductCart::class)->findBy([
             'manualOrderReport' => $orderId,
         ]);
-        if (!$order instanceof ManualOrderReport) {
+        if (! $order instanceof ManualOrderReport) {
             throw new \Exception('Nada foi mandado para ser apagado');
         }
         $orderModel->removeManualProductCart($cart);
@@ -62,10 +63,10 @@ class ManualOrderController extends AbstractController
             $request->query->getInt('page', 1)
         );
 
-        return $this->render('/order/lists/'. $typeOfList .'List.html.twig', [
+        return $this->render('/order/lists/' . $typeOfList . 'List.html.twig', [
             'lists' => $paginatorList,
             'beginDate' => $request->query->get('beginDate'),
-            'lastDate' => $request->query->get('lastDate')
+            'lastDate' => $request->query->get('lastDate'),
         ]);
     }
 
@@ -75,7 +76,7 @@ class ManualOrderController extends AbstractController
     public function closeManualOrder(int $orderId, OrderModel $orderModel): Response
     {
         $order = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
-        if (!$order instanceof ManualOrderreport) {
+        if (! $order instanceof ManualOrderreport) {
             throw new \Exception('Erro. pedido não pode ser fechado.');
         }
         $orderModel->closeManualOrder($order);
@@ -123,7 +124,7 @@ class ManualOrderController extends AbstractController
         $productOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
 
         return $this->render('/order/printOrder/authProduct.html.twig', [
-            'order' => $productOrder
+            'order' => $productOrder,
         ]);
     }
 
@@ -162,7 +163,7 @@ class ManualOrderController extends AbstractController
             ));
             return $this->redirectToRoute('order');
         }
-        if (!$orderToEdit->getActive()) {
+        if (! $orderToEdit->getActive()) {
             $this->addFlash('warning', sprintf(
                 'Pedido %d fechado não pode ser alterado. Fechado em %s',
                 $orderToEdit->getId(),
@@ -176,7 +177,7 @@ class ManualOrderController extends AbstractController
         return $this->render('/order/pages/editManualOrder.html.twig', [
             'order' => $orderToEdit,
             'transporters' => $transporters,
-            'payments' => $paymentType
+            'payments' => $paymentType,
         ]);
     }
 }

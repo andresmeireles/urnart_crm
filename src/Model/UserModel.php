@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Model;
 
@@ -10,16 +10,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-class UserModel extends Model
+final class UserModel extends Model
 {
     /**
-     * Ação faz ação na tabela user do banco de dados
-     *
      * @param array $data Dados para alteração
      * @param UploadedFile|null $file Instancia de UploadFile
      * @param UserPasswordEncoderInterface|null $encoder Endoder do password
      * @param bool $insert Tipo de inserção
-     *
      * @return FlashResponse                              Objeto de resposta
      * @throws \Exception
      */
@@ -29,12 +26,12 @@ class UserModel extends Model
         ?UserPasswordEncoderInterface $encoder = null,
         bool $insert = true
     ): FlashResponse {
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
         try {
             if (array_key_exists('password', $data)) {
                 $this->passwordVerification($data['password'], $data['retype']);
             }
-            $user =  $insert ? new User() : $entityManager->getRepository(User::class)->find($data['identificator']);
+            $user = $insert ? new User() : $entityManager->getRepository(User::class)->find($data['identificator']);
             $user->setEmail($data['email']);
             $user->setUserNickname($data['userNickname']);
             if ($encoder !== null) {
@@ -59,13 +56,10 @@ class UserModel extends Model
     }
 
     /**
-     * Alias to runUser action with add command
-     *
-     * @param array $data Dados do usuario
-     * @param UploadedFile|null $file Arquivo da imagem
-     * @param UserPasswordEncoderInterface $encoder Encoder de senha
-     *
-     * @return FlashResponse                           [return description]
+     * @param array                        $data
+     * @param UploadedFile|null            $file
+     * @param UserPasswordEncoderInterface $encoder
+     * @return FlashResponse
      * @throws \Exception
      */
     public function addUser(array $data, ?UploadedFile $file, UserPasswordEncoderInterface $encoder): FlashResponse
@@ -74,7 +68,7 @@ class UserModel extends Model
     }
 
     /**
-     * @param array $data
+     * @param array             $data
      * @param UploadedFile|null $file
      * @return FlashResponse
      * @throws \Exception
@@ -85,12 +79,9 @@ class UserModel extends Model
     }
 
     /**
-     * Altera senha do usuario.
-     *
-     * @param User $user Objeto contendo informações do usuario.
-     * @param array $data Informações para alterar senhas
-     * @param UserPasswordEncoderInterface $encoder Encoder de para senha
-     *
+     * @param User                         $user
+     * @param array                        $data
+     * @param UserPasswordEncoderInterface $encoder
      * @return  FlashResponse
      * @throws NotSamePasswordException
      */
@@ -100,7 +91,7 @@ class UserModel extends Model
         $newPass = $data['pass'];
         $retype = $data['retype'];
 
-        if (!$encoder->isPasswordValid($user, $oldTypedPass)) {
+        if (! $encoder->isPasswordValid($user, $oldTypedPass)) {
             return new FlashResponse(200, 'error', 'Senha atual incorreta');
         }
 
@@ -111,24 +102,21 @@ class UserModel extends Model
         $this->passwordVerification($newPass, $retype);
 
         $user->setPassword($encoder->encodePassword($user, $newPass));
-        
-        $this->em->merge($user);
-        $this->em->flush();
+
+        $this->entityManager->merge($user);
+        $this->entityManager->flush();
 
         return new FlashResponse(200, 'success', 'Senha alterada com sucesso!');
     }
 
     /**
-     * Upload profile image using vich upload system
-     *
-     * @param User         $user      User entity
-     * @param UploadedFile $imageFile File to upload.
-     *
+     * @param User         $user
+     * @param UploadedFile $imageFile
      * @return UserModel
      */
     public function uploadProfileImage(User $user, UploadedFile $imageFile): self
     {
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
 
         $user->setProfileImageFile($imageFile);
         $imageName = sprintf('%s-profile.%s', $user->getUserNickname(), $imageFile->getExtension());
@@ -140,10 +128,15 @@ class UserModel extends Model
         return $this;
     }
 
+    /**
+     * @param string $profileImagesFolder
+     * @param User   $user
+     * @return FlashResponse
+     */
     public function resetProfileImage(string $profileImagesFolder, User $user): FlashResponse
     {
         $imageFullPath = sprintf('%s/%s', $profileImagesFolder, $user->getProfileImage());
-        if (!file_exists($imageFullPath)) {
+        if (! file_exists($imageFullPath)) {
             return new FlashResponse(200, 'error', 'Usuario não tem imagem definida para ser resetada.');
         }
         if (is_dir($imageFullPath)) {
@@ -152,8 +145,8 @@ class UserModel extends Model
 
         $user->setProfileImage(null);
 
-        $this->em->merge($user);
-        $this->em->flush();
+        $this->entityManager->merge($user);
+        $this->entityManager->flush();
 
         if (getenv('APP_ENV') !== 'test') {
             unlink($imageFullPath);
@@ -162,11 +155,17 @@ class UserModel extends Model
         return new FlashResponse(200, 'success', 'Imagem resetada com sucesso!');
     }
 
+    /**
+     * @param int    $userId
+     * @param string $userName
+     * @param array  $roles
+     * @return FlashResponse
+     */
     public function editRoles(int $userId, string $userName, array $roles): FlashResponse
     {
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
 
-        $user = $this->em->getRepository(User::class)->findOneBy(
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(
             ['id' => $userId, 'email' => $userName]
         );
 
@@ -179,9 +178,22 @@ class UserModel extends Model
         $entityManager->merge($user);
         $entityManager->flush();
 
-        return new FlashResponse(200, 'success', sprintf('Permissões de %s alterados com sucesso', $user->getUserName()));
+        return new FlashResponse(
+            200,
+            'success',
+            sprintf(
+                'Permissões de %s alterados com sucesso',
+                $user->getUserName()
+            )
+        );
     }
 
+    /**
+     * @param string $pass1
+     * @param string $pass2
+     * @return UserModel
+     * @throws NotSamePasswordException
+     */
     private function passwordVerification(string $pass1, string $pass2): self
     {
         if ($pass1 !== $pass2) {
@@ -189,7 +201,9 @@ class UserModel extends Model
         }
 
         if (strlen($pass1) < 8) {
-            throw new \Exception("Senha não atende os parametros requisitados. Senha precisa ter no minímo 8 digitos.");
+            throw new \Exception(
+                'Senha não atende os parametros requisitados. Senha precisa ter no minímo 8 digitos.'
+            );
         }
 
         return $this;

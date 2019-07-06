@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProprietarioRepository")
  */
-class Proprietario
+final class Proprietario
 {
     /**
      * @ORM\Id()
@@ -49,7 +49,7 @@ class Proprietario
 
     public function addEmpresa(PessoaJuridica $empresa): self
     {
-        if (!$this->empresas->contains($empresa)) {
+        if (! $this->empresas->contains($empresa)) {
             $this->empresas[] = $empresa;
         }
 

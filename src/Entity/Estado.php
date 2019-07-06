@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EstadoRepository")
  */
-class Estado
+final class Estado
 {
     /**
      * @ORM\Id()
@@ -111,7 +111,7 @@ class Estado
 
     public function addEndereco(Address $endereco): self
     {
-        if (!$this->endereco->contains($endereco)) {
+        if (! $this->endereco->contains($endereco)) {
             $this->endereco[] = $endereco;
             $endereco->setEstado($this);
         }

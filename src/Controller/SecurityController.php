@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController extends AbstractController
+final class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="app_login")
@@ -15,7 +15,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // redirect if user is logged
-        if (!is_null($this->getUSer())) {
+        if ($this->getUSer() !== null) {
             $this->addFlash('warning', sprintf('%s... você já está logado truta, continue navegando em paz :)', $this->getUser()->getUserNickname()));
             return $this->redirectToRoute('index');
         }

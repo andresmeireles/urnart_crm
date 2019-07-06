@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method TempProdCount      findAll()
  * @method TempProdCount      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TempProdCountRepository extends ServiceEntityRepository
+final class TempProdCountRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

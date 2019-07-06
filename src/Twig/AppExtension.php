@@ -6,29 +6,44 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use WGenial\NumeroPorExtenso\NumeroPorExtenso;
 
-class AppExtension extends AbstractExtension
+final class AppExtension extends AbstractExtension
 {
-    public function getFilters()
+    /**
+     * @return TwigFilter[]
+     */
+    public function getFilters(): array
     {
         return [
             new TwigFilter('rot13', [$this, 'rot13Filter']),
             new TwigFilter('makeHash', [$this, 'makeHash']),
             new TwigFilter('extense', [$this, 'extense']),
             new TwigFilter('strToArray', [$this, 'strToArray']),
-            new TwigFilter('die', [$this, 'dieFunc'])
+            new TwigFilter('die', [$this, 'dieFunc']),
         ];
     }
 
+    /**
+     * @param string $string
+     * @return string
+     */
     public function rot13Filter(string $string): string
     {
         return str_rot13($string);
     }
 
+    /**
+     * @param string $hashableValue
+     * @return string
+     */
     public function makeHash(string $hashableValue): string
     {
         return hash('ripemd160', $hashableValue);
     }
 
+    /**
+     * @param float $number
+     * @return string
+     */
     public function extense(float $number): string
     {
         $extense = new NumeroPorExtenso();
@@ -36,8 +51,6 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * Recebe um array parecido com um json e o converte em um array
-     *
      * @param string $toArrayConverter
      * @return array
      */

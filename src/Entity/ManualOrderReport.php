@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ManualOrderReportRepository")
  */
-class ManualOrderReport extends BaseEntity
+final class ManualOrderReport extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -135,7 +135,7 @@ class ManualOrderReport extends BaseEntity
 
     public function setDiscount(?float $discount): self
     {
-        $this->discount = null === $discount ? null : abs($discount);
+        $this->discount = $discount === null ? null : abs($discount);
 
         return $this;
     }
@@ -186,7 +186,7 @@ class ManualOrderReport extends BaseEntity
 
     public function addManualProductCart(ManualProductCart $manualProductCart): self
     {
-        if (!$this->manualProductCarts->contains($manualProductCart)) {
+        if (! $this->manualProductCarts->contains($manualProductCart)) {
             $this->manualProductCarts[] = $manualProductCart;
             $manualProductCart->setManualOrderReport($this);
         }

@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method PaymentType      findAll()
  * @method PaymentType      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PaymentTypeRepository extends ServiceEntityRepository
+final class PaymentTypeRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

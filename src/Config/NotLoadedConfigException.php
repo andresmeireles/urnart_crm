@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Config;
 
 /**
  * Exception para quando tentado acessar as configurações com a casse config não iniciada ou removida
  */
-class NotLoadedConfigException extends \Exception
+final class NotLoadedConfigException extends \Exception
 {
 }

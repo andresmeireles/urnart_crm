@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Expenses      findAll()
  * @method Expenses      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ExpensesRepository extends ServiceEntityRepository
+final class ExpensesRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

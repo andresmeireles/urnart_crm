@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Utils\Validation;
 
@@ -9,14 +9,15 @@ final class ValidatorJson
     /**
      * @var static array
      */
-    protected static $errors;
+    private static $errors;
 
-    private function __construct(){}
+    private function __construct()
+    {
+    }
 
     /**
      * @param array $params
      * @param array $validations
-     * @return void
      */
     public static function validate(array $params, array $validations): void
     {

@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method PessoaJuridica      findAll()
  * @method PessoaJuridica      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PessoaJuridicaRepository extends ServiceEntityRepository
+final class PessoaJuridicaRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

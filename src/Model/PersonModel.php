@@ -1,9 +1,7 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace App\Model;
 
-use App\Config\Config;
 use App\Config\NonStaticConfig;
 use App\Entity\Address;
 use App\Entity\Email;
@@ -16,7 +14,7 @@ use App\Entity\Proprietario;
 use App\Utils\Exceptions\FieldAlreadyExistsException;
 use Respect\Validation\Validator as v;
 
-class PersonModel extends Model
+final class PersonModel extends Model
 {
     /**
      * @var bool
@@ -43,41 +41,41 @@ class PersonModel extends Model
         $address = $data['address'];
         //$person['cpf'] = $person['cpf'] === "" ? null : $person['cpf'];
         $person['cpf'] = v::cpf()->validate($person['cpf']) === true ? $person['cpf'] : $this->error('cpf');
-        $cnpj = $customer['cnpj'] === "" ? null : $customer['cnpj'];
+        $cnpj = $customer['cnpj'] === '' ? null : $customer['cnpj'];
         if ($config->getProperty('check_cnpj')) {
             $cnpj = v::cnpj()->validate($cnpj) ? $customer['cnpj'] : $this->error('cnpj');
         }
-        $person['birthDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $person['birthDate']))) == true ? $person['birthDate'] : $this->error('data de nascimento');
-        $customer['foundationDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $customer['foundationDate']))) == true ? $customer['foundationDate'] : $this->error('data de fundação');
+        $person['birthDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $person['birthDate']))) === true ? $person['birthDate'] : $this->error('data de nascimento');
+        $customer['foundationDate'] = v::date()->validate(new \DateTime(str_replace('/', '-', $customer['foundationDate']))) === true ? $customer['foundationDate'] : $this->error('data de fundação');
         if ($this->error) {
             return $this->errorResponse;
         }
-        if (strlen($cnpj) == 14) {
+        if (strlen($cnpj) === 14) {
             $checkCnpj = $this->checkSameField('cnpj', $cnpj);
             if ($checkCnpj['result'] !== 0) {
                 throw new FieldAlreadyExistsException('Cnpj já existe');
             }
         }
-        if (is_null($person['cpf'])) {
+        if ($person['cpf'] === null) {
             return [
                 'http_code' => 400,
                 'type' => 'warning',
                 'message' => 'CPF não pode estar vázio',
             ];
         }
-        if (!$this->config['allow_same_cpf']) {
+        if (! $this->config['allow_same_cpf']) {
             $result = $this->checkSameField('cpf', (string) $person['cpf']);
             if ($result['result'] !== 0) {
                 return [
                     'http_code' => 400,
                     'type' => 'warning',
-                    'message' => 'CPF já cadastrado para algum outro cliente'
+                    'message' => 'CPF já cadastrado para algum outro cliente',
                 ];
             }
         }
-        $person['birthDate'] = $person['birthDate'] === "" ? null : $person['birthDate'];
-        $customer['foundationDate'] = $customer['foundationDate'] === "" ? null : $customer['foundationDate'];
-        $em = $this->em;
+        $person['birthDate'] = $person['birthDate'] === '' ? null : $person['birthDate'];
+        $customer['foundationDate'] = $customer['foundationDate'] === '' ? null : $customer['foundationDate'];
+        $em = $this->entityManager;
         try {
             $pessoaFisica = new PessoaFisica();
             $pessoaFisica->setFirstName($person['firstName']);
@@ -86,13 +84,31 @@ class PersonModel extends Model
             if ($this->config) {
                 $pessoaFisica->setRg($person['rg']);
             }
-            $g = $person['genre'] ?? null;
-            $pessoaFisica->setGenre($g);
-            $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null;
+            $genre = $person['genre'] ?? null;
+            $pessoaFisica->setGenre($genre);
+            $date = $person['birthDate'] !== '' ?
+                new \DateTime(str_replace('/', '.', $person['birthDate'])) :
+                null;
             $pessoaFisica->setBirthDate($date);
             foreach ($phone as $phones) {
                 $telephone = new Phone();
-                $phones = (int) str_replace(' ', '', str_replace('(', '', str_replace(')', '', str_replace('-', '', $phones))));
+                $phones = (int) str_replace(
+                    ' ',
+                    '',
+                    str_replace(
+                        '(',
+                        '',
+                        str_replace(
+                            ')',
+                            '',
+                            str_replace(
+                                '-',
+                                '',
+                                $phones
+                            )
+                        )
+                    )
+                );
 
                 $telephone->setNumber($phones);
                 $em->persist($telephone);
@@ -100,7 +116,19 @@ class PersonModel extends Model
             }
             foreach ($email as $emails) {
                 $mail = new Email();
-                $emails = str_replace('(', '', str_replace(')', '', str_replace('-', '', $emails)));
+                $emails = str_replace(
+                    '(',
+                    '',
+                    str_replace(
+                        ')',
+                        '',
+                        str_replace(
+                            '-',
+                            '',
+                            $emails
+                        )
+                    )
+                );
                 $mail->setEmail($emails);
                 $em->persist($mail);
                 $pessoaFisica->addEmail($mail);
@@ -111,15 +139,21 @@ class PersonModel extends Model
             $client->setRazaoSocial($customer['razaoSocial']);
             $client->setNomeFantasia($customer['nomeFantasia']);
             $client->setCnpj($cnpj);
-            $inscricaoEstadual = $customer['inscricaoEstadual'] == '' ? null : $customer['inscricaoEstadual'];
+            $inscricaoEstadual = $customer['inscricaoEstadual'] === '' ? null : $customer['inscricaoEstadual'];
             $client->setInscricaoEstadual((int) $inscricaoEstadual);
-            $foundation = $customer['foundationDate'] != '' ? new \DateTime(str_replace('/', '.', $customer['foundationDate'])) : null;
+            $foundation = $customer['foundationDate'] !== '' ?
+                new \DateTime(str_replace('/', '.', $customer['foundationDate'])) :
+                null;
             $client->setDataDeFundacao($foundation);
             $client->addProprietario($proprietary);
-            $situcaoCadastral = $customer['situacaoCadastral'] === "" ? 3 : (int) $customer['situacaoCadastral'];
+            $situcaoCadastral = $customer['situacaoCadastral'] === '' ? 3 : (int) $customer['situacaoCadastral'];
             $client->setSituacaoCadastral($situcaoCadastral);
-            $state = isset($address['estado']) ? $em->getRepository(Estado::class)->find($address['estado']) : null;
-            $city = isset($address['municipio']) ? $em->getRepository(Municipio::class)->find($address['municipio']) : null;
+            $state = isset($address['estado']) ?
+                $em->getRepository(Estado::class)->find($address['estado']) :
+                null;
+            $city = isset($address['municipio']) ?
+                $em->getRepository(Municipio::class)->find($address['municipio']) :
+                null;
             $addr = new Address();
             $addr->setPessoaFisicaId($pessoaFisica);
             $addr->setMunicipio($city);
@@ -137,14 +171,14 @@ class PersonModel extends Model
 
             return [
                 'http_code' => 200,
-                'type'      => 'success',
-                'message'   => 'Cliente adicionado com sucesso'
+                'type' => 'success',
+                'message' => 'Cliente adicionado com sucesso',
             ];
         } catch (\Exception $e) {
             return [
                 'http_code' => 400,
-                'type'      => 'error',
-                'message'   => $e->getMessage()
+                'type' => 'error',
+                'message' => $e->getMessage(),
             ];
             //throw new \Exception($e->getMessage());
         }
@@ -160,7 +194,7 @@ class PersonModel extends Model
         $this->errorResponse = [
             'http_code' => 400,
             'type' => 'warning',
-            'message' => "Informação em {$type} não é valida"
+            'message' => "Informação em {$type} não é valida",
         ];
 
         return false;
@@ -173,8 +207,10 @@ class PersonModel extends Model
      */
     private function checkSameField(string $field, string $value): ?array
     {
-        $connection = $this->em->getConnection();
-        $statement = $connection->prepare("SELECT COUNT($field) AS result FROM pessoa_fisica WHERE $field = :$field");
+        $connection = $this->entityManager->getConnection();
+        $statement = $connection->prepare(
+            "SELECT COUNT(${field}) AS result FROM pessoa_fisica WHERE ${field} = :${field}"
+        );
         $statement->bindValue($field, $value);
         $statement->execute();
 

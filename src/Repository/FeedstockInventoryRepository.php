@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method FeedstockInventory      findAll()
  * @method FeedstockInventory      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FeedstockInventoryRepository extends ServiceEntityRepository
+final class FeedstockInventoryRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

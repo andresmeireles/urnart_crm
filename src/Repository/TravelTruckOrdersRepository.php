@@ -9,10 +9,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
  * @method TravelTruckOrders|null find($id, $lockMode = null, $lockVersion = null)
  * @method TravelTruckOrders|null findOneBy(array $criteria, array $orderBy = null)
- * @method TravelTruckOrders[]    findAll()
- * @method TravelTruckOrders[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TravelTruckOrders      findAll()
+ * @method TravelTruckOrders      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TravelTruckOrdersRepository extends ServiceEntityRepository
+final class TravelTruckOrdersRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

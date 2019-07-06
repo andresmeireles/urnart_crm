@@ -11,10 +11,10 @@ abstract class GenericContainer
      *
      * @var EntityManagerInterface
      */
-    protected $em;
+    protected $entityManager;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 }

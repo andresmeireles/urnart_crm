@@ -1,8 +1,11 @@
 <?php declare(strict_types = 1);
+
 namespace App\Controller;
 
 use App\Config\NonStaticConfig;
+use App\Entity\ModelName;
 use App\Entity\Survey;
+use App\Model\ProductionCountModel;
 use App\Model\ReportModel;
 use App\Model\SurveyModel;
 use App\Utils\Andresmei\MyDateTime;
@@ -13,12 +16,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\ModelName;
-use App\Model\ProductionCountModel;
 
-class ReportController extends AbstractController
+final class ReportController extends AbstractController
 {
-    use CSRFTokenCheckTrait;
+    use CSRFTokenCheck;
 
     /**
      * @Route("/report", name="report")
@@ -38,7 +39,7 @@ class ReportController extends AbstractController
         $surveyByDate = $surveyModel->getSurveyData($surveys);
         return $this->render('report/pages/survey.html.twig', [
             'questions' => $quest,
-            'surveys' => $surveyByDate
+            'surveys' => $surveyByDate,
         ]);
     }
 
@@ -51,7 +52,7 @@ class ReportController extends AbstractController
         $report = $model->makeDailyProductionCount($repoDate);
 
         return $this->render('/print/report/productionCountReport.html.twig', [
-            'data' => $report
+            'data' => $report,
         ]);
     }
 
@@ -69,7 +70,7 @@ class ReportController extends AbstractController
         return $this->render($template, [
             'data' => $result->result,
             'bDate' => $dateOne,
-            'lDate' => $dateTwo
+            'lDate' => $dateTwo,
         ]);
     }
 
@@ -94,7 +95,7 @@ class ReportController extends AbstractController
         $finalTotal = 0;
         foreach ($data as $value) {
             $modelHeight = sprintf(
-                "%s%s%s",
+                '%s%s%s',
                 $value['model'],
                 $value['height'],
                 $value['obs'] ?? ''
@@ -131,7 +132,7 @@ class ReportController extends AbstractController
         $res = $nameResults;
         $modelTotals = $modelResults;
         $heightTotals = $heightResults;
-        
+
         return $this->render(sprintf('/print/report/%s.html.twig', $reportname), [
             'model' => $result->model,
             'modelTotal' => $modelTotals,
@@ -140,7 +141,7 @@ class ReportController extends AbstractController
             'finalTotal' => $finalTotal,
             'bDate' => $beginDate,
             'lDate' => $lastDate,
-            'result' => $res
+            'result' => $res,
         ]);
     }
 
@@ -181,7 +182,7 @@ class ReportController extends AbstractController
     {
         $reportPage = sprintf('report/pages/%s.html.twig', $reportType);
         if ($reportType === 'travel-report') {
-            $reportType= 'travel-accountability';
+            $reportType = 'travel-accountability';
             $str = (new StringConvertions())->snakeToCamelCase($reportType);
             $repository = sprintf('App\Entity\%s', ucfirst($str));
             $travel = $this->getDoctrine()->getRepository($repository)->findAll();
@@ -195,9 +196,9 @@ class ReportController extends AbstractController
             $repository
         ));
         $view = $query->getResult();
-        
+
         return $this->render($reportPage, [
-            'simpleView' => $travel ?? $view
+            'simpleView' => $travel ?? $view,
         ]);
     }
 
@@ -206,14 +207,14 @@ class ReportController extends AbstractController
      */
     public function createGenericReportRegistryAjax(Request $request, string $pageType, ReportModel $model): Response
     {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+        if (! $this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Algo deu muito errado :(');
         }
         $data = $request->request->all();
         $result = $model->createGenericReport($pageType, $data);
-        
+
         return new Response($result->getMessage(), $result->getHttpCode(), [
-            'message-type' => $result->getType()
+            'message-type' => $result->getType(),
         ]);
     }
 
@@ -222,17 +223,17 @@ class ReportController extends AbstractController
      */
     public function createGenericReportRegistry(Request $request, string $pageType, ReportModel $model): Response
     {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+        if (! $this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Token incorreto.');
         }
         $data = $request->request->all();
         $routeLink = $request->headers->get('referer');
-        if (!is_string($routeLink)) {
+        if (! is_string($routeLink)) {
             $routeLink = '/';
         }
         $result = $model->createGenericReport($pageType, $data);
         $this->addFlash($result->getType(), $result->getMessage());
-        
+
         return $this->redirect($routeLink);
     }
 
@@ -241,7 +242,7 @@ class ReportController extends AbstractController
      */
     public function createByCatchModel(Request $request, ProductionCountModel $productionCountModel): Response
     {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+        if (! $this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Token incorreto.');
         }
         $request->request->remove('_csrf_token');
@@ -265,11 +266,11 @@ class ReportController extends AbstractController
     {
         $res = $this->getDoctrine()->getRepository(ModelName::class)->findAll();
         $modelNames = array_map(static function ($value) {
-            if ([] !== $value->getColors()) {
+            if ($value->getColors() !== []) {
                 $arrays = [];
                 foreach ($value->getColors() as $color) {
                     $arrays[] = [
-                        'v' => sprintf("%s-%s", $value->getId(), $color),
+                        'v' => sprintf('%s-%s', $value->getId(), $color),
                         'n' => sprintf(
                             '%s %s %s %s',
                             $value->getName(),
@@ -288,11 +289,11 @@ class ReportController extends AbstractController
                     $value->getName(),
                     $value->getHeight(),
                     $value->getSpecificity()
-                )
+                ),
             ];
         }, $res);
         foreach ($modelNames as $key => $value) {
-            if (!array_key_exists('n', $value)) {
+            if (! array_key_exists('n', $value)) {
                 array_map(static function ($item) use (&$modelNames) {
                     $modelNames[] = $item;
                 }, $value);
@@ -313,7 +314,7 @@ class ReportController extends AbstractController
         $beginDate = $request->query->get('beginDate');
         $lastDate = $request->query->get('lastDate');
 
-        if (!is_null($beginDate) || !is_null($lastDate)) {
+        if ($beginDate !== null || $lastDate !== null) {
             $byDateResults = $model->searchByDate(ucwords($pageType), 'boletoVencimento', 'u', $beginDate, $lastDate);
         }
 
@@ -324,7 +325,7 @@ class ReportController extends AbstractController
             'typeOfList' => $listOfResults->typeOfList,
             'simpleView' => $listOfResults->consultResults ?? $byDateResults ?? [],
             'beginDate' => $beginDate ?? null,
-            'lastDate' => $lastDate ?? null
+            'lastDate' => $lastDate ?? null,
         ]);
     }
 
@@ -355,7 +356,7 @@ class ReportController extends AbstractController
         $template = sprintf('report/pages/%s/edit.html.twig', $entity);
 
         return $this->render($template, [
-            'registry' => $registryToEdit
+            'registry' => $registryToEdit,
         ]);
     }
 

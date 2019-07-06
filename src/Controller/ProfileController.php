@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 /**
  * @IsGranted("ROLE_USER")
  */
-class ProfileController extends AbstractController
+final class ProfileController extends AbstractController
 {
     /**
      * @Route("/profile", name="profile")
@@ -31,7 +31,7 @@ class ProfileController extends AbstractController
     public function viewEdit(): Response
     {
         return $this->render('profile/index.html.twig', [
-            'edit' => true
+            'edit' => true,
         ]);
     }
 
@@ -40,11 +40,11 @@ class ProfileController extends AbstractController
      */
     public function editUser(Request $request, UserModel $model): Response
     {
-        if (!$this->isCsrfTokenValid('profile_update', $request->request->get('_csrf_token'))) {
+        if (! $this->isCsrfTokenValid('profile_update', $request->request->get('_csrf_token'))) {
             throw new CustomException('Token incorreto ou inexistente :(');
         }
 
-        if (null === $this->getUser()) {
+        if ($this->getUser() === null) {
             throw new CustomException('Usuario não existe');
         }
 
@@ -81,7 +81,7 @@ class ProfileController extends AbstractController
         return $this->render('profile/changePass.html.twig', [
             'oldPass' => $request->query->get('oldpass'),
             'pass' => $request->query->get('pass'),
-            'retype' => $request->query->get('repass')
+            'retype' => $request->query->get('repass'),
         ]);
     }
 
@@ -108,7 +108,7 @@ class ProfileController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $this->denyAccessUnlessGranted("ROLE_ADMIN", null, sprintf('%s não está autorizado a acessar pagina requerida.', $user->getEmail()));
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, sprintf('%s não está autorizado a acessar pagina requerida.', $user->getEmail()));
         return new Response('Hellow');
     }
 }

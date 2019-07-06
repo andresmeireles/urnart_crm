@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method ManualProductCart    findAll()
  * @method ManualProductCart    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ManualProductCartRepository extends ServiceEntityRepository
+final class ManualProductCartRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

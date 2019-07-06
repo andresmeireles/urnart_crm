@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\Boleto;
 use App\Model\ReportModel;
 use App\Utils\Andresmei\StdResponse;
 use App\Utils\Andresmei\WriteBoletoReport;
@@ -10,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\Yaml\Yaml;
 
-class StartSubscriber extends AbstractController implements EventSubscriberInterface
+final class StartSubscriber extends AbstractController implements EventSubscriberInterface
 {
     public function onKernelController(/**FilterControllerEvent $event */)
     {
@@ -20,11 +21,11 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
 
         $fileName = sprintf('Utils/ReportFiles/%s.yaml', $today->format('d-m-Y'));
 
-        if (!file_exists(__DIR__.'/../'.$fileName)) {
+        if (! file_exists(__DIR__ . '/../' . $fileName)) {
             $this->writeDaylyBoletoRegister($today, $this);
         }
 
-        $getFile = file_get_contents(__DIR__.'/../../config/system_menus.yaml');
+        $getFile = file_get_contents(__DIR__ . '/../../config/system_menus.yaml');
         if (is_string($getFile)) {
             $menus = Yaml::parse($getFile);
             $this->get('twig')->addGlobal('menus', $menus);
@@ -32,34 +33,30 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
 
         return;
     }
-    
+
     public static function getSubscribedEvents()
     {
         return [
-            'kernel.controller' => 'onKernelController'
+            'kernel.controller' => 'onKernelController',
         ];
     }
 
     /**
-     * [writeDaylyBoletoRegister description]
-     *
-     * @param   \DateTimeInterface              $date           [$date description]
-     * @param   AbstractController              $controller     [$event description]
-     *
-     * @return  void                                            [return description]
+     * @param \DateTimeInterface $date
+     * @param AbstractController $controller
      */
-    private function writeDaylyBoletoRegister(\DateTimeInterface $date, AbstractController $controller): void
-    {
+    private function writeDaylyBoletoRegister(
+        \DateTimeInterface $date,
+        AbstractController $controller
+    ): void {
         $model = new ReportModel($controller->getDoctrine()->getManager());
         $titulos = $model->getNonPayedBoletosByDate($date->format('Y-m-d'));
-        
+
         $response = new StdResponse();
 
         foreach ($titulos as $titulo) {
+            /** @var Boleto $titulo */
             switch ($titulo->getBoletoStatus()) {
-                case 0:
-                    $response->naoPago[] = $titulo;
-                    break;
                 case 2:
                     $response->atrasado[] = $titulo;
                     break;
@@ -77,16 +74,18 @@ class StartSubscriber extends AbstractController implements EventSubscriberInter
         $report = new WriteBoletoReport();
         $report->write($date, $response);
     }
-    
+
     private function checkIfFolderExists(): void
     {
         $folders = [
-            __DIR__.'/../Utils/ReportFiles' => ['ignore' => true]
+            __DIR__ . '/../Utils/ReportFiles' => ['ignore' => true],
         ];
 
         foreach ($folders as $folder => $ignore) {
-            if (!file_exists($folder) && !is_dir($folder)) {
-                mkdir($folder, 0777);
+            if (! file_exists($folder)) {
+                if (! mkdir($folder, 0777) && ! is_dir($folder)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $folder));
+                }
                 if ($ignore['ignore'] !== false) {
                     file_put_contents(sprintf('%s/.gitignore', $folder), '');
                 }

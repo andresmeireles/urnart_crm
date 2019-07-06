@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TravelAccountabilityRepository")
  */
-class TravelAccountability extends BaseEntity
+final class TravelAccountability extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -169,7 +169,7 @@ class TravelAccountability extends BaseEntity
 
     public function addExpense(Expenses $expense): self
     {
-        if (!$this->expenses->contains($expense)) {
+        if (! $this->expenses->contains($expense)) {
             $this->expenses[] = $expense;
             $expense->setIdAccountability($this);
         }
@@ -200,7 +200,7 @@ class TravelAccountability extends BaseEntity
 
     public function addTravelEntry(TravelEntry $travelEntry): self
     {
-        if (!$this->travelEntries->contains($travelEntry)) {
+        if (! $this->travelEntries->contains($travelEntry)) {
             $this->travelEntries[] = $travelEntry;
             $travelEntry->setIdTravelAccountability($this);
         }

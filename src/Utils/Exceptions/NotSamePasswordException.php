@@ -2,7 +2,7 @@
 
 namespace App\Utils\Exceptions;
 
-class NotSamePasswordException extends \Exception
+final class NotSamePasswordException extends \Exception
 {
     public function __construct(string $message = 'Passwords not match')
     {

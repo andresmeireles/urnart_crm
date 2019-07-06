@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace App\Model;
 
@@ -13,11 +12,14 @@ use App\Utils\Exceptions\CustomException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
-/**
- * TEST Ok
- */
-class FormModel extends Model
+final class FormModel extends Model
 {
+    /**
+     * @param array $data
+     * @param string $path
+     * @return FlashResponse
+     * @throws \Exception
+     */
     public function saveReport(array $data, string $path)
     {
         unset($data['save']);
@@ -47,13 +49,20 @@ class FormModel extends Model
         }
     }
 
+    /**
+     * @param string $formName
+     * @param array $data
+     * @param int $reportId
+     * @return FlashResponse
+     * @throws \Exception
+     */
     public function editReportResolver(string $formName, array $data, int $reportId): FlashResponse
     {
         switch ($formName) {
             case 'travel-report':
-                $entity = $this->em
-                            ->getRepository(TravelAccountability::class)
-                            ->find($reportId);
+                $entity = $this->entityManager
+                    ->getRepository(TravelAccountability::class)
+                    ->find($reportId);
                 return $this->editAcountabilityReport($entity, $data);
             default:
                 throw new \Exception(sprintf('Relatorio editavel com nome %s não existe', $formName));
@@ -61,11 +70,8 @@ class FormModel extends Model
     }
 
     /**
-     * Editar relatório.
-     *
      * @param object $entity
      * @param array $data
-     *
      * @return  FlashResponse
      * @throws \Exception
      */
@@ -73,7 +79,7 @@ class FormModel extends Model
     {
         /** @var TravelAccountability $report */
         $report = $entity; // over ride type hint for intellisense
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
         $nestedData = new NestedArraySeparator($data);
         $entries = $nestedData->getAssoativeArrayGroup('customerArr');
         $expenses = $nestedData->getAssoativeArrayGroup('despesas');
@@ -94,7 +100,7 @@ class FormModel extends Model
                 new \DateTime($accountabilityData['dt-in'], new \DateTimeZone('America/Sao_Paulo'))
             );
             if ($entries === null) {
-                throw new NotFoundParameterException(sprintf('Varaibel %s não existe', $$entity));
+                throw new NotFoundParameterException(sprintf('Varaibel %s não existe', ${$entity}));
             }
             $this->editTravelEntryReport($entries, $report);
             if ($expenses !== null) {
@@ -106,12 +112,21 @@ class FormModel extends Model
             throw new \Exception(sprintf('%s', $e->getMessage()));
         }
 
-        return new FlashResponse(200, 'success', sprintf('Relatório %s foi editado com sucesso.', $report->getId()));
+        return new FlashResponse(
+            200,
+            'success',
+            sprintf('Relatório %s foi editado com sucesso.', $report->getId())
+        );
     }
 
+    /**
+     * @param array $data
+     * @return FlashResponse
+     * @throws \Exception
+     */
     public function runAccountabilityReport(array $data/* , ?bool $isEdit = false */): FlashResponse
     {
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
         $accountability = new TravelAccountability();
         /* dump($data);
         die; */
@@ -136,8 +151,8 @@ class FormModel extends Model
                 new \DateTime($accountabilityData['dt-in'], new \DateTimeZone('America/Sao_Paulo'))
             );
 
-            if (!is_array($entries)) {
-                throw new CustomException("Tipo de variavel incorreto.");
+            if (! is_array($entries)) {
+                throw new CustomException('Tipo de variavel incorreto.');
             }
 
             foreach ($entries as $value) {
@@ -149,19 +164,27 @@ class FormModel extends Model
                     $this->saveTravelExpenseReport($value, $accountability);
                 }
             }
-            
+
             $entityManager->persist($accountability);
             $entityManager->flush();
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getLine());
         }
 
-        return new FlashResponse(200, 'success', 'Relatorio criado com suceeso.');
+        return new FlashResponse(
+            200,
+            'success',
+            'Relatorio criado com suceeso.'
+        );
     }
 
+    /**
+     * @param array $expenses
+     * @param TravelAccountability $travelAccountability
+     */
     public function editTravelExpenseReport(array $expenses, TravelAccountability $travelAccountability): void
     {
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
         $rmExpenses = $entityManager->getRepository(Expenses::class)->findBy([
             'idAccountability' => $travelAccountability->getId(),
         ]);
@@ -178,9 +201,13 @@ class FormModel extends Model
         }
     }
 
+    /**
+     * @param array $entries
+     * @param TravelAccountability $travelAccountability
+     */
     public function editTravelEntryReport(array $entries, TravelAccountability $travelAccountability): void
     {
-        $entityManager = $this->em;
+        $entityManager = $this->entityManager;
         $rmEntry = $entityManager->getRepository(TravelEntry::class)->findBy([
             'idTravelAccountability' => $travelAccountability->getId(),
         ]);
@@ -194,9 +221,17 @@ class FormModel extends Model
         }
     }
 
-    public function saveTravelExpenseReport(array $data, TravelAccountability $accountability, ?bool $isCommit = false)
-    {
-        $entityManager = $this->em;
+    /**
+     * @param array $data
+     * @param TravelAccountability $accountability
+     * @param bool|null $isCommit
+     */
+    public function saveTravelExpenseReport(
+        array $data,
+        TravelAccountability $accountability,
+        ?bool $isCommit = false
+    ): void {
+        $entityManager = $this->entityManager;
         $expense = new Expenses();
         $expense->setNome($data['name']);
 
@@ -211,9 +246,17 @@ class FormModel extends Model
         }
     }
 
-    public function saveTravelEntries(array $data, TravelAccountability $accountability, ?bool $isCommit = false)
-    {
-        $entityManager = $this->em;
+    /**
+     * @param array $data
+     * @param TravelAccountability $accountability
+     * @param bool|null $isCommit
+     */
+    public function saveTravelEntries(
+        array $data,
+        TravelAccountability $accountability,
+        ?bool $isCommit = false
+    ): void {
+        $entityManager = $this->entityManager;
         $entry = new TravelEntry();
         $entry->setNome($data['customer']);
 
@@ -233,7 +276,7 @@ class FormModel extends Model
         $entry->setByCountValue($value ?? 0);
 
         $entry->setIdTravelAccountability($accountability);
-        
+
         $entityManager->persist($entry);
         //$entityManager->flush();
         if ($isCommit) {

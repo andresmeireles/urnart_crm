@@ -2,16 +2,13 @@
 
 namespace App\Model;
 
-use App\Entity\ProductCart;
-use App\Utils\Exceptions\CustomException;
-use App\Utils\Andresmei\Form;
-use App\Entity\ManualOrderReport;
-use App\Entity\ManualProductCart;
 use App\Entity\TravelTruckOrders;
-use Doctrine\Common\Collections\Collection;
+use App\Utils\Andresmei\Form;
+use App\Utils\Exceptions\CustomException;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
-class DepartureModel extends Model
+final class DepartureModel extends Model
 {
     /**
      * @param Collection $unorganizedOrders
@@ -21,9 +18,10 @@ class DepartureModel extends Model
     public function getCorrectOrderOfOrders(Collection $unorganizedOrders, array $correctOrder): Collection
     {
         $orderOfObjects = [];
-        array_map(static function ($id) use (&$unorganizedOrders, &$orderOfObjects) {
-            $unorganizedOrders->map(static function ($val) use (&$id, &$orderOfObjects) {
-                if ($id === $val->getId()) {
+        array_map(static function ($orderId) use (&$unorganizedOrders, &$orderOfObjects) {
+            $unorganizedOrders->map(static function ($val) use (&$orderId, &$orderOfObjects) {
+                /** @var ManualProductCart $val */
+                if ($orderId === $val->getId()) {
                     $orderOfObjects[] = $val;
                 }
             });
@@ -44,7 +42,12 @@ class DepartureModel extends Model
         Form $form,
         string $typeReport
     ): string {
-        $report = $this->generateAutomaticReportWithData($entityClass, $form, $typeReport, 'show');
+        $report = $this->generateAutomaticReportWithData(
+            $entityClass,
+            $form,
+            $typeReport,
+            'show'
+        );
 
         return $report['template'];
     }
@@ -61,7 +64,12 @@ class DepartureModel extends Model
         Form $form,
         string $typeReport
     ): array {
-        return $this->generateAutomaticReportWithData($entityClass, $form, $typeReport, 'pdf');
+        return $this->generateAutomaticReportWithData(
+            $entityClass,
+            $form,
+            $typeReport,
+            'pdf'
+        );
     }
 
     /**
@@ -78,7 +86,7 @@ class DepartureModel extends Model
         $this->generateAutomaticPdfReportWithData($orderReport, $form, 'rb');
         $this->generateAutomaticPdfReportWithData($orderReport, $form, 'romaneio');
         $this->generateAutomaticPdfReportWithData($orderReport, $form, 'travel');
-        $reportBuilderPath = __DIR__.'/../../public/reportBuilder/';
+        $reportBuilderPath = __DIR__ . '/../../public/reportBuilder/';
         $zipReportName = sprintf('%srelatorio.zip', $reportBuilderPath);
         $scanDir = (array) scandir($reportBuilderPath);
         $pdfFiles = [];
@@ -91,7 +99,7 @@ class DepartureModel extends Model
         $zip = new \ZipArchive();
         if ($zip->open($zipReportName, \ZipArchive::CREATE)) {
             foreach ($pdfFiles as $pdfFile) {
-                if (!$pdfFile) {
+                if (! $pdfFile) {
                     throw new \Exception('não é um arquivo.');
                 }
                 $zip->addFile(sprintf('%s/%s', $reportBuilderPath, $pdfFile), $pdfFile);
@@ -148,14 +156,14 @@ class DepartureModel extends Model
                 $data = $this->generateRomaneioWithReportData($collectionOfOrders);
                 break;
             case 'travel':
-                if (!is_string($entityClass->getDriverName())) {
+                if (! is_string($entityClass->getDriverName())) {
                     throw new \Exception('Nome do motorista não enviado');
                 }
                 $data = $this->generateTravelWithReportData($collectionOfOrders, $entityClass->getDriverName());
                 break;
             default:
                 throw new CustomException(
-                    sprintf("O valor %s não é valido", $typeReport)
+                    sprintf('O valor %s não é valido', $typeReport)
                 );
                 break;
         }
@@ -174,11 +182,12 @@ class DepartureModel extends Model
     ): array {
         $formData = [];
         $ordersCollection->map(static function ($value) use (&$formData, &$checkOrders) {
+            /** @var ManualOrderReport $value */
             $formData[] = [
                 'city' => $value->getCustomerCity(),
                 'name' => $value->getCustomerName(),
                 'amount' => $value->getProductsAmount(),
-                'check' => in_array($value->getId(), $checkOrders) ? $checkOrders[$value->getId()] : false
+                'check' => in_array($value->getId(), $checkOrders, true) ? $checkOrders[$value->getId()] : false,
             ];
         });
 
@@ -201,10 +210,10 @@ class DepartureModel extends Model
                 'clientName' => $value->getCustomerName(),
                 'clientCity' => $value->getCustomerCity(),
                 'clientState' => '',
-                'orderNumber' => $value->getId()
+                'orderNumber' => $value->getId(),
             ];
         });
-        
+
         return $formData;
     }
 
@@ -223,18 +232,14 @@ class DepartureModel extends Model
                 'clientCity' => $value->getCustomerCity(),
                 'clientState' => null,
                 'orderNumber' => $value->getId(),
-                'price' => $value->getOrderFinalPrice()
+                'price' => $value->getOrderFinalPrice(),
             ];
         });
-        
+
         return $formData;
     }
 
     /**
-     * romaneio board
-     *
-     * TEST OK
-     *
      * @param Collection $ordersCollection
      * @return array
      */
@@ -249,7 +254,14 @@ class DepartureModel extends Model
             $urnMA = 0;
             $urnPA = 0;
             /** @var ManualOrderReport $value */
-            $value->getManualProductCarts()->map(static function ($prod) use (&$urnG, &$urnM, &$urnP, &$urnGA, &$urnMA, &$urnPA) {
+            $value->getManualProductCarts()->map(static function ($prod) use (
+                &$urnG,
+                &$urnM,
+                &$urnP,
+                &$urnGA,
+                &$urnMA,
+                &$urnPA
+            ) {
                 /** @var ManualProductCart $prod */
                 $productName = $prod->getProductName();
                 $productAmount = $prod->getProductAmount();
@@ -276,7 +288,7 @@ class DepartureModel extends Model
                 'urnM' => $urnMA,
                 'urnP' => $urnPA,
                 'freight' => $value->getFreight(),
-                'type' => $value->getPaymentType()
+                'type' => $value->getPaymentType(),
             ];
         });
 
@@ -284,16 +296,14 @@ class DepartureModel extends Model
     }
 
     /**
-     * travel
-     * 
-     * TEST OK
-     *
      * @param string $driverName
      * @param Collection $ordersCollection
      * @return array
      */
-    public function generateTravelWithReportData(Collection $ordersCollection, string $driverName): array
-    {
+    public function generateTravelWithReportData(
+        Collection $ordersCollection,
+        string $driverName
+    ): array {
         $formData = [];
         $formData['driverName'] = $driverName;
         $data = $ordersCollection->map(static function ($value) {
@@ -313,8 +323,10 @@ class DepartureModel extends Model
      * @param array $modelsNames
      * @return array
      */
-    public function generateReportByModel(Collection $ordersCollection, array $modelsNames): array
-    {
+    public function generateReportByModel(
+        Collection $ordersCollection,
+        array $modelsNames
+    ): array {
         $modelsName = array_values($modelsNames);
         $products = $ordersCollection->map(static function ($order) {
             /** @var ManualOrderReport $order */

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
  * @ORM\Table(name="`order`")
  */
-class Order extends BaseEntity
+final class Order extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -165,7 +165,7 @@ class Order extends BaseEntity
     /**
      * @return Collection|PessoaJuridica[]
      */
-    public function getAllCustomerData() : ?Collection
+    public function getAllCustomerData(): ?Collection
     {
         return $this->customer;
     }
@@ -197,7 +197,7 @@ class Order extends BaseEntity
 
     public function addProductCart(ProductCart $productCart): self
     {
-        if (!$this->productCarts->contains($productCart)) {
+        if (! $this->productCarts->contains($productCart)) {
             $this->productCarts[] = $productCart;
             $productCart->setOrderNumber($this);
         }
@@ -249,7 +249,7 @@ class Order extends BaseEntity
 
     public function reserve(): self
     {
-        if ($this->reserved == 1 && $this->reserved == 2) {
+        if ($this->reserved === 1 && $this->reserved === 2) {
             return $this;
         }
 
@@ -259,7 +259,7 @@ class Order extends BaseEntity
 
     public function reOpen(): self
     {
-        if ($this->reserved == 0 && $this->reserved == 2) {
+        if ($this->reserved === 0 && $this->reserved === 2) {
             return $this;
         }
 
@@ -270,7 +270,7 @@ class Order extends BaseEntity
 
     public function close(): self
     {
-        if ($this->reserved == 2) {
+        if ($this->reserved === 2) {
             return $this;
         }
 
@@ -281,7 +281,7 @@ class Order extends BaseEntity
 
     public function isReserved(): bool
     {
-        if ($this->reserved == 1) {
+        if ($this->reserved === 1) {
             return true;
         }
         return false;
@@ -289,7 +289,7 @@ class Order extends BaseEntity
 
     public function isOpen(): bool
     {
-        if ($this->reserved == 0) {
+        if ($this->reserved === 0) {
             return true;
         }
         return false;

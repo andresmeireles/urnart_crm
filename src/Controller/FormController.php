@@ -6,29 +6,31 @@
  * @license  MIT <https://mit-license.org>
  * @link     https://bitbucket.org/andresmeireles/sysadmin
  */
+
 namespace App\Controller;
 
-use App\Entity\Product;
-use App\Model\FormModel;
-use App\Entity\PaymentType;
-use App\Entity\Transporter;
-use App\Utils\Andresmei\Form;
 use App\Config\NonStaticConfig;
-use Symfony\Component\Yaml\Yaml;
-use App\Entity\TravelTruckOrders;
+use App\Entity\PaymentType;
+use App\Entity\Product;
+use App\Entity\Transporter;
 use App\Entity\TravelAccountability;
+use App\Entity\TravelTruckOrders;
+use App\Model\FormModel;
 use App\Utils\Andresmei\FileFunctions;
-use App\Utils\Exceptions\CustomException;
-use App\Utils\Andresmei\StringConvertions;
-use Symfony\Component\Filesystem\Filesystem;
+use App\Utils\Andresmei\Form;
 use App\Utils\Andresmei\NestedArraySeparator;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use App\Utils\Andresmei\StringConvertions;
+use App\Utils\Exceptions\CustomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Yaml\Yaml;
+
 /**
  * @category Controller
  * @package  App\Controller\FormController
@@ -36,7 +38,7 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
  * @license  MIT <https://mit-license.org>
  * @link     https://bitbucket.org/andresmeireles/sysadmin
  */
-class FormController extends AbstractController
+final class FormController extends AbstractController
 {
     /**
      * @Route("/forms", name="form")
@@ -49,8 +51,10 @@ class FormController extends AbstractController
     /**
      * @Route("/forms/view", methods="GET", name="form_view")
      */
-    public function viewSaveReports(Request $request, FileFunctions $fileFunc): Response
-    {
+    public function viewSaveReports(
+        Request $request,
+        FileFunctions $fileFunc
+    ): Response {
         $repoType = $request->query->get('type');
         $reportFolder = sprintf(
             '%s/%s/%s',
@@ -67,17 +71,19 @@ class FormController extends AbstractController
                 $reports[] = Yaml::parse($arrayFile);
             }
         }
-        return $this->render("form/saveReports.html.twig", [
+        return $this->render('form/saveReports.html.twig', [
             'reports' => $reports,
-            'type' => $repoType
+            'type' => $repoType,
         ]);
     }
-    
+
     /**
      * @Route("/forms/save", methods="GET", name="save_report")
      */
-    public function saveFunction(Request $request, FormModel $model): Response
-    {
+    public function saveFunction(
+        Request $request,
+        FormModel $model
+    ): Response {
         $data = $request->query->all();
         $formName = $request->query->get('formName');
         $parameterName = sprintf('app.path.%s_report', $formName);
@@ -99,11 +105,15 @@ class FormController extends AbstractController
      */
     public function findFormTemplate(Request $request, string $formName): Response
     {
-        $fileNamePath = __DIR__.'/../../templates/form/'.$formName.'Form.html.twig';
-        if (!file_exists($fileNamePath)) {
+        $fileNamePath = sprintf(
+            '%s/../../templates/form/%sForm.html.twig',
+            __DIR__,
+            $formName
+        );
+        if (! file_exists($fileNamePath)) {
             throw new \Exception('Page not found');
         }
-        if (null !== $request->query->get('repofile')) {
+        if ($request->query->get('repofile') !== null) {
             $reportFolder = sprintf(
                 '%s/%s/%s/%s.yaml',
                 $this->getParameter('kernel.root_dir'),
@@ -111,8 +121,8 @@ class FormController extends AbstractController
                 ucwords($formName),
                 $request->query->get('repofile')
             );
-            if (!is_string(file_get_contents($reportFolder))) {
-                throw new \Exception("Arquivo incorreto");
+            if (! is_string(file_get_contents($reportFolder))) {
+                throw new \Exception('Arquivo incorreto');
             }
             $reportData = Yaml::parse(file_get_contents($reportFolder));
             $formAllData = new NestedArraySeparator($reportData);
@@ -121,36 +131,45 @@ class FormController extends AbstractController
             'formName' => $formName,
             'config' => new NonStaticConfig(),
             'formFill' => isset($formAllData) ? $formAllData->getArrayInArray() : null,
-            'formData' => isset($formAllData) ? $formAllData->getSimpleArray() : null
+            'formData' => isset($formAllData) ? $formAllData->getSimpleArray() : null,
         ];
         if ($formName === 'order') {
-            $requestData['products'] = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
+            $requestData['products'] = $this->getDoctrine()
+                ->getManager()
+                ->getRepository(Product::class)
+                ->findAll();
             $requestData['payments'] = $this->getDoctrine()
-                                            ->getManager()
-                                            ->getRepository(PaymentType::class)
-                                            ->findAll();
+                ->getManager()
+                ->getRepository(PaymentType::class)
+                ->findAll();
             $requestData['transporters'] = $this->getDoctrine()
-                                                ->getManager()
-                                                ->getRepository(Transporter::class)
-                                                ->findAll();
+                ->getManager()
+                ->getRepository(Transporter::class)
+                ->findAll();
         }
         if ($formName === 'travel-report' && $request->query->get('p') !== null) {
             $requestData['dataFill'] = $this->getDoctrine()
-                    ->getRepository(TravelTruckOrders::class)
-                    ->find($request->query->get('p'));
+                ->getRepository(TravelTruckOrders::class)
+                ->find($request->query->get('p'));
             $requestData['customId'] = $request->query->get('p');
         }
 
-        return $this->render('form/'.$formName.'Form.html.twig', $requestData);
+        return $this->render('form/' . $formName . 'Form.html.twig', $requestData);
     }
 
     /**
      * @Route("/forms/{formName}", methods={"POST"})
      * @throws CustomException
      */
-    public function saveFormOnDb(Request $request, string $formName, FormModel $model): Response
-    {
-        if (!$this->isCsrfTokenValid('saveOnDb', $request->request->get('_csrf_token'))) {
+    public function saveFormOnDb(
+        Request $request,
+        string $formName,
+        FormModel $model
+    ): Response {
+        if (! $this->isCsrfTokenValid(
+            'saveOnDb',
+            $request->request->get('_csrf_token')
+        )) {
             throw new CustomException('Token invalido');
         }
         $data = $request->request->all();
@@ -164,8 +183,11 @@ class FormController extends AbstractController
      * @Route("/forms/{formName}/print", methods={"GET", "POST"}, name="overlord")
      * @throws \Exception
      */
-    public function printForm(Request $request, string $formName, Form $form): Response
-    {
+    public function printForm(
+        Request $request,
+        string $formName,
+        Form $form
+    ): Response {
         $data = $request->query->all();
         if ($request->query->get('save')) {
             $data['formName'] = $formName;
@@ -183,10 +205,13 @@ class FormController extends AbstractController
      * @Route("/forms/{formName}/print/pdf", methods={"POST"})
      * @throws \Exception
      */
-    public function sendPdfForm(Request $request, string $formName, Form $form): Response
-    {
+    public function sendPdfForm(
+        Request $request,
+        string $formName,
+        Form $form
+    ): Response {
         $data = $request->request->all();
-        
+
         if ($data === []) {
             throw new \Exception('Nenhum dado enviado');
         }
@@ -195,7 +220,7 @@ class FormController extends AbstractController
         //check if file exists
         $file = $result['pdf_path'];
         $filesystem = new Filesystem();
-        if (!$filesystem->exists($file)) {
+        if (! $filesystem->exists($file)) {
             throw $this->createNotFoundException('File not found.');
         }
 
@@ -203,7 +228,7 @@ class FormController extends AbstractController
         $this->addFlash($result['type'], 'Sucesso!');
 
         // send file to download
-        $response =  new BinaryFileResponse($file);
+        $response = new BinaryFileResponse($file);
         $response->trustXSendfileTypeHeader();
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
 
@@ -218,20 +243,28 @@ class FormController extends AbstractController
     public function findFormFillWithId(string $formName, int $idOrder): Response
     {
         /** @var TravelAccountability $regitry */
-        $regitry = $this->getDoctrine()->getRepository(TravelAccountability::class)->find($idOrder);
-        if (!$regitry->getActive()) {
+        $regitry = $this->getDoctrine()
+            ->getRepository(TravelAccountability::class)
+            ->find($idOrder);
+        if (! $regitry->getActive()) {
             throw new CustomException('Não se pode alterar item fechado.');
         }
         $pageName = sprintf('/form/%sForm.html.twig', $formName);
-        $formFullName = sprintf('%s/templates%s', $this->getParameter('kernel.project_dir'), $pageName);
+        $formFullName = sprintf(
+            '%s/templates%s',
+            $this->getParameter('kernel.project_dir'),
+            $pageName
+        );
 
-        if (!file_exists($formFullName)) {
-            throw new FileNotFoundException("Pagina não existe");
+        if (! file_exists($formFullName)) {
+            throw new FileNotFoundException('Pagina não existe');
         }
 
         if ($formName === 'travel-report') {
             $responseData = [
-                'dataFill' => $this->getDoctrine()->getRepository(TravelAccountability::class)->find($idOrder)
+                'dataFill' => $this->getDoctrine()
+                    ->getRepository(TravelAccountability::class)
+                    ->find($idOrder),
             ];
         }
 
@@ -242,11 +275,17 @@ class FormController extends AbstractController
      * @Route("/forms/{formName}/{idReport<\d+>}/edit", methods={"POST"})
      * @throws CustomException
      */
-    public function editTravelAccountability(Request $request, string $formName, int $idReport, FormModel $model): Response
-    {
+    public function editTravelAccountability(
+        Request $request,
+        string $formName,
+        int $idReport,
+        FormModel $model
+    ): Response {
         /** @var TravelAccountability $regitry */
-        $registry = $this->getDoctrine()->getRepository(TravelAccountability::class)->find($idReport);
-        if (!$registry->getActive()) {
+        $registry = $this->getDoctrine()
+            ->getRepository(TravelAccountability::class)
+            ->find($idReport);
+        if (! $registry->getActive()) {
             throw new CustomException('Não se pode alterar item fechado.');
         }
         $data = $request->request->all();
@@ -257,18 +296,28 @@ class FormController extends AbstractController
             $result->getMessage()
         );
 
-        return $this->redirectToRoute('view_report_by_type', ['reportType' => $formName]);
+        return $this->redirectToRoute(
+            'view_report_by_type',
+            [
+                'reportType' => $formName,
+            ]
+        );
     }
 
     /**
      * @Route("/forms/{formName}/{idOrder<\d+>}/terminate", methods={"POST"})
      */
-    public function terminateTravel(Request $request, string $formName, int $idORder, Form $form): Response
-    {
+    public function terminateTravel(
+        Request $request,
+        string $formName,
+        int $idORder,
+        Form $form
+    ): Response {
         $data = $request->request->all();
         $entityManager = $this->getDoctrine()->getManager();
         /** @var TravelAccountability $entity */
-        $entity = $entityManager->getRepository(TravelAccountability::class)->find($idORder);
+        $entity = $entityManager->getRepository(TravelAccountability::class)
+            ->find($idORder);
         $entity->setActive(false);
         $entityManager->merge($entity);
         $entityManager->flush();
@@ -290,7 +339,10 @@ class FormController extends AbstractController
         die(); */
         return $this->redirectToRoute(
             'overlord',
-            ['formName' => $formName, 'request' => Yaml::parse($entity->__toString())]
+            [
+                'formName' => $formName,
+                'request' => Yaml::parse($entity->__toString()),
+            ]
         );
     }
 }

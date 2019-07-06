@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UnitRepository")
  */
-class Unit
+final class Unit
 {
     /**
      * @ORM\Id()
@@ -21,12 +21,12 @@ class Unit
     /**
      * @ORM\Column(type="string", length=2, unique=true)
      */
-    protected $initials;
+    private $initials;
 
     /**
      * @ORM\Column(type="string", unique=true)
      */
-    protected $name;
+    private $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Feedstock", mappedBy="unit")
@@ -99,7 +99,7 @@ class Unit
 
     public function addDepartament(Feedstock $departament): self
     {
-        if (!$this->departament->contains($departament)) {
+        if (! $this->departament->contains($departament)) {
             $this->departament[] = $departament;
             $departament->setUnit($this);
         }

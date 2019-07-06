@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Survey      findAll()
  * @method Survey      findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SurveyRepository extends ServiceEntityRepository
+final class SurveyRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace App\Controller;
 
 use App\Entity\Email;
@@ -16,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PersonController extends AbstractController
+final class PersonController extends AbstractController
 {
     /**
      * @Route("/person")
@@ -34,7 +35,10 @@ class PersonController extends AbstractController
         return $this->render('person/pages/customer.html.twig', [
             'person' => $getter->get('pessoaJuridica'),
             'estado' => $getter->get('estado'),
-            'municipios' => $this->getDoctrine()->getManager()->getRepository(Municipio::class)->findAll(),
+            'municipios' => $this->getDoctrine()
+                ->getManager()
+                ->getRepository(Municipio::class)
+                ->findAll(),
         ]);
     }
 
@@ -59,10 +63,10 @@ class PersonController extends AbstractController
      */
     public function persist(PersonModel $model, Request $request)
     {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+        if (! $this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Algo deu muito errado :(');
         }
-        
+
         $data = $request->request->all();
         $result = $model->persist($data);
         $this->addFlash(
@@ -77,21 +81,21 @@ class PersonController extends AbstractController
      */
     public function action($personId, Request $request): Response
     {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+        if (! $this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Algo deu muito errado :(');
         }
-        
+
         $entityManager = $this->getDoctrine()->getManager();
 
         //start transaction
-        $$entityManager->getConnection()->beginTransaction();
+        ${$entityManager}->getConnection()->beginTransaction();
 
         try {
             $customer = $entityManager->getRepository(PessoaJuridica::class)->find($personId);
-            if ($request->server->get('REQUEST_METHOD') == 'POST') {
+            if ($request->server->get('REQUEST_METHOD') === 'POST') {
                 $updateData = $request->request->all();
                 $this->updateCustomerData($customer, $updateData);
-            } elseif ($request->server->get('REQUEST_METHOD') == 'DELETE') {
+            } elseif ($request->server->get('REQUEST_METHOD') === 'DELETE') {
                 $this->removeAllCustomerData($customer);
             } else {
                 throw $this->createAccessDeniedException('Ação não pode ser concluida');
@@ -137,10 +141,10 @@ class PersonController extends AbstractController
 
     public function updateCustomerData(PessoaJuridica $pessoa, array $data): void
     {
-        if (!$data) {
+        if (! $data) {
             throw $this->createNotFoundException('Parametros não encontrados');
         }
-        if (!$pessoa) {
+        if (! $pessoa) {
             throw $this->createNotFoundException('Item não existe');
         }
 
@@ -166,9 +170,9 @@ class PersonController extends AbstractController
         $pessoaFisica->setRg($person['rg']);
         $genre = $person['genre'] ?? null;
         $pessoaFisica->setGenre($genre);
-        $date = $person['birthDate'] != '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null;
+        $date = $person['birthDate'] !== '' ? new \DateTime(str_replace('/', '.', $person['birthDate'])) : null;
         $pessoaFisica->setBirthDate($date);
-        
+
         foreach ($phone as $phones) {
             $telephone = new Phone();
             $phones = (int) str_replace(' ', '', str_replace('(', '', str_replace(')', '', str_replace('-', '', $phones))));
@@ -191,9 +195,9 @@ class PersonController extends AbstractController
         $client->setRazaoSocial($customer['razaoSocial']);
         $client->setNomeFantasia($customer['nomeFantasia']);
         $client->setCnpj($cnpj);
-        $inscricaoEstadual = $customer['inscricaoEstadual'] == '' ? null : $customer['inscricaoEstadual'];
+        $inscricaoEstadual = $customer['inscricaoEstadual'] === '' ? null : $customer['inscricaoEstadual'];
         $client->setInscricaoEstadual($inscricaoEstadual);
-        $date = $customer['fondationDate'] != '' ? new \DateTime(str_replace('/', '.', $customer['fondationDate'])) : null;
+        $date = $customer['fondationDate'] !== '' ? new \DateTime(str_replace('/', '.', $customer['fondationDate'])) : null;
         $client->setDataDeFundacao($date);
         $client->addProprietario($proprietary);
         $situcaoCadastral = $customer['situacaoCadastral'] ?? 3;

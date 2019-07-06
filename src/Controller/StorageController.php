@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 declare(strict_types = 1);
 
 namespace App\Controller;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class StorageController extends AbstractController
+final class StorageController extends AbstractController
 {
     /**
      * @Route("/storage", name="storage")
@@ -23,7 +23,7 @@ class StorageController extends AbstractController
     {
         return $this->render('storage/index.html.twig', [
             'feed' => $getter->get('feedstock'),
-            'prod' => $getter->get('product')
+            'prod' => $getter->get('product'),
         ]);
     }
 
@@ -51,15 +51,15 @@ class StorageController extends AbstractController
         $model = new FeedstockModel($this->getDoctrine()->getManager());
         $entityManager = $this->getDoctrine()->getManager();
 
-        if ($method == 'POST') {
+        if ($method === 'POST') {
             $parameters = $request->request->all();
             $model->persist($parameters);
 
             return new Response('Sucesso');
         }
 
-        if ($method == 'DELETE') {
-            if (!is_int($productId)) {
+        if ($method === 'DELETE') {
+            if (! is_int($productId)) {
                 throw new \Exception('Não é um número');
             }
 
@@ -72,11 +72,11 @@ class StorageController extends AbstractController
             }
 
             return new Response(200, Response::HTTP_OK, [
-                'redirect-route' => '/storage/product'
+                'redirect-route' => '/storage/product',
             ]);
         }
-        
-        if ($method == 'GET') {
+
+        if ($method === 'GET') {
             $update = $this->getDoctrine()->getManager()->getRepository(Feedstock::class)->find($productId);
             $feedForm = $this->createForm(FeedstockForm::class, $update);
 
@@ -87,7 +87,7 @@ class StorageController extends AbstractController
                 'departament' => $getter->get('departament'),
             ]);
         }
-        
+
         return $this->createNotFoundException();
     }
 
@@ -109,7 +109,7 @@ class StorageController extends AbstractController
     {
         $data = $request->request->all();
         $model->feedIn($data);
-        
+
         return new Response('Sucesso! :)', Response::HTTP_OK);
     }
 
@@ -130,7 +130,7 @@ class StorageController extends AbstractController
     public function prodStock(Crud $getter): Response
     {
         return $this->render('/storage/product.html.twig', [
-            'product' => $getter->get('product')
+            'product' => $getter->get('product'),
         ]);
     }
 
@@ -155,10 +155,10 @@ class StorageController extends AbstractController
     public function redirectToUpdate($productId): Response
     {
         return $this->render('/storage/forms/productForm.html.twig', [
-            'product' => $this->getDoctrine()->getManager()->getRepository(Product::class)->find($productId)
+            'product' => $this->getDoctrine()->getManager()->getRepository(Product::class)->find($productId),
         ]);
     }
-    
+
     /**
      * @Route("/storage/product/update/{id}", methods="POST", requirements={"page"="\d+"})
      */
@@ -168,16 +168,16 @@ class StorageController extends AbstractController
         $data = $request->request->all();
         $result = $model->update($data, $productId);
 
-        if ($result['http_code'] == 203) {
+        if ($result['http_code'] === 203) {
             return $this->render('/storage/forms/productForm.html.twig', [
                 'product' => $data,
-                'flash' => 'Algo deu errado...'
+                'flash' => 'Algo deu errado...',
             ]);
         }
 
         return $this->redirectToRoute('showProd', [], 301);
     }
-    
+
     /**
      * @Route("/storage/productAction/{id}", methods="DELETE", requirements={"page"="\d+"})
      */
@@ -187,7 +187,7 @@ class StorageController extends AbstractController
         $result = $model->remove($productId);
 
         return new Response($result['message'], $result['http_code'], [
-            'redirect-route' => '/storage/product'
+            'redirect-route' => '/storage/product',
         ]);
     }
 

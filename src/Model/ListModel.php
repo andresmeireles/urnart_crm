@@ -1,34 +1,17 @@
-<?php
+<?php declare(strict_types = 1);
 declare(strict_types = 1);
 
 namespace App\Model;
 
 use App\Entity\Order;
-use App\Utils\Andresmei\MyDateTime;
-use App\Utils\Andresmei\StdResponse;
 use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\ListNotExistsException;
-use phpDocumentor\Reflection\Types\Mixed_;
 
-/**
- * TEST 
- * 
- * yearOrderReport
- * getParsedClientData
- * getParsedLastOrderData
- * getParsedStatusOrderData
- * getJsonListOrderBy
- * getListOrderBy
- * getListByDate
- * 
- */
-class ListModel extends Model
+final class ListModel extends Model
 {
     /**
      * @param string $type
-     * @param null $optionalParameter
-     *
-     * @return string|array
+     * @return array
      * @throws ListNotExistsException
      */
     public function select(string $type)
@@ -61,47 +44,38 @@ class ListModel extends Model
     }
 
     /**
-     * Retorna pedidos por cliente.
-     *
      * @return  array  App\Entity\Order.
      */
     public function getParsedClientData(): array
     {
-        return $this->em->getRepository(Order::class)->findByClientGroup();
+        return $this->entityManager->getRepository(Order::class)->findByClientGroup();
     }
 
     /**
-     * Retorna ultimo pedido.
-     *
      * @return  array  array App\Entity\Order.
      */
     public function getParsedLastOrderData(): array
     {
-        return $this->em->getRepository(Order::class)->findByLastOrder();
+        return $this->entityManager->getRepository(Order::class)->findByLastOrder();
     }
 
     /**
-     * Retorna lista de elemetos de acordo com status.
-     *
-     * @param int $type  opções 0 ou 1 ou 2.
-     *
+     * @param int $type
      * @return array
      */
     public function getParsedStatusOrderData(int $type = 0): array
     {
-        return $this->em->getRepository(Order::class)->findByStatusOrders($type);
+        return $this->entityManager->getRepository(Order::class)->findByStatusOrders($type);
     }
 
     /**
-     * Retorna resultados em dada ordem em formato json.
-     *
      * @param string $repository
      * @param string $orderBy
      * @return string
      */
     public function getJsonListOrderBy(string $repository, string $orderBy): string
     {
-        $returnList = $this->em->getRepository('App\Entity\\'.$repository)->findBy(
+        $returnList = $this->entityManager->getRepository('App\Entity\\' . $repository)->findBy(
             [],
             [$orderBy => 'ASC']
         );
@@ -109,62 +83,59 @@ class ListModel extends Model
     }
 
     /**
-     * Lista resultados de repositorio dada a orderm.
-     *
      * @param string $repository
      * @param string $orderBy
      * @return array
      */
     public function getListOrderBy(string $repository, string $orderBy): array
     {
-        return $this->em->getRepository('App\Entity\\'.$repository)->findBy(
+        return $this->entityManager->getRepository('App\Entity\\' . $repository)->findBy(
             [],
             [$orderBy => 'ASC']
         );
     }
 
     /**
-     * Lista por data dados de um repositorio.
-     *
      * @param string $repository
      * @param string|null $beginDate
      * @param string|null $lastDate
      * @return array
+     * @throws \Exception
      */
     public function getListByDate(string $repository, ?string $beginDate, ?string $lastDate): array
     {
-        $repo = 'App\Entity\\'.$repository;
+        $repo = 'App\Entity\\' . $repository;
         $convertedBeginDate = (new StringConvertions())->strToDateString($beginDate);
         $convertedLastDate = (new StringConvertions())->strToDateString($lastDate);
-        $queryBuilder = $this->em->createQueryBuilder();
+        $queryBuilder = $this->entityManager->createQueryBuilder();
         $result = null;
-        if (is_null($convertedBeginDate) && is_null($convertedLastDate)) {
+        if ($convertedBeginDate === null && $convertedLastDate === null) {
             $result = $queryBuilder->select('u')->from($repo, 'u')->orderBy('u.id', 'ASC');
         }
 
-        if (!is_null($convertedBeginDate) && !is_null($convertedLastDate)) {
+        if ($convertedBeginDate !== null && $convertedLastDate !== null) {
             $result = $queryBuilder->select('u')
-                                   ->from($repo, 'u')
-                                   ->where('u.createDate BETWEEN :begin AND :last')
-                                   ->setParameter('begin', $convertedBeginDate)
-                                   ->setParameter('last', $convertedLastDate)
-                                   ->orderBy('u.id', 'ASC');
+                ->from($repo, 'u')
+                ->where('u.createDate BETWEEN :begin AND :last')
+                ->setParameter('begin', $convertedBeginDate)
+                ->setParameter('last', $convertedLastDate)
+                ->orderBy('u.id', 'ASC');
         }
 
-        if (is_null($convertedBeginDate) && !is_null($convertedLastDate)) {
+        if ($convertedBeginDate === null && $convertedLastDate !== null) {
             $result = $queryBuilder->select('u')
-                                   ->from($repo, 'u')
-                                   ->where('u.createDate <= :date')
-                                   ->setParameter('date', sprintf('%s 23:00:00', $convertedLastDate))
-                                   ->orderBy('u.id', 'ASC');
+                ->from($repo, 'u')
+                ->where('u.createDate <= :date')
+                ->setParameter('date', sprintf('%s 23:00:00', $convertedLastDate))
+                ->orderBy('u.id', 'ASC');
         }
 
-        if (!is_null($convertedBeginDate) && is_null($convertedLastDate)) {
+        if ($convertedBeginDate !== null && $convertedLastDate === null) {
             $result = $queryBuilder->select('u')
-                                   ->from($repo, 'u')
-                                   ->where('u.createDate >= :date')
-                                   ->setParameter('date', $convertedBeginDate)
-                                   ->orderBy('u.id', 'ASC');
+                ->from($repo, 'u')
+                ->where('u.createDate >= :date')
+                ->setParameter('date', $convertedBeginDate)
+                ->orderBy('u.id', 'ASC');
         }
         return $result->getQuery()->getResult();
     }

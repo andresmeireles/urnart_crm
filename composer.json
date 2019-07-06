@@ -8,6 +8,7 @@
         "ext-iconv": "*",
         "ext-pdo": "*",
         "ext-json": "*",
+        "ext-zip": "*",
         "jms/serializer": "^2.2",
         "knplabs/knp-paginator-bundle": "^3.0",
         "respect/validation": "^1.1",

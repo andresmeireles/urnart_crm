@@ -10,6 +10,11 @@ use JMS\Serializer\SerializerBuilder;
  */
 abstract class BaseEntity
 {
+    /**
+     * @ORM\Column(type="datetimetz")
+     */
+    protected $lastUpdate;
+
     // Vai ser um campo usuario
     //private $editBy;
 
@@ -22,11 +27,6 @@ abstract class BaseEntity
      * @ORM\Column(type="datetimetz")
      */
     private $createDate;
-
-    /**
-     * @ORM\Column(type="datetimetz")
-     */
-    protected $lastUpdate;
 
     public function __construct()
     {
