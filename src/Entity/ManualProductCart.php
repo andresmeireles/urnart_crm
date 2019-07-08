@@ -67,7 +67,7 @@ final class ManualProductCart
 
     public function getProductAmount(): ?int
     {
-        return $this->productAmount;
+        return (int) $this->productAmount;
     }
 
     public function setProductAmount(int $productAmount): self

@@ -11,7 +11,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @Vich\Uploadable
  */
-final class User extends BaseEntity implements UserInterface, \Serializable
+class User extends BaseEntity implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()

@@ -3,6 +3,7 @@
 namespace App\EventSubscriber;
 
 use App\Entity\Boleto;
+use App\Model\BoletoModel;
 use App\Model\ReportModel;
 use App\Utils\Andresmei\StdResponse;
 use App\Utils\Andresmei\WriteBoletoReport;
@@ -49,7 +50,7 @@ final class StartSubscriber extends AbstractController implements EventSubscribe
         \DateTimeInterface $date,
         AbstractController $controller
     ): void {
-        $model = new ReportModel($controller->getDoctrine()->getManager());
+        $model = new BoletoModel($controller->getDoctrine()->getManager());
         $titulos = $model->getNonPayedBoletosByDate($date->format('Y-m-d'));
 
         $response = new StdResponse();

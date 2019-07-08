@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
-use App\Model\ReportModel;
+use App\Model\BoletoModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 final class BoletoReportController extends AbstractController
 {
@@ -17,7 +18,7 @@ final class BoletoReportController extends AbstractController
     public function boletoChangeStatus(
         Request $request,
         int $boletoId,
-        ReportModel $model
+        BoletoModel $model
     ): Response {
         $this->isEncodedCSRFTokenValidPhrase(
             $request->request->get('_csrf_token'),
@@ -42,7 +43,7 @@ final class BoletoReportController extends AbstractController
     public function createBoletoReport(
         Request $request,
         string $reportName,
-        ReportModel $model
+        BoletoModel $model
     ): Response {
         $beginDate = $request->query->get('beginDate');
         $lastDate = $request->query->get('lastDate');

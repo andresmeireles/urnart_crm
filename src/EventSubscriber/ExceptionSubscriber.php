@@ -79,6 +79,9 @@ final class ExceptionSubscriber implements EventSubscriberInterface
                 //return new Response('Página não existe. Caminho incorreto.');
                 return new Response('Deu ruim meu amigo.');
                 break;
+            case 'InvalidCsrfTokenException':
+                return new Response('Deu ruim em algum login ai');
+                break;
             case 'BadRefererLinkException':
             default:
                 return $this;

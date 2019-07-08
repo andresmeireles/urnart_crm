@@ -5,7 +5,7 @@ namespace App\Model;
 use App\Entity\Survey;
 use App\Utils\Andresmei\ObjectResponse;
 
-final class SurveyModel extends Model implements ModelInterface
+final class SurveyModel extends Model
 {
     /**
      * @param array  $data

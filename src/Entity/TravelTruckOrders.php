@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TravelTruckOrdersRepository")
  */
-final class TravelTruckOrders extends BaseEntity
+class TravelTruckOrders extends BaseEntity
 {
     /**
      * @var int

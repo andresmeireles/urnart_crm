@@ -46,7 +46,7 @@ final class ReportController extends AbstractController
     /**
      * @Route("/report/productionCount/mdr", name="make_report", methods="POST")
      */
-    public function makePrintReport(Request $request, ReportModel $model): Response
+    public function makePrintReport(Request $request, ProductionCountModel $model): Response
     {
         $repoDate = $request->request->get('repo-date');
         $report = $model->makeDailyProductionCount($repoDate);
@@ -59,7 +59,7 @@ final class ReportController extends AbstractController
     /**
      * @Route("/report/productionCount/mr", name="make_report_custom", methods="POST")
      */
-    public function makeRepo(Request $request, ReportModel $model): Response
+    public function makeRepo(Request $request, ProductionCountModel $model): Response
     {
         $type = $request->request->get('type');
         $dateOne = $request->request->get('begin-date');
@@ -80,7 +80,7 @@ final class ReportController extends AbstractController
     public function printAllProductionBalanceReport(
         Request $request,
         string $reportname,
-        ReportModel $model
+        ProductionCountModel $model
     ): Response {
         $beginDate = $request->request->get('begin-date');
         $lastDate = $request->request->get('last-date');
@@ -148,7 +148,7 @@ final class ReportController extends AbstractController
     /**
      * @Route("/report/productionCount", name="prod_count", methods="GET")
      */
-    public function openProductionCountReportIndexPage(ReportModel $model): Response
+    public function openProductionCountReportIndexPage(ProductionCountModel $model): Response
     {
         /** @var string $today */
         $today = (new MyDateTime())->output('d-m-Y');
@@ -189,12 +189,13 @@ final class ReportController extends AbstractController
         }
         $str = (new StringConvertions())->snakeToCamelCase($reportType);
         $repository = sprintf('App\Entity\%s', ucfirst($str));
-        /** @var EntityManager $entityManager */
         $entityManager = $this->getDoctrine()->getManager();
-        $query = $entityManager->createQuery(sprintf(
-            'SELECT u.id, u.date FROM %s u',
-            $repository
-        ));
+        $query = $entityManager->createQuery(
+            sprintf(
+                'SELECT u.id, u.date FROM %s u',
+                $repository
+            )
+        );
         $view = $query->getResult();
 
         return $this->render($reportPage, [
@@ -205,9 +206,12 @@ final class ReportController extends AbstractController
     /**
      * @Route("/api/report/{pageType}/create", methods="POST")
      */
-    public function createGenericReportRegistryAjax(Request $request, string $pageType, ReportModel $model): Response
-    {
-        if (! $this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+    public function createGenericReportRegistryAjax(
+        Request $request,
+        string $pageType,
+        ReportModel $model
+    ): Response {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Algo deu muito errado :(');
         }
         $data = $request->request->all();
@@ -242,7 +246,7 @@ final class ReportController extends AbstractController
      */
     public function createByCatchModel(Request $request, ProductionCountModel $productionCountModel): Response
     {
-        if (! $this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Token incorreto.');
         }
         $request->request->remove('_csrf_token');
@@ -307,15 +311,24 @@ final class ReportController extends AbstractController
     /**
      * @Route("/report/{pageType}/list", methods="GET")
      */
-    public function getGenericList(Request $request, string $pageType, ReportModel $model): Response
-    {
+    public function getGenericList(
+        Request $request,
+        string $pageType,
+        ReportModel $model
+    ): Response {
         $typeOfList = $request->query->get('type') ?? 'last';
 
         $beginDate = $request->query->get('beginDate');
         $lastDate = $request->query->get('lastDate');
 
         if ($beginDate !== null || $lastDate !== null) {
-            $byDateResults = $model->searchByDate(ucwords($pageType), 'boletoVencimento', 'u', $beginDate, $lastDate);
+            $byDateResults = $model->searchByDate(
+                ucwords($pageType),
+                'boletoVencimento',
+                'u',
+                $beginDate,
+                $lastDate
+            );
         }
 
         $listOfResults = $model->getGenericList($pageType, $typeOfList);

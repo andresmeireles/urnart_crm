@@ -20,7 +20,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
+class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
@@ -46,10 +46,12 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     /**
      * @param Request $request
-     * @return bool
+     * @return bool|string
      */
-    public function supports(Request $request): bool
+    public function supports(Request $request)
     {
+//        dump($request->isMethod('POST'), $request->getMethod(), $request->getPathInfo(), $request);
+//        die;
         return $request->attributes->get('_route') === 'app_login' ?
             $request->attributes->get('_route') :
             $request->isMethod('POST');
@@ -75,22 +77,17 @@ final class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $credentials;
     }
 
-    /**
-     * @param array $credentials
-     * @param UserProviderInterface $userProvider
-     * @return object|UserInterface|null
-     */
-    public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
+    public function getUser($credentials, $userProvider)
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
-        if (! $this->csrfTokenManager->isTokenValid($token)) {
+        if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
         }
 
         $user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['email' => $credentials['email']]);
 
-        if (! $user) {
+        if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email não encontrado.');
             //throw new CustomException('Email não encontrado.');

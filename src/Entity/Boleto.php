@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BoletoRepository")
  */
-final class Boleto extends BaseEntity
+class Boleto extends BaseEntity
 {
     /**
      * @ORM\Id()
@@ -146,7 +146,12 @@ final class Boleto extends BaseEntity
         $date = $boletoPaymentDate !== null ? new \DateTime($boletoPaymentDate) : $boletoPaymentDate;
 
         if (! ($date instanceof \DateTime) and $date !== null) {
-            throw new InvalidParameterException(sprintf('Parametro [%s] não é valido. Valores reconhecidos são instancia de \DateTIme e null', $date));
+            throw new InvalidParameterException(
+                sprintf(
+                    'Parametro [%s] não é valido. Valores reconhecidos são instancia de \DateTIme e null',
+                    $date
+                )
+            );
         }
 
         $this->boletoPaymentDate = $date;
@@ -185,20 +190,18 @@ final class Boleto extends BaseEntity
         return $this->boletoVencimento;
     }
 
-    /* public function setBoletoVencimento(\DateTimeInterface $boletoVencimento): self
-    {
-        $this->boletoVencimento = $boletoVencimento;
-
-        return $this;
-    } */
-
     public function setBoletoVencimento(string $boletoVencimento): self
     {
         $this->setLastUpdate();
         $date = new \DateTime($boletoVencimento);
 
         if (! ($date instanceof \DateTime)) {
-            throw new InvalidParameterException(sprintf('Parametro [%s] não é valido. Preciso enviar instancia de \DateTime.', $date));
+            throw new InvalidParameterException(
+                sprintf(
+                    'Parametro [%s] não é valido. Preciso enviar instancia de \DateTime.',
+                    $date
+                )
+            );
         }
 
         $this->boletoVencimento = $date;
@@ -211,8 +214,9 @@ final class Boleto extends BaseEntity
         return $this->boletoProvisionamentoDate;
     }
 
-    public function setBoletoProvisionamentoDate(?\DateTimeInterface $boletoProvisionamentoDate): self
-    {
+    public function setBoletoProvisionamentoDate(
+        ?\DateTimeInterface $boletoProvisionamentoDate
+    ): self {
         $this->setLastUpdate();
         $this->boletoProvisionamentoDate = $boletoProvisionamentoDate;
 

@@ -16,7 +16,13 @@ final class SecurityController extends AbstractController
     {
         // redirect if user is logged
         if ($this->getUSer() !== null) {
-            $this->addFlash('warning', sprintf('%s... você já está logado truta, continue navegando em paz :)', $this->getUser()->getUserNickname()));
+            $this->addFlash(
+                'warning',
+                sprintf(
+                    '%s... você já está logado truta, continue navegando em paz :)',
+                    $this->getUser()->getUserNickname()
+                )
+            );
             return $this->redirectToRoute('index');
         }
 

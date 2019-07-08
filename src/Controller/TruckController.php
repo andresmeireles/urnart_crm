@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\ManualOrderReport;
 use App\Entity\TravelTruckOrders;
 use App\Model\DepartureModel;
-use App\Model\ReportModel;
+use App\Model\TravelTruckOrderModel;
 use App\Utils\Andresmei\Form;
 use App\Utils\Andresmei\NestedArraySeparator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,7 +44,7 @@ final class TruckController extends AbstractController
     /**
      * @Route("/truck/create", methods="POST")
      */
-    public function createTruckForm(Request $request, ReportModel $reportModel): Response
+    public function createTruckForm(Request $request, TravelTruckOrderModel $reportModel): Response
     {
         $alldata = $request->request->all();
         $nestedArray = new NestedArraySeparator($alldata);
@@ -76,7 +76,7 @@ final class TruckController extends AbstractController
     /**
      * @Route("/truck/edit/{id<\d+>}", methods="POST")
      */
-    public function editTruckForm(Request $request, ReportModel $reportModel, int $id): Response
+    public function editTruckForm(Request $request, TravelTruckOrderModel $model, int $id): Response
     {
         $alldata = $request->request->all();
         $nestedArray = new NestedArraySeparator($alldata);
@@ -84,7 +84,7 @@ final class TruckController extends AbstractController
         $reportOrderInformation = $nestedArray->getArrayInArray();
         /** @var TravelTruckOrders $truckOrderEntity */
         $truckOrderEntity = $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find($id);
-        $result = $reportModel->editTruckDepartureReport(
+        $result = $model->editTruckDepartureReport(
             $truckOrderEntity,
             $reportInformation,
             $reportOrderInformation
