@@ -1,5 +1,3 @@
-/* global axios */
-
 /**
  * name: simpleRequest
  *

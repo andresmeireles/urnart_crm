@@ -63,7 +63,10 @@ final class TravelTruckOrderModel extends Model
         return new FlashResponse(
             200,
             'success',
-            sprintf('Relatorio %s editado com sucesso', $orderTruckEntity->getId())
+            sprintf(
+                'Relatorio %s editado com sucesso',
+                $orderTruckEntity->getId()
+            )
         );
     }
 
@@ -100,6 +103,66 @@ final class TravelTruckOrderModel extends Model
         }
         $entityManager->flush();
 
-        return new FlashResponse(200, 'success', 'Relatorio de saida do caminhão criado com sucesso!');
+        return new FlashResponse(
+            200,
+            'success',
+            'Relatorio de saida do caminhão criado com sucesso!'
+        );
+    }
+
+    /**
+     * @param array $parameters
+     * @param TravelTruckOrders $travelTruckOrder
+     * @return TravelTruckOrders
+     * @throws \App\Utils\Exceptions\CustomException
+     */
+    public function setParametersOnTruckOrder(
+        array $parameters,
+        TravelTruckOrders $travelTruckOrder
+    ) {
+        $manualOrderReportRepository = $this->entityManager
+            ->getRepository(ManualOrderReport::class);
+        $travelTruckOrder->setDriverName($parameters['driverName']);
+        $travelTruckOrder->setKmout($parameters['kmout']);
+        $date = new MyDateTime($parameters['departureDate'], 'America/Belem');
+        $travelTruckOrder->setDepartureDate($date);
+        foreach ($parameters['orders'] as $order) {
+            $simpleArray[$order['id']] = isset($order['isChecked']) ? (bool) $order['isChecked'] : false;
+            $manualOrderReport = $manualOrderReportRepository->find($order['id']);
+            $travelTruckOrder->addOrderId($manualOrderReport);
+        }
+        $travelTruckOrder->setCheckedOrders($simpleArray ?? []);
+
+        return $travelTruckOrder;
+    }
+
+    /**
+     * @param TravelTruckOrders $order
+     * @return TravelTruckOrders
+     */
+    public function closeActiveTravelTruckOrder(
+        TravelTruckOrders $order
+    ): TravelTruckOrders {
+        try {
+            $order->setActive(false);
+        } catch (\RuntimeException $err) {
+            throw new \RuntimeException(
+                sprintf(
+                    '%s. Arquivo: %s. Linha: %s',
+                    $err->getMessage(),
+                    $err->getFile(),
+                    $err->getLine()
+                )
+            );
+        }
+
+        return $order;
+    }
+
+    public function actionInTruckOrderByMode(?string $mode = null, ?int $truckOrderId)
+    {
+        $entity = $mode === 'edit' ?
+            $this->entityManager->getRepository(TravelTruckOrders::class)->find($truckOrderId) :
+            true ;
     }
 }

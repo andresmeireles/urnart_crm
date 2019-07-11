@@ -181,12 +181,6 @@ final class ReportController extends AbstractController
     public function openReportPage(string $reportType): Response
     {
         $reportPage = sprintf('report/pages/%s.html.twig', $reportType);
-        if ($reportType === 'travel-report') {
-            $reportType = 'travel-accountability';
-            $str = (new StringConvertions())->snakeToCamelCase($reportType);
-            $repository = sprintf('App\Entity\%s', ucfirst($str));
-            $travel = $this->getDoctrine()->getRepository($repository)->findAll();
-        }
         $str = (new StringConvertions())->snakeToCamelCase($reportType);
         $repository = sprintf('App\Entity\%s', ucfirst($str));
         $entityManager = $this->getDoctrine()->getManager();

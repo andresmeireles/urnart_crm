@@ -117,6 +117,6 @@ final class BoletoModel extends Model
             "'{$date} %'"
         );
 
-        return $this->dqlConsult($consultString);
+        return $this->dqlQuery($consultString);
     }
 }

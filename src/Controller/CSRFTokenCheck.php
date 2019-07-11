@@ -19,7 +19,7 @@ trait CSRFTokenCheck
         string $encodedCSRFToken,
         string $validPhrase
     ): bool {
-        if (! $this->isCsrfTokenValid($validPhrase, $encodedCSRFToken)) {
+        if (!$this->isCsrfTokenValid($validPhrase, $encodedCSRFToken)) {
             throw new CustomException('Token incorreto.');
         }
 

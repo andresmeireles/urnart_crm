@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Boleto;
 use App\Model\BoletoModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +12,25 @@ use Symfony\Component\Routing\Annotation\Route;
 final class BoletoReportController extends AbstractController
 {
     use CSRFTokenCheck;
+
+    /**
+     * @Route("/boleto/index")
+     */
+    public function renderBoletoIndexPage(): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $query = $entityManager->createQuery(
+            sprintf(
+                'SELECT u.id, u.boletoPaymentDate FROM %s u',
+                Boleto::class
+            )
+        );
+        $view = $query->getResult();
+
+        return $this->render('report/pages/boleto.html.twig', [
+            'simpleView' => $view,
+        ]);
+    }
 
     /**
      * @Route("/report/boleto/status/{boletoId}", methods="POST")

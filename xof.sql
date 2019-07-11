@@ -13,8 +13,8 @@
 
 
 -- Copiando estrutura do banco de dados para sysadmin
-/* CREATE DATABASE IF NOT EXISTS `sysadmin` /*!40100 DEFAULT CHARACTER SET latin1 */;
-/* USE `sysadmin`;*/
+-- CREATE DATABASE IF NOT EXISTS `sysadmin` /*!40100 DEFAULT CHARACTER SET latin1 */;
+-- USE `sysadmin`;
 
 -- Copiando estrutura para tabela sysadmin.address
 CREATE TABLE IF NOT EXISTS `address` (

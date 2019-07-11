@@ -50,10 +50,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function supports(Request $request)
     {
-//        dump($request->isMethod('POST'), $request->getMethod(), $request->getPathInfo(), $request);
-//        die;
-        return $request->attributes->get('_route') === 'app_login' ?
-            $request->attributes->get('_route') :
+        return $request->attributes->get('_route') === 'app_login' &&
             $request->isMethod('POST');
     }
 

@@ -1,42 +1,36 @@
 {% extends "index.html.twig" %}
 {% block title %}Relatório de viagem{% endblock %}
 {% block content %}
-    <div class="col py-5 px-2">
+    <div class="col py-2 px-1">
         {% if dataFill is defined %}
             <div id="fill"></div>
         {% endif %}
         <div class="col">
-            <h2>Relatório de viagem<small><a href="/report/travel-accountability" class="text-primary h6 mx-3">Relatório anteriores</a></small>
+            <h2>Relatório de viagem<small><a href="/travel/accountability/reports" class="text-primary h6 mx-3">Relatório anteriores</a></small>
             </h2>
             <p class="col-12">Todos os campos são obrigatorios de ser preenchidos</p>
             <hr>
         </div>
         <div class="col">
-            <form method="POST" id="closeOrder">
-                {% include "components/csrfToken.html.twig" with {'tokenText': 'saveOnDb'} %}
+            <form method="POST" class="truckArrivalAction">
+                {% include "components/csrfToken.html.twig" with {'tokenText': 'accountabilityReport'} %}
                 <div class="form-row">
-                    {% if dataFill is not defined %}
-                    <div class="form=group col">
-                        <input type="submit" class="btn btn-primary btn-lg btn-block disable-on-submit" value="realizar prestação de contas">
+                    <div class="form-group col">
+                        <input type="submit" class="btn btn-primary btn-lg btn-block disable-on-submit" value="fechar prestação de contas" confirm="Após salvo esse relatório não pode ser mais alterado."
+                        {% if customId is defined %}
+                            closeTruck="{{customId}}"
+                        {% endif %}
+                        />
                     </div>
-                    {% elseif customId is defined %}
-                    <div class="form=group col">
-                        <input type="submit" id="travel-report" closeTruck="{{customId}}" class="btn btn-primary btn-lg btn-block disable-on-submit" value="realizar prestação de contas">
+                    <div class="form-group col">
+                        <input type="submit" class="btn btn-secondary btn-lg btn-block disable-on-submit saveforedit" value="salvar prestação de contas" />
                     </div>
-                    {% else %}
-                    <div class="form=group col">
-                        <input type="submit" class="btn btn-danger btn-lg btn-block disable-on-submit" onclick="javascript: form.action='/forms/travel-report/{{dataFill.id}}/terminate';" value="terminar relatorio">
-                    </div>
-                    <div class="form=group col">
-                        <input type="submit" class="btn btn-secondary btn-lg btn-block disable-on-submit" onclick="javascript: form.action='/forms/travel-report/{{dataFill.id}}/edit';" value="editar prestação de contas">
-                    </div>
-                    {% endif %}
                 </div>
                 <hr>
                 <div class="form-row">
                     <div class="form-group col">
                         <label for="driver-name">Nome do motorista</label>
-                        <input type="text" id="driver-name" name="driver-name" class="form-control" placeholder="Nome" value="{{ dataFill.driverName ?? '' }}"  required>
+                        <input type="text" id="driverName" name="driverName" class="form-control" placeholder="Nome" value="{{ dataFill.driverName ?? '' }}"  required>
                     </div>
                 </div>
                 <fieldset>
@@ -44,12 +38,12 @@
                     <div class="form-row col">
                         <div class="form-group col">
                             <label for="dt-out">Saida</label>
-                            <input type="hidden" id="dt-out" name="dt-out" value="{{ dataFill.departureDate is not defined or dataFill.departureDate is same as(null) ? '' : dataFill.departureDate | date('d-m-Y') }}">
+                            <input type="hidden" id="dt-out" name="departureDate" value="{{ dataFill.departureDate is not defined or dataFill.departureDate is same as(null) ? '' : dataFill.departureDate | date('d-m-Y') }}">
                             <input type="text" class="form-control no-keypress calendar-selector" date-target="#dt-out" placeholder="Data de saída" value="{{ dataFill.departureDate is not defined or dataFill.departureDate is same as(null) ? '' : dataFill.departureDate | date('d/m/Y') }}" required>
                         </div>
                         <div class="form-group col">
                             <label for="dt-in">Chegada</label>
-                            <input type="hidden" id="dt-in" name="dt-in" value="{{ dataFill.arrivalDate is not defined or dataFill.arrivalDate is same as(null) ? '' : dataFill.arrivalDate | date('d-m-Y') }}">
+                            <input type="hidden" id="dt-in" name="arrivalDate" value="{{ dataFill.arrivalDate is not defined or dataFill.arrivalDate is same as(null) ? '' : dataFill.arrivalDate | date('d-m-Y') }}">
                             <input type="text" class="form-control no-keypress calendar-selector" date-target="#dt-in" placeholder="Data de chegada" value="{{ dataFill.arrivalDate is not defined or dataFill.arrivalDate is same as(null) ? '' : dataFill.arrivalDate | date('d/m/Y') }}" requried>
                         </div>
                     </div>
@@ -59,11 +53,11 @@
                     <div class="form-row col">
                         <div class="form-group col">
                             <label for="km-out">KM Saida</label>
-                            <input type="text" class="form-control numbers-only" name="km-out" data-target="#km-out" placeholder="KM de saída" value="{{ dataFill.departureKm ?? '' }}{{ dataFill.kmout ?? ''}}" requried>
+                            <input type="text" class="form-control numbers-only" name="departureKm" data-target="#km-out" placeholder="KM de saída" value="{{ dataFill.departureKm ?? '' }}{{ dataFill.kmout ?? ''}}" requried>
                         </div>
                         <div class="form-group col">
                             <label for="km-in">KM Chegada</label>
-                            <input type="text" class="form-control numbers-only" name="km-in" data-target="#km-in" placeholder="KM de chegada" value="{{ dataFill.arrivalKm ?? '' }}" required>
+                            <input type="text" class="form-control numbers-only" name="arrivalKm" data-target="#km-in" placeholder="KM de chegada" value="{{ dataFill.arrivalKm ?? '' }}" required>
                         </div>
                     </div>
                 </fieldset>
@@ -251,13 +245,13 @@
                         <div class="form-group row col">
                             <div class="col">
                                 <label>Valor</label>
-                                <input type="hidden" converted-value name="caixa" value="{{ dataFill is not defined or dataFill.cash is not defined ? '' : dataFill.cash | number_format(2, ',', '.') }}" />
-                                <input type="text" class="form-control auto-float-convert-blur auto-clear numbers-float-only" id="cx" placeholder="Valor do caixa" value="R$ {{ dataFill is not defined or dataFill.cash is not defined ? '' : dataFill.cash | number_format(2, ',', '.') }}" required />
+                                <input type="hidden" converted-value name="cash" value="{{ dataFill is not defined or dataFill.cash is not defined ? 0.0 : dataFill.cash | number_format(2, ',', '.') }}" />
+                                <input type="text" class="form-control auto-float-convert-blur auto-clear numbers-float-only" id="cx" placeholder="Valor do caixa" value="R$ {{ dataFill is not defined or dataFill.cash is not defined ? 0.0 : dataFill.cash | number_format(2, ',', '.') }}" required />
                             </div>
                             <div class="col-1">
                                 <label for="btn">&nbsp;</label><br>
-                                <button type="submit" class="btn mx-1 btn-danger" data-fancybox data-src="#calc">
-                                    <a href="javascript:;" data-fancybox data-src="#calc" class="fas fa-fw fa-calculator"></a>
+                                <button type="submit" class="btn mx-1 btn-outline-primary" data-fancybox data-src="#calc">
+                                    <a href="javascript:;" data-fancybox data-src="#calc" class="fas fa-fw fa-calculator text-black-50"></a>
                                 </button>
                             </div>
                             <div>
@@ -343,22 +337,22 @@
                 <div class="row col">
                     <div class="col">
                         <div class="col"><span>Entrada</span></div>
-                        <input type="hidden" value="0" class="inSub" id="input-value-in" value="0" />
+                        <input type="hidden" class="inSub" id="input-value-in" value="0" />
                         <div class="col"><span id="value-in">R$ 0,00</span></div>
                     </div>
                     <div class="col">
                         <div class="col"><span>Caixa</span></div>
-                        <input type="hidden" value="0" class="cxSub" id="input-value-cx" value="0" />
+                        <input type="hidden" class="cxSub" id="input-value-cx" value="0" />
                         <div class="col"><span id="value-cx">R$ 0,00</span></div>
                     </div>
                     <div class="col">
                         <div class="col"><span>Total</span></div>
-                        <input type="hidden" value="0" class="tSub" id="input-value-total" value="0" />
+                        <input type="hidden" class="tSub" id="input-value-total" value="0" />
                         <div class="col"><span id="value-total">R$ 0,00</span></div>
                     </div>
                     <div class="col">
                         <div class="col"><span>Despesas</span></div>
-                        <input type="hidden" value="0" class="despSub" id="input-value-desp" value="0"  />
+                        <input type="hidden" class="despSub" id="input-value-desp" value="0"  />
                         <div class="col"><span id="value-desp">R$ 0,00</span></div>
                     </div>
                     <div class="col">

@@ -158,28 +158,6 @@ final class FormController extends AbstractController
     }
 
     /**
-     * @Route("/forms/{formName}", methods={"POST"})
-     * @throws CustomException
-     */
-    public function saveFormOnDb(
-        Request $request,
-        string $formName,
-        FormModel $model
-    ): Response {
-        if (! $this->isCsrfTokenValid(
-            'saveOnDb',
-            $request->request->get('_csrf_token')
-        )) {
-            throw new CustomException('Token invalido');
-        }
-        $data = $request->request->all();
-        $result = $model->reportResolver($formName, $data);
-        $this->addFlash($result->getType(), $result->getMessage());
-
-        return $this->redirectToRoute('form');
-    }
-
-    /**
      * @Route("/forms/{formName}/print", methods={"GET", "POST"}, name="overlord")
      * @throws \Exception
      */
@@ -199,6 +177,28 @@ final class FormController extends AbstractController
         $result = $form->returnSelectedFromType('show', $formName, $data);
 
         return new Response($result['template']);
+    }
+
+    /**
+     * @Route("/forms/{formName}", methods={"POST"})
+     * @throws CustomException
+     */
+    public function saveFormOnDb(
+        Request $request,
+        string $formName,
+        FormModel $model
+    ): Response {
+        if (! $this->isCsrfTokenValid(
+            'saveOnDb',
+            $request->request->get('_csrf_token')
+        )) {
+            throw new CustomException('Token invalido');
+        }
+        $data = $request->request->all();
+        $result = $model->reportResolver($formName, $data);
+        $this->addFlash($result->getType(), $result->getMessage());
+
+        return $this->redirectToRoute('form');
     }
 
     /**

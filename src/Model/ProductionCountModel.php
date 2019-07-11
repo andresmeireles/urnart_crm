@@ -163,10 +163,10 @@ final class ProductionCountModel extends Model
             $beginDate,
             $lastDate
         );
-        $height = $this->dqlConsult(
+        $height = $this->dqlQuery(
             "SELECT DISTINCT u.height, u.obs FROM App\Entity\ProductionCount u ORDER BY u.obs ASC"
         );
-        $model = $this->dqlConsult(
+        $model = $this->dqlQuery(
             "SELECT DISTINCT u.model FROM App\Entity\ProductionCount u ORDER BY u.model ASC"
         );
         $response = new StdResponse();

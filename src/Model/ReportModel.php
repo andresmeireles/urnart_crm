@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Entity\BaseEntity;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\StdResponse;
@@ -39,6 +40,66 @@ final class ReportModel extends Model
     }
 
     /**
+     * @param object $entity
+     * @param array $data
+     * @throws \ReflectionException
+     */
+    public function executeActionOnGenericEntityWithData(object $entity, array $data): void
+    {
+        try {
+            $this->entityAndDataAction($entity, $data);
+        } catch (\RuntimeException $err) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Erro: %s. Arquivo: %s. Linha: %s',
+                    $err->getMessage(),
+                    $err->getFile(),
+                    $err->getLine()
+                )
+            );
+        }
+    }
+
+    /**
+     * @param object $entity
+     * @param array $entityInformation
+     * @throws \ReflectionException
+     */
+    public function entityAndDataAction(object $entity, array $entityInformation): void
+    {
+        $objectManager = $this->entityManager;
+        foreach ($entityInformation as $key => $value) {
+            $methodName = sprintf('set%s', ucfirst($key));
+            if (!method_exists($entity, $methodName)) {
+                continue;
+            }
+            $reflectFunc = new \ReflectionClass($entity);
+            $functionParameter = $reflectFunc->getMethod($methodName)->getParameters()[0]->getType();
+            $typeForConversion = $functionParameter === null ?
+                'none' :
+                $functionParameter->getName();
+            $rightTypeValue = (new StringConvertions())->convertValue($typeForConversion, $value);
+            $entity->{$methodName}($rightTypeValue);
+        }
+        $objectManager->persist($entity);
+        $objectManager->flush();
+    }
+
+    /**
+     * @param BaseEntity $entityToDeactive
+     */
+    public function deactiveGenericEntity(BaseEntity $entityToDeactive): void
+    {
+        $entityToDeactive->setActive(false);
+        try {
+            $this->entityManager->persist($entityToDeactive);
+            $this->entityManager->flush();
+        } catch (\PDOException $err) {
+            throw new \PDOException($err->getMessage());
+        }
+    }
+
+    /**
      * @param string $entityName
      * @param array $data
      * @return FlashResponse
@@ -51,18 +112,23 @@ final class ReportModel extends Model
         $info = new NestedArraySeparator($data);
         $entityData = $info->getArrayInArray();
         try {
-            foreach (array_values($entityData) as $key => $value) {
+            array_walk($entityData, static function ($entityInformation) use (
+                &$entity,
+                &$objectManager
+            ) {
                 $class = new $entity();
-                $methodName = sprintf('set%s', ucfirst($key));
-                $reflectFunc = new \ReflectionClass($class);
-                $functionParameter = $reflectFunc->getMethod($methodName)->getParameters()[0]->getType();
-                $typeForConversion = $functionParameter === null ?
-                    'none' :
-                    $functionParameter->getName();
-                $rightTypeValue = (new StringConvertions())->convertValue($typeForConversion, $value);
-                $class->{$methodName}($rightTypeValue);
+                foreach ($entityInformation as $key => $value) {
+                    $methodName = sprintf('set%s', ucfirst($key));
+                    $reflectFunc = new \ReflectionClass($class);
+                    $functionParameter = $reflectFunc->getMethod($methodName)->getParameters()[0]->getType();
+                    $typeForConversion = $functionParameter === null ?
+                        'none' :
+                        $functionParameter->getName();
+                    $rightTypeValue = (new StringConvertions())->convertValue($typeForConversion, $value);
+                    $class->{$methodName}($rightTypeValue);
+                }
                 $objectManager->persist($class);
-            }
+            });
             $objectManager->flush();
         } catch (\Exception $e) {
             throw new CustomException(

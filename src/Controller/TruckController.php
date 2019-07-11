@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\ManualOrderReport;
+use App\Entity\TravelAccountability;
 use App\Entity\TravelTruckOrders;
 use App\Model\DepartureModel;
 use App\Model\TravelTruckOrderModel;
+use App\Repository\ManualOrderReportRepository;
 use App\Utils\Andresmei\Form;
 use App\Utils\Andresmei\NestedArraySeparator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,12 +30,27 @@ final class TruckController extends AbstractController
     }
 
     /**
-     * @Route("/truck/create", methods="GET", name="create.truck.report")
-     * @method \App\Repository\ManualOrderReportRepository getRepository()
+     * @Route("/truck/create", methods={"GET", "POST"}, name="create.truck.report")
      */
-    public function viewCreateForm(): Response
+    public function createTruckOrderForm(Request $request, TravelTruckOrderModel $model): Response
     {
-        /** @var \App\Repository\ManualOrderReportRepository $manualRepository */
+        if ($request->isMethod('POST')) {
+            $alldata = $request->request->all();
+            $nestedArray = new NestedArraySeparator($alldata);
+            $reportInformation = $nestedArray->getSimpleArray();
+            $reportOrderInformation = $nestedArray->getArrayInArray();
+            $result = $model->createTruckDepartureReport(
+                $reportInformation,
+                $reportOrderInformation
+            );
+            $this->addFlash(
+                $result->getType(),
+                $result->getMessage()
+            );
+
+            return $this->redirectToRoute('truck.index');
+        }
+        /** @var ManualOrderReportRepository $manualRepository */
         $manualRepository = $this->getDoctrine()->getRepository(ManualOrderReport::class);
 
         return $this->render('truck/pages/createTruckRepo.html.twig', [
@@ -42,59 +59,43 @@ final class TruckController extends AbstractController
     }
 
     /**
-     * @Route("/truck/create", methods="POST")
+     * @Route("/truck/edit/{id<\d+>}", methods={"GET", "POST"})
      */
-    public function createTruckForm(Request $request, TravelTruckOrderModel $reportModel): Response
-    {
-        $alldata = $request->request->all();
-        $nestedArray = new NestedArraySeparator($alldata);
-        $reportInformation = $nestedArray->getSimpleArray();
-        $reportOrderInformation = $nestedArray->getArrayInArray();
-        $result = $reportModel->createTruckDepartureReport($reportInformation, $reportOrderInformation);
-        $this->addFlash(
-            $result->getType(),
-            $result->getMessage()
-        );
+    public function editTruckOrderReport(
+        Request $request,
+        TravelTruckOrderModel $model,
+        int $truckOrderId
+    ): Response {
+        if ($request->isMethod('POST')) {
+            $allData = $request->request->all();
+            $nestedArray = new NestedArraySeparator($allData);
+            $reportInformation = $nestedArray->getSimpleArray();
+            $reportOrderInformation = $nestedArray->getArrayInArray();
+            /** @var TravelTruckOrders $truckOrderEntity */
+            $truckOrderEntity = $this->getDoctrine()
+                ->getRepository(TravelTruckOrders::class)
+                ->find($truckOrderId);
+            $result = $model->editTruckDepartureReport(
+                $truckOrderEntity,
+                $reportInformation,
+                $reportOrderInformation
+            );
+            $this->addFlash(
+                $result->getType(),
+                $result->getMessage()
+            );
 
-        return $this->redirectToRoute('truck.index');
-    }
-
-    /**
-     * @Route("/truck/edit/{id<\d+>}", methods="GET")
-     */
-    public function viewEditForm(int $id): Response
-    {
+            return $this->redirectToRoute('truck.index');
+        }
         /** @var ManualOrderReportRepository $manualRepository */
         $manualRepository = $this->getDoctrine()->getRepository(ManualOrderReport::class);
 
         return $this->render('truck/pages/editTruckRepo.html.twig', [
             'orders' => $manualRepository->someFieldsConsult('id', 'customerName'),
-            'data' => $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find($id),
+            'data' => $this->getDoctrine()
+                ->getRepository(TravelTruckOrders::class)
+                ->find($truckOrderId)
         ]);
-    }
-
-    /**
-     * @Route("/truck/edit/{id<\d+>}", methods="POST")
-     */
-    public function editTruckForm(Request $request, TravelTruckOrderModel $model, int $id): Response
-    {
-        $alldata = $request->request->all();
-        $nestedArray = new NestedArraySeparator($alldata);
-        $reportInformation = $nestedArray->getSimpleArray();
-        $reportOrderInformation = $nestedArray->getArrayInArray();
-        /** @var TravelTruckOrders $truckOrderEntity */
-        $truckOrderEntity = $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find($id);
-        $result = $model->editTruckDepartureReport(
-            $truckOrderEntity,
-            $reportInformation,
-            $reportOrderInformation
-        );
-        $this->addFlash(
-            $result->getType(),
-            $result->getMessage()
-        );
-
-        return $this->redirectToRoute('truck.index');
     }
 
     /**
@@ -102,7 +103,12 @@ final class TruckController extends AbstractController
      */
     public function createModelsNamesReport(int $truckReportId): Response
     {
-        return new Response(sprintf('Trablho em andamento. calma que ja vai chegar. Id é %s', $truckReportId));
+        return new Response(
+            sprintf(
+                'Trablho em andamento. calma que ja vai chegar. Id é %s',
+                $truckReportId
+            )
+        );
     }
 
     /**

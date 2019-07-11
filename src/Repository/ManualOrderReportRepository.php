@@ -20,8 +20,6 @@ final class ManualOrderReportRepository extends ServiceEntityRepository
     }
 
     /**
-     * Undocumented function
-     *
      * @param string ...$fields
      * @return array|ManualOrderReport
      */

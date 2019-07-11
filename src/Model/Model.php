@@ -101,10 +101,10 @@ abstract class Model
     }
 
     /**
-     * @param   string  $dqlStringConsult
-     * @return  array
+     * @param string $dqlStringConsult
+     * @return mixed
      */
-    public function dqlConsult(string $dqlStringConsult): array
+    public function dqlQuery(string $dqlStringConsult)
     {
         $query = $this->entityManager->createQuery($dqlStringConsult);
         return $query->execute();

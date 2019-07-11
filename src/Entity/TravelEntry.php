@@ -43,7 +43,7 @@ final class TravelEntry
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TravelAccountability", inversedBy="travelEntries")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idTravelAccountability;
 

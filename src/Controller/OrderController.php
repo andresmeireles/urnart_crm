@@ -58,7 +58,7 @@ final class OrderController extends AbstractController
                 $field,
                 $queryMessage
             );
-            $result = $orderModel->dqlConsult($formatQuery);
+            $result = $orderModel->dqlQuery($formatQuery);
             $manualOrderSearchResult = $paginator->paginate(
                 $result,
                 $request->query->getInt('page', 1)
@@ -97,7 +97,7 @@ final class OrderController extends AbstractController
         $field = $query->get('field');
         $queryMessage = $query->get('query');
         $fomartQuery = sprintf("SELECT u FROM %s u WHERE u.%s = '%s'", $entity, $field, $queryMessage);
-        $result = $orderModel->dqlConsult($fomartQuery);
+        $result = $orderModel->dqlQuery($fomartQuery);
         $manualOrderResult = $paginator->paginate(
             $result,
             $request->query->getInt('page', 1)

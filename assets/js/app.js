@@ -143,6 +143,7 @@ import "./src/register/loadAjax";
 import "./src/truck/truckAction";
 import "./src/truck/truckIndex";
 import "./src/truck/closeTruckOrder";
+import "./src/truck/truckArrivalCreation"
 
 // reports
 import "./src/reports/survey";

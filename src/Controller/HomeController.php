@@ -7,7 +7,6 @@
  * @license  MIT <https://mit-license.org>
  * @link     https://bitbucket.org/andresmeireles/sysadmin
  */
-
 namespace App\Controller;
 
 use App\Entity\ManualOrderReport;
@@ -36,7 +35,7 @@ final class HomeController extends AbstractController
         $closeOrder = $openOrder;
         //chart
         $boletoValue = 0.0;
-        $boletoData = $model->dqlConsult(
+        $boletoData = $model->dqlQuery(
             'SELECT u.boletoValue FROM App\Entity\Boleto u'
         );
         $boletoAmount = count($boletoData);

@@ -28,7 +28,7 @@ final class Expenses
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TravelAccountability", inversedBy="expenses")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $idAccountability;
 

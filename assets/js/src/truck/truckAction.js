@@ -6,8 +6,8 @@ if (document.querySelector('#truckOrder')) {
             if (element.target.hasAttribute('add-btn')) {
                 setTimeout(() => {
                     autocompleteFunction();
-                    var visiableTextInputFields = document.querySelectorAll('.insertOrder');
-                    for (let inputField of visiableTextInputFields) {
+                    var visibleTextInputs = document.querySelectorAll('.insertOrder');
+                    for (let inputField of visibleTextInputs) {
                         inputField.removeAttribute('name');
                     }
                 }, 1000);
