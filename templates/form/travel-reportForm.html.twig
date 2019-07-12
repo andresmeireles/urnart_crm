@@ -17,13 +17,17 @@
                 <div class="form-row">
                     <div class="form-group col">
                         <input type="submit" class="btn btn-primary btn-lg btn-block disable-on-submit" value="fechar prestação de contas" confirm="Após salvo esse relatório não pode ser mais alterado."
-                        {% if customId is defined %}
-                            closeTruck="{{customId}}"
+                        {% if dataFill.id is defined %}
+                            closeTruck="{{dataFill.id}}"
                         {% endif %}
                         />
                     </div>
                     <div class="form-group col">
-                        <input type="submit" class="btn btn-secondary btn-lg btn-block disable-on-submit saveforedit" value="salvar prestação de contas" />
+                        {% if dataFill.id is defined %}
+                            <btn class="btn btn-secondary btn-lg btn-block disable-on-submit saveforedit">salvar prestação de contas</btn>
+                        {% else %}
+                            <btn class="btn btn-secondary btn-lg btn-block disable-on-submit accountability-button cursor-decoration" confirm="Deseja salvar informação para alteração futura?">salvar prestação de contas</btn>
+                        {% endif %}
                     </div>
                 </div>
                 <hr>
@@ -211,12 +215,12 @@
                                 <input type="hidden" input-number input-name="despesas" value="0" />
                                 <div class="col">
                                     <label for="customer" no-clone>Nome da despesa</label>
-                                    <input type="text" name="despesas0[name]" id="name" class="form-control active-disabled" placeholder="nome da despesa" />
+                                    <input type="text" name="despesas0[name]" id="name" class="form-control active-disabled " placeholder="nome da despesa" />
                                 </div>
                                 <div class="col">
                                     <label for="customer" no-clone>Valor da despesa</label>
                                     <input type="hidden" name="despesas0[value]" id="value" converted-value sum-target="#d-value" />
-                                    <input type="text" class="form-control auto-float-convert-blur numbers-float-only disabled sum despesas" placeholder="valor da despesa" disabled />
+                                    <input type="text" class="form-control auto-float-convert-blur numbers-float-only disabled auto-clear sum despesas" placeholder="valor da despesa" disabled />
                                 </div>
                                 <div class="col">
                                     <label for="btn">&nbsp;</label><br>

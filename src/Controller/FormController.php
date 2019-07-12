@@ -22,7 +22,6 @@ use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\CustomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -237,39 +236,39 @@ final class FormController extends AbstractController
     }
 
     /**
-     * @Route("/forms/{formName}/{idOrder<\d+>}")
-     * @throws CustomException
-     */
-    public function findFormFillWithId(string $formName, int $idOrder): Response
-    {
-        /** @var TravelAccountability $regitry */
-        $regitry = $this->getDoctrine()
-            ->getRepository(TravelAccountability::class)
-            ->find($idOrder);
-        if (! $regitry->getActive()) {
-            throw new CustomException('Não se pode alterar item fechado.');
-        }
-        $pageName = sprintf('/form/%sForm.html.twig', $formName);
-        $formFullName = sprintf(
-            '%s/templates%s',
-            $this->getParameter('kernel.project_dir'),
-            $pageName
-        );
-
-        if (! file_exists($formFullName)) {
-            throw new FileNotFoundException('Pagina não existe');
-        }
-
-        if ($formName === 'travel-report') {
-            $responseData = [
-                'dataFill' => $this->getDoctrine()
-                    ->getRepository(TravelAccountability::class)
-                    ->find($idOrder),
-            ];
-        }
-
-        return $this->render($pageName, $responseData ?? []);
-    }
+//     * @Route("/forms/{formName}/{idOrder<\d+>}")
+//     * @throws CustomException
+//     */
+//    public function findFormFillWithId(string $formName, int $idOrder): Response
+//    {
+//        /** @var TravelAccountability $regitry */
+//        $regitry = $this->getDoctrine()
+//            ->getRepository(TravelAccountability::class)
+//            ->find($idOrder);
+//        if (! $regitry->getActive()) {
+//            throw new CustomException('Não se pode alterar item fechado.');
+//        }
+//        $pageName = sprintf('/form/%sForm.html.twig', $formName);
+//        $formFullName = sprintf(
+//            '%s/templates%s',
+//            $this->getParameter('kernel.project_dir'),
+//            $pageName
+//        );
+//
+//        if (! file_exists($formFullName)) {
+//            throw new FileNotFoundException('Pagina não existe');
+//        }
+//
+//        if ($formName === 'travel-report') {
+//            $responseData = [
+//                'dataFill' => $this->getDoctrine()
+//                    ->getRepository(TravelAccountability::class)
+//                    ->find($idOrder),
+//            ];
+//        }
+//
+//        return $this->render($pageName, $responseData ?? []);
+//    }
 
     /**
      * @Route("/forms/{formName}/{idReport<\d+>}/edit", methods={"POST"})

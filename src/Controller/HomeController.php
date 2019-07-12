@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @package  App\Controller\HomeController
  * @author   André Meireles <andre2meireles@gmail.com>
  * @license  MIT <https://mit-license.org>
- * @link     https://bitbucket.org/andresmeireles/sysadmin
+ * @link     https://bitbucket.org/andresmeirel es/sysadmin
  */
 final class HomeController extends AbstractController
 {
@@ -29,7 +29,7 @@ final class HomeController extends AbstractController
      * @Route("/",     name="index")
      * @return Response
      */
-    public function index(ListModel $model)
+    public function index(ListModel $model): Response
     {
         $openOrder = ['value' => 0, 'amount' => 0];
         $closeOrder = $openOrder;

@@ -40,7 +40,7 @@ const vexjs = require("vex-js");
 vexjs.registerPlugin(require("vex-dialog"));
 vexjs.defaultOptions.className = "vex-theme-default";
 vexjs.dialog.buttons.YES.text = "Sim";
-vexjs.dialog.buttons.NO.text = "Cancelar";
+vexjs.dialog.buttons.NO.text = "Não";
 
 const pond = require("filepond");
 
@@ -98,6 +98,7 @@ global.money = require("./src/helpers/functions/money");
 
 // validations
 global.checkRequired = require("./src/helpers/functions/checkRequired");
+global.crf = require("./src/helpers/functions/checkRequiredFields");
 
 /***********************
  ******* IMPORTS *******

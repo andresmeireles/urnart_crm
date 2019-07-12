@@ -19,17 +19,27 @@ final class TravelAccountabilityController extends AbstractController
     use CSRFTokenCheck;
 
     /**
-     * @Route("/truck/accoutability/{accountabilityReportId<\d+>}", defaults={"accountabilityReportId"=null})
+     * @Route("/truck/accoutability/{accountabilityReportId<\d+>}", defaults={"accountabilityReportId"=0},
+     *     methods={"POST", "GET"}, name="truck_accountability_index")
      */
-    public function createtruckArrivalAccountabilityReport(?int $accountabilityReportId): Response
-    {
-        $accountabilityReport = $accountabilityReportId !== null ?
-            $this->getDoctrine()->getRepository(TravelAccountability::class)->find($accountabilityReportId) :
-            null;
+    public function createtruckArrivalAccountabilityReport(
+        Request $request,
+        TravelAccountabilityModel $model,
+        ?int $accountabilityReportId
+    ): Response {
+        if ($accountabilityReportId !== 0) {
+            return $this->redirectToRoute('truck_edit', ['accountabilityReportId' => $accountabilityReportId]);
+        }
+        if ($request->isMethod('POST')) {
+            $this->isEncodedCSRFTokenValidPhrase($request->request->get('_csrf_token'), 'accountabilityReport');
+            $accountabilityInfo = $request->request->all();
+            $model->createTravelAccountability($accountabilityInfo);
+            $this->addFlash('success', 'Relatório criado com sucesso.');
 
-        return $this->render('form/travel-reportForm.html.twig', [
-            'dataFill' => $accountabilityReport ?? []
-        ]);
+            return $this->redirectToRoute('truck_accountability_index');
+        }
+
+        return $this->render('form/travel-reportForm.html.twig');
     }
 
     /**
@@ -45,7 +55,7 @@ final class TravelAccountabilityController extends AbstractController
     }
 
     /**
-     * @Route("/travel/accountability/edit/{accountabilityReportId<\d+>}", methods={"POST","GET"})
+     * @Route("/travel/accountability/edit/{accountabilityReportId<\d+>}", methods={"POST","GET"}, name="truck_edit")
      */
     public function editAccountabilityReport(
         Request $request,

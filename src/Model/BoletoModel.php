@@ -4,6 +4,8 @@ namespace App\Model;
 
 use App\Entity\Boleto;
 use App\Utils\Andresmei\FlashResponse;
+use App\Utils\Andresmei\StdResponse;
+use App\Utils\Andresmei\WriteBoletoReport;
 use App\Utils\Exceptions\CustomException;
 
 /**
@@ -105,7 +107,6 @@ final class BoletoModel extends Model
         );
     }
 
-
     /**
      * @param string $date
      * @return array
@@ -118,5 +119,36 @@ final class BoletoModel extends Model
         );
 
         return $this->dqlQuery($consultString);
+    }
+
+    /**
+     * @param \DateTimeInterface $date
+     */
+    public function writeDaylyBoletoRegister(
+        \DateTimeInterface $date
+    ): void {
+        $titulos = $this->getNonPayedBoletosByDate($date->format('Y-m-d'));
+
+        $response = new StdResponse();
+
+        foreach ($titulos as $titulo) {
+            /** @var Boleto $titulo */
+            switch ($titulo->getBoletoStatus()) {
+                case 2:
+                    $response->atrasado[] = $titulo;
+                    break;
+                case 3:
+                    $response->provisionado[] = $titulo;
+                    break;
+                case 4:
+                    $response->conta[] = $titulo;
+                    break;
+                default:
+                    $response->naoPago[] = $titulo;
+                    break;
+            }
+        }
+        $report = new WriteBoletoReport();
+        $report->write($date, $response);
     }
 }

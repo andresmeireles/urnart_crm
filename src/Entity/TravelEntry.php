@@ -43,9 +43,8 @@ final class TravelEntry
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TravelAccountability", inversedBy="travelEntries")
-     * @ORM\JoinColumn(nullable=true)
      */
-    private $idTravelAccountability;
+    private $orderReference;
 
     public function getId(): ?int
     {
@@ -112,14 +111,14 @@ final class TravelEntry
         return $this;
     }
 
-    public function getIdTravelAccountability(): ?TravelAccountability
+    public function getOrderReference(): ?TravelAccountability
     {
-        return $this->idTravelAccountability;
+        return $this->orderReference;
     }
 
-    public function setIdTravelAccountability(?TravelAccountability $idTravelAccountability): self
+    public function setOrderReference(?TravelAccountability $orderReference): self
     {
-        $this->idTravelAccountability = $idTravelAccountability;
+        $this->orderReference = $orderReference;
 
         return $this;
     }

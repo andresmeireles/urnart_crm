@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Config\NonStaticConfig;
+use App\Utils\Andresmei\RespectValidationAnnotation;
 use App\Utils\Andresmei\StringConvertions;
 use Doctrine\Common\Persistence\ObjectManager;
 use JMS\Serializer\SerializerBuilder;
@@ -33,12 +34,26 @@ abstract class Model
      */
     protected $serializer;
 
+    /**
+     * @var RespectValidationAnnotation
+     */
+    private $validator;
+
     public function __construct(ObjectManager $entityManager)
     {
         $this->entityManager = $entityManager;
         $this->config = Yaml::parse(__DIR__ . '/../Config/system-config.yaml');
         $this->settings = new NonStaticConfig();
         $this->serializer = SerializerBuilder::create()->build();
+        $this->validator = new RespectValidationAnnotation();
+    }
+
+    /**
+     * @return RespectValidationAnnotation
+     */
+    public function getValidator(): RespectValidationAnnotation
+    {
+        return $this->validator;
     }
 
     /**

@@ -27,10 +27,9 @@ final class Expenses
     private $valor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TravelAccountability", inversedBy="expenses")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\TravelAccountability", inversedBy="expenses", cascade={"persist"})
      */
-    private $idAccountability;
+    private $orderReference;
 
     public function getId(): ?int
     {
@@ -61,14 +60,14 @@ final class Expenses
         return $this;
     }
 
-    public function getIdAccountability(): ?TravelAccountability
+    public function getOrderReference(): ?TravelAccountability
     {
-        return $this->idAccountability;
+        return $this->orderReference;
     }
 
-    public function setIdAccountability(?TravelAccountability $idAccountability): self
+    public function setOrderReference(?TravelAccountability $orderReference): self
     {
-        $this->idAccountability = $idAccountability;
+        $this->orderReference = $orderReference;
 
         return $this;
     }

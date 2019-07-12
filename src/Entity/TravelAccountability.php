@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Utils\Andresmei\ValidationAnnotation as Respect;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TravelAccountabilityRepository")
@@ -19,11 +20,13 @@ final class TravelAccountability extends BaseEntity
     private $id;
 
     /**
+     * @Respect({"notBlank", "notEmpty"})
      * @ORM\Column(type="string", length=255)
      */
     private $driverName;
 
     /**
+     * @Respect({"notBlank", "date"})
      * @ORM\Column(type="datetime")
      */
     private $departureDate;
@@ -34,16 +37,19 @@ final class TravelAccountability extends BaseEntity
     private $arrivalDate;
 
     /**
+     * @Respect("min(0)")
      * @ORM\Column(type="float")
      */
     private $departureKm;
 
     /**
+     * @Respect({"min(0)"})
      * @ORM\Column(type="float")
      */
     private $arrivalKm;
 
     /**
+     * @Respect("min(0)")
      * @ORM\Column(type="float")
      */
     private $cash;
@@ -54,12 +60,12 @@ final class TravelAccountability extends BaseEntity
     private $comment;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Expenses", mappedBy="idAccountability")
+     * @ORM\OneToMany(targetEntity="App\Entity\Expenses", mappedBy="orderReference")
      */
     private $expenses;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\TravelEntry", mappedBy="idTravelAccountability")
+     * @ORM\OneToMany(targetEntity="App\Entity\TravelEntry", mappedBy="orderReference")
      */
     private $travelEntries;
 
@@ -171,7 +177,7 @@ final class TravelAccountability extends BaseEntity
     {
         if (!$this->expenses->contains($expense)) {
             $this->expenses[] = $expense;
-            $expense->setIdAccountability($this);
+            $expense->setOrderReference($this);
         }
 
         return $this;
@@ -182,8 +188,8 @@ final class TravelAccountability extends BaseEntity
         if ($this->expenses->contains($expense)) {
             $this->expenses->removeElement($expense);
             // set the owning side to null (unless already changed)
-            if ($expense->getIdAccountability() === $this) {
-                $expense->setIdAccountability(null);
+            if ($expense->getOrderReference() === $this) {
+                $expense->setOrderReference(null);
             }
         }
 
@@ -202,7 +208,7 @@ final class TravelAccountability extends BaseEntity
     {
         if (!$this->travelEntries->contains($travelEntry)) {
             $this->travelEntries[] = $travelEntry;
-            $travelEntry->setIdTravelAccountability($this);
+            $travelEntry->setOrderReference($this);
         }
 
         return $this;
@@ -213,8 +219,8 @@ final class TravelAccountability extends BaseEntity
         if ($this->travelEntries->contains($travelEntry)) {
             $this->travelEntries->removeElement($travelEntry);
             // set the owning side to null (unless already changed)
-            if ($travelEntry->getIdTravelAccountability() === $this) {
-                $travelEntry->setIdTravelAccountability(null);
+            if ($travelEntry->getOrderReference() === $this) {
+                $travelEntry->setOrderReference(null);
             }
         }
 

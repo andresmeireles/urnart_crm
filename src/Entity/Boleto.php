@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
@@ -68,6 +70,12 @@ class Boleto extends BaseEntity
      * @ORM\Column(type="array", nullable=true)
      */
     private $boletoPorContaStatus = [];
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->expenses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

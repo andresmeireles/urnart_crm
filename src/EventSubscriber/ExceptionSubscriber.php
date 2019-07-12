@@ -17,9 +17,9 @@ final class ExceptionSubscriber implements EventSubscriberInterface
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        if (getEnv('APP_ENV') === 'dev') {
-            return $this;
-        }
+//        if (getEnv('APP_ENV') === 'dev') {
+//            return $this;
+//        }
         $exceptionClass = get_class($event->getException());
         $exception = $exceptionClass === 'Exception' ?
                         $exceptionClass :
@@ -30,7 +30,9 @@ final class ExceptionSubscriber implements EventSubscriberInterface
                             strrpos($exceptionClass, '\\') + 1
                         );
         if ($event->getRequest()->server->get('APP_ENV') === 'dev') {
-            $exception = $exceptionClass === 'Exception' || $exceptionClass === 'Twig_Error_Loader' ?
+            $exception = $exceptionClass === 'Exception' ||
+            $exceptionClass === 'Twig_Error_Loader' ||
+            $exceptionClass === 'JsonException' ?
             $exceptionClass :
             substr_replace(
                 $exceptionClass,
@@ -56,7 +58,7 @@ final class ExceptionSubscriber implements EventSubscriberInterface
                     $event->getException()->getMessage(),
                     'error'
                 );
-                return $event->setResponse(new RedirectResponse($refererLink));
+                return $event->setResponse(new RedirectResponse($refererLink, 200, []));
                 break;
             case 'UniqueConstraintViolationException':
             case 'ForeignKeyConstraintViolationException':
@@ -67,20 +69,18 @@ final class ExceptionSubscriber implements EventSubscriberInterface
                 );
                 return $event->setResponse(new RedirectResponse($refererLink));
                 break;
-            case 'Exception':
+            case 'JsonException':
+                exit($event->getException()->getMessage());
+                break;
             case 'AuthenticationException':
                 return $event->setResponse(new Response(
                     $event->getException()->getMessage(),
-                    301,
-                    ['type' => 'ninja']
+                    Response::HTTP_EXPECTATION_FAILED,
+                    ['ninja']
                 ));
                 break;
             case 'Twig_Error_Loader':
-                //return new Response('Página não existe. Caminho incorreto.');
                 return new Response('Deu ruim meu amigo.');
-                break;
-            case 'InvalidCsrfTokenException':
-                return new Response('Deu ruim em algum login ai');
                 break;
             case 'BadRefererLinkException':
             default:

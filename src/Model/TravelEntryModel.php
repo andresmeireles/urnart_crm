@@ -34,7 +34,7 @@ final class TravelEntryModel extends Model
         $travelEntryEntity->setFreight((float) $travelEntryInformation['freight']);
         $travelEntryEntity->setOrderValue((float) $travelEntryInformation['order-value']);
         $entityManager->persist($travelEntryEntity);
-        $entityManager->flush();
+//        $entityManager->flush();
 
         return $travelEntryEntity;
     }

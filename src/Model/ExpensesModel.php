@@ -34,7 +34,7 @@ final class ExpensesModel extends Model
         $expense->setNome($expenseInformation['name']);
         $expense->setValor((float) $expenseInformation['value']);
         $entityManager->persist($expense);
-        $entityManager->flush();
+//        $entityManager->flush();
 
         return $expense;
     }

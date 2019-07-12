@@ -2,7 +2,6 @@
 
 namespace App\Model;
 
-use App\Entity\Expenses;
 use App\Entity\TravelAccountability;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Andresmei\NestedArraySeparator;
@@ -15,6 +14,9 @@ final class TravelAccountabilityModel extends Model
 {
     /**
      * @param array $accountabilityInfo
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \JsonException
+     * @throws \ReflectionException
      */
     public function createTravelAccountability(array $accountabilityInfo): void
     {
@@ -24,13 +26,16 @@ final class TravelAccountabilityModel extends Model
     /**
      * @param int $travelAccountabilityId
      * @param array $accountabilityInfo
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \JsonException
+     * @throws \ReflectionException
      */
     public function editTravelAccountability(int $travelAccountabilityId, array $accountabilityInfo): void
     {
         $entityManager = $this->entityManager;
-        $expenseModel = new ExpensesModel($entityManager);
+        $expenseModel = new ExpensesModel($entityManager, $this->getValidator());
         $expenseModel->removeAllExpensesByAccountabilityId($travelAccountabilityId);
-        $travelEntryModel = new TravelEntryModel($entityManager);
+        $travelEntryModel = new TravelEntryModel($entityManager, $this->getValidator());
         $travelEntryModel->removeAllOccurencesByAccountabilityId($travelAccountabilityId);
         $travelAccountabilityObj = $entityManager->getRepository(TravelAccountability::class)
             ->find($travelAccountabilityId);
@@ -38,8 +43,12 @@ final class TravelAccountabilityModel extends Model
     }
 
     /**
-     * @param array $accountabilityInfo
+     * @param TravelAccountability $travelAccountability
+     * @param array $accountabilityInfor
      * @return FlashResponse
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \JsonException
+     * @throws \ReflectionException
      */
     private function travelAccountabilityAction(
         TravelAccountability $travelAccountability,
@@ -54,20 +63,36 @@ final class TravelAccountabilityModel extends Model
         return new FlashResponse(200, 'success', 'relatorio salvo com sucesso.');
     }
 
-    private function createAccountabilityReportWithData(TravelAccountability $travelAccountability, array $data): void
-    {
+    /**
+     * @param TravelAccountability $travelAccountability
+     * @param array $data
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \JsonException
+     * @throws \ReflectionException
+     */
+    private function createAccountabilityReportWithData(
+        TravelAccountability $travelAccountability,
+        array $data
+    ): void {
         $entityManager = $this->entityManager;
+        $error = [];
+        $validator = $this->getValidator();
         $nestedArray = new NestedArraySeparator($data);
-        array_map(function ($expense) use (&$entityManager, &$travelAccountability) {
-            $expenseModel = new ExpensesModel($entityManager);
-            $expense['insertId'] = $travelAccountability;
-            $insertedExpense = $expenseModel->create($expense);
-            $travelAccountability->addExpense($insertedExpense);
+        array_map(function ($expense) use (&$entityManager, &$travelAccountability, &$validator, &$error) {
+            if ($expense['name'] !== '') {
+                $expenseModel = new ExpensesModel($entityManager, $validator);
+                $insertedExpense = $expenseModel->create($expense);
+                $travelAccountability->addExpense($insertedExpense);
+                $error[] = $validator->executeClassValidation($insertedExpense);
+            }
         }, $nestedArray->getAssoativeArrayGroup('despesas'));
-        array_map(function ($entry) use (&$entityManager, &$travelAccountability) {
-            $travelEntryModel = new TravelEntryModel($entityManager);
-            $insertedTravelEntry = $travelEntryModel->create($entry);
-            $travelAccountability->addTravelEntry($insertedTravelEntry);
+        array_map(function ($entry) use (&$entityManager, &$travelAccountability, &$validator, &$error) {
+            if ($entry['customer'] !== '') {
+                $travelEntryModel = new TravelEntryModel($entityManager, $validator);
+                $insertedTravelEntry = $travelEntryModel->create($entry);
+                $travelAccountability->addTravelEntry($insertedTravelEntry);
+                $error[] = $validator->executeClassValidation($insertedTravelEntry);
+            }
         }, $nestedArray->getAssoativeArrayGroup('customerArr'));
         $travelAccountability->setDriverName($data['driverName']);
         $travelAccountability->setArrivalDate(new \DateTime($data['arrivalDate']));
@@ -77,6 +102,24 @@ final class TravelAccountabilityModel extends Model
         $travelAccountability->setCash((float) $data['cash']);
         $travelAccountability->setComment($data['comment']);
         $entityManager->persist($travelAccountability);
+        $error = $validator->executeClassValidation($travelAccountability);
+        $this->sendErrorsIfExists($error);
         $entityManager->flush();
+    }
+
+    /**
+     * @param array|null $error
+     * @throws \JsonException
+     */
+    public function sendErrorsIfExists(?array $error): void
+    {
+        if ($error !== null) {
+            $messages = '';
+            foreach (array_values($error) as $value) {
+                $messages .= $value[0] . ' ';
+            }
+
+            throw new \JsonException($messages);
+        }
     }
 }

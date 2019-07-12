@@ -1,4 +1,5 @@
-if (document.querySelector('#travel-report')) {
+if (document.querySelector('#travel-report') ||
+    document.querySelector('.truckArrivalAction')) {
 
     if (document.querySelector('#fill')) {
         document.addEventListener('DOMContentLoaded', () => {
@@ -166,7 +167,7 @@ if (document.querySelector('#travel-report')) {
 
         let message = document.querySelector('#prest-msg');
         message.setAttribute('class', '');
-        let driverName = document.querySelector('#driver-name').value;
+        let driverName = document.querySelector('#driverName').value;
 
         if (result === 0) {
             message.classList.add('alert', 'alert-success');
