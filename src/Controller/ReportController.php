@@ -240,9 +240,7 @@ final class ReportController extends AbstractController
      */
     public function createByCatchModel(Request $request, ProductionCountModel $productionCountModel): Response
     {
-        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
-            throw new CustomException('Token incorreto.');
-        }
+        $this->isEncodedCSRFTokenValidPhrase($request->request->get('_csrf_token'), 'autenticateBoleto');
         $request->request->remove('_csrf_token');
         $result = array_map(static function ($value) {
             return $value;

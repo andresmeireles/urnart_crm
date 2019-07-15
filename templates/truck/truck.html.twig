@@ -52,7 +52,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
                         <div class="dropdown-item">Imprimir relátorios</div>
-                        <div class="dropdown-divider"></div>   
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item generatePrintReport" href="/truck/create/report/tag/show/{{report.id}}" target="_blank">Etiquetas</a>
                         <a class="dropdown-item generatePrintReport" href="/truck/create/report/fl/show/{{report.id}}" target="_blank">carta frete</a>
                         {# <a class="dropdown-item" href="/truck/create/report/remand/show/{{report.id}}">devolução</a> #}
@@ -73,13 +73,13 @@
                         <a class="dropdown-item" href="#">Visualizar</a>
                         <div class="dropdown-divider"></div>
                         {% if report.active %}
-                        <a class="dropdown-item" href="/truck/accoutability/{{report.id}}">Relátorios de chegada</a>
+                        <a class="dropdown-item" href="/truck/accoutability/{{report.id}}">Relátorio de chegada</a>
                         {% endif %}
                     </div>
                     </li>
                 </ul>
-            </nav>     
-            {% endfor %}       
+            </nav>
+            {% endfor %}
         {% endif %}
         </div>
     </div>

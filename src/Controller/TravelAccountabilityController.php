@@ -65,6 +65,12 @@ final class TravelAccountabilityController extends AbstractController
     ): Response {
         $accountabilityEntity = $this->getDoctrine()->getRepository(TravelAccountability::class)
             ->find($accountabilityReportId);
+        if ($accountabilityEntity === null) {
+            $refererPage = $request->headers->get('referer');
+            $this->addFlash('warning', 'Relátorio foi criado antes da função de relatório automatico ser criado :(, sentimos muito por isso');
+
+            return $this->redirect($refererPage);
+        }
         if (!$accountabilityEntity->getActive()) {
             $this->addFlash('error', 'Pedido fechado não pode ser alterado.');
 
