@@ -12,7 +12,7 @@
             <hr>
         </div>
         <div class="col">
-            <form method="POST" class="truckArrivalAction">
+            <form method="POST" class="truckArrivalAction" action="/travel/accountability/finish{{ dataFill.id is defined ? '/' ~ dataFill.id : '' }}">
                 {% include "components/csrfToken.html.twig" with {'tokenText': 'accountabilityReport'} %}
                 <div class="form-row">
                     <div class="form-group col">
@@ -33,22 +33,22 @@
                 <hr>
                 <div class="form-row">
                     <div class="form-group col">
-                        <label for="driver-name">Nome do motorista</label>
-                        <input type="text" id="driverName" name="driverName" class="form-control" placeholder="Nome" value="{{ dataFill.driverName ?? '' }}"  required>
+                        <label for="driver-name" class="required">Nome do motorista</label>
+                        <input type="text" id="driverName" name="driverName" class="form-control close-require" placeholder="Nome" value="{{ dataFill.driverName ?? '' }}"  required>
                     </div>
                 </div>
                 <fieldset>
                     <legend class="font-weight-bold">Datas</legend>
                     <div class="form-row col">
                         <div class="form-group col">
-                            <label for="dt-out">Saida</label>
-                            <input type="hidden" id="dt-out" name="departureDate" value="{{ dataFill.departureDate is not defined or dataFill.departureDate is same as(null) ? '' : dataFill.departureDate | date('d-m-Y') }}">
+                            <label for="dt-out" class="required">Saida</label>
+                            <input type="hidden" class="close-required" id="dt-out" name="departureDate" value="{{ dataFill.departureDate is not defined or dataFill.departureDate is same as(null) ? '' : dataFill.departureDate | date('d-m-Y') }}">
                             <input type="text" class="form-control no-keypress calendar-selector" date-target="#dt-out" placeholder="Data de saída" value="{{ dataFill.departureDate is not defined or dataFill.departureDate is same as(null) ? '' : dataFill.departureDate | date('d/m/Y') }}" required>
                         </div>
                         <div class="form-group col">
                             <label for="dt-in">Chegada</label>
-                            <input type="hidden" id="dt-in" name="arrivalDate" value="{{ dataFill.arrivalDate is not defined or dataFill.arrivalDate is same as(null) ? '' : dataFill.arrivalDate | date('d-m-Y') }}">
-                            <input type="text" class="form-control no-keypress calendar-selector" date-target="#dt-in" placeholder="Data de chegada" value="{{ dataFill.arrivalDate is not defined or dataFill.arrivalDate is same as(null) ? '' : dataFill.arrivalDate | date('d/m/Y') }}" requried>
+                            <input type="hidden" id="dt-in" class="close-required" name="arrivalDate" value="{{ dataFill.arrivalDate is not defined or dataFill.arrivalDate is same as(null) ? '' : dataFill.arrivalDate | date('d-m-Y') }}">
+                            <input type="text" class="form-control no-keypress calendar-selector" date-target="#dt-in" placeholder="Data de chegada" value="{{ dataFill.arrivalDate is not defined or dataFill.arrivalDate is same as(null) ? '' : dataFill.arrivalDate | date('d/m/Y') }}">
                         </div>
                     </div>
                 </fieldset>
@@ -56,17 +56,17 @@
                     <legend class="font-weight-bold">Quilometragem</legend>
                     <div class="form-row col">
                         <div class="form-group col">
-                            <label for="km-out">KM Saida</label>
-                            <input type="text" class="form-control numbers-only" name="departureKm" data-target="#km-out" placeholder="KM de saída" value="{{ dataFill.departureKm ?? '' }}{{ dataFill.kmout ?? ''}}" requried>
+                            <label for="km-out" class="required">KM Saida</label>
+                            <input type="text" class="form-control numbers-only close-required" name="departureKm" data-target="#km-out" placeholder="KM de saída" value="{{ dataFill.departureKm ?? '' }}{{ dataFill.kmout ?? ''}}" requried>
                         </div>
                         <div class="form-group col">
                             <label for="km-in">KM Chegada</label>
-                            <input type="text" class="form-control numbers-only" name="arrivalKm" data-target="#km-in" placeholder="KM de chegada" value="{{ dataFill.arrivalKm ?? '' }}" required>
+                            <input type="text" class="form-control numbers-only close-required" name="arrivalKm" data-target="#km-in" placeholder="KM de chegada" value="{{ dataFill.arrivalKm ?? '' }}">
                         </div>
                     </div>
                 </fieldset>
                 <fieldset>
-                    <legend class="font-weight-bold">Clientes</legend>
+                    <legend class="font-weight-bold required">Clientes</legend>
                     <div class="form-row col">
                         <div class="form-group col">
                         {% if dataFill.travelEntries is defined %}
@@ -81,26 +81,26 @@
                                 <input type="hidden" input-number input-name="customerArr" value="{{ loop.index - 1}}" />
                                 <div class="col">
                                     <label for="customer" no-clone>Cliente</label>
-                                    <input type="text" name="customerArr{{ loop.index - 1}}[customer]" id="customer" class="form-control" placeholder="Nome do cliente" value="{{ entry.nome ?? '' }}{{ entry.customerName ?? '' }}" required />
+                                    <input type="text" name="customerArr{{ loop.index - 1}}[customer]" id="customer" class="form-control close-required" placeholder="Nome do cliente" value="{{ entry.nome ?? '' }}{{ entry.customerName ?? '' }}" required />
                                 </div>
                                 <div class="col">
                                     <label for="freight" no-clone>Frete</label>
-                                    <input type="hidden" class="entrada" converted-value name="customerArr{{ loop.index - 1}}[freight]" id="freight" sum-target="#f-freight">
+                                    <input type="hidden" class="entrada close-required" converted-value name="customerArr{{ loop.index - 1}}[freight]" id="freight" sum-target="#f-freight">
                                     <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do frete" value="R$ {{ entry.freight is defined ? entry.freight | number_format(2, ',', '.') : '' }}" required />
                                 </div>
                                 <div class="col">
                                     <label for="order" no-clone>Pedido</label>
-                                    <input type="hidden" class="entrada" converted-value name="customerArr{{ loop.index - 1}}[order-value]" id="order-value" sum-target="#f-order">
+                                    <input type="hidden" class="entrada close-required" converted-value name="customerArr{{ loop.index - 1}}[order-value]" id="order-value" sum-target="#f-order">
                                     <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="R$ {{ entry.orderValue is defined ? entry.orderValue  | number_format(2, ',', '.') : '' }}" required />
                                 </div>
                                 <div class="col">
                                     <label for="check" no-clone>Cheque</label>
-                                    <input type="hidden" converted-value name="customerArr{{ loop.index - 1}}[check]" id="check" sum-target="#f-check">
+                                    <input type="hidden" converted-value class="close-required" name="customerArr{{ loop.index - 1}}[check]" id="check" sum-target="#f-check">
                                     <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="R$ {{ entry.checkValue is defined ? entry.checkValue | number_format(2, ',', '.') : '' }}" required />
                                 </div>
                                 <div class="col">
                                     <label for="other" no-clone>Por Conta</label>
-                                    <input type="hidden" class="entrada" converted-value name="customerArr{{ loop.index - 1}}[other]" id="other" sum-target="#f-other">
+                                    <input type="hidden" class="entrada close-required" converted-value name="customerArr{{ loop.index - 1}}[other]" id="other" sum-target="#f-other">
                                     <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="R$ {{ entry.byCountValue is defined ? entry.byCountValue | number_format(2, ',', '.') : '' }}" required />
                                 </div>
                                 <div class="col">
@@ -115,42 +115,44 @@
                             </div>
                             {% endfor %}
                         {% else %}
-                            <div class="row my-2" id="cloneableField">
+                        <div class="copyMachine">
+                            <div class="row my-2 cloneElement">
                                 <input type="hidden" input-number input-name="customerArr" value="0" />
                                 <div class="col">
                                     <label for="customer" no-clone>Cliente</label>
-                                    <input type="text" name="customerArr0[customer]" id="customer" class="form-control" placeholder="Nome do cliente" required />
+                                    <input type="text" name="customerArr0[customer]" id="customer" class="form-control close-required" placeholder="Nome do cliente" required />
                                 </div>
                                 <div class="col">
                                     <label for="freight" no-clone>Frete</label>
-                                    <input type="hidden" class="entrada" converted-value name="customerArr0[freight]" id="freight" sum-target="#f-freight">
+                                    <input type="hidden" class="entrada close-required" converted-value name="customerArr0[freight]" id="freight" sum-target="#f-freight">
                                     <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do frete" value="0" required />
                                 </div>
                                 <div class="col">
                                     <label for="order" no-clone>Pedido</label>
-                                    <input type="hidden" class="entrada" converted-value name="customerArr0[order-value]" id="order-value" sum-target="#f-order">
+                                    <input type="hidden" class="entrada close-required" converted-value name="customerArr0[order-value]" id="order-value" sum-target="#f-order">
                                     <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="0" required />
                                 </div>
                                 <div class="col">
                                     <label for="check" no-clone>Cheque</label>
-                                    <input type="hidden" {# class="entrada" #} converted-value name="customerArr0[check]" id="check" sum-target="#f-check">
+                                    <input type="hidden" class="close-required" converted-value name="customerArr0[check]" id="check" sum-target="#f-check">
                                     <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="0" required />
                                 </div>
                                 <div class="col">
                                     <label for="other" no-clone>Por Conta</label>
-                                    <input type="hidden" class="entrada" converted-value name="customerArr0[other]" id="other" sum-target="#f-other">
+                                    <input type="hidden" class="entrada close-required" converted-value name="customerArr0[other]" id="other" sum-target="#f-other">
                                     <input type="text" class="ent form-control auto-float-convert-blur numbers-float-only auto-clear sum" placeholder="Valor do pedido" value="0" required />
                                 </div>
                                 <div class="col">
-                                    <label for="btn">&nbsp;</label><br>
-                                    <button type="submit" class="btn btn-success" add-btn="true">
+                                    <label for="btn" no-clone>&nbsp;</label><br no-clone>
+                                    <button type="submit" class="btn btn-success makeClone">
                                         <span class="fas fa-fw fa-plus" add-btn="true"></span>
                                     </button>
-                                    <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
+                                    <button type="submit" class="btn mx-1 btn-danger removeElement">
                                         <i class="fas fa-fw fa-times" remove-btn="true"></i>
                                     </button>
                                 </div>
                             </div>
+                        </div>
                         {% endif %}
                         </div>
                     </div>

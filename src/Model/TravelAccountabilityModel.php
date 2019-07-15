@@ -36,10 +36,17 @@ final class TravelAccountabilityModel extends Model
         $expenseModel = new ExpensesModel($entityManager, $this->getValidator());
         $expenseModel->removeAllExpensesByAccountabilityId($travelAccountabilityId);
         $travelEntryModel = new TravelEntryModel($entityManager, $this->getValidator());
-        $travelEntryModel->removeAllOccurencesByAccountabilityId($travelAccountabilityId);
+        $travelEntryModel->removeAllOccurrencesByAccountabilityId($travelAccountabilityId);
         $travelAccountabilityObj = $entityManager->getRepository(TravelAccountability::class)
             ->find($travelAccountabilityId);
         $this->travelAccountabilityAction($travelAccountabilityObj, $accountabilityInfo);
+    }
+
+    public function deActiveAccountabilityReport(
+        TravelAccountability $travelAccountability,
+        array $accountabilityInfor
+    ): void {
+        $this->travelAccountabilityAction($travelAccountability->setActive(false), $accountabilityInfor);
     }
 
     /**
@@ -78,17 +85,17 @@ final class TravelAccountabilityModel extends Model
         $error = [];
         $validator = $this->getValidator();
         $nestedArray = new NestedArraySeparator($data);
-        array_map(function ($expense) use (&$entityManager, &$travelAccountability, &$validator, &$error) {
+        array_map(static function ($expense) use (&$entityManager, &$travelAccountability, &$validator, &$error) {
             if ($expense['name'] !== '') {
-                $expenseModel = new ExpensesModel($entityManager, $validator);
+                $expenseModel = new ExpensesModel($entityManager);
                 $insertedExpense = $expenseModel->create($expense);
                 $travelAccountability->addExpense($insertedExpense);
                 $error[] = $validator->executeClassValidation($insertedExpense);
             }
         }, $nestedArray->getAssoativeArrayGroup('despesas'));
-        array_map(function ($entry) use (&$entityManager, &$travelAccountability, &$validator, &$error) {
+        array_map(static function ($entry) use (&$entityManager, &$travelAccountability, &$validator, &$error) {
             if ($entry['customer'] !== '') {
-                $travelEntryModel = new TravelEntryModel($entityManager, $validator);
+                $travelEntryModel = new TravelEntryModel($entityManager);
                 $insertedTravelEntry = $travelEntryModel->create($entry);
                 $travelAccountability->addTravelEntry($insertedTravelEntry);
                 $error[] = $validator->executeClassValidation($insertedTravelEntry);

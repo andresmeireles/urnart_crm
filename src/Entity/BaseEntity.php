@@ -34,7 +34,10 @@ abstract class BaseEntity
         $this->lastUpdate = new \DateTime('now', new \DateTimeZone('America/Sao_Paulo'));
     }
 
-    public function __toArray()
+    /**
+     * @return array|null
+     */
+    public function __toArray(): ?array
     {
         return get_object_vars($this);
     }

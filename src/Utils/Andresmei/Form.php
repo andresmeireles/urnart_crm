@@ -81,9 +81,13 @@ final class Form extends GenericContainer
     }
 
     /**
-     * @param string $formName nome do formulário
-     * @param array $data Informações do formulário
+     * @param string $formName
+     * @param array $data
      * @return array
+     * @throws \App\Config\NotFoundParameterException
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function show(string $formName, array $data): array
     {
@@ -95,9 +99,13 @@ final class Form extends GenericContainer
     }
 
     /**
-     * @param string $formName Nome do formulario
-     * @param array  $data informações do formulário
-     * @return array array associativo com parametros [pdf_path] com caminho do pdf gerado e [type] com tipo de mensagem
+     * @param string $formName
+     * @param array $data
+     * @return array
+     * @throws \App\Config\NotFoundParameterException
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function pdf(string $formName, array $data)
     {

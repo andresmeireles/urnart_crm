@@ -58,7 +58,7 @@ final class ExceptionSubscriber implements EventSubscriberInterface
                     $event->getException()->getMessage(),
                     'error'
                 );
-                return $event->setResponse(new RedirectResponse($refererLink, 200, []));
+                return $event->setResponse(new RedirectResponse($refererLink, 301, []));
                 break;
             case 'UniqueConstraintViolationException':
             case 'ForeignKeyConstraintViolationException':

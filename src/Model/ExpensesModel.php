@@ -34,7 +34,6 @@ final class ExpensesModel extends Model
         $expense->setNome($expenseInformation['name']);
         $expense->setValor((float) $expenseInformation['value']);
         $entityManager->persist($expense);
-//        $entityManager->flush();
 
         return $expense;
     }
@@ -45,7 +44,7 @@ final class ExpensesModel extends Model
     public function removeAllExpensesByAccountabilityId(int $travelAccountabilityId): void
     {
         $dqlStringConsult = sprintf(
-            'DELETE FROM %s e WHERE e.idAccountability = %s',
+            'DELETE FROM %s e WHERE e.orderReference = %s',
             Expenses::class,
             $travelAccountabilityId
         );

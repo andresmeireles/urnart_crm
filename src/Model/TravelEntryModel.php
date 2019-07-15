@@ -39,11 +39,11 @@ final class TravelEntryModel extends Model
         return $travelEntryEntity;
     }
 
-    public function removeAllOccurencesByAccountabilityId(int $accountabilityId): void
+    public function removeAllOccurrencesByAccountabilityId(int $accountabilityId): void
     {
         try {
             $queryConsultString = sprintf(
-                'DELETE FROM %s t WHERE  t.idTravelAccountability = %s',
+                'DELETE FROM %s t WHERE  t.orderReference = %s',
                 TravelEntry::class,
                 $accountabilityId
             );

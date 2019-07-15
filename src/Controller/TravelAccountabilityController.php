@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\TravelAccountability;
 use App\Model\ReportModel;
 use App\Model\TravelAccountabilityModel;
+use App\Utils\Andresmei\Form;
+use App\Utils\Andresmei\Serializator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +50,6 @@ final class TravelAccountabilityController extends AbstractController
     public function showAccoutabilityReports(): Response
     {
         $accountabilityReports = $this->getDoctrine()->getRepository(TravelAccountability::class)->findAll();
-
         return $this->render('report/pages/travel-accountability.html.twig', [
             'simpleView' => $accountabilityReports
         ]);
@@ -62,8 +63,14 @@ final class TravelAccountabilityController extends AbstractController
         TravelAccountabilityModel $model,
         int $accountabilityReportId
     ): Response {
+        $accountabilityEntity = $this->getDoctrine()->getRepository(TravelAccountability::class)
+            ->find($accountabilityReportId);
+        if (!$accountabilityEntity->getActive()) {
+            $this->addFlash('error', 'Pedido fechado não pode ser alterado.');
+
+            return $this->redirectToRoute('accountability_show');
+        }
         if ($request->isMethod("POST")) {
-//            $refererLink = $request->headers->get('referer');
             $this->isEncodedCSRFTokenValidPhrase($request->request->get('_csrf_token'), 'accountabilityReport');
             $accountabilityInformation = $request->request->all();
             $model->editTravelAccountability($accountabilityReportId, $accountabilityInformation);
@@ -71,12 +78,28 @@ final class TravelAccountabilityController extends AbstractController
 
             return new Response('ok');
         }
-        $accountabilityEntity = $this->getDoctrine()->getRepository(TravelAccountability::class)
-            ->find($accountabilityReportId);
 
         return $this->render('form/travel-reportForm.html.twig', [
             'dataFill' => $accountabilityEntity
         ]);
+    }
+
+    /**
+     * @Route("/travel/accountability/finish/{accountabilityRepoId<\d+>}", methods={"POST"},
+     *     defaults={"accountabilityRepoId"=0} , name="finish_accountability_report")
+     */
+    public function finishAccountabilityReport(
+        Request $request,
+        TravelAccountabilityModel $model,
+        int $accountabilityRepoId
+    ): Response {
+        $this->isEncodedCSRFTokenValidPhrase($request->request->get('_csrf_token'), 'accountabilityReport');
+        $entity = $this->getDoctrine()->getRepository(TravelAccountability::class)->find($accountabilityRepoId);
+        $targetFinishEntity = $entity ?? new TravelAccountability();
+        $model->deActiveAccountabilityReport($targetFinishEntity, $request->request->all());
+        $this->addFlash('success', 'Relatorio finalizado com sucesso.');
+
+        return $this->redirectToRoute('accountability_show');
     }
 
     /**
@@ -99,5 +122,27 @@ final class TravelAccountabilityController extends AbstractController
         );
 
         return $this->redirectToRoute('accountability_show');
+    }
+
+    /**
+     * @Route("/travel/accountability/print/{accountabilityRepoId<\d+>}", methods={"GET", "POST"},
+     *     name="print_accountability_report")
+     */
+    public function printTravelAccountabilityReport(Request $request, Form $form, int $accountabilityRepoId): Response
+    {
+        $CSRFEncodedPhrase = $request->query->get('pass');
+        $dateToken = (new \DateTime('now'))->format('d-m-Y');
+        $this->isEncodedCSRFTokenValidPhrase($CSRFEncodedPhrase, $dateToken);
+        $dataToBuildReport = $this->getDoctrine()
+            ->getRepository(TravelAccountability::class)
+            ->find($accountabilityRepoId);
+//        dump(Serializator::serializeToArray($dataToBuildReport));
+//        die;
+        $responseToPrint = $form->show(
+            'travel-accountability',
+            ['prod' => Serializator::serializeToArray($dataToBuildReport)]
+        );
+
+        return new Response($responseToPrint['template'], 200);
     }
 }

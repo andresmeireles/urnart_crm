@@ -13,8 +13,10 @@
                         <a href="{{ repo.active ? '/forms/travel-report/' ~ repo.id : 'javascript:;' }}" class="text-primary h4">{{ repo.driverName }} - {{ repo.departureDate | date("d/m/Y") }} - {{ repo.arrivalDate | date("d/m/Y") }}</a>
                     </div>
                     <div class="col">
-                        <a {# href="/forms/travel-report/print" #} href="/travel/accountability/{{ repo.id }}" class="btn btn-outline-success text-dark mx-2">Imprimir</a>
-                        {% if repo.active %}
+                        <a {# href="/forms/travel-report/print" #}href="/travel/accountability/print/{{repo.id}}?pass={{csrf_token('now' | date('d-m-Y')) }}" class="btn btn-outline-success text-dark mx-2">Imprimir</a>
+                        {% if repo.travelEntries.getValues == [] %}
+                            <btn class="btn btn-warning text-dark">Edição não aplicavél</btn>
+                        {% elseif repo.active %}
                             <a href="/travel/accountability/edit/{{repo.id}}" class="btn btn-warning text-dark">Editar</a>
                         {% else %}
                             <btn class="btn btn-danger text-light">Pedido fechado.</btn>

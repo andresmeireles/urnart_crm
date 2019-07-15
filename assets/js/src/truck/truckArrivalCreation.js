@@ -53,10 +53,25 @@ if (document.querySelector(".truckArrivalAction")) {
         element.preventDefault();
         let form = element.target.closest('form');
         if (form.classList.contains('truckArrivalAction')) {
+            if (!requiredToClose(element.target)) {
+                notification('Todos os elementos nescessários precisam ser preenchidos para este envio.');
+                return false;
+            } 
             let confirmMessage = element.target.querySelector('[confirm]').getAttribute('confirm');
             simpleDialog(confirmMessage , () => {
                 element.target.submit();
             });
         }
     });
+
+    const requiredToClose = (element) => {
+        let requiredElements = element.querySelectorAll('.close-required');
+        for (let reqEl of requiredElements) {
+            if (reqEl.value === '') {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

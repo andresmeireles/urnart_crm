@@ -83,11 +83,13 @@ if (document.querySelector('#travel-report') ||
             setTimeout(() => {
                 let totalDesp = document.querySelector('.despesas-value').innerHTML;
                 document.querySelector('#value-desp').innerHTML = totalDesp;
-                let x = totalDesp.replace('R$', '');
-                x = x.replace(' ', '');
-                x = x.replace('&nbsp;', '');
-                x = strToMoney(x);
-                document.querySelector('#input-value-desp').value = x;
+                let stringFloatFormated = totalDesp.replace('R$', '');
+                noSpaceString = stringFloatFormated.replace(' ', '');
+                noSpaceString = noSpaceString.replace('&nbsp;', '');
+                noDotString = noSpaceString.replace('.', '');
+                commaAsDotString = noDotString.replace(',', '.');
+                finalString = strToMoney(commaAsDotString);
+                document.querySelector('#input-value-desp').value = finalString;
                 runCalc();
             }, 1000);
         }
@@ -153,7 +155,10 @@ if (document.querySelector('#travel-report') ||
         document.querySelectorAll('.tSub').value = total;
         let result = 0;
 
-        result = (parseFloat(entrada) - parseFloat(cx)) - parseFloat(desp);
+//        result = (parseFloat(entrada) - parseFloat(cx)) - parseFloat(desp);
+        let floatEntrada = parseFloat(entrada);
+        let floatDesp = parseFloat(desp)
+        result = (floatEntrada - floatDesp) - parseFloat(cx);
 
         document.querySelector('#input-value-final').value = result;
         document.querySelector("#value-total").innerHTML = Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(total)

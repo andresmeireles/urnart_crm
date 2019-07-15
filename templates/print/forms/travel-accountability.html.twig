@@ -379,12 +379,12 @@ html, body {
         <div class="h3">{{data.driver_name}}</div>
     </div>
     <div class="col text-center row my-2">
-        <div class="col-6 h5">Data de saida:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ data.departure_date | date('d/m/Y') }}</div>
-        <div class="col-6 h5">KM de saida:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ data.departure_km }}</div>
+        <div class="col-6 h5">Data de saída:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ data.departure_date | date('d/m/Y') }}</div>
+        <div class="col-6 h5">KM de saída:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ data.departure_km }}</div>
         <div class="col-6 h5">Data de chegada:&nbsp;&nbsp;{{ data.arrival_date | date('d/m/Y') }}</div>
-        <div class="col-6 h5">Km de chegda:&nbsp;&nbsp;&nbsp;{{ data.arrival_km }}</div>
+        <div class="col-6 h5">Km de chegada:&nbsp;&nbsp;&nbsp;{{ data.arrival_km }}</div>
         <div class="col-6 h5">&nbsp;</div>
-        <div class="col-6 h5">Km de chegda:&nbsp;&nbsp;&nbsp;{{ data.arrival_km - data.departure_km }}</div>
+        <div class="col-6 h5">Km rodado:&nbsp;&nbsp;&nbsp;{{ data.arrival_km - data.departure_km }}</div>
     </div>
     <div class="col text-center my-4">
         <table class="table table-bordered table-sm">
@@ -421,14 +421,14 @@ html, body {
                 <th>R$ {{ order_value | number_format(2, ',', '.') }} </th>
                 <th>R$ {{ check_value | number_format(2, ',', '.') }} </th>
                 <th>R$ {{ by_count_value | number_format(2, ',', '.') }} </th>
-                {% set balance = by_count_value + check_value + order_value + freight %}
+                {% set balance = by_count_value + order_value + freight %}
             </tfoot>
         </table>
     </div>
+    {% set allExpenses = 0 %}
     {% if data.expenses is defined %}
     <div class="col">
         <div class="h4 font-weight-bold">Despesas</div>
-    {% set allExpenses = 0 %}
     {% for expense in data.expenses %}
         <div class="col row">
             <div class="col-3 h5">{{ expense.nome }}</div><div class="col h5">R$ {{ expense.valor | number_format(2, ',', '.') }}</div>
@@ -456,7 +456,7 @@ html, body {
                 <div class="col-3 h5">Total</div><div class="col h5">R$ {{ (balance - data.cash) | number_format(2, ',', '.') }}</div>
             </div>
             <div class="col row">
-                {% set finalExpense =  (data.expenses is not defined ? 0 : allExpenses) %}
+                {% set finalExpense =  allExpenses %}
                 <div class="col-3 h5">Despesas</div><div class="col h5">R$ {{ finalExpense | number_format(2, ',', '.') }}</div>
             </div>
             <div class="col row my-3">
