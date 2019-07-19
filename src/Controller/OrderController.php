@@ -1,13 +1,4 @@
-<?php
-/**
- * OrderController
- *
- * @category Controller
- * @package  App\Controller
- * @author   André Meireles <andre2meireles@gmail.com>
- * @license  MIT <https://mit-license.org>
- * @link     https://bitbucket.org/andresmeireles/sysadmin
- */
+<?php declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -120,15 +111,12 @@ final class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/order/create", name="createOrder", methods="GET")
+     * @Route("/order/create", name="createOrder", methods={"GET", "POST"})
      */
-    public function viewCreateOrder(Request $request, OrderModel $model): Response
+    public function createOrder(Request $request, OrderModel $model): Response
     {
         if ($request->getMethod() === 'POST' &&
-            $this->isEncodedCSRFTokenValidPhrase(
-                $request->request->get('_csrf_token'),
-                'autenticateBoleto'
-            )
+            $this->isEncodedCSRFTokenValidPhrase($request->request->get('_csrf_token'), 'autenticateBoleto')
         ) {
             $data = $request->request->all();
             $arrData = [];

@@ -88,13 +88,17 @@ final class RegisterController extends AbstractController
     }
 
     /**
-     * @Route("/register/get", methods="GET")
+     * @Route("/register/get", methods={"GET", "POST"}, name="get_registry")
      */
     public function getSingleRegiterById(Request $request, Crud $getter)
     {
-        $entity = $request->query->get('entity') ?? $request->request->get('entity');
-        $id = $request->query->get('id') ?? $request->request->get('id');
-        $result = $getter->getRegisterById($entity, $id);
+        $entity = $request->query->get('entity') ??
+            $request->request->get('entity') ??
+            json_decode($request->getContent())->entity;
+        $registryId = $request->query->get('id') ??
+            $request->request->get('id') ??
+            json_decode($request->getContent())->id;
+        $result = $getter->getRegisterById($entity, (int) $registryId);
         return new Response($result);
     }
 

@@ -10,5 +10,7 @@
  * @returns {String}
  */
 module.exports = (floatInput, type = 'pt-BR', currency = 'BRL') => {
-    return new Intl.NumberFormat(type, {style: 'currency', currency: currency}).format(floatInput);
+    numberToFormat = isNaN(floatInput) ? 0 : floatInput;
+    return new Intl.NumberFormat(type, {style: 'currency', currency: currency})
+    .format(numberToFormat);
 }

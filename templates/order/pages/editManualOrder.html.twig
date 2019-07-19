@@ -8,15 +8,13 @@
     var payment = [{% for payment in payments %}{ value: '{{ payment.name }}', cod: '{{ payment.getId }}', plot: '{{ payment.isPlot }}' },{% endfor %}]
 </script>
 
-  <div class="p-3 manual-editing" id="form-order">
+  <div class="px-1 py-3 manual-editing" id="form-order">
         <div class="col-12">
           <div class="clearfix">
-            <h1 class="float-left">Editar Pedido {{ order.getId }}</h1>{#<a href="/order/create" class="btn btn-white btn-lg float-left text-dark"><i       class="fas fa-arrow-right"></i> Ir para pedido automatico</a></h1>
-          </div>
-	    <small class="text-danger"><b>Esses pedidos não serão registrados no banco de dados nem contarão em relátorios</b></small>#}
+            <h1 class="float-left">Editar Pedido {{ order.getId }}</h1>
         </div>
         <hr>
-          <form method="POST">
+          <form class="edit-order" method="POST" id="{{ order.getId }}">
             <div class="row">
                 {% include 'components/csrfToken.html.twig' with {'tokenText': 'formOrder'} %}
                 <div class="col-md-12 my-1">
@@ -39,38 +37,41 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-8" id="manualOrder">
+              <div class="col-9" id="manualOrder">
                 <fieldset class="border border-light">
                   <legend class="px-1 bg-light">Produtos</legend>
-                  <div class="row m-1">
+                  <div class="row">
                     <div class="col-md-12" id="tag">
-                      
                         {% set totalProductsPrice = 0 %}
                         {% set totalAmount = 0 %}
                         {% for product in order.getManualProductCarts %}
                           <div class="input-group my-1 w-100" id="cloneableField">
-                            <div class="col-3">
-                              <input type="hidden" input-number='true' input-name="cloneableField" value="{{ loop.index - 1 }}">
-                              <input type="text" class="form-control" name="cloneableField{{ loop.index - 1 }}[model]" id="model" placeholder="Urna" value="{{ product.getProductName }}" required="required"></div>
-                            <div class="col">
-                              <input type="hidden" name="cloneableField{{ loop.index - 1 }}[money]" id="money" converted-value="{{ product.getProductPrice }}" value="{{ product.getProductPrice }}">
-                              <input type="text" class="form-control numbers-only auto-float-convert-blur ignore-clone" id="price" placeholder="Preço" required="required" value="R$ {{ product.getProductPrice | number_format(2, ',', '.') }}">
+                            <div class="col-4">
+                              <input type="hidden" input-number='true' input-name="cloneableField" value="1">
+                              <select class="load-models form-control" name="cloneableField0[model]" id="model" defaultClass="load-models form-control" required>
+                                <option value="{{ product.getProductName }}">{{ product.getProductName }}</option>
+                              </select>
                             </div>
                             <div class="col">
-                              <input type="number" class="form-control col" name="cloneableField{{ loop.index - 1 }}[amount]" id="amount" placeholder="Qnt" required="required" value="{{ product.getProductAmount }}"></div>
-                            <div class="col-3">
-                              <input type='text' class="form-control money-mask ignore-clone" id="totalPrice" value="R$ {{ (product.getProductAmount * product.ProductPrice) | number_format(2, ',', '.') }}"></div>  
+                              <input type="hidden" name="cloneableField0[money]" id="money" converted-value="" value="{{ product.productPrice }}">
+                              <input type="text" class="form-control numbers-only auto-float-convert-blur" id="price" placeholder="Preço" required="required" value="R$ {{ product.productPrice | format(2, '.', ',') }}">
+                            </div>
+                            <div class="col">
+                              <input type="number" class="form-control col" name="cloneableField0[amount]" id="amount" placeholder="Qnt" required="required" value="{{ product.productAmount }}">
+                            </div>
+                            <div class="col-2">
+                              <input type='text' class="form-control money-mask not-disable" id="totalPrice" value="R$ {{ (product.productPrice*product.productAmount)*100 | format(2, ',', '.') }}" disabled></div>
+                            <div class="col">
                             <button type="submit" class="btn btn-success" add-btn="true">
                               <span class="fas fa-fw fa-plus" add-btn="true"></span>
                             </button>
                             <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
                               <i class="fas fa-fw fa-times" remove-btn="true"></i>
-                            </button>
+                            </button></div>
                           </div>
                           {% set totalAmount = totalAmount + product.getProductAmount %}
                           {% set totalProductsPrice = totalProductsPrice + (product.getProductAmount * product.ProductPrice) %}
                       {% endfor %}
-                      
                     </div>
                   </div>
                 </fieldset>
@@ -101,10 +102,10 @@
                   </div>
                 </fieldset>
               </div>
-              <div class="col-4">
+              <div class="col-3">
                 <fieldset class="border border-light">
-                  <legend class="px-1 bg-light">Forma de Pagamento e Frete</legend>
-                  <div class="row m-1">
+                  <legend class="bg-light">Outros</legend>
+                  <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Seleciona a forma de pagamento</label>
@@ -127,7 +128,7 @@
                             </div>
                           </div>
                           <input type="hidden" name="discount" id="hiddenDiscount" converted-value value="{{ order.getDiscount }}">
-                          <input type="text" class="form-control numbers-float-only auto-float-convert-blur" id="discount" value="R$ {{ order.getDiscount | number_format(2, ',', '.') }}">
+                          <input type="text" class="form-control numbers-float-only auto-float-convert-blur" id="discount" value="{{ order.getDiscount != 0 ? 'R$ ' ~ order.getDiscount | number_format(2, ',', '.') : '' }}" {{ order.getDiscount == 0 ? 'disabled' : '' }}>
                         </div>
                           <small class="form-text text-muted">Caso exista algum desconto marque a opção</small>
                       </div>

@@ -31,10 +31,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-8">
+                <div class="col-9">
                     <fieldset class="border border-light">
-                        <legend class="px-1 bg-light">Produtos</legend>
-                        <div class="row m-1">
+                        <legend class="bg-light">Produtos</legend>
+                        <div class="row">
                             <div class="col">
                                     <div class="input-group my-1">
                                         <div class="input-group col-md-3">
@@ -54,13 +54,13 @@
                                 {% set totalAmount = 0 %}
                                 {% for product in order.getManualProductCarts %}
                                     <div class="input-group my-1">
-                                        <div class="input-group col-md-3">
+                                        <div class="input-group col-md-5">
                                             <div class="form-control">{{ product.productName }}</div>
                                         </div>
                                         <div class="input-group col-md-3">
                                             <div class="form-control">R$ {{ product.productPrice | number_format(2, ',', '.') }}</div>
                                         </div>
-                                        <div class="input-group col-md-3">
+                                        <div class="input-group col-md-1">
                                             <div class="form-control">{{ product.productAmount }}</div>
                                         </div>
                                         <div class="input-group col-md-3">
@@ -100,10 +100,10 @@
                             </div>
                         </fieldset>
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <fieldset class="border border-light">
-                            <legend class="px-1 bg-light">Forma de Pagamento</legend>
-                            <div class="row m-1">
+                            <legend class="bg-light">Outros</legend>
+                            <div class="row mx-1">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Forma de Pagamento</label>

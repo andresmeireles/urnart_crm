@@ -6,7 +6,7 @@
     var payment = [{% for payment in payments %}{ value: '{{ payment.name }}', cod: '{{ payment.getId }}', plot: '{{ payment.isPlot }}' },{% endfor %}]
 </script>
 
-  <div class="py-5 px-3" id="form-order">
+  <div class="py-2 px-1" id="form-order">
         <div class="col-12">
           <div class="clearfix">
             <h1 class="float-left">Criar Pedido</h1>{#<a href="/order/create" class="btn btn-white btn-lg float-left text-dark"><i       class="fas fa-arrow-right"></i> Ir para pedido automatico</a></h1>
@@ -14,17 +14,17 @@
 	    <small class="text-danger"><b>Esses pedidos não serão registrados no banco de dados nem contarão em relátorios</b></small>#}
         </div>
         <hr>
-          <form method="POST" action="/order/createmanualorder">
+          <form method="POST" class="testPayload" {#action="/order/createmanualorder"#}>
            <div class="row">
           <div class="col-md-12 my-1">
             {% include "components/csrfToken.html.twig" with {'tokenText': 'formOrder'} %}
-            <input type="submit" class="disable-on-submit btn btn-primary active btn-block btn-lg" toggle-disabled="" id="send-form" value="Criar pedido manual">
+            <input type="submit" class="disable-on-submit btn btn-primary active btn-block btn-lg" {#toggle-disabled=""#} id="send-form" value="Criar pedido manual">
           </div>
         </div>
             <div class="row">
               <div class="col">
-                <fieldset class="border border-light my-1">
-                  <legend class="px-1 bg-light">Cadastro Básica</legend>
+                <fieldset class="border border-light my-3">
+                  <legend class="px-1 bg-light">Cadastro Básico</legend>
                   <div class="row m-1">
                     <div class="form-group col">
                       <label> Nome do cliente </label>
@@ -37,29 +37,32 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-8" id="manualOrder">
+              <div class="col-9" id="manualOrder">
                 <fieldset class="border border-light">
                   <legend class="px-1 bg-light">Produtos</legend>
-                  <div class="row m-1">
+                  <div class="row">
                     <div class="col-md-12" id="tag">
                       <div class="input-group my-1 w-100" id="cloneableField">
-                        <div class="col-3">
+                        <div class="col-4">
                           <input type="hidden" input-number='true' input-name="cloneableField" value="1">
-                          <input type="text" class="form-control" name="cloneableField0[model]" id="model" placeholder="Urna" required="required"></div>
+                           <select class="load-models form-control" name="cloneableField0[model]" id="model" defaultClass="load-models form-control" required></select>
+                          <input type="hidden" name="cloneableField0[color]" id="color" class="model-color" />
+                        </div>
                         <div class="col">
                           <input type="hidden" name="cloneableField0[money]" id="money" converted-value="">
                           <input type="text" class="form-control numbers-only auto-float-convert-blur" id="price" placeholder="Preço" required="required" disabled>
                         </div>
                         <div class="col">
                           <input type="number" class="form-control col" name="cloneableField0[amount]" id="amount" placeholder="Qnt" required="required" disabled></div>
-                        <div class="col-3">
-                          <input type='text' class="form-control money-mask" id="totalPrice" disabled></div>  
+                        <div class="col-2">
+                          <input type='text' class="form-control money-mask not-disable" id="totalPrice" disabled></div>
+                        <div class="col">
                         <button type="submit" class="btn btn-success" add-btn="true">
                           <span class="fas fa-fw fa-plus" add-btn="true"></span>
                         </button>
                         <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
                           <i class="fas fa-fw fa-times" remove-btn="true"></i>
-                        </button>
+                        </button></div>
                       </div>
                     </div>
                   </div>
@@ -91,10 +94,10 @@
                   </div>
                 </fieldset>
               </div>
-              <div class="col-4">
+              <div class="col-3">
                 <fieldset class="border border-light">
-                  <legend class="px-1 bg-light">Forma de Pagamento e Frete</legend>
-                  <div class="row m-1">
+                  <legend class="px-1 bg-light">Outros</legend>
+                  <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Seleciona a forma de pagamento</label>

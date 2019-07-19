@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Utils\Andresmei\ValidationAnnotation as Respect;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ManualOrderReportRepository")
@@ -19,20 +20,16 @@ final class ManualOrderReport extends BaseEntity
     private $id;
 
     /**
+     * @Respect({"notBlank", "notEmpty"})
      * @ORM\Column(type="string", length=255)
      */
     private $customerName;
 
     /**
+     * @Respect({"notBlank"})
      * @ORM\Column(type="string", length=255)
      */
     private $customerCity;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\PaymentType")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $paymentType;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -58,6 +55,12 @@ final class ManualOrderReport extends BaseEntity
      * @ORM\Column(type="text", nullable=true)
      */
     private $comments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\PaymentType")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $paymentType;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ManualProductCart", mappedBy="manualOrderReport")

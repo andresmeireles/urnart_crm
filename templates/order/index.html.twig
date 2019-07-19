@@ -140,7 +140,7 @@
                         <td class="">
                             <span href="javascript:;" data-fancybox data-src="#viewManualOrder{{ order.getId }}"
                                   class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
-                            <a print="h={{ 'valido' | makeHash }}&i={{ order.getId }}&r=ManualOrderReport" href="/order/action/print" class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
+                            <a print="h={{ 'valido' | makeHash }}&i={{ order.getId }}&r=ManualOrderReport" href="/order/action/print" class="badge badge-pill badge-success cursor-decoration">Imprimir</a>
                             {% if order.active == true %}
                                 <a class="badge badge-pill badge-warning order-edit" href="/order/manual/{{order.getId}}">
                                     Editar
@@ -149,7 +149,7 @@
                                     Fechar
                                 </a>
                             {% endif %}
-                            <a href="order/auth/manual/print/{{ order.id }}" class="badge badge-pill badge-secondary"><i class="fas fa-hand-point-right" title="Imprimir autorização"></i></a>
+                            <a href="order/auth/manual/print/{{ order.id }}" class="badge badge-pill badge-secondary" target="_blank"><i class="fas fa-hand-point-right" title="Imprimir autorização"></i></a>
                         </td>
                     </tr>
                 {% endfor %}

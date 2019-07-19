@@ -42,7 +42,7 @@ final class RespectValidationAnnotation
      * @param array $validationWithNullValues
      * @return array|null
      */
-    public function clearNullValues(array $validationValues): ?array
+    private function clearNullValues(array $validationValues): ?array
     {
         foreach ($validationValues as $key => $value) {
             if ($value === null) {

@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\ManualOrderReport;
-use App\Entity\TravelAccountability;
 use App\Entity\TravelTruckOrders;
 use App\Model\DepartureModel;
 use App\Model\TravelTruckOrderModel;
@@ -101,14 +100,18 @@ final class TruckController extends AbstractController
     /**
      * @Route("/truck/create/report/model/show/{truckReportId<\d+>}")
      */
-    public function createModelsNamesReport(int $truckReportId): Response
-    {
-        return new Response(
-            sprintf(
-                'Trablho em andamento. calma que ja vai chegar. Id é %s',
-                $truckReportId
-            )
-        );
+    public function createModelsNamesReport(
+        TravelTruckOrderModel $model,
+        Form $form,
+        int $truckReportId
+    ): Response {
+        $truckReportObjct = $this->getDoctrine()->getRepository(TravelTruckOrders::class)->find($truckReportId);
+        $modelNames = $model->listOfProducts($truckReportObjct->getOrderId());
+        $modelNames['driverName'] = $truckReportObjct->getDriverName();
+        $modelNames['departureDate'] = $truckReportObjct->getDepartureDate();
+        $buildedForm = $form->show('list-of-models', $modelNames);
+
+        return new Response($buildedForm['template']);
     }
 
     /**
@@ -176,7 +179,7 @@ final class TruckController extends AbstractController
     /**
      * @Route("/truck/removeEv")
      */
-    public function removeEverything()
+    public function removeEverything(): Response
     {
         $all = $this->getDoctrine()->getRepository(TravelTruckOrders::class)->findAll();
         $entityManager = $this->getDoctrine()->getManager();

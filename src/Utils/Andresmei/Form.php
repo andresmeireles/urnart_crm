@@ -13,12 +13,12 @@ final class Form extends GenericContainer
     /**
      * @var string
      */
-    protected $templateFolder = 'print/forms/';
+    private $templateFolder = 'print/forms/';
 
     /**
      * @var array
      */
-    protected $allowedTypes = ['pdf', 'show'];
+    private $allowedTypes = ['pdf', 'show'];
 
     /**
      * @var NonStaticConfig
@@ -122,10 +122,15 @@ final class Form extends GenericContainer
         ];
     }
 
+    /**
+     * @param string $formName
+     * @return string
+     * @throws \Exception
+     */
     private function checkFileExistence(string $formName): string
     {
         $completeFilePath = $this->templateFolder . '/' . $formName . '.html.twig';
-        if (! file_exists(__DIR__ . '/../../../templates/' . $completeFilePath)) {
+        if (!file_exists(__DIR__ . '/../../../templates/' . $completeFilePath)) {
             throw new \Exception(
                 sprintf(
                     '%s não existe em %s. Caminho %s',

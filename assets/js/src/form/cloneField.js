@@ -113,14 +113,23 @@ $(function () {
                 cloneEl.querySelector('input[type="checkbox"]').value = 0;
                 cloneEl.querySelector('input[type="checkbox"]').checked = 0;
             }
-
+            cloneEl = removeUnusedSelecttizeDiv(cloneEl);
             // reseta todos os campos escrevedo um nome unico
             var cloneElInputs = cloneEl.querySelectorAll('input, select');
             // var cloneElInputs = cloneEl.querySelectorAll('input');
             let cloneName = cloneEl.querySelector('[input-name]').getAttribute('input-name');
             for (var c = 0; c < cloneElInputs.length; c++) {
-                console.log(cloneElInputs[c]);
                 cloneElInputs[c].value = '';
+                cloneElInputs[c].querySelectorAll('select').forEach( element => {
+                    if (element.getAttribute('defaultClass') !== null) {
+                        let defaultClasses = element.getAttribute('defaultClass');
+                        element.removeAttribute('class');
+                        element.removeAttribute('style');
+                        element.setAttribute('class', defaultClasses);
+                    }
+                    element.value = '';
+                });
+
                 if (cloneElInputs[c].hasAttribute('input-number') ) {
                     let newValue = parseInt(document.querySelectorAll('[input-number]')[document.querySelectorAll('[input-number]').length - 1].value) + 1;
                     iNumber = newValue;
@@ -133,7 +142,6 @@ $(function () {
                 }
                 var inputName = cloneName + iNumber + '[' + cloneElInputs[c].getAttribute('id') + ']';
                 cloneElInputs[c].setAttribute('name', inputName);
-                //cloneElInputs[c].value = cloneElInputs[c].defaultValue
             }
 
             cloneEl.querySelector('[input-number]').value = iNumber;
@@ -148,4 +156,10 @@ $(function () {
         }
     });
 
+    const removeUnusedSelecttizeDiv = (element) => {
+        let selectizedElement = element.querySelector('.selectize-control.load-models.single');
+        if (selectizedElement !== null)
+            selectizedElement.remove();
+            return element;
+    }
 });

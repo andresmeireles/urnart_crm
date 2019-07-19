@@ -189,63 +189,7 @@
         </script>
     </div>
     <div class="col fancybox">
-        <div class="col-10" id="add" style="display: none"> {# cadastrar produção do dia #}
-            <form action="/report/productionCount/create" method="post">
-            {% include "components/csrfToken.html.twig" with {'tokenText':'autenticateBoleto'} %}
-            <fieldset>
-                <legend>Produção</legend>
-                <div class="form-group col">
-                    <input type="submit" class="btn btn-success btn-block disable-on-submit" value="registrar produção" />
-                </div>
-                <div class="input-group">
-                    <div class="form-group col">
-                        <label for="prodName" no-clone>Data da produção</label>
-                        <input type="hidden" id="date-global" />
-                        <input type="text" class="form-control no-keypress calendar-selector" id="replicate" date-target="#date-global" autocomplete="off" required />
-                    </div>
-                    <div class="form-group col-2">
-                        <label for="calculator">Total da produção</label>
-                        <div class="prod-calculator h4 mx-3">0</div>
-                    </div>
-                </div>
-                <div class="input-group" id="cloneableField">
-                    <input type="hidden" input-number='true' input-name="prodCount" value="0" />
-                    <input type="hidden" class="replicate-date" name="prodCount0[date]" id="date" />
-                    <div class="form-group col">
-                        <label for="prodName" no-clone>Quantidade</label>
-                        <input type="text" class="form-control numbers-only" name="prodCount0[amount]" id="amount" placeholder="N° de urnas" required />
-                    </div>
-                    <div class="form-group col">
-                        <label for="prodName" no-clone>Modelo da urna</label>
-                        <input type="text" class="form-control" name="prodCount0[model]" id="model" placeholder="ex: P3, G2 ETC..." required />
-                    </div>
-                    <div class="form-group col">
-                        <label for="prodName" no-clone>Tamanho</label>
-                        <input type="text" class="form-control numbers-only" name="prodCount0[height]" id="height" placeholder="ex: 170 ou 050" min="3" max="3" required />
-                    </div>
-                    <div class="form-group col">
-                        <label for="obs" no-clone>Tamanho especial</label>
-                        <select class="form-control" name="prodCount0[obs]" id="obs">
-                            <option selected disabled>Se for gorda ou baleia</option>
-                            <option value="GORDA">Gorda</option>
-                            <option value="SUPER GORDA">Super Gorda</option>
-                            <option value="BALEIA">Baleia</option>
-                        </select>
-                        <small class="text-danger">Tamanhos especias no campo, se houver</small>
-                    </div>
-                    <div class="form-group col-2">
-                        <label no-clone>&nbsp;</label><br no-clone>
-                        <button class="btn btn-success" add-btn="true">
-                            <span class="fas fa-fw fa-plus" add-btn="true"></span>
-                        </button>
-                        <button class="btn mx-1 btn-danger" remove-btn="true">
-                            <i class="fas fa-fw fa-times" remove-btn="true"></i>
-                        </button>
-                    </div>
-                </div>
-            </fieldset>
-            </form>
-        </div>
+
         <div class="col-10" id="add2" style="display: none"> {# cadastrar produção do dia novo #}
             <form action="/report/productionCount/createByCatchModel" method="post">
             {% include "components/csrfToken.html.twig" with {'tokenText':'autenticateBoleto'} %}
@@ -277,8 +221,7 @@
                     </div>
                     <div class="form-group col select-field">
                         <label for="prodName" class="no-clone">Nome</label>
-                        <select class="singleSelect form-control" name="prodCount0[model]" defaultClass="singleSelect form-control" required />
-                        </select>
+                        <select class="singleSelect form-control" name="prodCount0[model]" defaultClass="singleSelect form-control" required></select>
                     </div>
                     <div class="form-group col-2">
                         <label class="no-clone">&nbsp;</label><br class="no-clone">
@@ -294,6 +237,7 @@
             </fieldset>
             </form>
         </div>
+
         <div class="col fancybox" id="make-report" style="display: none"> {# relatorio de balanço de produção por intervalo de data #}
             <form method="post" action="/report/productionCount/monthBalance/print">
             <fieldset>

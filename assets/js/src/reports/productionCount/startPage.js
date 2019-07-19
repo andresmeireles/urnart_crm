@@ -73,8 +73,12 @@ if (document.querySelector('#addProdCount')) {
             let replicateDate = document.querySelector('#replicate');
             replicateDate.dispatchEvent(new Event('blur'));
         }
-        if (el.target.classList.contains('replicate')) {
+        if (el.target.classList.contains('replicate') || el.target.classList.contains('replicate2')) {
             let replicateDate = document.querySelector('#replicate2');
+            let selectFields = document.querySelectorAll('select.singleSelect');
+            for (let selects of selectFields) {
+                selects.dispatchEvent(new Event('focus'));
+            }
             replicateDate.dispatchEvent(new Event('blur'));
         }
         if (el.target.classList.contains('singleSelect')) {
@@ -95,7 +99,7 @@ if (document.querySelector('#addProdCount')) {
                 el.target.classList.remove('form-control');
                 $(el.target).selectize({
                     sortField: 'text',
-                    placeholder: 'Selecione um item.',
+                    placeholder: 'Selecione um a urna. Clique na opção ou pressione enter para selecionar a opção.',
                     valueField: 'value',
                     labelField: 'name',
                     searchField: ['value', 'name'],

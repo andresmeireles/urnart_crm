@@ -3,9 +3,11 @@
 namespace App\Model;
 
 use App\Entity\ManualOrderReport;
+use App\Entity\ManualProductCart;
 use App\Entity\TravelTruckOrders;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Andresmei\MyDateTime;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Class TravelTruckOrderMode
@@ -13,6 +15,8 @@ use App\Utils\Andresmei\MyDateTime;
  */
 final class TravelTruckOrderModel extends Model
 {
+    private static $manipulableArray = [];
+
     /**
      * @param TravelTruckOrders $orderTruckEntity
      * @param array $reportData
@@ -119,8 +123,8 @@ final class TravelTruckOrderModel extends Model
     public function setParametersOnTruckOrder(
         array $parameters,
         TravelTruckOrders $travelTruckOrder
-    ) {
-        $manualOrderReportRepository = $this->entityManager
+    ): TravelTruckOrders {
+        $repository = $this->entityManager
             ->getRepository(ManualOrderReport::class);
         $travelTruckOrder->setDriverName($parameters['driverName']);
         $travelTruckOrder->setKmout($parameters['kmout']);
@@ -128,7 +132,7 @@ final class TravelTruckOrderModel extends Model
         $travelTruckOrder->setDepartureDate($date);
         foreach ($parameters['orders'] as $order) {
             $simpleArray[$order['id']] = isset($order['isChecked']) ? (bool) $order['isChecked'] : false;
-            $manualOrderReport = $manualOrderReportRepository->find($order['id']);
+            $manualOrderReport = $repository->find($order['id']);
             $travelTruckOrder->addOrderId($manualOrderReport);
         }
         $travelTruckOrder->setCheckedOrders($simpleArray ?? []);
@@ -137,32 +141,56 @@ final class TravelTruckOrderModel extends Model
     }
 
     /**
-     * @param TravelTruckOrders $order
-     * @return TravelTruckOrders
+     * @param Collection|ManualOrderReport $collectionOfOrders
+     * @return array
      */
-    public function closeActiveTravelTruckOrder(
-        TravelTruckOrders $order
-    ): TravelTruckOrders {
-        try {
-            $order->setActive(false);
-        } catch (\RuntimeException $err) {
-            throw new \RuntimeException(
-                sprintf(
-                    '%s. Arquivo: %s. Linha: %s',
-                    $err->getMessage(),
-                    $err->getFile(),
-                    $err->getLine()
-                )
-            );
+    public function listOfProducts(Collection $collectionOfOrders): array
+    {
+        $listOfProducts = [];
+        $modelNames = $collectionOfOrders->map(function ($order) {
+            /** @var ManualOrderReport $order */
+            return $order->getManualProductCarts();
+        });
+        foreach ($modelNames->getValues() as $value) {
+            /** @var Collection $value */
+            $listOfProducts[] = array_map(function ($prod) {
+                /** @var ManualProductCart $prod */
+                return [$prod->getProductName() => $prod->getProductAmount()];
+            }, $value->getValues());
         }
 
-        return $order;
+        return $this->sumSameNameProd($listOfProducts);
     }
 
-    public function actionInTruckOrderByMode(?string $mode = null, ?int $truckOrderId)
+    /**
+     * @param array $products
+     * @return array
+     */
+    private function sumSameNameProd(array $products): array
     {
-        $entity = $mode === 'edit' ?
-            $this->entityManager->getRepository(TravelTruckOrders::class)->find($truckOrderId) :
-            true ;
+        $prod = $this->putAllItemsInSameLevel($products);
+        $finalList = [];
+        foreach ($prod as $key => $value) {
+            if (array_key_exists($key, $finalList)) {
+                $finalList[$key] = $finalList[$key] + $value;
+                continue;
+            }
+            $finalList[$key] = $value;
+        }
+
+        return $finalList;
+    }
+
+    private function putAllItemsInSameLevel(array $multiLevelArray): array
+    {
+        foreach ($multiLevelArray as $key => $value) {
+            if (!is_array($value)) {
+                self::$manipulableArray[$key] = $value;
+                continue;
+            }
+            $this->putAllItemsInSameLevel($value);
+        }
+
+        return self::$manipulableArray;
     }
 }

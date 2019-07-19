@@ -274,6 +274,7 @@ final class ReportController extends AbstractController
                             $color,
                             $value->getSpecificity()
                         ),
+                        'c' => $color
                     ];
                 }
                 return $arrays;
@@ -286,10 +287,11 @@ final class ReportController extends AbstractController
                     $value->getHeight(),
                     $value->getSpecificity()
                 ),
+                'c' => null
             ];
         }, $res);
         foreach ($modelNames as $key => $value) {
-            if (! array_key_exists('n', $value)) {
+            if (!array_key_exists('n', $value)) {
                 array_map(static function ($item) use (&$modelNames) {
                     $modelNames[] = $item;
                 }, $value);

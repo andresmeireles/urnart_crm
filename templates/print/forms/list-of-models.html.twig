@@ -1,0 +1,20 @@
+{% extends 'headerTemplatePrint.html.twig' %}
+{% block body %}
+    <table class="table table-bordered table-sm">
+        <legend class="display-4">Saida {{ data.departureDate | date('d/m/Y') }} motorista {{ data.driverName }}</legend>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Quantidade</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for model, val in data if (model is not same as('driverName') and model is not same as('departureDate')) %}
+            <tr>
+                <td>{{ model }}</td>
+                <td>{{ val }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
