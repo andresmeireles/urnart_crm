@@ -17,4 +17,33 @@ document.addEventListener('focus', (el) => {
         el.target.value = '';
     }
 
+    if(el.target.classList.contains('numbers-only')) {
+        el.target.addEventListener('keypress', function (evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                evt.preventDefault();
+
+                return false;
+            }
+
+            return true;
+        });
+    }
+    
+    if (el.target.classList.contains('numbers-float-only')) {
+        el.target.addEventListener('keypress', function (evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode == 44) {
+                return true;
+            }
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                evt.preventDefault();
+
+                return false;
+            }
+
+            return true;
+        });
+    }
+
 }, true);

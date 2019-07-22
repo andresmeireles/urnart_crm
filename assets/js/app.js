@@ -1,9 +1,3 @@
-/* global global */
-
-/**
- * Import libs.
- */
-
 require("bootstrap");
 require("jquery-mask-plugin");
 require("devbridge-autocomplete");
@@ -180,6 +174,5 @@ import "./src/helpers/classes/autoClick";
 import "./src/helpers/classes/autoFocus";
 import "./src/helpers/classes/autoSubmit";
 import "./src/helpers/classes/autoBlur";
-import "./src/helpers/classes/numbersOnly";
 import "./src/helpers/classes/images";
 import "./src/helpers/classes/copyMachine";

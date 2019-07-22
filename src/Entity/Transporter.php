@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TransporterRepository")
  */
-final class Transporter
+class Transporter
 {
     /**
      * @ORM\Id()

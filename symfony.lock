@@ -1,4 +1,7 @@
 {
+    "andresmeireles/respectannotation": {
+        "version": "1.0-dev"
+    },
     "behat/transliterator": {
         "version": "v1.2.0"
     },

@@ -39,6 +39,7 @@ final class FormatExtension extends AbstractExtension
      */
     public function formatBrl($number)
     {
+        $number = (float) $number;
         return number_format($number, 2, ',', '.');
     }
 

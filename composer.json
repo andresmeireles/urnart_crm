@@ -9,6 +9,7 @@
         "ext-json": "*",
         "ext-pdo": "*",
         "ext-zip": "*",
+        "andresmeireles/respectannotation": "^1.0@dev",
         "doctrine/annotations": "^1.6",
         "jms/serializer": "^2.2",
         "knplabs/knp-paginator-bundle": "^3.0",

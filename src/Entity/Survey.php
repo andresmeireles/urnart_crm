@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SurveyRepository")
  */
-final class Survey extends BaseEntity
+class Survey extends BaseEntity
 {
     /**
      * @ORM\Id()

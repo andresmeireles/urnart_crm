@@ -5,12 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Utils\Andresmei\ValidationAnnotation as Respect;
+use Andresmeireles\RespectAnnotation\ValidationAnnotation as Respect;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TravelAccountabilityRepository")
  */
-final class TravelAccountability extends BaseEntity
+class TravelAccountability extends BaseEntity
 {
     /**
      * @ORM\Id()

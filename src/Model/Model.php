@@ -2,8 +2,8 @@
 
 namespace App\Model;
 
+use Andresmeireles\RespectAnnotation\RespectValidationAnnotation;
 use App\Config\NonStaticConfig;
-use App\Utils\Andresmei\RespectValidationAnnotation;
 use App\Utils\Andresmei\StringConvertions;
 use Doctrine\Common\Persistence\ObjectManager;
 use JMS\Serializer\SerializerBuilder;

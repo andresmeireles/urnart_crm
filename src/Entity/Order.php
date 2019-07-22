@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
  * @ORM\Table(name="`order`")
  */
-final class Order extends BaseEntity
+class Order extends BaseEntity
 {
     /**
      * @ORM\Id()

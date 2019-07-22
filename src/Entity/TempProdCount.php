@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TempProdCountRepository")
  */
-final class TempProdCount
+class TempProdCount
 {
     /**
      * @ORM\Id()

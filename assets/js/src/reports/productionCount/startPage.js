@@ -3,9 +3,7 @@ import Axios from "axios";
 if (document.querySelector('#addProdCount')) {
 
     document.addEventListener('DOMContentLoaded', () => {
-
         let ahref = document.querySelectorAll('.modal-transform');
-
         for (let el of ahref) {
             let href = el.getAttribute('href');
             let addLink = href.replace(href.substring(0, href.lastIndexOf('/') + 1), '');
@@ -13,11 +11,9 @@ if (document.querySelector('#addProdCount')) {
             el.setAttribute('data-src', `#${addLink}`);
             el.setAttribute('href', 'javascript:;');
         }
-
     });
 
     document.addEventListener('click', (el) => {
-
         if (el.target.hasAttribute('add-btn')) {
             setTimeout(() => {
                 let dateValue = document.querySelector('#date-global');
@@ -30,7 +26,6 @@ if (document.querySelector('#addProdCount')) {
                 }
             }, 700);
         }
-
         if (el.target.classList.contains('makeClone')) {
             setTimeout(() => {
                 let dateFields = document.querySelectorAll('#date-auto');
@@ -40,7 +35,6 @@ if (document.querySelector('#addProdCount')) {
                 }
             }, 500);
         }
-
         if (el.target.id === 'replicate') {
             setTimeout(() => {
                 let dateFields = document.querySelectorAll('#date');
@@ -51,7 +45,6 @@ if (document.querySelector('#addProdCount')) {
                 }
             }, 500);
         }
-
         if (el.target.id === 'replicate2') {
             setTimeout(() => {
                 let dateFields = document.querySelectorAll('#date-auto');
@@ -61,7 +54,6 @@ if (document.querySelector('#addProdCount')) {
                 }
             }, 500);
         }
-
     });
 
     document.addEventListener('focus', (el) => {
@@ -73,7 +65,7 @@ if (document.querySelector('#addProdCount')) {
             let replicateDate = document.querySelector('#replicate');
             replicateDate.dispatchEvent(new Event('blur'));
         }
-        if (el.target.classList.contains('replicate') || el.target.classList.contains('replicate2')) {
+        if (el.target.classList.contains('replicate2')) {
             let replicateDate = document.querySelector('#replicate2');
             let selectFields = document.querySelectorAll('select.singleSelect');
             for (let selects of selectFields) {
@@ -121,7 +113,6 @@ if (document.querySelector('#addProdCount')) {
                 }
             }, 500);
         }
-
         if (el.target.id === 'replicate2') {
             setTimeout(() => {
                 let domConsult = document.querySelector('#add2');
@@ -132,7 +123,6 @@ if (document.querySelector('#addProdCount')) {
                 }
             }, 500);
         }
-
         if (el.target.id === 'amount') {
             setTimeout(() => {
                 // let amount = el.target.value;
@@ -146,25 +136,21 @@ if (document.querySelector('#addProdCount')) {
                 calc.innerHTML = prod;
             }, 166);
         }
-
-        if (el.target.id === 'amount-new') {
+        if (el.target.classList.contains('replicate2')) {
             setTimeout(() => {
-                // let amount = el.target.value;
+                let rowField = el.target.closest('.copyMachine');
                 let prod = 0;
                 let calc = document.querySelector('.prod-calculator-new');
-                let amounts = document.querySelectorAll('#amount-new');
+                let amounts = rowField.querySelectorAll('.replicate2');
                 for (let am of amounts) {
                     prod += Number(am.value);
                 }
-                // let prod = Number(amount) + Number(calc.innerHTML);
                 calc.innerHTML = prod;
             }, 166);
         }
-
     }, true);
 
     document.addEventListener('change', (el) => {
-
         if (el.target.id === 'replicate') {
             setTimeout(() => {
                 let dateFields = document.querySelectorAll('#date');
@@ -175,6 +161,5 @@ if (document.querySelector('#addProdCount')) {
                 }
             }, 500);
         }
-
     }, true);
 }

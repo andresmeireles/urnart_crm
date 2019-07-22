@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FeedstockRepository")
  */
-final class Feedstock extends BaseEntity
+class Feedstock extends BaseEntity
 {
     /**
      * @ORM\Id()
