@@ -35,7 +35,7 @@ final class RegisterController extends AbstractController
         $specificity = $request->request->get('specificity') ?? null;
         $colors = $request->request->get('colors') ?? null;
         $suggestedPrice = $request->request->get('suggestedPrice');
-        $insertResult = $modelsModel->insertModel($name, $height, $suggestedPrice, $specificity, $colors);
+        $insertResult = $modelsModel->insertModel($name, $height, (float) $suggestedPrice, $specificity, $colors);
         $this->addFlash($insertResult->getType(), $insertResult->getMessage());
 
         return $this->redirectToRoute('register');

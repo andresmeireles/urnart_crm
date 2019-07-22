@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\Entity\Model as ModelName;
+use App\Entity\ModelName;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Exceptions\CustomException;
 
