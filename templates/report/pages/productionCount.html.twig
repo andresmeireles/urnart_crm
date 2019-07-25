@@ -16,14 +16,22 @@
             modal: true,
             id: 'make-daily-report',
             link: '#',
-            icon: 'fas fa-chalkboard-teacher',
+            icon: 'fas fa-chart-line',
             label: 'Criar relatorio diario'
         },
         {
             modal: true,
             link: '#',
             id: 'make-report',
+            icon: 'fas fa-chart-area',
             label: 'Criar balanço do mês'
+        },
+        {
+            modal: true,
+            link: '#',
+            id: 'make-report-interval',
+            icon: 'fas fa-chart-bar',
+            label: 'Criar balanço em intervalo de datas'
         },
         {
             modal: false,
@@ -231,12 +239,36 @@
             </form>
         </div>
 
-        <div class="col fancybox" id="make-report" style="display: none"> {# relatorio de balanço de produção por intervalo de data #}
-            <form method="post" action="/report/productionCount/monthBalance/print">
+
+        {# TO-DO alterar para mostrar apenas meses #}
+        <div class="col fancybox" id="make-report" style="display: none"> {# relatorio de balanço de produção por mês #}
+            <form method="post" action="/production/count/report/bydate">
+                <fieldset>
+                    <legend>Relatorio por intervalo de datas</legend>
+                    <div class="form-group col">
+                        <input type="submit" class="btn btn-success btn-block disable-on-submit disable-on-submit" value="criar relatórios" />
+                    </div>
+                    <div class="form-row col">
+                        <div class="form-group col">
+                            <label for="month">Selecione o mês</label>
+                            <input type="text" class="form-control no-keypress calendar-selector-month" placeholder="Selecione o mês" date-target="#month" required />
+                            <input type="hidden" id="month" name="month" />
+                            {% include 'components/csrfToken.html.twig' with {'tokenText': 'productionCountRepo'} %}
+                        </div>
+                    </div>
+                    <input type="hidden" name="isMonth" value="1">
+                </fieldset>
+            </form>
+        </div>
+
+
+        <div class="col fancybox" id="make-report-interval" style="display: none"> {# relatorio de balanço de produção por intervalo de data #}
+            <form method="post" action="/production/count/report/bydate">
             <fieldset>
                 <legend>Relatorio por intervalo de datas</legend>
                     <div class="form-group col">
                         <input type="submit" class="btn btn-success btn-block disable-on-submit disable-on-submit" value="criar relatorios por data" />
+                        {% include 'components/csrfToken.html.twig' with {'tokenText': 'productionCountRepo'} %}
                     </div>
                     <div class="form-row col">
                         <div class="form-group col">

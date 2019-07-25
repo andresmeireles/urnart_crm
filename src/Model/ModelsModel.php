@@ -5,6 +5,7 @@ namespace App\Model;
 use App\Entity\ModelName;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Exceptions\CustomException;
+use Doctrine\Common\Persistence\ObjectManager;
 
 final class ModelsModel extends Model
 {
@@ -54,5 +55,26 @@ final class ModelsModel extends Model
         }
 
         return new FlashResponse(200, 'success', 'Produto inserido com sucesso.');
+    }
+
+    /**
+     * @return iterable
+     */
+    public function getModelPrices(): iterable
+    {
+        $allRegisters = $this->entityManager->getRepository(ModelName::class)->findAll();
+        $formatNames = [];
+        foreach ($allRegisters as $register) {
+            $name = sprintf(
+                '%s %s %s',
+                $register->getName(),
+                $register->getHeight(),
+                $register->getSpecificity() ?? ''
+            );
+            $amount['price'] = $register->getSuggestedPrice();
+            $formatNames[trim($name)] = $amount;
+        }
+
+        return $formatNames;
     }
 }

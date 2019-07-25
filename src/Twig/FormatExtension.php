@@ -19,6 +19,7 @@ final class FormatExtension extends AbstractExtension
             // Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
             new TwigFilter('format_brl', [$this, 'formatBrl']),
             new TwigFilter('month_coverter', [$this, 'monthConverter']),
+            new TwigFilter('month', [$this, 'numMonthConverter']),
         ];
     }
 
@@ -28,8 +29,8 @@ final class FormatExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('function_name', [$this, 'formatBrl']),
-            new TwigFunction('function_name', [$this, 'monthConverter']),
+            new TwigFunction('formatBrl', [$this, 'formatBrl']),
+            new TwigFunction('month_converter', [$this, 'monthConverter']),
         ];
     }
 
@@ -41,6 +42,30 @@ final class FormatExtension extends AbstractExtension
     {
         $number = (float) $number;
         return number_format($number, 2, ',', '.');
+    }
+
+    /**
+     * @param int $month
+     * @return string
+     */
+    public function numMonthConverter(int $month): string
+    {
+        $months = [
+            1 => 'Janeiro',
+            2 => 'Fevereiro',
+            3 => 'Março',
+            4 => 'Abril',
+            5 => 'Maio',
+            6 => 'Junho',
+            7 => 'Julho',
+            8 => 'Agosto',
+            9 => 'Setembro',
+            10 => 'Outubro',
+            11 => 'Novembro',
+            12 => 'Dezembro',
+        ];
+
+        return $months[$month];
     }
 
     /**

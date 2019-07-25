@@ -19,6 +19,102 @@ final class ProductionCountRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductionCount::class);
     }
 
+    /**
+     * @param array $search
+     * @param \DateTimeInterface $beginDate
+     * @param \DateTimeInterface $endDate
+     * @return array|null|ProductionCount
+     */
+    public function findInTimeInterval(array $search, \DateTimeInterface $beginDate, \DateTimeInterface $endDate): ?array
+    {
+        $searchList = '';
+        foreach ($search as $ser) {
+            $searchList .= 'p.' . $ser;
+        }
+        $searchList = trim($searchList, ',');
+//        $searchList .= array_map(static function ($name) { return 'p.' . $name; }, $search);
+        $entityManager = $this->getEntityManager();
+        $queryConsult = sprintf(
+            'SELECT DISTINCT(%s) FROM %s p WHERE p.date BETWEEN :bdate AND :edate',
+            $searchList,
+            ProductionCount::class
+        );
+        $query = $entityManager->createQuery($queryConsult)
+            ->setParameter('bdate', $beginDate->format('Y-m-d H:m:s'))
+            ->setParameter('edate', $endDate->format('Y-m-d H:m:s'));
+        return $query->execute();
+    }
+
+    /**
+     * @param \DateTimeInterface $beginDate
+     * @param \DateTimeInterface $endDate
+     * @return string|null
+     */
+    public function getAmountByDates(\DateTimeInterface $beginDate, \DateTimeInterface $endDate): ?string
+    {
+        return $this->getEntityManager()->createQuery(
+            'SELECT SUM(p.amount) FROM App\Entity\ProductionCount p WHERE p.date BETWEEN :bdate AND :edate'
+        )->setParameter('bdate', $beginDate->format('Y-m-d H:m:s'))
+         ->setParameter('edate', $endDate->format('Y-m-d H:m:s'))
+         ->execute()[0][1] ?? null;
+    }
+
+    /**
+     * @param \DateTimeInterface $beginDate
+     * @param \DateTimeInterface $endDate
+     * @return array|null
+     */
+    public function getDistinctProductAmountsByDate(\DateTimeInterface $beginDate, \DateTimeInterface $endDate): ?array
+    {
+        $occurrences = [];
+        $dqlQuery = sprintf(
+            "SELECT CONCAT(p.model, ' ', p.height, ' ', COALESCE(p.obs, '')) AS name, p.amount FROM %s p WHERE p.date BETWEEN :bdate AND :edate",
+            ProductionCount::class
+        );
+        $entityManager = $this->getEntityManager();
+        $results = $entityManager->createQuery($dqlQuery)
+                        ->setParameter('bdate', $beginDate->format('Y-m-d H:m:s'))
+                        ->setParameter('edate', $endDate->format('Y-m-d H:m:s'))
+                        ->execute();
+        array_walk($results, static function ($result) use (&$occurrences) {
+            $name = trim($result['name']);
+            $amount = $result['amount'];
+            if (array_key_exists($name, $occurrences)) {
+                $occurrences[$name] += $amount;
+            } else {
+                $occurrences[$name] = $amount;
+            }
+        });
+
+        return $occurrences;
+    }
+
+    /**
+     * @param \DateTimeInterface $beginDate
+     * @param \DateTimeInterface $endDate
+     * @return array|null
+     */
+    public function getProductHeightsListByDate(\DateTimeInterface $beginDate, \DateTimeInterface $endDate): ?array
+    {
+        $allProductsList = [];
+
+        $dqlQuery = sprintf(
+            "SELECT DISTINCT CONCAT(p.height, ' ', COALESCE(p.obs, '')) AS name FROM %s p WHERE p.date BETWEEN :bdate AND :edate",
+            ProductionCount::class
+        );
+        $entityManager = $this->getEntityManager();
+        $results = $entityManager->createQuery($dqlQuery)
+            ->setParameter('bdate', $beginDate->format('Y-m-d H:m:s'))
+            ->setParameter('edate', $endDate->format('Y-m-d H:m:s'))
+            ->execute();
+
+        array_walk($results, static function ($result) use (&$allProductsList) {
+            $allProductsList[] = trim($result['name']);
+        });
+
+        return $allProductsList;
+    }
+
     // /**
     //  * @return ProductionCount[] Returns an array of ProductionCount objects
     //  */

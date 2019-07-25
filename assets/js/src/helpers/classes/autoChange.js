@@ -34,6 +34,14 @@ document.addEventListener('change', function (el) {
 $('.calendar-selector').on('change', (element) => {
     let dateInput = element.target.closest('div').querySelector(element.target.getAttribute('date-target'));
     let date = element.target.value;
+    console.log(dateInput);
+    let convertedDate = date.replace(new RegExp('/', 'g'), '-');
+    dateInput.value = convertedDate;
+});
+
+$('.calendar-selector-month').on('change', (element) => {
+    let dateInput = element.target.closest('div').querySelector(element.target.getAttribute('date-target'));
+    let date = element.target.value;
     let convertedDate = date.replace(new RegExp('/', 'g'), '-');
     dateInput.value = convertedDate;
 });

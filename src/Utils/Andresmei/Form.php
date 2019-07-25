@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Spatie\Browsershot\Browsershot;
 use Twig\Environment;
 
-final class Form extends GenericContainer
+class Form extends GenericContainer
 {
     /**
      * @var string

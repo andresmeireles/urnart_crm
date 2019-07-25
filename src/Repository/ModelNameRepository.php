@@ -19,6 +19,47 @@ final class ModelNameRepository extends ServiceEntityRepository
         parent::__construct($registry, ModelName::class);
     }
 
+    public function getAllHeightsWithSpecificities()
+    {
+        $queryConsult = sprintf(
+            "SELECT DISTINCT CONCAT(p.height,' ',COALESCE(p.specificity, '')) FROM %s p",
+            ModelName::class
+        );
+        $query = $this->getEntityManager()->createQuery($queryConsult);
+        return $query->execute();
+    }
+
+    /**
+     * @param string $search
+     * @return array|null|ModelName
+//     */
+//    public function findSingleDistinctItemsInTimeInterval(string $search): ?array
+//    {
+//        $entityManager = $this->getEntityManager();
+//        $queryConsult = sprintf(
+//            'SELECT DISTINCT(%s) FROM %s p WHERE p.date',
+//            $search,
+//            ModelName::class
+//        );
+//        $query = $entityManager->createQuery($queryConsult);
+//        return $query->execute();
+//    }
+
+//    public function findMultipleDistinctItems(iterable $items)
+//    {
+//        $itemsForConsult = array_map(static function ($item) { return sprintf('p.%s', $item); }, (array) $items);
+//        $itemsForConsult = implode(",' ',", $itemsForConsult);
+//        $itemsForConsult = trim($itemsForConsult, ' ,');
+//        $entityManager = $this->getEntityManager();
+//        $queryConsult = sprintf(
+//            "SELECT DISTINCT COALESCE(CONCAT(%s), '') FROM %s p",
+//            $itemsForConsult,
+//            ModelName::class
+//        );
+//        $query = $entityManager->createQuery($queryConsult);
+//        return $query->execute();
+//    }
+
     // /**
     //  * @return ModelName[] Returns an array of ModelName objects
     //  */

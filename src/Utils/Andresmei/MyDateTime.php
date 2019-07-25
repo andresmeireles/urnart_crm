@@ -4,6 +4,23 @@ namespace App\Utils\Andresmei;
 
 final class MyDateTime extends \DateTime
 {
+    private const THIRTYONEDATMONTH = [
+        '01' => 'Janeiro',
+        '03' => 'Março',
+        '05' => 'Maio',
+        '07' => 'Julho',
+        '08' => 'Agosto',
+        '10' => 'Outubro',
+        '12' => 'Dezembro',
+    ];
+
+    private const THIRTYDAYMONTH = [
+        '04' => 'Abril',
+        '06' => 'Junho',
+        '09' => 'Setembro',
+        '11' => 'Novembro',
+    ];
+
     public function __construct(string $date = 'now', ?string $timezone = null)
     {
         parent::__construct($date, new \DateTimeZone($timezone ?? 'America/Belem'));
@@ -92,5 +109,26 @@ final class MyDateTime extends \DateTime
         }
 
         return $dayName;
+    }
+
+    /**
+     * @param string $month
+     * @return string
+     */
+    public static function getLastDayOfMonth($month): string
+    {
+        if (array_key_exists($month, self::THIRTYONEDATMONTH) ||
+            in_array($month, self::THIRTYONEDATMONTH, false))
+        {
+            return '31';
+        }
+
+        if (array_key_exists($month, self::THIRTYONEDATMONTH) ||
+            in_array($month, self::THIRTYONEDATMONTH, false))
+        {
+            return '30';
+        }
+
+        return '28';
     }
 }

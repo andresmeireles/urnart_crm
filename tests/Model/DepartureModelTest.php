@@ -7,8 +7,6 @@ use PHPUnit\Framework\TestCase;
 use App\Model\DepartureModel;
 use App\Entity\TravelTruckOrders;
 use App\Utils\Andresmei\Form;
-use App\Utils\Andresmei\StdResponse;
-use App\Kernel;
 
 class DepartureModelTest extends TestCase
 {
@@ -32,7 +30,7 @@ class DepartureModelTest extends TestCase
         $entityManager = $this->getTestEntityManager();
         /** @var Form $form */
         $form = $this->createMock(Form::class);
-        $form->parsedFile = '';
+        $form->setparsedFile = '';
         $entityObject = new TravelTruckOrders();
         $entityObject->setDriverName('josé');
         $model = new DepartureModel($entityManager);

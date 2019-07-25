@@ -5,8 +5,11 @@ namespace App\Model;
 use App\Entity\ModelName;
 use App\Entity\ProductionCount;
 use App\Utils\Andresmei\FlashResponse;
+use App\Utils\Andresmei\MyDateTime;
 use App\Utils\Andresmei\StdResponse;
 use App\Utils\Exceptions\CustomException;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\Validator\Constraints\Traverse;
 
 final class ProductionCountModel extends Model
 {
@@ -218,4 +221,88 @@ final class ProductionCountModel extends Model
 
         return $reportData;
     }
+
+    /**
+     * @param \DateTimeInterface $beginDate
+     * @param \DateTimeInterface $endingDate
+     * @return iterable
+     */
+    public function getRegistersByDates(\DateTimeInterface $beginDate, \DateTimeInterface $endingDate): iterable
+    {
+        $dqlQuery = sprintf(
+            "SELECT u.model, u.height, u.amount, u.obs FROM %s u WHERE u.date > '%s' AND u.date < '%s'",
+            ProductionCount::class,
+            $beginDate->format('Y-m-d'). ' 23:00:00',
+            $endingDate->format('Y-m-d') . ' 00:00:00'
+        );
+        $products = $this->dqlQuery($dqlQuery);
+        array_map(static function ($prod) use (&$formattedProducts) {
+            $name = sprintf(
+                '%s %s %s',
+                $prod['model'],
+                $prod['height'],
+                $prod['obs'] ?? ''
+            );
+            $formattedProducts[$name] = $prod['amount'];
+        }, $products);
+
+        return $formattedProducts;
+    }
+
+    public function getProductSequenceTotalPrice(iterable $productSequence, iterable $productsNameAndPrice)
+    {
+        $totalPriceAmount = 0;
+        foreach ($productSequence as $productName => $amount) {
+            if (array_key_exists($productName, (array) $productsNameAndPrice)) {
+                $totalPriceAmount += $productsNameAndPrice[$productName]['price'] * $amount;
+                continue;
+            }
+        }
+
+        return $totalPriceAmount;
+    }
+
+    /**
+     * @param ParameterBag $request
+     * @return array
+     */
+    public function getProductionCountData(ParameterBag $request): array
+    {
+        $requestInformation = [];
+        if ($request->get('month') !== null) {
+            return $this->getInfoByMonthYear($request->get('month'));
+        }
+        $requestInformation['beginDate'] = $request->get('begin-date');
+        $requestInformation['endDate'] = $request->get('last-date');
+
+        return $requestInformation;
+    }
+
+    /**
+     * @param string $monthYear
+     * @return array
+     */
+    private function getInfoByMonthYear(string $monthYear): array
+    {
+        $monthYear = explode('-', $monthYear);
+        $requestInformation['month'] = $monthYear[0];
+        $requestInformation['year'] = $monthYear[1];
+        $lastMonthDay = MyDateTime::getLastDayOfMonth($monthYear[0]);
+        $requestInformation['beginDate'] = sprintf(
+            '%s-%s-%s',
+            01,
+            $requestInformation['month'],
+            $requestInformation['year']
+        );
+        $requestInformation['endDate'] = sprintf(
+            '%s-%s-%s',
+            $lastMonthDay,
+            $requestInformation['month'],
+            $requestInformation['year']
+        );
+
+        return $requestInformation;
+    }
+
+
 }
