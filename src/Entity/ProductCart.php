@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductCartRepository")
  */
-final class ProductCart
+class ProductCart
 {
     /**
      * @ORM\Id()

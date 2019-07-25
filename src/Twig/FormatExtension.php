@@ -18,7 +18,7 @@ final class FormatExtension extends AbstractExtension
             // parameter: ['is_safe' => ['html']]
             // Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
             new TwigFilter('format_brl', [$this, 'formatBrl']),
-            new TwigFilter('month_coverter', [$this, 'monthConverter']),
+            new TwigFilter('month_converter', [$this, 'monthConverter']),
             new TwigFilter('month', [$this, 'numMonthConverter']),
         ];
     }

@@ -10,7 +10,7 @@ use Andresmeireles\RespectAnnotation\ValidationAnnotation as Respect;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ManualOrderReportRepository")
  */
-final class ManualOrderReport extends BaseEntity
+class ManualOrderReport extends BaseEntity
 {
     /**
      * @ORM\Id()

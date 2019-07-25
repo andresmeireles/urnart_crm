@@ -98,7 +98,7 @@
                 let barReport = new Chart(bar, {
                     type: 'line',
                     data: {
-                        labels: [{% for chartDay, notUsed in allM %}"{{ chartDay | month_coverter }}",{% endfor %}],
+                        labels: [{% for chartDay, notUsed in allM %}"{{ chartDay | month_converter }}",{% endfor %}],
                         datasets: [{
                             fill: 'boundary',
                             lineTension: 0,
