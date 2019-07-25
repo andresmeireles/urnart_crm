@@ -5,7 +5,6 @@ namespace App\Model;
 use App\Entity\ModelName;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Exceptions\CustomException;
-use Doctrine\Common\Persistence\ObjectManager;
 
 final class ModelsModel extends Model
 {
