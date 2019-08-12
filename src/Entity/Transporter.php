@@ -28,11 +28,6 @@ class Transporter
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="transporter")
-     */
-    private $orderNumber;
-
     public function __construct()
     {
         $this->orderNumber = new ArrayCollection();
@@ -68,37 +63,6 @@ class Transporter
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Order[]
-     */
-    public function getOrderNumber(): Collection
-    {
-        return $this->orderNumber;
-    }
-
-    public function addOrderNumber(Order $orderNumber): self
-    {
-        if (! $this->orderNumber->contains($orderNumber)) {
-            $this->orderNumber[] = $orderNumber;
-            $orderNumber->setTransporter($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderNumber(Order $orderNumber): self
-    {
-        if ($this->orderNumber->contains($orderNumber)) {
-            $this->orderNumber->removeElement($orderNumber);
-            // set the owning side to null (unless already changed)
-            if ($orderNumber->getTransporter() === $this) {
-                $orderNumber->setTransporter(null);
-            }
-        }
 
         return $this;
     }

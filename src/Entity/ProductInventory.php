@@ -32,11 +32,6 @@ class ProductInventory
     private $stock = 0;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Product", inversedBy="productInventory", cascade={"persist", "remove"})
-     */
-    private $product;
-
-    /**
      * @ORM\Column(type="bigint", nullable=true)
      */
     private $reserved = 0;
@@ -78,18 +73,6 @@ class ProductInventory
     public function setStock(float $stock): self
     {
         $this->stock = $stock;
-
-        return $this;
-    }
-
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?Product $product): self
-    {
-        $this->product = $product;
 
         return $this;
     }

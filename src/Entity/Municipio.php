@@ -32,11 +32,6 @@ class Municipio
      */
     private $uf;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Address", mappedBy="municipio")
-     */
-    private $endereco;
-
     public function __construct()
     {
         $this->endereco = new ArrayCollection();
@@ -84,19 +79,6 @@ class Municipio
     public function setUf(string $uf): self
     {
         $this->uf = $uf;
-
-        return $this;
-    }
-
-    public function removeEndereco(Address $endereco): self
-    {
-        if ($this->endereco->contains($endereco)) {
-            $this->endereco->removeElement($endereco);
-
-            if ($endereco->getMunicipio() === $this) {
-                $endereco->setMunicipio(null);
-            }
-        }
 
         return $this;
     }

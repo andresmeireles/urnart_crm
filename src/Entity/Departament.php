@@ -23,11 +23,6 @@ class Departament
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Feedstock", mappedBy="departament")
-     */
-    private $feedstocks;
-
     public function __construct()
     {
         $this->feedstocks = new ArrayCollection();
@@ -68,49 +63,6 @@ class Departament
     public function setDepartamento(string $name): self
     {
         $this->name = mb_strtolower($name);
-
-        return $this;
-    }
-
-    /*    public function getProduct(): ?Product
-       {
-           return $this->product;
-       }
-
-       public function setProduct(?Product $product): self
-       {
-           $this->product = $product;
-
-           return $this;
-       } */
-
-    /**
-     * @return Collection|Feedstock
-     */
-    public function getFeedstocks(): Collection
-    {
-        return $this->feedstocks;
-    }
-
-    public function addFeedstock(Feedstock $feedstock): self
-    {
-        if (! $this->feedstocks->contains($feedstock)) {
-            $this->feedstocks[] = $feedstock;
-            $feedstock->setDepartament($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFeedstock(Feedstock $feedstock): self
-    {
-        if ($this->feedstocks->contains($feedstock)) {
-            $this->feedstocks->removeElement($feedstock);
-            // set the owning side to null (unless already changed)
-            if ($feedstock->getDepartament() === $this) {
-                $feedstock->setDepartament(null);
-            }
-        }
 
         return $this;
     }

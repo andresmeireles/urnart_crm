@@ -72,27 +72,4 @@ class PaymentType
     {
         return (bool) $this->plot;
     }
-
-    public function addOrderNumber(Order $orderNumber): self
-    {
-        if (! $this->orderNumber->contains($orderNumber)) {
-            $this->orderNumber[] = $orderNumber;
-            $orderNumber->setPaymentType()($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderNumber(Order $orderNumber): self
-    {
-        if ($this->orderNumber->contains($orderNumber)) {
-            $this->orderNumber->removeElement($orderNumber);
-            // set the owning side to null (unless already changed)
-            if ($orderNumber->getPaysetPaymentType()() === $this) {
-                $orderNumber->setPaymentType()(null);
-            }
-        }
-
-        return $this;
-    }
 }

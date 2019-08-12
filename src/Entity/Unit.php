@@ -27,12 +27,7 @@ class Unit
      * @ORM\Column(type="string", unique=true)
      */
     private $name;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Feedstock", mappedBy="unit")
-     */
-    private $departament;
-
+    
     public function __construct()
     {
         $this->departament = new ArrayCollection();
@@ -73,49 +68,6 @@ class Unit
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?Product $product): self
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Feedstock[]
-     */
-    public function getDepartament(): Collection
-    {
-        return $this->departament;
-    }
-
-    public function addDepartament(Feedstock $departament): self
-    {
-        if (! $this->departament->contains($departament)) {
-            $this->departament[] = $departament;
-            $departament->setUnit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDepartament(Feedstock $departament): self
-    {
-        if ($this->departament->contains($departament)) {
-            $this->departament->removeElement($departament);
-            // set the owning side to null (unless already changed)
-            if ($departament->getUnit() === $this) {
-                $departament->setUnit(null);
-            }
-        }
 
         return $this;
     }

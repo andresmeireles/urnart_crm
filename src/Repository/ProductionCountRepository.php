@@ -40,8 +40,8 @@ final class ProductionCountRepository extends ServiceEntityRepository
             ProductionCount::class
         );
         $query = $entityManager->createQuery($queryConsult)
-            ->setParameter('bdate', $beginDate->format('Y-m-d H:m:s'))
-            ->setParameter('edate', $endDate->format('Y-m-d H:m:s'));
+            ->setParameter('bdate', $beginDate->format('Y-m-d 00:00:00'))
+            ->setParameter('edate', $endDate->format('Y-m-d 23:59:59'));
         return $query->execute();
     }
 
@@ -54,8 +54,8 @@ final class ProductionCountRepository extends ServiceEntityRepository
     {
         return $this->getEntityManager()->createQuery(
             'SELECT SUM(p.amount) FROM App\Entity\ProductionCount p WHERE p.date BETWEEN :bdate AND :edate'
-        )->setParameter('bdate', $beginDate->format('Y-m-d H:m:s'))
-         ->setParameter('edate', $endDate->format('Y-m-d H:m:s'))
+        )->setParameter('bdate', $beginDate->format('Y-m-d 00:00:00'))
+         ->setParameter('edate', $endDate->format('Y-m-d 23:59:59'))
          ->execute()[0][1] ?? null;
     }
 
@@ -73,8 +73,8 @@ final class ProductionCountRepository extends ServiceEntityRepository
         );
         $entityManager = $this->getEntityManager();
         $results = $entityManager->createQuery($dqlQuery)
-                        ->setParameter('bdate', $beginDate->format('Y-m-d H:m:s'))
-                        ->setParameter('edate', $endDate->format('Y-m-d H:m:s'))
+                        ->setParameter('bdate', $beginDate->format('Y-m-d 00:00:00'))
+                        ->setParameter('edate', $endDate->format('Y-m-d 23:59:59'))
                         ->execute();
         array_walk($results, static function ($result) use (&$occurrences) {
             $name = trim($result['name']);
@@ -104,8 +104,8 @@ final class ProductionCountRepository extends ServiceEntityRepository
         );
         $entityManager = $this->getEntityManager();
         $results = $entityManager->createQuery($dqlQuery)
-            ->setParameter('bdate', $beginDate->format('Y-m-d H:m:s'))
-            ->setParameter('edate', $endDate->format('Y-m-d H:m:s'))
+            ->setParameter('bdate', $beginDate->format('Y-m-d 00:00:00'))
+            ->setParameter('edate', $endDate->format('Y-m-d 23:59:59'))
             ->execute();
 
         array_walk($results, static function ($result) use (&$allProductsList) {
