@@ -116,41 +116,4 @@ final class RegisterController extends AbstractController
             ['type-message' => $response->getType()]
         );
     }
-
-    /**
-     * @Route("/register/configuration", methods={"GET", "POST"}, name="config")
-     */
-    public function configuration(Request $request): Response
-    {
-        if ($request->getMethod() === 'post') {
-            if (! $this->isCsrfTokenValid(
-                'configuration',
-                $request->request->get('_csrf_token')
-            )) {
-                throw new CustomException('Token incorreto ou não enviado.');
-            }
-
-            return $this->redirectToRoute('config');
-        }
-        $config = Yaml::parse((string) file_get_contents(__DIR__ . '/../Config/system-config.yaml'));
-        $draw = Yaml::parse((string) file_get_contents(__DIR__ . '/../Config/draw-form.yaml'));
-
-        return $this->render('/register/configuration/index.html.twig', [
-            'config' => $config,
-            'draw' => $draw,
-        ]);
-    }
-
-    /**
-     * @Route("/resetlogo", methods="PUT")
-     */
-    public function resetlogo(Request $request): Response
-    {
-        $hash = json_decode($request->getContent())->hash;
-        if (! ($hash === hash('ripemd160', 'valido'))) {
-            return new Response('false', 400);
-        }
-        // $config->resetLogoImage();
-        return new Response('true', 200);
-    }
 }

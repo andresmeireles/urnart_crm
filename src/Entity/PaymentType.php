@@ -27,11 +27,6 @@ class PaymentType
      */
     private $plot = false;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="customer")
-     */
-    private $orderNumber;
-
     public function __construct()
     {
         $this->orderNumber = new ArrayCollection();

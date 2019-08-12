@@ -57,8 +57,4 @@
   route: '/register'
   icon: 'fa-address-card'
 
-- name: 'Configuração'
-  route: '/register/configuration'
-  icon: 'fa-cog'
-
 - divider: true

@@ -3,11 +3,9 @@
 namespace App\Model;
 
 use Andresmeireles\RespectAnnotation\RespectValidationAnnotation;
-use App\Config\NonStaticConfig;
 use App\Utils\Andresmei\StringConvertions;
 use Doctrine\Common\Persistence\ObjectManager;
 use JMS\Serializer\SerializerBuilder;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Service Container for models
@@ -18,16 +16,6 @@ abstract class Model
      * @var ObjectManager
      */
     protected $entityManager;
-
-    /**
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * @var NonStaticConfig
-     */
-    protected $settings;
 
     /**
      * @var SerializerBuilder
@@ -42,8 +30,6 @@ abstract class Model
     public function __construct(ObjectManager $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->config = Yaml::parse(__DIR__ . '/../Config/system-config.yaml');
-        $this->settings = new NonStaticConfig();
         $this->serializer = SerializerBuilder::create()->build();
         $this->validator = new RespectValidationAnnotation();
     }

@@ -30,20 +30,6 @@ final class ReportController extends AbstractController
     }
 
     /**
-     * @Route("/report/survey", name="survey")
-     */
-    public function survey(NonStaticConfig $config, SurveyModel $surveyModel): Response
-    {
-        $quest = $config->getProperty('survey_question');
-        $surveys = $this->getDoctrine()->getRepository(Survey::class)->findAll();
-        $surveyByDate = $surveyModel->getSurveyData($surveys);
-        return $this->render('report/pages/survey.html.twig', [
-            'questions' => $quest,
-            'surveys' => $surveyByDate,
-        ]);
-    }
-
-    /**
      * @Route("/report/productionCount/mdr", name="make_report", methods="POST")
      */
     public function makePrintReport(Request $request, ProductionCountModel $model): Response
@@ -193,7 +179,7 @@ final class ReportController extends AbstractController
         $view = $query->getResult();
 
         return $this->render($reportPage, [
-            'simpleView' => $travel ?? $view,
+            'simpleView' => $view,
         ]);
     }
 
