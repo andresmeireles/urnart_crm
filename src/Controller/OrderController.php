@@ -55,7 +55,6 @@ final class OrderController extends AbstractController
                 $request->query->getInt('page', 1)
             );
         }
-        $orders = $this->getDoctrine()->getManager()->getRepository(Order::class)->findAll();
         $manualOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy([], [
             'lastUpdate' => 'DESC',
         ]);
@@ -66,7 +65,6 @@ final class OrderController extends AbstractController
         );
 
         return $this->render('order/index.html.twig', [
-            'orders' => $orders ?? [],
             'manualOrder' => $manualOrderSearchResult ?? $paginatedOrders ?? [],
         ]);
     }

@@ -2,7 +2,6 @@
 
 namespace App\Utils\Andresmei;
 
-use App\Config\NonStaticConfig;
 use App\Utils\GenericContainer;
 use Doctrine\ORM\EntityManagerInterface;
 use Spatie\Browsershot\Browsershot;
@@ -21,21 +20,14 @@ class Form extends GenericContainer
     private $allowedTypes = ['pdf', 'show'];
 
     /**
-     * @var NonStaticConfig
-     */
-    protected $nonStaticConfig;
-
-    /**
      * @var string
      */
     private $parsedFile;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        Environment $twig,
-        NonStaticConfig $config
+        Environment $twig
     ) {
-        $this->nonStaticConfig = $config;
         parent::__construct($entityManager, $twig);
     }
 
@@ -168,7 +160,7 @@ class Form extends GenericContainer
         $this->parsedFile = $this->twig->render($file, [
             'data' => $data,
             'prod' => $clonedFields,
-            'logo' => $this->nonStaticConfig->getProperty('logo_image_path'),
+            'logo' => '/sys/logo_img/logo.png',
         ]);
     }
 }

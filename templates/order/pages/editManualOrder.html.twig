@@ -47,20 +47,20 @@
                         {% for product in order.getManualProductCarts %}
                           <div class="input-group my-1 w-100" id="cloneableField">
                             <div class="col-4">
-                              <input type="hidden" input-number='true' input-name="cloneableField" value="1">
-                              <select class="load-models form-control" name="cloneableField0[model]" id="model" defaultClass="load-models form-control" required>
+                              <input type="hidden" input-number="true" input-name="cloneableField" value="{{ loop.index - 1 }}">
+                              <select class="load-models form-control" name="cloneableField{{ loop.index - 1 }}[model]" id="model" defaultClass="load-models form-control" required >
                                 <option value="{{ product.getProductName }}">{{ product.getProductName }}</option>
                               </select>
                             </div>
                             <div class="col">
-                              <input type="hidden" name="cloneableField0[money]" id="money" converted-value="" value="{{ product.productPrice }}">
+                              <input type="hidden" name="cloneableField{{ loop.index - 1 }}[money]" id="money" converted-value="" value="{{ product.productPrice }}">
                               <input type="text" class="form-control numbers-only auto-float-convert-blur" id="price" placeholder="Preço" required="required" value="R$ {{ product.productPrice | format(2, '.', ',') }}">
                             </div>
                             <div class="col">
-                              <input type="number" class="form-control col" name="cloneableField0[amount]" id="amount" placeholder="Qnt" required="required" value="{{ product.productAmount }}">
+                              <input type="number" class="form-control col" name="cloneableField{{ loop.index - 1 }}[amount]" id="amount" placeholder="Qnt" required="required" value="{{ product.productAmount }}">
                             </div>
                             <div class="col-2">
-                              <input type='text' class="form-control money-mask not-disable" id="totalPrice" value="R$ {{ (product.productPrice*product.productAmount)*100 | format(2, ',', '.') }}" disabled></div>
+                              <input type="text" class="form-control money-mask not-disable" id="totalPrice" value="R$ {{ (product.productPrice*product.productAmount)*100 | format(2, ',', '.') }}" disabled></div>
                             <div class="col">
                             <button type="submit" class="btn btn-success" add-btn="true">
                               <span class="fas fa-fw fa-plus" add-btn="true"></span>

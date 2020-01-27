@@ -9,7 +9,6 @@
 
 namespace App\Controller;
 
-use App\Config\NonStaticConfig;
 use App\Entity\PaymentType;
 use App\Entity\Product;
 use App\Entity\Transporter;
@@ -128,15 +127,10 @@ final class FormController extends AbstractController
         }
         $requestData = [
             'formName' => $formName,
-            'config' => new NonStaticConfig(),
             'formFill' => isset($formAllData) ? $formAllData->getArrayInArray() : null,
             'formData' => isset($formAllData) ? $formAllData->getSimpleArray() : null,
         ];
         if ($formName === 'order') {
-            $requestData['products'] = $this->getDoctrine()
-                ->getManager()
-                ->getRepository(Product::class)
-                ->findAll();
             $requestData['payments'] = $this->getDoctrine()
                 ->getManager()
                 ->getRepository(PaymentType::class)

@@ -93,20 +93,20 @@
                           {% for report in formFill %}
                             <div class="input-group my-1 w-100" id="cloneableField">
                               <div class="col-3">
-                                <input type="hidden" input-number="true" input-name="cloneableField" id="id" name="cloneableField0[id]" value="{{ report.id }}">
-                                <input type="text" class="form-control my-1" placeholder="Nome" id="name" name="cloneableField0[name]" value="{{ report.name }}" required> </div>
+                                <input type="hidden" input-number="true" input-name="cloneableField" id="id" name="cloneableField{{ loop.index }}[id]" value="{{ report.id }}">
+                                <input type="text" class="form-control my-1" placeholder="Nome" id="name" name="cloneableField{{ loop.index }}[name]" value="{{ report.name }}" required> </div>
                               <div class="col">
-                                <input type="text" class="form-control my-1" placeholder="Cidade" id="city" name="cloneableField0[city]" value="{{ report.city }}" required> </div>
+                                <input type="text" class="form-control my-1" placeholder="Cidade" id="city" name="cloneableField{{ loop.index }}[city]" value="{{ report.city }}" required> </div>
                               <div class="col-1">
-                                <input type="text" class="form-control my-1" placeholder="G" id="urnG" name="cloneableField0[urnG]" value="{{ report.urnG }}" required> </div>
+                                <input type="text" class="form-control my-1" placeholder="G" id="urnG" name="cloneableField{{ loop.index }}[urnG]" value="{{ report.urnG }}" required> </div>
                               <div class="col-1">
-                                <input type="text" class="form-control my-1" placeholder="M" id="urnM" name="cloneableField0[urnM]" value="{{ report.urnM }}" required> </div>
+                                <input type="text" class="form-control my-1" placeholder="M" id="urnM" name="cloneableField{{ loop.index }}[urnM]" value="{{ report.urnM }}" required> </div>
                               <div class="col-1">
-                                <input type="text" class="form-control my-1" placeholder="P" id="urnP" name="cloneableField0[urnP]" value="{{ report.urnP }}" required> </div>
+                                <input type="text" class="form-control my-1" placeholder="P" id="urnP" name="cloneableField{{ loop.index }}[urnP]" value="{{ report.urnP }}" required> </div>
                               <div class="col">
-                                <input type="text" class="form-control my-1" placeholder="Tipo" id="type" name="cloneableField0[type]" value="{{ report.type }}" required> </div>
+                                <input type="text" class="form-control my-1" placeholder="Tipo" id="type" name="cloneableField{{ loop.index }}[type]" value="{{ report.type }}" required> </div>
                               <div class="col">
-                                <input type="text" class="form-control my-1" placeholder="Valor" id="freight" name="cloneableField0[freight]" value="{{ report.freight }}" required> </div>
+                                <input type="text" class="form-control my-1" placeholder="Valor" id="freight" name="cloneableField{{ loop.index }}[freight]" value="{{ report.freight }}" required> </div>
                               <button type="submit" class="btn btn-success" add-btn="true">
                                 <span class="fas fa-fw fa-plus" add-btn="true"></span>
                               </button>
