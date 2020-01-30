@@ -4,7 +4,7 @@ namespace App\Model;
 
 use Andresmeireles\RespectAnnotation\RespectValidationAnnotation;
 use App\Utils\Andresmei\StringConvertions;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerBuilder;
 
 /**
@@ -27,7 +27,7 @@ abstract class Model
      */
     private $validator;
 
-    public function __construct(ObjectManager $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
         $this->serializer = SerializerBuilder::create()->build();

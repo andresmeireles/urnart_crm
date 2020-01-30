@@ -4,23 +4,31 @@
 version: "3.1"
 services:
 
+    redis:
+      image: redis:alpine
+      container_name: sa-redis
+
     mariadb:
       image: mariadb:10.4
-      container_name: sysadmin-mariadb
+      container_name: sa-mariadb
       working_dir: /application
       volumes:
         - .:/application
       environment:
-        - MYSQL_ROOT_PASSWORD=123
-        - MYSQL_DATABASE=sysadmin
+        - MYSQL_ROOT_PASSWORD=devtst
+        - MYSQL_DATABASE=dev
         - MYSQL_USER=user
-        - MYSQL_PASSWORD=123
+        - MYSQL_PASSWORD=usertst
       ports:
         - "8003:3306"
 
+    elasticsearch:
+      image: elasticsearch:6.5.4
+      container_name: sa-elasticsearch
+
     webserver:
       image: nginx:alpine
-      container_name: sysadmin-webserver
+      container_name: sa-webserver
       working_dir: /application
       volumes:
           - .:/application
@@ -30,9 +38,9 @@ services:
 
     php-fpm:
       build: phpdocker/php-fpm
-      container_name: sysadmin-php-fpm
+      container_name: sa-php-fpm
       working_dir: /application
       volumes:
         - .:/application
-        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.3/fpm/conf.d/99-overrides.ini
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
 

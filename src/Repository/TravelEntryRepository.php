@@ -4,8 +4,7 @@ namespace App\Repository;
 
 use App\Entity\TravelEntry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-
+use Doctrine\Common\Persistence\ManagerRegistry;
 /**
  * @method TravelEntry|null find($id, $lockMode = null, $lockVersion = null)
  * @method TravelEntry|null findOneBy(array $criteria, array $orderBy = null)
@@ -14,7 +13,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 final class TravelEntryRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, TravelEntry::class);
     }

@@ -71,7 +71,7 @@
         <div class="py-2">
             {% include "components/searchBar.html.twig" with {'data': info} %}  
         </div>
-        {% if orders == [] and manualOrder == [] %}
+        {% if manualOrder == [] %}
             <h3>Não ha pedidos cadastrados no momento. Você pode cadastralos clicando <a class="text-secondary" href="forms/order">aqui</a></h3>
         {% else %}
             <table class="table">
@@ -81,50 +81,6 @@
                 <th scope="col" class="text-center">Data Do Pedido</th>
                 <th scope="col">Ações</th>
                 </thead>
-                <tbody id="orders">
-                {% for order in orders %}
-                    {% if order.getReserved == 1 %}
-                        {% set status = 'Reservado' %}
-                    {% elseif order.getReserved == 2 %}
-                        {% set status = 'Fechado' %}
-                    {% else %}
-                        {% set status = 'Aberto' %}
-                    {% endif %}
-                    <tr>
-                        <td class="text-center">
-                            {{ order.getId }}
-                        </td>
-                        <td class="text-center">
-                            {{ order.getCustomer }}
-                        </td>
-                        <td class="text-center">
-                            {{ status }}
-                        </td>
-                        <td class="text-center">
-                            {{ order.getCreateDate | date('d/m/Y') }}
-                        </td>
-                        <td class="text-center">
-                            <span href="javascript:;" data-fancybox data-src="#view{{ order.getId }}"
-                                  class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
-                            {% if order.isOpen %}
-                                <span><a href="/order/action/edit/{{ order.getId }}"
-                                   class="badge badge-pill badge-success text-light cursor-decoration">Editar</a></span>
-                                <span reserve="h={{'valido' | makeHash }}&i={{ order.id }}" class="badge badge-pill badge-secondary cursor-decoration">Reservar</span>
-                                <span close="h={{ 'valido' | makeHash }}&i={{ order.id }}"
-                                      class="badge badge-pill badge-warning cursor-decoration">Fechar</span>
-                            {% elseif order.isClosed %}
-                                <a print="h={{ 'valido' | makeHash }}&i={{ order.getId }}" href="/order/action/print"
-                                   class="badge badge-pill badge-light cursor-decoration">Imprimir</a>
-                            {% else %}
-                                <span reopen="h={{ 'valido' | makeHash }}&i={{ order.id }}"
-                                      class="badge badge-pill badge-secondary cursor-decoration mx-1">Irradiar</span>
-                                <span close="h={{ 'valido' | makeHash }}&i={{ order.id }}"
-                                      class="badge badge-pill badge-warning cursor-decoration mx-1">Fechar</span>
-                            {% endif %}
-                            <a href="order/auth/manual/print/{{ order.id }}"><i class="fas fa-hand-point-right"></i></a>
-                        </td>
-                    </tr>
-                {% endfor %}
                 <tbody id="manual-list">
                 {% for order in manualOrder %}
                     <tr class="elRow">
@@ -140,7 +96,17 @@
                         <td class="">
                             <span href="javascript:;" data-fancybox data-src="#viewManualOrder{{ order.getId }}"
                                   class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
-                            <a print="h={{ 'valido' | makeHash }}&i={{ order.getId }}&r=ManualOrderReport" href="/order/action/print" class="badge badge-pill badge-success cursor-decoration">Imprimir</a>
+                            <button 
+                            class="badge badge-pill badge-success cursor-decoration" 
+                            style="border: none;"
+                            onclick="document.getElementById('printsubmit').click()">
+                                Imprimir
+                            </button>
+                                <form action="/order/action/print" method="POST" class="d-none">
+                                    <input type="hidden" name="orderId" value="{{ order.getId }}" />
+                                    <input type="submit" id="printsubmit"
+                                    value="Imprimir"/>
+                                </form>
                             {% if order.active == true %}
                                 <a class="badge badge-pill badge-warning order-edit" href="/order/manual/{{order.getId}}">
                                     Editar
@@ -160,9 +126,6 @@
             {{ knp_pagination_render(manualOrder) }}
         </div>
     </div>
-    {% for order in orders %}
-        {% include '/order/pages/viewOrder.html.twig' with {'order' : order } %}
-    {% endfor %}
     {% for order in manualOrder %}
         {% include '/order/pages/viewManualOrder.html.twig' with {'order' : order } %}
     {% endfor %}

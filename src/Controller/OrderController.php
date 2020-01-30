@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Estado;
 use App\Entity\ManualOrderReport;
-use App\Entity\Order;
 use App\Entity\PaymentType;
 use App\Entity\PessoaJuridica;
 use App\Entity\Product;
@@ -215,14 +214,12 @@ final class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/order/action/print", methods="GET")
+     * @Route("/order/action/print", methods="POST")
      */
     public function showOrderToOrder(Request $request): Response
     {
-        $hash = $request->query->get('h');
-        $orderId = $request->query->get('i');
-        $printRepository = sprintf('App\Entity\%s', $request->query->get('r'));
-        if ($hash === null || $orderId === null) {
+        $orderId = $request->request->get('orderId');
+        if ($orderId === null) {
             $this->addFlash(
                 'error',
                 'Alguma informação incosistente...'
@@ -230,7 +227,7 @@ final class OrderController extends AbstractController
             $this->redirectToRoute('order');
         }
         return $this->render('order/printOrder/print.html.twig', [
-            'order' => $this->getDoctrine()->getManager()->getRepository($printRepository)->find($orderId),
+            'order' => $this->getDoctrine()->getManager()->getRepository(ManualOrderReport::class)->find($orderId),
         ]);
     }
 }

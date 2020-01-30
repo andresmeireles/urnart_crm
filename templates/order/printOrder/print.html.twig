@@ -32,6 +32,11 @@
   #checklist th {
     font-size: 11px !important;
   }
+
+  .fl {
+    font-size: 23px !important;
+    font-weight: bold !important
+  }
 </style>
 
 <script>
@@ -141,7 +146,7 @@
   Porto = {{ order.getport }}
 </div>
 <div class="col-md-12 form-inline py-0">
-  <span class="mx-2"><b>OBS:</b></span><div class="form-control col">{{ order.comments }}</div>
+  <span class="mx-2"><b>OBS:</b></span><div class="form-control col fl">{{ order.comments }}</div>
 </div>
 <br>
 {# <table id="checklist" class="table table-bordered table-sm col-md-6">
@@ -206,7 +211,7 @@
   </tfoot>
 </table>
 <div class="col-md-12 form-inline">
-  <span class="mx-2"><b>OBS:</b></span><div class="form-control col">{{ order.comments }}</div>
+  <span class="mx-2"><b>OBS:</b></span><div class="form-control col fl">{{ order.comments }}</div>
 </div>
 </div>
 

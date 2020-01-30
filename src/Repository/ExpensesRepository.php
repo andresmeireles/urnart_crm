@@ -4,8 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Expenses;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-
+use Doctrine\Common\Persistence\ManagerRegistry;
 /**
  * @method Expenses|null find($id, $lockMode = null, $lockVersion = null)
  * @method Expenses|null findOneBy(array $criteria, array $orderBy = null)
@@ -14,7 +13,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 final class ExpensesRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Expenses::class);
     }

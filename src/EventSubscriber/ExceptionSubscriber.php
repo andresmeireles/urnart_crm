@@ -2,9 +2,10 @@
 
 namespace App\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
 final class ExceptionSubscriber implements EventSubscriberInterface
@@ -15,12 +16,12 @@ final class ExceptionSubscriber implements EventSubscriberInterface
      * @param   GetResponseForExceptionEvent $event
      * @return  Response|ExceptionSubscriber
      */
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event)
     {
 //        if (getEnv('APP_ENV') === 'dev') {
 //            return $this;
 //        }
-        $exceptionClass = get_class($event->getException());
+        $exceptionClass = get_class($event);
         $exception = $exceptionClass === 'Exception' ?
                         $exceptionClass :
                         substr_replace(
@@ -104,7 +105,7 @@ final class ExceptionSubscriber implements EventSubscriberInterface
      * @param  string                       $type
      */
     private function triggerFlashMessage(
-        GetResponseForExceptionEvent $event,
+        ExceptionEvent $event,
         string $message,
         string $type
     ): void {

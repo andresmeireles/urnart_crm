@@ -4,8 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ProductInventory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-
+use Doctrine\Common\Persistence\ManagerRegistry;
 /**
  * @method ProductInventory|null find($id, $lockMode = null, $lockVersion = null)
  * @method ProductInventory|null findOneBy(array $criteria, array $orderBy = null)
@@ -14,7 +13,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 final class ProductInventoryRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ProductInventory::class);
     }
