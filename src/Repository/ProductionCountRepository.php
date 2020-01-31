@@ -1,10 +1,16 @@
-<?php declare(strict_types = 1);
+<?php 
+
+declare(strict_types = 1);
 
 namespace App\Repository;
 
 use App\Entity\ProductionCount;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\FetchMode;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\ResultSetMapping;
+
 /**
  * @method ProductionCount|null find($id, $lockMode = null, $lockVersion = null)
  * @method ProductionCount|null findOneBy(array $criteria, array $orderBy = null)
@@ -16,6 +22,20 @@ final class ProductionCountRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ProductionCount::class);
+    }
+
+    public function getYearReport(string $year): array
+    {
+        $em = $this->getEntityManager()->getConnection();
+        $queryString = "SELECT MONTH(date) AS 'month', sum(amount) AS 'value' 
+        FROM production_count 
+        WHERE MONTH(date) BETWEEN 01 AND 12 AND YEAR(date) = ? GROUP BY MONTH(date)";
+
+        $query = $em->prepare($queryString);
+        $query->bindValue(1, $year);
+        $query->execute();
+
+        return $query->fetchAll();
     }
 
     /**

@@ -2,20 +2,22 @@
 
 namespace App\Controller;
 
-use App\Config\NonStaticConfig;
-use App\Entity\ModelName;
 use App\Entity\Survey;
-use App\Model\ProductionCountModel;
+use App\Entity\ModelName;
 use App\Model\ReportModel;
 use App\Model\SurveyModel;
+use App\Config\NonStaticConfig;
+use Doctrine\ORM\EntityManager;
+use App\Model\ProductionCountModel;
 use App\Utils\Andresmei\MyDateTime;
-use App\Utils\Andresmei\NestedArraySeparator;
-use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\CustomException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Utils\Andresmei\StringConvertions;
+use App\Repository\ProductionCountRepository;
+use App\Utils\Andresmei\NestedArraySeparator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class ReportController extends AbstractController
 {
@@ -134,14 +136,18 @@ final class ReportController extends AbstractController
     /**
      * @Route("/report/productionCount", name="prod_count", methods="GET")
      */
-    public function openProductionCountReportIndexPage(ProductionCountModel $model): Response
-    {
+    public function openProductionCountReportIndexPage(
+        ProductionCountModel $model,
+        ProductionCountRepository $productionCountRepository
+    ): Response {
         /** @var string $today */
         $today = (new MyDateTime())->output('d-m-Y');
         $aMonthDate = (new MyDateTime())->minusDate('P1M')->output('d-m-Y');
-        $aYearnDate = (new MyDateTime())->minusDate('P1Y')->output('d-m-Y');
         $productionByDayOnMonth = $model->getByDateIntervalProductAmount($aMonthDate, $today);
-        $monthChart = $model->getByDateIntervalProductAmount($aYearnDate, $today, 'm-Y');
+        $year = (new \DateTime('now'))->format('Y');
+        $monthChart = $productionCountRepository->getYearReport($year);
+        $lastYear = (int) $year - 1;
+        $monthChartOfLastYear = $productionCountRepository->getYearReport((string) $lastYear);
         $modelNames = $this->getDoctrine()
             ->getRepository(ModelName::class)
             ->findBy([], ['name' => 'ASC']);
@@ -149,6 +155,7 @@ final class ReportController extends AbstractController
         return $this->render('report/pages/productionCount.html.twig', [
             'dateChart' => $productionByDayOnMonth,
             'monthChart' => $monthChart,
+            'monthChartOfLastYear' => $monthChartOfLastYear,
             'modelNames' => $modelNames,
         ]);
     }
@@ -169,6 +176,7 @@ final class ReportController extends AbstractController
         $reportPage = sprintf('report/pages/%s.html.twig', $reportType);
         $str = (new StringConvertions())->snakeToCamelCase($reportType);
         $repository = sprintf('App\Entity\%s', ucfirst($str));
+        /** @var EntityManager */
         $entityManager = $this->getDoctrine()->getManager();
         $query = $entityManager->createQuery(
             sprintf(

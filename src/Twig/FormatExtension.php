@@ -45,10 +45,9 @@ final class FormatExtension extends AbstractExtension
     }
 
     /**
-     * @param int $month
      * @return string
      */
-    public function numMonthConverter(int $month): string
+    public function numMonthConverter($month): string
     {
         $months = [
             1 => 'Janeiro',

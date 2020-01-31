@@ -3,6 +3,15 @@
 ###############################################################################
 version: "3.1"
 services:
+        
+    blackfire_agent:
+      image: blackfire/blackfire
+      restart: always
+      environment:
+        BLACKFIRE_SERVER_ID: 390e6f77-417b-414b-9832-b509b4812357
+        BLACKFIRE_SERVER_TOKEN: 84dfb38b2c664a83e5a3a43eb143942a7395949a0a781350835aa7748e6b74da 
+        BLACKFIRE_CLIENT_ID: 3494667e-3845-4922-aa53-1d777215b27f
+        BLACKFIRE_CLIENT_TOKEN: 70daf1f2a5c9d29b4b1aaad35c91d641c07e4c2cdf26943cce4e7c7fc470ea0b
 
     redis:
       image: redis:alpine
@@ -43,4 +52,5 @@ services:
       volumes:
         - .:/application
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+        - ./phpdocker/php-fpm/zz-blackfire.ini:/usr/local/etc/php/7.4/fpm/conf.d/zz-blackfire.ini
 
