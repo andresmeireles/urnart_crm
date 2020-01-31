@@ -99,12 +99,12 @@
                             <button 
                             class="badge badge-pill badge-success cursor-decoration" 
                             style="border: none;"
-                            onclick="document.getElementById('printsubmit').click()">
+                            onclick="document.getElementById('printsubmit{{ order.getId }}').click()">
                                 Imprimir
                             </button>
                                 <form action="/order/action/print" method="POST" class="d-none">
                                     <input type="hidden" name="orderId" value="{{ order.getId }}" />
-                                    <input type="submit" id="printsubmit"
+                                    <input type="submit" id="printsubmit{{ order.getId }}"
                                     value="Imprimir"/>
                                 </form>
                             {% if order.active == true %}
