@@ -1,133 +1,132 @@
 {% extends 'index.html.twig' %}
-{% block title %}Pedidos{% endblock %}
+{% block title %}Pedidos
+{% endblock %}
 {% block content %}
 <div class="row">
-    {% if version < 2 %}
-    <!-- second sidebar -->
-    <div class="col bg-secondary" style="margin-left: -3px;">
-        <div class="sidebar-sticky">
-            <ul class="list-unstyled">
-                <li class="px-3"><span class="px-3 mx-3">&nbsp;</span></li>
-                <li class="noline text d-none">
-                    <a href="/order/create">
-                        <div class="d-flex align-items-center">
-                            <span class="mx-2 my-2 btn btn-outline-light"><b>Fazer Pedido</b></span>
-                        </div>
-                    </a>
-                </li>
-                <li class="noline text">
-                    <a href="/forms/order">
-                        <div class="d-flex align-items-center">
-                            <span class="mx-2 my-2 btn btn-outline-light"><b>Pedido Manual</b></span>
-                        </div>
-                    </a>
-                </li>
-                <li class="noline d-none"> {# automatic reports #}
-                    {#<a href="/order/list?type=">#} <!-- href="/person/customer" -->
-                        <div class="d-flex align-items-center">
-                            <span class="mx-2 my-2 btn btn-outline-light">Lista de pedidos</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="noline">
-                    <a href="/order/manual/list">
-                        <div class="d-flex align-items-center">
-                            <span class="mx-2 my-2 btn btn-outline-light">Lista de pedidos</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- end of seccond sidebar -->
-    {% endif %}
-    {% for label, messages in app.flashes %}
-        <script>
-            {% for message in messages %}
-            setTimeout(() => {
-                var notify = new noty({
-                    text: "{{ message }}",
-                    layout: 'topCenter',
-                    type: "{{ label }}",
-                    theme: 'bootstrap-v4',
-                    animation: {
-                        open: 'animated fadeInUp', // Animate.css class names
-                        close: 'animated fadeOutDown' // Animate.css class names
-                    }
-                }).show()
-                notify.setTimeout(2500)
-            }, 1000)
-            {% endfor %}
-        </script>
-    {% endfor %}
-    <div class="col px-3">
-        {% set info = {
+	{% if version < 2 %}
+		<!-- second sidebar -->
+		<div class="col bg-secondary" style="margin-left: -3px;">
+			<div class="sidebar-sticky">
+				<ul class="list-unstyled">
+					<li class="px-3">
+						<span class="px-3 mx-3">&nbsp;</span>
+					</li>
+					<li class="noline text d-none">
+						<a href="/order/create">
+							<div class="d-flex align-items-center">
+								<span class="mx-2 my-2 btn btn-outline-light">
+									<b>Fazer Pedido</b>
+								</span>
+							</div>
+						</a>
+					</li>
+					<li class="noline text">
+						<a href="/forms/order">
+							<div class="d-flex align-items-center">
+								<span class="mx-2 my-2 btn btn-outline-light">
+									<b>Pedido Manual</b>
+								</span>
+							</div>
+						</a>
+					</li>
+					<li class="noline d-none">
+						{# automatic reports #}
+						{#<a href="/order/list?type=">#}
+						<!-- href="/person/customer" -->
+							<div class="d-flex align-items-center"> <span class="mx-2 my-2 btn btn-outline-light">Lista de pedidos</span>
+						</div>
+					</li>
+				</a>
+			</li>
+			<li class="noline">
+				<a href="/order/manual/list">
+					<div class="d-flex align-items-center">
+						<span class="mx-2 my-2 btn btn-outline-light">Lista de pedidos</span>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<!-- end of seccond sidebar -->{% endif %}{% for label, messages in app.flashes %}
+<script>
+	{% for message in messages %}
+setTimeout(() => {
+var notify = new noty({
+text: "{{ message }}",
+layout: 'topCenter',
+type: "{{ label }}",
+theme: 'bootstrap-v4',
+animation: {
+open: 'animated fadeInUp', // Animate.css class names
+close: 'animated fadeOutDown' // Animate.css class names
+}
+}).show()
+notify.setTimeout(2500)
+}, 1000){% endfor %}
+</script>{% endfor %}<div class="col px-3">
+{% set info = {
             entity: 'ManualOrderReport',
             route: '/order',
             name: 'order',
             field: 'customerName',
             placeholder: 'Ordem' 
         } %}
-        <div class="py-2">
-            {% include "components/searchBar.html.twig" with {'data': info} %}  
-        </div>
-        {% if manualOrder == [] %}
-            <h3>Não ha pedidos cadastrados no momento. Você pode cadastralos clicando <a class="text-secondary" href="forms/order">aqui</a></h3>
-        {% else %}
-            <table class="table">
-                <thead>
-                <th scope="col" class="text-center">Numero do Pedido</th>
-                <th scope="col" class="text-center">Cliente</th>
-                <th scope="col" class="text-center">Data Do Pedido</th>
-                <th scope="col">Ações</th>
-                </thead>
-                <tbody id="manual-list">
-                {% for order in manualOrder %}
-                    <tr class="elRow">
-                        <td class="text-center">
-                            <i class="badge badge-pill badge-light">M</i> {{ order.getId }}
-                        </td>
-                        <td class="text-center">
-                            {{ order.getCustomerName }}
-                        </td>
-                        <td class="text-center">
-                            {{ order.getCreateDate | date('d/m/Y') }}
-                        </td>
-                        <td class="">
-                            <span href="javascript:;" data-fancybox data-src="#viewManualOrder{{ order.getId }}"
-                                  class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
-                            <button 
-                            class="badge badge-pill badge-success cursor-decoration" 
-                            style="border: none;"
-                            onclick="document.getElementById('printsubmit{{ order.getId }}').click()">
-                                Imprimir
-                            </button>
-                                <form action="/order/action/print" method="POST" class="d-none">
-                                    <input type="hidden" name="orderId" value="{{ order.getId }}" />
-                                    <input type="submit" id="printsubmit{{ order.getId }}"
-                                    value="Imprimir"/>
-                                </form>
-                            {% if order.active == true %}
-                                <a class="badge badge-pill badge-warning order-edit" href="/order/manual/{{order.getId}}">
-                                    Editar
-                                </a>
-                                <a class="badge badge-pill badge-danger order-close" href="/order/manual/{{order.getId}}">
-                                    Fechar
-                                </a>
-                            {% endif %}
-                            <a href="order/auth/manual/print/{{ order.id }}" class="badge badge-pill badge-secondary" target="_blank"><i class="fas fa-hand-point-right" title="Imprimir autorização"></i></a>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-        <div class="navigation">
-            {{ knp_pagination_render(manualOrder) }}
-        </div>
-    </div>
-    {% for order in manualOrder %}
-        {% include '/order/pages/viewManualOrder.html.twig' with {'order' : order } %}
-    {% endfor %}
+<div class="py-2">
+	{% include "components/searchBar.html.twig" with {'data': info} %}
 </div>
-{% endblock %}
+{% if manualOrder == [] %}
+	<h3>Não ha pedidos cadastrados no momento. Você pode cadastralos clicando
+		<a class="text-secondary" href="forms/order">aqui</a>
+	</h3>
+{% else %}
+	<table class="table">
+		<thead>
+			<th scope="col" class="text-center">Numero do Pedido</th>
+			<th scope="col" class="text-center">Cliente</th>
+			<th scope="col" class="text-center">Data Do Pedido</th>
+			<th scope="col">Ações</th>
+		</thead>
+		<tbody id="manual-list">
+			{% for order in manualOrder %}
+				<tr class="elRow">
+					<td class="text-center">
+						<i class="badge badge-pill badge-light">M</i>
+						{{ order.getId }}
+					</td>
+					<td class="text-center">
+						{{ order.getCustomerName }}
+					</td>
+					<td class="text-center">
+						{{ order.getCreateDate | date('d/m/Y') }}
+					</td>
+					<td class="">
+						<span href="javascript:;" data-fancybox data-src="#viewManualOrder{{ order.getId }}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
+						<button class="badge badge-pill badge-success cursor-decoration" style="border: none;" onclick="document.getElementById('printsubmit{{ order.getId }}').click()">
+							Imprimir
+						</button>
+						<form action="/order/action/print" method="POST" class="d-none" target="_blank">
+							<input type="hidden" name="orderId" value="{{ order.getId }}"/>
+							<input type="submit" id="printsubmit{{ order.getId }}" value="Imprimir"/>
+						</form>
+						{% if order.active == true %}
+							<a class="badge badge-pill badge-warning order-edit" href="/order/manual/{{order.getId}}">
+								Editar
+							</a>
+							<a class="badge badge-pill badge-danger order-close" href="/order/manual/{{order.getId}}">
+								Fechar
+							</a>
+						{% endif %}
+						<a href="order/auth/manual/print/{{ order.id }}" class="badge badge-pill badge-secondary" target="_blank">
+							<i class="fas fa-hand-point-right" title="Imprimir autorização"></i>
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endif %}
+<div class="navigation">
+	{{ knp_pagination_render(manualOrder) }}
+</div></div>{% for order in manualOrder %}
+{% include '/order/pages/viewManualOrder.html.twig' with {'order' : order } %}{% endfor %}</div>{% endblock %}

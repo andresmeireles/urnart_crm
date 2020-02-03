@@ -25,7 +25,7 @@ if (document.querySelector('#form-order') || document.querySelector('#automaticO
 				sendOrder(element.target, 'edit');
 			}
 		});
-		
+
 		document.addEventListener('click', function (el) {
 			if (el.target.id === 'portCheck') {
 				var port = document.querySelector('#port');
@@ -41,9 +41,9 @@ if (document.querySelector('#form-order') || document.querySelector('#automaticO
 
 			if (el.target.id === 'discountCheck') {
 				var discount = document.querySelector('#discount');
-				
+
 				if (el.target.checked === true) {
-					discount.removeAttribute('disabled');				
+					discount.removeAttribute('disabled');
 				} else {
 					discount.value = '';
 					document.querySelector('#hiddenDiscount').value = 0;
@@ -75,7 +75,7 @@ if (document.querySelector('#form-order') || document.querySelector('#automaticO
 				var qnt = parseInt(row.querySelector('#amount').value);
 				row.querySelector('#totalPrice').value = parseInt(
 					row.querySelector('#money').value
-					) * qnt;
+				) * qnt;
 
 				calculateProducts();
 				recalculate();
@@ -112,7 +112,7 @@ if (document.querySelector('#form-order') || document.querySelector('#automaticO
 			var allPricesSum = 0;
 			let allAmountSum = 0;
 
-			for (var c=0; c < allPrices.length; c++) {
+			for (var c = 0; c < allPrices.length; c++) {
 				let price = parseInt(allPrices[c].value);
 				let amount = parseInt(allAmount[c].value);
 				allPricesSum += price * amount;
@@ -120,19 +120,19 @@ if (document.querySelector('#form-order') || document.querySelector('#automaticO
 			}
 
 			document.querySelector('#finalAmount').innerHTML = isNaN(allAmountSum) ?
-			0 :
-			allAmountSum;
+				0 :
+				allAmountSum;
 			allProductsPriceFloat.value = allPricesSum;
 			allProductsPrice.innerHTML = money(allPricesSum);
 
 			return true;
 		};
 
-		const recalculate = function () { 
-			var products = isNaN(parseInt(allProductsPriceFloat.value)) ? 0 : parseInt(allProductsPriceFloat.value); 
+		const recalculate = function () {
+			var products = isNaN(parseInt(allProductsPriceFloat.value)) ? 0 : parseInt(allProductsPriceFloat.value);
 			var freight = (isNaN(parseInt(document.querySelector('#hiddenFreight').value)) ?
 				0 :
-				parseInt(document.querySelector('#hiddenFreight').value) );
+				parseInt(document.querySelector('#hiddenFreight').value));
 			var discount = (isNaN(parseInt(document.querySelector('#hiddenDiscount').value)) ?
 				0 :
 				parseInt(document.querySelector('#hiddenDiscount').value));
@@ -144,8 +144,8 @@ if (document.querySelector('#form-order') || document.querySelector('#automaticO
 
 		const sendOrder = (form, type) => {
 			let requestUrl = type === 'create' ?
-			'/order/async/createManualOrder' :
-			`/order/async/editManualOrder/${form.id}`; 
+				'/order/async/createManualOrder' :
+				`/order/async/editManualOrder/${form.id}`;
 			Axios({
 				method: 'POST',
 				url: requestUrl,
@@ -185,13 +185,12 @@ if (document.querySelector('#form-order') || document.querySelector('#automaticO
 						let cod = findElementCod(element, opt);
 						let elementWithAllFields = this.$control[0].closest('#cloneableField');
 						let priceField = elementWithAllFields.querySelector('#price');
-						console.log(cod);
 						setItemValue(cod, priceField);
 						let disabledFields = elementWithAllFields.querySelectorAll('[disabled]')
 						for (let unf of disabledFields) {
 							if (unf.classList.contains('not-disable'))
 								continue;
-								
+
 							unf.removeAttribute('disabled');
 						}
 					},
@@ -204,13 +203,13 @@ if (document.querySelector('#form-order') || document.querySelector('#automaticO
 			let res = '';
 			Axios({
 				method: 'POST',
-				url: '/register/get',
+				url: '/register/getProduct/price',
 				data: {
 					'entity': 'ModelName',
 					'id': itemId
 				}
 			}).then((response) => {
-				priceField.value = response.data.suggested_price;
+				priceField.value = response.data;
 				priceField.dispatchEvent(new Event('change'));
 			})
 		}
@@ -221,7 +220,7 @@ if (document.querySelector('#form-order') || document.querySelector('#automaticO
 					return opt.cod;
 				}
 			}
-		}  
+		}
 
 		const loadSelectFields = () => {
 			let selectFields = document.querySelectorAll('#cloneableField select');

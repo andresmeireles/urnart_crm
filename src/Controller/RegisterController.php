@@ -1,7 +1,10 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\ModelName;
 use App\Model\ModelsModel;
 use App\Utils\Exceptions\CustomException;
 use App\Utils\Generic\Crud;
@@ -9,13 +12,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Yaml\Yaml;
 
 final class RegisterController extends AbstractController
 {
     /**
      * @Route("/register", name="register")
-     * @return Response
      */
     public function index(): Response
     {
@@ -24,8 +25,7 @@ final class RegisterController extends AbstractController
 
     /**
      * @Route("/register/add/model", methods={"POST", "PUT"})
-     * @param Request $request
-     * @return Response
+     *
      * @throws \Exception
      */
     public function addModelRegister(Request $request, ModelsModel $modelsModel): Response
@@ -70,6 +70,7 @@ final class RegisterController extends AbstractController
     public function getGenericRegister(string $entity, Crud $getter)
     {
         $table = $getter->getJsonData($entity);
+
         return new Response($table);
     }
 
@@ -78,12 +79,13 @@ final class RegisterController extends AbstractController
      */
     public function getRegisterWithSimpleCriteria(string $entity, Request $request, Crud $getter)
     {
-        if (! $this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Algo deu muito errado :(');
         }
 
         $criteria = (array) json_decode($request->getContent());
         $result = $getter->getWithSimpleCriteriaJson($entity, $criteria);
+
         return new Response($result, Response::HTTP_OK);
     }
 
@@ -99,7 +101,27 @@ final class RegisterController extends AbstractController
             $request->request->get('id') ??
             json_decode($request->getContent())->id;
         $result = $getter->getRegisterById($entity, (int) $registryId);
-        return new Response($result);
+        dump($result);
+        die;
+
+        //return n($result);
+    }
+
+    /**
+     * @Route("/register/getProduct/price", methods={"POST"}, name="get_registry")
+     */
+    public function getProductPriceById(Request $request, Crud $getter): Response
+    {
+        $entity = $request->query->get('entity') ??
+            $request->request->get('entity') ??
+            json_decode($request->getContent())->entity;
+        $registryId = $request->query->get('id') ??
+            $request->request->get('id') ??
+            json_decode($request->getContent())->id;
+        /** @var ModelName */
+        $result = $getter->getRegisterById($entity, (int) $registryId);
+
+        return new Response((string) $result->getSuggestedPrice());
     }
 
     /**
