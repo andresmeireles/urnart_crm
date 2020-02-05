@@ -1,15 +1,12 @@
-<?php 
+<?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Repository;
 
 use App\Entity\ProductionCount;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\DBAL\FetchMode;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * @method ProductionCount|null find($id, $lockMode = null, $lockVersion = null)
@@ -39,16 +36,13 @@ final class ProductionCountRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array $search
-     * @param \DateTimeInterface $beginDate
-     * @param \DateTimeInterface $endDate
-     * @return array|null|ProductionCount
+     * @return array|ProductionCount|null
      */
     public function findInTimeInterval(array $search, \DateTimeInterface $beginDate, \DateTimeInterface $endDate): ?array
     {
         $searchList = '';
         foreach ($search as $ser) {
-            $searchList .= 'p.' . $ser;
+            $searchList .= 'p.'.$ser;
         }
         $searchList = trim($searchList, ',');
 //        $searchList .= array_map(static function ($name) { return 'p.' . $name; }, $search);
@@ -61,14 +55,10 @@ final class ProductionCountRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery($queryConsult)
             ->setParameter('bdate', $beginDate->format('Y-m-d 00:00:00'))
             ->setParameter('edate', $endDate->format('Y-m-d 23:59:59'));
+
         return $query->execute();
     }
 
-    /**
-     * @param \DateTimeInterface $beginDate
-     * @param \DateTimeInterface $endDate
-     * @return string|null
-     */
     public function getAmountByDates(\DateTimeInterface $beginDate, \DateTimeInterface $endDate): ?string
     {
         return $this->getEntityManager()->createQuery(
@@ -78,11 +68,6 @@ final class ProductionCountRepository extends ServiceEntityRepository
          ->execute()[0][1] ?? null;
     }
 
-    /**
-     * @param \DateTimeInterface $beginDate
-     * @param \DateTimeInterface $endDate
-     * @return array|null
-     */
     public function getDistinctProductAmountsByDate(\DateTimeInterface $beginDate, \DateTimeInterface $endDate): ?array
     {
         $occurrences = [];
@@ -108,11 +93,6 @@ final class ProductionCountRepository extends ServiceEntityRepository
         return $occurrences;
     }
 
-    /**
-     * @param \DateTimeInterface $beginDate
-     * @param \DateTimeInterface $endDate
-     * @return array|null
-     */
     public function getProductHeightsListByDate(\DateTimeInterface $beginDate, \DateTimeInterface $endDate): ?array
     {
         $allProductsList = [];

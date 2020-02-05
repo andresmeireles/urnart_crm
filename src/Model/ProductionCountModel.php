@@ -4,15 +4,17 @@ namespace App\Model;
 
 use App\Entity\ModelName;
 use App\Entity\ProductionCount;
+use App\Repository\ProductionCountRepository;
 use App\Utils\Andresmei\FlashResponse;
 use App\Utils\Andresmei\MyDateTime;
 use App\Utils\Andresmei\StdResponse;
 use App\Utils\Exceptions\CustomException;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\Validator\Constraints\Traverse;
 
 final class ProductionCountModel extends Model
 {
+    private ProductionCountRepository $repository;
+
     /**
      * @param array $productionInformation
      * @return FlashResponse
@@ -50,48 +52,71 @@ final class ProductionCountModel extends Model
     }
 
     /**
+    * @param string $date
+    * @return array
+    * @throws CustomException
+    */
+   public function makeDailyProductionCouterReport(string $date): array
+   {
+       $dateTime = new \DateTime($date);
+       $today = $this->changeIfWeekend($dateTime);
+       $yesterday = $this->changeIfWeekend($dateTime->modify('-1 day'));
+   }
+
+   private function changeIfWeekend(\DateTime $date): \Datetime
+   {
+       if ($date->format('w') === '0') {
+           return $this->changeIfWeekend($date->modify('-1 day'));
+       }
+
+       return $date;
+   }
+
+    /**
      * @param string $date
      * @return array
      * @throws CustomException
      */
-    public function makeDailyProductionCount(string $date): array
-    {
-        $reportDate = $date;
-        $todayTotal = 0;
-        $yesterdayTotal = 0;
-        if ($reportDate === '') {
-            throw new CustomException('Não é possível criar relátorio sem datas');
-        }
-        $explodedDate = explode('-', $reportDate);
-        $monthBegin = sprintf('%s-%s-%s', '01', $explodedDate[1], $explodedDate[2]);
-        $yesterday = sprintf('%s-%s-%s', ((int) $explodedDate[0]) - 1, $explodedDate[1], $explodedDate[2]);
-        if (strtolower((new \DateTime($yesterday))->format('l')) === 'sunday') {
-            $yesterday = sprintf('%s-%s-%s', ((int) $explodedDate[0]) - 3, $explodedDate[1], $explodedDate[2]);
-        }
-        $todayReport = $this->getByDateIntervalProductAmount($monthBegin, $reportDate);
-        $yesterdayReport = $this->getByDateIntervalProductAmount($monthBegin, $yesterday);
+    // public function makeDailyProductionCount(string $date): array
+    // {
+    //     $reportDate = $date;
+    //     $todayTotal = 0;
+    //     $yesterdayTotal = 0;
+    //     if ($reportDate === '') {
+    //         throw new CustomException('Não é possível criar relátorio sem datas');
+    //     }
+    //     $explodedDate = explode('-', $reportDate);
+    //     $monthBegin = sprintf('%s-%s-%s', '01', $explodedDate[1], $explodedDate[2]);
+    //     $yesterday = sprintf('%s-%s-%s', ((int) $explodedDate[0]) - 1, $explodedDate[1], $explodedDate[2]);
+    //     if (strtolower((new \DateTime($yesterday))->format('l')) === 'sunday') {
+    //         $yesterday = sprintf('%s-%s-%s', ((int) $explodedDate[0]) - 3, $explodedDate[1], $explodedDate[2]);
+    //     }
+    //     dump(new DateTime($reportDate), (new DateTime($reportDate))->modify('+1 day'), (new DateTime($reportDate))->modify('-1 day')); die;
+    //     $this->repository->getProductionInRageDate($monthBegin, $reportDate);
+    //     $todayReport = $this->getByDateIntervalProductAmount($monthBegin, $reportDate);
+    //     $yesterdayReport = $this->getByDateIntervalProductAmount($monthBegin, $yesterday);
 
-        foreach ($todayReport as $tr) {
-            /** @var ProductionCount $value */
-            foreach ($tr as $value) {
-                $todayTotal += $value->getAmount();
-            }
-        }
+    //     foreach ($todayReport as $tr) {
+    //         /** @var ProductionCount $value */
+    //         foreach ($tr as $value) {
+    //             $todayTotal += $value->getAmount();
+    //         }
+    //     }
 
-        foreach ($yesterdayReport as $tr) {
-            /** @var \App\Entity\ProductionCount $value */
-            foreach ($tr as $value) {
-                $yesterdayTotal += $value->getAmount();
-            }
-        }
+    //     foreach ($yesterdayReport as $tr) {
+    //         /** @var \App\Entity\ProductionCount $value */
+    //         foreach ($tr as $value) {
+    //             $yesterdayTotal += $value->getAmount();
+    //         }
+    //     }
 
-        return [
-            'today' => $reportDate,
-            'todayVal' => $todayTotal,
-            'yesterday' => $yesterday,
-            'yesterdayVal' => $yesterdayTotal,
-        ];
-    }
+    //     return [
+    //         'today' => $reportDate,
+    //         'todayVal' => $todayTotal,
+    //         'yesterday' => $yesterday,
+    //         'yesterdayVal' => $yesterdayTotal,
+    //     ];
+    // }
 
 
     /**

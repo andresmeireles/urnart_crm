@@ -1,23 +1,24 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Survey;
 use App\Entity\ModelName;
+use App\Entity\Survey;
+use App\Model\ProductionCountModel;
 use App\Model\ReportModel;
 use App\Model\SurveyModel;
-use App\Config\NonStaticConfig;
-use Doctrine\ORM\EntityManager;
-use App\Model\ProductionCountModel;
-use App\Utils\Andresmei\MyDateTime;
-use App\Utils\Exceptions\CustomException;
-use App\Utils\Andresmei\StringConvertions;
 use App\Repository\ProductionCountRepository;
+use App\Utils\Andresmei\MyDateTime;
 use App\Utils\Andresmei\NestedArraySeparator;
+use App\Utils\Andresmei\StringConvertions;
+use App\Utils\Exceptions\CustomException;
+use Doctrine\ORM\EntityManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class ReportController extends AbstractController
 {
@@ -34,8 +35,10 @@ final class ReportController extends AbstractController
     /**
      * @Route("/report/productionCount/mdr", name="make_report", methods="POST")
      */
-    public function makePrintReport(Request $request, ProductionCountModel $model): Response
-    {
+    public function makePrintReport(
+        Request $request,
+        ProductionCountModel $model
+    ): Response {
         $repoDate = $request->request->get('repo-date');
         $report = $model->makeDailyProductionCount($repoDate);
 
@@ -215,12 +218,12 @@ final class ReportController extends AbstractController
      */
     public function createGenericReportRegistry(Request $request, string $pageType, ReportModel $model): Response
     {
-        if (! $this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
+        if (!$this->isCsrfTokenValid('autenticateBoleto', $request->request->get('_csrf_token'))) {
             throw new CustomException('Token incorreto.');
         }
         $data = $request->request->all();
         $routeLink = $request->headers->get('referer');
-        if (! is_string($routeLink)) {
+        if (!is_string($routeLink)) {
             $routeLink = '/';
         }
         $result = $model->createGenericReport($pageType, $data);
@@ -268,11 +271,13 @@ final class ReportController extends AbstractController
                             $color,
                             $value->getSpecificity()
                         ),
-                        'c' => $color
+                        'c' => $color,
                     ];
                 }
+
                 return $arrays;
             }
+
             return [
                 'v' => $value->getId(),
                 'n' => sprintf(
@@ -281,7 +286,7 @@ final class ReportController extends AbstractController
                     $value->getHeight(),
                     $value->getSpecificity()
                 ),
-                'c' => null
+                'c' => null,
             ];
         }, $res);
         foreach ($modelNames as $key => $value) {
@@ -309,7 +314,7 @@ final class ReportController extends AbstractController
         $beginDate = $request->query->get('beginDate');
         $lastDate = $request->query->get('lastDate');
 
-        if ($beginDate !== null || $lastDate !== null) {
+        if (null !== $beginDate || null !== $lastDate) {
             $byDateResults = $model->searchByDate(
                 ucwords($pageType),
                 'boletoVencimento',
@@ -339,7 +344,7 @@ final class ReportController extends AbstractController
         string $entity,
         int $idConsult
     ): Response {
-        if ($request->getMethod() === 'POST' &&
+        if ('POST' === $request->getMethod() &&
             $this->isEncodedCSRFTokenValidPhrase(
                 $request->request->get('_csrf_token'),
                 'autenticateBoleto'
@@ -368,6 +373,7 @@ final class ReportController extends AbstractController
     {
         $entity = sprintf('App\Entity\%s', ucwords($entity));
         $result = $model->serializedGenericConsult($entity, $consultId);
+
         return new Response($result);
     }
 
@@ -380,6 +386,7 @@ final class ReportController extends AbstractController
         $customerData = (new NestedArraySeparator($data))->getArrayInArray();
         $surveyDate = (new MyDateTime())->format('d.m.Y');
         $result = $surveyModel->createRegistry($customerData, $surveyDate, 'travel_survey');
+
         return new Response($result['msg'], 200);
     }
 
@@ -400,6 +407,7 @@ final class ReportController extends AbstractController
         unset($data['surveyReferenceDate']);
 
         $response = $surveyModel->saveData($data, $customerId, $surveyReferenceDate);
+
         return new Response($response->getMessage(), $response->getHttpCode());
     }
 }

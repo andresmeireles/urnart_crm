@@ -1,20 +1,16 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Utils\Andresmei;
 
 use Symfony\Component\Cache\Exception\LogicException;
 
 /**
- * Class StringConvertions
- *
- * @package App\Utils\Andresmei
+ * Class StringConvertions.
  */
 final class StringConvertions
 {
-    /**
-     * @param string $snakeCaseString
-     * @return string
-     */
     public function snakeToCamelCase(string $snakeCaseString): string
     {
         $newStr = str_replace('_', ' ', $snakeCaseString);
@@ -23,13 +19,9 @@ final class StringConvertions
         $newStr = str_replace(' ', '', $newStr);
         $newStr[0] = strtolower($newStr[0]);
 
-        return $newStr;
+        return (string) $newStr;
     }
 
-    /**
-     * @param string $money
-     * @return float
-     */
     public function moneyToFloat(string $money): float
     {
         $commaToFloat = str_replace(',', '.', $money);
@@ -37,26 +29,23 @@ final class StringConvertions
         return (float) $commaToFloat;
     }
 
-    /**
-     * @param string $emptyString
-     * @return string|null
-     */
     public function emptyToNull(string $emptyString): ?string
     {
-        if ($emptyString === '') {
+        if ('' === $emptyString) {
             return null;
         }
+
         return $emptyString;
     }
 
     /**
-     * @param string|null $dateString
-     * @return string|null
      * @throws \Exception
      */
     public function strToDateString(?string $dateString): ?string
     {
-        if ($dateString === null || $dateString === '') {
+        dump($dateString);
+        die;
+        if (null === $dateString || '' === $dateString) {
             return null;
         }
 
@@ -71,11 +60,7 @@ final class StringConvertions
     }
 
     /**
-     * @param string $string
-     * @param string $delimiter
-     * @param string $type
      * @throws \Exception
-     * @return string
      */
     public function convertStringToDate(
         string $string,
@@ -89,11 +74,10 @@ final class StringConvertions
                 $day = (int) $date[0];
                 $month = (int) $date[1];
                 $year = (int) $date[2];
-                if (! checkdate($month, $day, $year)) {
-                    throw new LogicException(
-                        sprintf('Data informada DIA = %s, MES = %s, ANO = %s não é valida.', $day, $month, $year)
-                    );
+                if (!checkdate($month, $day, $year)) {
+                    throw new LogicException(sprintf('Data informada DIA = %s, MES = %s, ANO = %s não é valida.', $day, $month, $year));
                 }
+
                 return "{$month}{$divisor}{$day}{$divisor}{$year}";
                 break;
             default:
@@ -103,9 +87,10 @@ final class StringConvertions
     }
 
     /**
-     * @param string $type
      * @param $value
+     *
      * @return array|bool|float|int|string
+     *
      * @throws \Exception
      */
     public function convertValue(string $type, $value)
