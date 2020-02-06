@@ -55,7 +55,7 @@ final class OrderController extends AbstractController
             );
         }
         $manualOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy([], [
-            'lastUpdate' => 'DESC',
+            'createDate' => 'DESC',
         ]);
 
         $paginatedOrders = $paginator->paginate(

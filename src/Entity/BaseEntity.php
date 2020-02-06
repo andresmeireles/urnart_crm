@@ -53,6 +53,18 @@ abstract class BaseEntity
         return $this->createDate instanceof \DateTime ? $this->createDate->format('d-m-Y') : null;
     }
 
+    public function getCreateDateObject(): ?\DateTimeInterface
+    {
+        return $this->createDate;
+    }
+
+    public function setCreateDate(\DateTimeInterface $date): self
+    {
+        $this->createDate = $date;
+
+        return $this;
+    }
+
     public function getLastUpdate(): ?string
     {
         return $this->lastUpdate->format('d-m-Y');

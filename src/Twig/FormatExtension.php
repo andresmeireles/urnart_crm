@@ -8,6 +8,13 @@ use Twig\TwigFunction;
 
 final class FormatExtension extends AbstractExtension
 {
+    private CONST ALLOWED_STATUS = [
+        9 => 'checar',
+        2 => 'em debito',
+        1 => 'liberado',
+        0 => 'fechado'
+    ];
+
     /**
      * @return array
      */
@@ -20,6 +27,7 @@ final class FormatExtension extends AbstractExtension
             new TwigFilter('format_brl', [$this, 'formatBrl']),
             new TwigFilter('month_converter', [$this, 'monthConverter']),
             new TwigFilter('month', [$this, 'numMonthConverter']),
+            new TwigFilter('status_converter', [$this, 'statusConverter']),
         ];
     }
 
@@ -31,6 +39,7 @@ final class FormatExtension extends AbstractExtension
         return [
             new TwigFunction('formatBrl', [$this, 'formatBrl']),
             new TwigFunction('month_converter', [$this, 'monthConverter']),
+            new TwigFunction('status_converter', [$this, 'statusConverter']),
         ];
     }
 
@@ -42,6 +51,16 @@ final class FormatExtension extends AbstractExtension
     {
         $number = (float) $number;
         return number_format($number, 2, ',', '.');
+    }
+
+    public function statusConverter($status): string
+    {
+        $statusNumber = (int) $status;
+        if (!array_key_exists($statusNumber, self::ALLOWED_STATUS)) {
+            throw new \LogicException('Status não existe');
+        }
+
+        return self::ALLOWED_STATUS[$statusNumber];
     }
 
     /**

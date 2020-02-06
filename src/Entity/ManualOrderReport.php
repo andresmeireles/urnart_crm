@@ -12,6 +12,8 @@ use Andresmeireles\RespectAnnotation\ValidationAnnotation as Respect;
  */
 class ManualOrderReport extends BaseEntity
 {
+    private CONST ALLOWED_STATUS = [9,2,1,0];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -57,6 +59,15 @@ class ManualOrderReport extends BaseEntity
     private $comments;
 
     /**
+     * @ORM\Column(type="smallint", nullable=true)
+     * 9 - checar
+     * 2 - debito
+     * 1 - liberado
+     * 0 - fechado
+     */
+    private int $orderStatus = 9;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PaymentType")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -76,6 +87,16 @@ class ManualOrderReport extends BaseEntity
     {
         parent::__construct();
         $this->manualProductCarts = new ArrayCollection();
+    }
+
+    public function setActive(bool $active): self
+    {
+        if ($active === false) {
+            $this->orderStatus = 0;
+        }
+        parent::setActive($active);
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -175,6 +196,24 @@ class ManualOrderReport extends BaseEntity
     public function setComments(?string $comments): self
     {
         $this->comments = $comments;
+
+        return $this;
+    }
+
+    public function getOrderStatus(): ?int
+    {
+        return $this->orderStatus;
+    }
+
+    public function setOrderStatus(int $status): self
+    {
+        if (!in_array($status, self::ALLOWED_STATUS)) {
+            $status = 9;
+        }
+        if ($status === 0) {
+            parent::setActive(false);
+        }
+        $this->orderStatus = $status;
 
         return $this;
     }

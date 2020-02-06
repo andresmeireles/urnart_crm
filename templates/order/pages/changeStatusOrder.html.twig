@@ -1,0 +1,27 @@
+<div class="col-md-6 px-3 py-4" id="changeStatusOrder{{order.id}}" style="display:none">
+    <div class="clearfix">
+        <h2 class="float-left">
+            Pedido {{ order.id }}
+        </h2>
+        <div class="float-right">
+            {#<h5>Atualizado por: Alguém muito legal</h5>#}
+            <h5>Ultima Atualização: {{ order.getLastUpdate | date('d/m/Y') }}</h5>
+            <h5>Status: {{ order.getOrderStatus | status_converter | upper }}</h5>
+        </div>
+    </div>
+    <div class="col">
+        <form action="/order/manual/status/{{order.id}}" method="POST">
+            <div class="input-group">
+                <select class="form-control my-2" name="status" required>
+                    <option value="0" {{ 0 == order.getOrderStatus ? 'selected' : ''}}>FECHADO</option>
+                    <option value="1" {{ 1 == order.getOrderStatus ? 'selected' : ''}}>LIBERADO</option>
+                    <option value="2" {{ 2 == order.getOrderStatus ? 'selected' : ''}}>EM DEBITO</option>
+                    <option value="9" {{ 9 == order.getOrderStatus ? 'selected' : ''}}>CHECAR</option>
+                </select>
+            </div>
+            {% include 'components/csrfToken.html.twig' with {'tokenText': 'changeStatus'} %}
+            <input type="submit" class="btn btn-success btn-block" value="Alterar Status" />
+        </form>
+    </div>
+    
+</div>

@@ -67,6 +67,9 @@ final class ManualOrderModel extends Model
         $payment = $entityManager->getRepository(PaymentType::class)->find($data['formPg']);
         $orderObject->setPaymentType($payment);
         $this->addProductsInOrder($products, $orderObject);
+        if ($orderObject->getCreateDateObject()->format('d-m-Y') !== (new \DateTime())->format('d-m-Y')) {
+            $orderObject->setLastUpdate();
+        }
         $this->checkIfErrorExists($orderObject);
         if ($this->errors !== null) {
             throw new ValidationException($this->errors);

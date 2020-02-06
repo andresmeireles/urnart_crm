@@ -18,6 +18,21 @@ final class ManualOrderReportRepository extends ServiceEntityRepository
         parent::__construct($registry, ManualOrderReport::class);
     }
 
+    public function changeOrderStatus(ManualOrderReport $orderRegistry, int $status): bool
+    {
+        $order = $this->find($orderRegistry);
+        $order->setOrderStatus($status);
+        try {
+            $dbEm = $this->getEntityManager();
+            $dbEm->merge($order);
+            $dbEm->flush();
+
+            return true;
+        } catch (\PDOException $err) {
+            throw new \PDOException($err->getMessage());
+        }
+    }
+
     /**
      * @param string ...$fields
      * @return array|ManualOrderReport

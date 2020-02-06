@@ -85,6 +85,7 @@ notify.setTimeout(2500)
 			<th scope="col" class="text-center">Numero do Pedido</th>
 			<th scope="col" class="text-center">Cliente</th>
 			<th scope="col" class="text-center">Data Do Pedido</th>
+			<th scope="col" class="text-center">Status Do Pedido</th>
 			<th scope="col">Ações</th>
 		</thead>
 		<tbody id="manual-list">
@@ -100,26 +101,36 @@ notify.setTimeout(2500)
 					<td class="text-center">
 						{{ order.getCreateDate | date('d/m/Y') }}
 					</td>
+					<td class="text-center order-status">
+						{{ order.getOrderStatus | status_converter | upper }}
+					</td>
 					<td class="">
-						<span href="javascript:;" data-fancybox data-src="#viewManualOrder{{ order.getId }}" class="badge badge-pill badge-primary cursor-decoration">Visualizar</span>
-						<button class="badge badge-pill badge-success cursor-decoration" style="border: none;" onclick="document.getElementById('printsubmit{{ order.getId }}').click()">
-							Imprimir
-						</button>
-						<form action="/order/action/print" method="POST" class="d-none" target="_blank">
-							<input type="hidden" name="orderId" value="{{ order.getId }}"/>
-							<input type="submit" id="printsubmit{{ order.getId }}" value="Imprimir"/>
-						</form>
+						<span href="javascript:;" data-fancybox data-src="#viewManualOrder{{ order.getId }}" class="badge badge-pill badge-primary cursor-decoration">
+							<i class="fas fa-cross" title="visualizar"></i>
+						</span>
+						{% if order.active != false %}
+						<span href="javascript:;" data-fancybox data-src="#changeStatusOrder{{ order.getId }}" class="badge badge-pill cursor-decoration">
+							<i class="fas fa-cross" title="alterar status"></i>
+						</span>
+						{% endif %}
 						{% if order.active == true %}
+							<button class="badge badge-pill badge-success cursor-decoration order-print" style="border: none;" onclick="document.getElementById('printsubmit{{ order.getId }}').click()">
+								Imprimir
+							</button>
+							<form action="/order/action/print" method="POST" class="d-none" target="_blank">
+								<input type="hidden" name="orderId" value="{{ order.getId }}"/>
+								<input type="submit" id="printsubmit{{ order.getId }}" value="Imprimir"/>
+							</form>
 							<a class="badge badge-pill badge-warning order-edit" href="/order/manual/{{order.getId}}">
 								Editar
 							</a>
 							<a class="badge badge-pill badge-danger order-close" href="/order/manual/{{order.getId}}">
 								Fechar
 							</a>
+							<a href="order/auth/manual/print/{{ order.id }}" class="badge badge-pill badge-secondary order-auth" target="_blank">
+								<i class="fas fa-hand-point-right" title="Imprimir autorização"></i>
+							</a>
 						{% endif %}
-						<a href="order/auth/manual/print/{{ order.id }}" class="badge badge-pill badge-secondary" target="_blank">
-							<i class="fas fa-hand-point-right" title="Imprimir autorização"></i>
-						</a>
 					</td>
 				</tr>
 			{% endfor %}
@@ -128,5 +139,12 @@ notify.setTimeout(2500)
 {% endif %}
 <div class="navigation">
 	{{ knp_pagination_render(manualOrder) }}
-</div></div>{% for order in manualOrder %}
-{% include '/order/pages/viewManualOrder.html.twig' with {'order' : order } %}{% endfor %}</div>{% endblock %}
+</div>
+</div>
+{% for order in manualOrder %}
+	{% include '/order/pages/viewManualOrder.html.twig' with {'order' : order } %}
+	{% include '/order/pages/changeStatusOrder.html.twig' with {'order' : order } %}
+{% endfor %}
+</div>
+{% endblock %}
+

@@ -3,14 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\ManualOrderReport;
-use App\Entity\ManualProductCart;
 use App\Entity\ModelName;
 use App\Entity\PaymentType;
 use App\Entity\Transporter;
 use App\Model\ListModel;
 use App\Model\ManualOrderModel;
 use App\Model\OrderModel;
-use App\Utils\Andresmei\NestedArraySeparator;
+use App\Repository\ManualOrderReportRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,21 +25,28 @@ final class ManualOrderController extends AbstractController
 {
     use CSRFTokenCheck;
 
+    private ManualOrderReportRepository $manualOrderRepository;
+
+    public function __construct(ManualOrderReportRepository $manualOrderReportRepository)
+    {
+        $this->manualOrderRepository = $manualOrderReportRepository;
+    }
+
     /**
      * @Route("/order/manual/{orderId<\d+>}", methods={"DELETE"})
      */
     public function removeManualOrder(int $orderId, OrderModel $orderModel): Response
     {
-        $order = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
-        $cart = $this->getDoctrine()->getRepository(ManualProductCart::class)->findBy([
+        $order = $this->manualOrderRepository->find($orderId);
+        $cart = $this->manualOrderRepository->findBy([
             'manualOrderReport' => $orderId,
         ]);
         if (! $order instanceof ManualOrderReport) {
             throw new \Exception('Nada foi mandado para ser apagado');
         }
-        $orderModel->removeManualProductCart($cart);
+        $orderModel->removeManualProductCart((array) $cart);
         $orderModel->removeManualOrder($order);
-        return new Response(200);
+        return new Response('200');
     }
 
     /**
@@ -49,7 +55,7 @@ final class ManualOrderController extends AbstractController
     public function manualListing(Request $request, ListModel $listModel, PaginatorInterface $paginator): Response
     {
         $typeOfList = $request->query->get('type') ?? 'lastUpdate';
-        $lists = $typeOfList === 'bydate' ? [] : $this->getDoctrine()->getRepository(ManualOrderReport::class)->findBy(
+        $lists = $typeOfList === 'bydate' ? [] : $this->manualOrderRepository->findBy(
             [],
             [$typeOfList => 'ASC']
         );
@@ -78,12 +84,12 @@ final class ManualOrderController extends AbstractController
      */
     public function closeManualOrder(int $orderId, OrderModel $orderModel): Response
     {
-        $order = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
-        if (! $order instanceof ManualOrderreport) {
+        $order = $this->manualOrderRepository->find($orderId);
+        if (!$order instanceof ManualOrderreport) {
             throw new \Exception('Erro. pedido não pode ser fechado.');
         }
         $orderModel->closeManualOrder($order);
-        return new Response(200);
+        return new Response('200');
     }
 
     /**
@@ -93,25 +99,49 @@ final class ManualOrderController extends AbstractController
     {
         $typeOfList = $request->query->get('type');
         $jsonReturn = $listModel->getListOrderBy('ManualOrderReport', $typeOfList);
-        return new Response($jsonReturn);
+        return new Response(json_encode($jsonReturn));
     }
 
     /**
      * @Route("/order/createmanualorder", name="createManualOrder", methods="POST")
      */
-    public function createManualOrder(Request $request, ManualOrderModel $model): Response
+    // public function createManualOrder(Request $request, ManualOrderModel $model): Response
+    // {
+    //     $this->isEncodedCSRFTokenValidPhrase(
+    //         $request->request->get('_csrf_token'),
+    //         'formOrder'
+    //     );
+    //     $result = $model->insertManualOrder($request->request->all());
+    //     $this->addFlash(
+    //         $result->getType(),
+    //         $result->getMessage()
+    //     );
+
+    //     return $this->redirect('/order');
+    // }
+
+    /**
+     * @Route("/order/manual/status/{orderId<\d+>}", name="change_order_status", methods="POST")
+     */
+    public function changeOrderStatus(Request $request, int $orderId): Response
     {
-        $this->isEncodedCSRFTokenValidPhrase(
-            $request->request->get('_csrf_token'),
-            'formOrder'
-        );
-        $result = $model->insertManualOrder($request->request->all());
+        $this->isEncodedCSRFTokenValidPhrase($request->request->get('_csrf_token'), 'changeStatus');
+        $order = $this->manualOrderRepository->find($orderId);
+        if ($this->manualOrderRepository->changeOrderStatus($order, (int) $request->request->get('status'))) {
+            $this->addFlash(
+                'success',
+                sprintf("Pedido %s teve seu status alterado com sucesso", $orderId)
+            );
+
+            return $this->redirectToRoute('order');
+        }
+
         $this->addFlash(
-            $result->getType(),
-            $result->getMessage()
+            'error',
+            sprintf("Pedido %s teve seu status alterado sem sucesso", $orderId)
         );
 
-        return $this->redirect('/order');
+        return $this->redirectToRoute('order');
     }
 
     /**
@@ -135,7 +165,6 @@ final class ManualOrderController extends AbstractController
      */
     public function editManualOrderAsync(Request $request, ManualOrderModel $model, int $orderModelId): Response
     {
-        $doctrine = $this->getDoctrine();
         if ($request->isMethod('POST')) {
             $this->isEncodedCSRFTokenValidPhrase($request->request->get('_csrf_token'), 'formOrder');
             $response = $model->editOrderModelById($orderModelId, $request->request->all());
@@ -143,7 +172,7 @@ final class ManualOrderController extends AbstractController
 
             return new Response($response->getMessage(), $response->getHttpCode());
         }
-        $orderRegistry = $doctrine->getRepository(ManualOrderReport::class)->find($orderModelId);
+        $orderRegistry = $this->manualOrderRepository->find($orderModelId);
         if ($orderRegistry === null) {
             $this->addFlash('error', 'Item não existe');
 
@@ -151,9 +180,9 @@ final class ManualOrderController extends AbstractController
         }
 
         return $this->render('/order/pages/editManualOrder.html.twig', [
-            'products' => $doctrine->getRepository(ModelName::class)->findAll(),
-            'payments' => $doctrine->getRepository(PaymentType::class)->findAll(),
-            'transporters' => $doctrine->getRepository(Transporter::class)->findAll(),
+            'products' => $this->getDoctrine()->getRepository(ModelName::class)->findAll(),
+            'payments' => $this->getDoctrine()->getRepository(PaymentType::class)->findAll(),
+            'transporters' => $this->getDoctrine()->getRepository(Transporter::class)->findAll(),
             'order' => $orderRegistry
         ]);
     }
@@ -164,7 +193,13 @@ final class ManualOrderController extends AbstractController
      */
     public function printManualOrderProductAuthAllowWithdraw(int $orderId): Response
     {
+        /** @var ManualOrderReport */
         $productOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
+        if (!$productOrder->getActive()) {
+            $this->addFlash('warning', 'Pedido fechado.');
+
+            return $this->redirectToRoute('order');
+        }
 
         return $this->render('/order/printOrder/authProduct.html.twig', [
             'order' => $productOrder,

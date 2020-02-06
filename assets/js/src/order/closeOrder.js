@@ -15,6 +15,9 @@ if (document.querySelector('#manual-list')) {
                     simpleRequest(route, 'PUT', null, function () {   
                         setTimeout(() => {
                             el.target.closest('.elRow').querySelector('.order-edit').remove();
+                            el.target.closest('.elRow').querySelector('.order-print').remove();
+                            el.target.closest('.elRow').querySelector('.order-auth').remove();
+                            el.target.closest('.elRow').querySelector('.order-status').innerHTML = "FECHADO";
                             el.target.remove();
                             notification(
                                 `Pedido ${orderId} fechado com sucesso`,
