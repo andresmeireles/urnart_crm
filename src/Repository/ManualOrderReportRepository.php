@@ -18,6 +18,34 @@ final class ManualOrderReportRepository extends ServiceEntityRepository
         parent::__construct($registry, ManualOrderReport::class);
     }
 
+    public function getSellReport(\DateTime $beginDate, \DateTime $endDate): array
+    {
+        $sqlQuery = "SELECT mor.create_date AS cdate, mor.customer_name AS cname, mor.customer_city AS city, SUM(mpc.product_amount) AS amount FROM manual_order_report mor JOIN manual_product_cart mpc ON mpc.manual_order_report_id = mor.id WHERE MONTH(mor.create_date) IN (:m) AND DAY(mor.create_date) BETWEEN :bday AND :eday AND YEAR(mor.create_date) IN (:y) AND mor.create_date IS NOT NULL GROUP BY cdate, cname, city";
+        $stmt = $this->getEntityManager()->getConnection();
+        $query = $stmt->prepare($sqlQuery);
+        $query->bindValue(':y', $beginDate->format('Y'));
+        $query->bindValue(':m', $beginDate->format('m'));
+        $query->bindValue(':bday', $beginDate->format('d'));
+        $query->bindValue(':eday', $endDate->format('d'));
+        $query->execute();
+
+        return $query->fetchAll();
+    }
+
+    public function getSellReportChartData(\DateTime $beginDate, \DateTime $endDate): array
+    {
+        $sqlQuery = "SELECT DATE(mor.create_date) AS dt, SUM(mpc.product_amount) AS amount FROM manual_order_report mor JOIN manual_product_cart mpc ON mpc.manual_order_report_id = mor.id WHERE MONTH(mor.create_date) IN (:m) AND YEAR(mor.create_date) IN (:y) AND DAY(mor.create_date) BETWEEN :bday AND :eday AND mor.create_date IS NOT NULL GROUP BY dt";
+        $stmt = $this->getEntityManager()->getConnection();
+        $query = $stmt->prepare($sqlQuery);
+        $query->bindValue(':y', $beginDate->format('Y'));
+        $query->bindValue(':m', $beginDate->format('m'));
+        $query->bindValue(':bday', $beginDate->format('d'));
+        $query->bindValue(':eday', $endDate->format('d'));
+        $query->execute();
+
+        return $query->fetchAll();
+    }
+
     public function changeOrderStatus(ManualOrderReport $orderRegistry, int $status): bool
     {
         $order = $this->find($orderRegistry);

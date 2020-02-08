@@ -20,11 +20,12 @@
 {% for ho in orderHeights if ho in heights %}
     {% set height = height|merge([ho]) %}
 {% endfor %}
-<pre>
-    {{ dump(heights) }}
-</pre>
 <div class="table-responsive">
+    {% if isMonth %}
         <div class="h2 text-center">Relatorio do mês de {{ month | month }}/{{ year }}</div>
+    {% else %}
+        <div class="h2 text-center">Relatorio de {{ bDate | date('d/m/Y') }} a {{ lDate | date('d/m/Y') }}</div>
+    {% endif %}
     <table class="table table-sm table-bordered-black">
         <thead>
             <tr>

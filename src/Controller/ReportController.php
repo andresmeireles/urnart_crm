@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\ModelName;
-use App\Entity\Survey;
+use App\Model\ManualOrderModel;
 use App\Model\ProductionCountModel;
 use App\Model\ReportModel;
 use App\Model\SurveyModel;
+use App\Repository\ManualOrderReportRepository;
 use App\Repository\ProductionCountRepository;
+use App\Utils\Andresmei\DateFunctions;
 use App\Utils\Andresmei\MyDateTime;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\StringConvertions;
@@ -22,6 +24,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ReportController extends AbstractController
 {
+    private ProductionCountRepository $repository;
+
+    public function __construct(ProductionCountRepository $productionCountRepository)
+    {
+        $this->repository = $productionCountRepository;
+    }
+
     use CSRFTokenCheck;
 
     /**
@@ -33,6 +42,41 @@ final class ReportController extends AbstractController
     }
 
     /**
+     * @Route("/report/sells", name="report_sells", methods="GET")
+     */
+    public function viewSellReportForm(): Response
+    {
+        return $this->render('report/pages/sell.html.twig');
+    }
+
+    /**
+     * @Route("/report/sell/month", name="report_sells_month", methods="POST")
+     */
+    public function sellMonthReport(
+        Request $request,
+        ManualOrderReportRepository $repository,
+        DateFunctions $dateFunctions
+    ): Response {
+        $this->isEncodedCSRFTokenValidPhrase($request->request->get('_csrf_token'), 'monthReport');
+        $date = $request->request->get('month');
+        $date = new \DateTime('01-'.$date);
+        $week = $dateFunctions->monthWeeks($date);
+        $reportQueryResults = array_map(fn ($weekDates) => $repository->getSellReport($weekDates['begin'], $weekDates['end']) ,$week);
+        $chartData = array_map(fn ($weekDates) => $repository->getSellReportChartData($weekDates['begin'], $weekDates['end']) ,$week);
+
+        if ($chartData[0] === []) {
+           $this->addFlash('warning', 'esté mês não possui dados para criar um relátorio');
+           
+           return $this->redirectToRoute('report_sells');
+        }
+
+        return $this->render('report/print/monthSellReport.html.twig', [
+            'monthReportData' => $reportQueryResults,
+            'cd' => $chartData
+        ]);
+    }
+
+    /**
      * @Route("/report/productionCount/mdr", name="make_report", methods="POST")
      */
     public function makePrintReport(
@@ -40,7 +84,7 @@ final class ReportController extends AbstractController
         ProductionCountModel $model
     ): Response {
         $repoDate = $request->request->get('repo-date');
-        $report = $model->makeDailyProductionCount($repoDate);
+        $report = $model->makeDailyProductionCouterReport($repoDate, $this->repository);
 
         return $this->render('/print/report/productionCountReport.html.twig', [
             'data' => $report,

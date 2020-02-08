@@ -103,24 +103,6 @@ final class ManualOrderController extends AbstractController
     }
 
     /**
-     * @Route("/order/createmanualorder", name="createManualOrder", methods="POST")
-     */
-    // public function createManualOrder(Request $request, ManualOrderModel $model): Response
-    // {
-    //     $this->isEncodedCSRFTokenValidPhrase(
-    //         $request->request->get('_csrf_token'),
-    //         'formOrder'
-    //     );
-    //     $result = $model->insertManualOrder($request->request->all());
-    //     $this->addFlash(
-    //         $result->getType(),
-    //         $result->getMessage()
-    //     );
-
-    //     return $this->redirect('/order');
-    // }
-
-    /**
      * @Route("/order/manual/status/{orderId<\d+>}", name="change_order_status", methods="POST")
      */
     public function changeOrderStatus(Request $request, int $orderId): Response
@@ -173,6 +155,11 @@ final class ManualOrderController extends AbstractController
             return new Response($response->getMessage(), $response->getHttpCode());
         }
         $orderRegistry = $this->manualOrderRepository->find($orderModelId);
+        if ($orderRegistry->getActive() === false || $orderRegistry->getOrderStatus() === 0) {
+            $this->addFlash('warning', 'Pedido fechado não pode ser alterado.');
+
+            return $this->redirectToRoute('order');
+        }
         if ($orderRegistry === null) {
             $this->addFlash('error', 'Item não existe');
 
@@ -205,57 +192,4 @@ final class ManualOrderController extends AbstractController
             'order' => $productOrder,
         ]);
     }
-
-//    /**
-//     * @Route("/order/manual/{orderId<\d+>}", methods={"GET", "POST"})
-//     */
-//    public function editManualOrder(Request $request, OrderModel $model, int $orderId): Response
-//    {
-//        if ($request->getMethod() === 'POST' &&
-//            $this->isEncodedCSRFTokenValidPhrase(
-//                $request->request->get('_csrf_token'),
-//                'formOrder'
-//            )
-//        ) {
-//            $nestedArray = new NestedArraySeparator($request->request->all());
-//            $result = $model->editManualOrder(
-//                $nestedArray->getSimpleArray(),
-//                $nestedArray->getArrayInArray(),
-//                $orderId
-//            );
-//            $this->addFlash(
-//                $result->getType(),
-//                $result->getMessage()
-//            );
-//
-//            return $this->redirectToRoute('manualList');
-//        }
-//
-//        /** @var ManualOrderReport|null $orderToEdit */
-//        $orderToEdit = $this->getDoctrine()->getRepository(ManualOrderReport::class)
-//            ->find($orderId);
-//        if ($orderToEdit === null) {
-//            $this->addFlash('error', sprintf(
-//                'Pedido n° <b>%d</b> não exite. Verique se pedido foi corretamente cadastrado.',
-//                $orderId
-//            ));
-//            return $this->redirectToRoute('order');
-//        }
-//        if (! $orderToEdit->getActive()) {
-//            $this->addFlash('warning', sprintf(
-//                'Pedido %d fechado não pode ser alterado. Fechado em %s',
-//                $orderToEdit->getId(),
-//                $orderToEdit->getLastUpdate()
-//            ));
-//            return $this->redirectToRoute('manualList');
-//        }
-//        $transporters = $this->getDoctrine()->getRepository(Transporter::class)->findAll();
-//        $paymentType = $this->getDoctrine()->getRepository(PaymentType::class)->findAll();
-//
-//        return $this->render('/order/pages/editManualOrder.html.twig', [
-//            'order' => $orderToEdit,
-//            'transporters' => $transporters,
-//            'payments' => $paymentType,
-//        ]);
-//    }
 }

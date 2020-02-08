@@ -4,6 +4,7 @@ namespace App\Model;
 
 use Andresmeireles\RespectAnnotation\RespectValidationAnnotation;
 use App\Utils\Andresmei\StringConvertions;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerBuilder;
 
@@ -13,7 +14,7 @@ use JMS\Serializer\SerializerBuilder;
 abstract class Model
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface|EntityManager
      */
     protected $entityManager;
 

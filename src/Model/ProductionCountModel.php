@@ -13,8 +13,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 final class ProductionCountModel extends Model
 {
-    private ProductionCountRepository $repository;
-
     /**
      * @param array $productionInformation
      * @return FlashResponse
@@ -56,11 +54,21 @@ final class ProductionCountModel extends Model
     * @return array
     * @throws CustomException
     */
-   public function makeDailyProductionCouterReport(string $date): array
+   public function makeDailyProductionCouterReport(string $date, ProductionCountRepository $repository): array
    {
        $dateTime = new \DateTime($date);
        $today = $this->changeIfWeekend($dateTime);
-       $yesterday = $this->changeIfWeekend($dateTime->modify('-1 day'));
+       $yesterday = clone $dateTime;
+       $yesterday = $this->changeIfWeekend($yesterday->modify('-1 day'));
+       $todayProduction = $repository->getMonthProductionByDate($today);
+       $yesterdayProduction = $repository->getMonthProductionByDate($yesterday);
+
+       return [
+           'reportDay' => $dateTime,
+           'today' => $todayProduction['valor'],
+           'yesterdayDay' => $yesterday,
+           'yesterday' => $yesterdayProduction['valor']
+       ];
    }
 
    private function changeIfWeekend(\DateTime $date): \Datetime

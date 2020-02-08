@@ -43,8 +43,6 @@ final class StringConvertions
      */
     public function strToDateString(?string $dateString): ?string
     {
-        dump($dateString);
-        die;
         if (null === $dateString || '' === $dateString) {
             return null;
         }

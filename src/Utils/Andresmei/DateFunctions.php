@@ -2,7 +2,7 @@
 
 namespace App\Utils\Andresmei;
 
-final class MyDateTime extends \DateTime
+final class DateFunctions extends \DateTime
 {
     private const THIRTYONEDATMONTH = [
         '01' => 'Janeiro',
@@ -24,6 +24,48 @@ final class MyDateTime extends \DateTime
     public function __construct(string $date = 'now', ?string $timezone = null)
     {
         parent::__construct($date, new \DateTimeZone($timezone ?? 'America/Belem'));
+    }
+
+    public function monthWeeks(\DateTime $date): array 
+    {
+        $dayOne = clone $date;
+        $week = [];
+        $weekBegin = clone $dayOne;
+        $weekCount = 0;
+        while ($weekBegin->format('m') === $dayOne->format('m')) {
+            $weekend = $this->getWeekInterval($weekBegin);
+            $week[$weekCount] = [
+                'begin' => $weekBegin,
+                'end' => clone $weekend
+            ];
+            $weekCount++;
+            $weekBegin = $weekend->modify('+1 day');
+        }
+        $lastWeekIndex = array_key_last($week);
+        $week[$lastWeekIndex]['end'] = $this->getLastDayOfTheMonth($week[$lastWeekIndex]['end'], $dayOne); 
+
+        return $week;
+    }
+
+    private function getLastDayOfTheMonth(
+        \DateTime $lastDay,
+        \DateTime $firstDay
+    ): \DateTime {
+        if ($lastDay->format('m') === $firstDay->format('m')) {
+            return $lastDay;
+        }
+
+        return $this->getLastDayOfTheMonth($lastDay->modify('-1 day'), $firstDay);
+    }
+
+    private function getWeekInterval(\DateTime $date)
+    {
+        $workDate = clone $date;
+        if ($workDate->format('w') === '6') {
+            return $workDate;
+        }
+
+        return $this->getWeekInterval($workDate->modify('+1 day'));
     }
 
     /**

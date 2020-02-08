@@ -17,6 +17,7 @@ if (document.querySelector('#manual-list')) {
                             el.target.closest('.elRow').querySelector('.order-edit').remove();
                             el.target.closest('.elRow').querySelector('.order-print').remove();
                             el.target.closest('.elRow').querySelector('.order-auth').remove();
+                            el.target.closest('.elRow').querySelector('.status-changer').remove();
                             el.target.closest('.elRow').querySelector('.order-status').innerHTML = "FECHADO";
                             el.target.remove();
                             notification(

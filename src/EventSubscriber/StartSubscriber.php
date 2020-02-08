@@ -29,11 +29,6 @@ final class StartSubscriber extends AbstractController implements EventSubscribe
         if (! file_exists(__DIR__ . '/../' . $fileName)) {
             $this->model->writeDaylyBoletoRegister($today);
         }
-        $getFile = file_get_contents(__DIR__ . '/../../config/system_menus.yaml');
-        if (is_string($getFile)) {
-            $menus = Yaml::parse($getFile);
-            $this->get('twig')->addGlobal('menus', $menus);
-        }
 
         return $this;
     }

@@ -45,3 +45,10 @@ $('.calendar-selector-month').on('change', (element) => {
     let convertedDate = date.replace(new RegExp('/', 'g'), '-');
     dateInput.value = convertedDate;
 });
+
+$('.calendar-selector-month-only').on('change', (element) => {
+    let dateInput = element.target.closest('div').querySelector(element.target.getAttribute('date-target'));
+    let date = element.target.value;
+    let convertedDate = date.replace(new RegExp('/', 'g'), '-');
+    dateInput.value = convertedDate;
+});

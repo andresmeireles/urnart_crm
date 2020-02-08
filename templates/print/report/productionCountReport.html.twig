@@ -11,9 +11,9 @@
     <div class="text-center">
         <p class="display-2">URNAS</p>
         <p class="display-2">PRODUZIDAS</p>
-        <p class="display-2">ATÉ {{ data.today | date('d/m/Y') }}</p>
-        <p class="display-1 font-weight-bold">TOTAL: {{ data.todayVal }}</p>
-        <p class="display-2">EM {{ data.yesterday | date('d/m') }}: {{ data.yesterdayVal }}</p>
+        <p class="display-2">ATÉ {{ data.reportDay | date('d/m/Y') }}</p>
+        <p class="display-1 font-weight-bold">TOTAL: {{ data.today }}</p>
+        <p class="display-2">EM {{ data.yesterdayDay | date('d/m') }}: {{ data.yesterday }}</p>
     </div>
 </div>
 {% endblock %}

@@ -9,6 +9,15 @@ document.addEventListener('focus', (el) => {
         });
     }
 
+    if (el.target.classList.contains('calendar-selector-month-only')) {
+        $(el.target).datepicker({
+            format: 'mm',
+            language: 'pt-BR',
+            zIndex: 99993,
+            autoHide: true
+        });
+    }
+
     if (el.target.classList.contains('calendar-selector')) {
         $(el.target).datepicker({
             format: 'dd/mm/yyyy',

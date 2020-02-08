@@ -1,0 +1,148 @@
+{% set menus = [
+    {
+    "namediv": "Items"
+  }, 
+  {
+    "collapseName": "collapse1", 
+    "subitems": [
+      {
+        "items": [
+          {
+            "route": "/report", 
+            "name": "Todos os Relatórios"
+          }
+        ], 
+        "name": "Relatórios"
+      }, 
+      {
+        "name": "Criar relatórios",
+        "items": [
+          {
+            "route": "/report/productionCount", 
+            "name": "Produção"
+          }, 
+          {
+            "route": "/truck", 
+            "name": "Caminhão"
+          },
+          {
+              "route": "/report/sells",
+              "name": "Vendas"
+          }
+        ], 
+      }
+    ], 
+    "icon": "fa-file-alt", 
+    "route": "#", 
+    "name": "Relatórios"
+  }, 
+  {
+    "collapseName": "collapse2", 
+    "subitems": [
+      {
+        "items": [
+          {
+            "route": "/forms/order", 
+            "name": "Criar pedido"
+          }, 
+          {
+            "route": "/order", 
+            "name": "Lista de pedidos"
+          }
+        ], 
+        "name": "Paginas"
+      }
+    ], 
+    "icon": "fa-shopping-cart", 
+    "route": "#", 
+    "name": "Pedidos"
+  }, 
+  {
+    "collapseName": "collapse3", 
+    "subitems": [
+      {
+        "items": [
+          {
+            "route": "/forms", 
+            "name": "Todos os formulários"
+          }
+        ], 
+        "name": "Todos os formulários"
+      }, 
+      {
+        "items": [
+          {
+            "route": "/forms/remand", 
+            "name": "Devolução"
+          }, 
+          {
+            "route": "/forms/freight-letter", 
+            "name": "Carta frete"
+          }, 
+          {
+            "route": "/forms/tag", 
+            "name": "Etiqueta"
+          }, 
+          {
+            "route": "/forms/receipt", 
+            "name": "Recibo"
+          }, 
+          {
+            "route": "/forms/romaneio", 
+            "name": "Romaneio"
+          }
+        ], 
+        "name": "Caminhão"
+      }
+    ], 
+    "icon": "fa-sticky-note", 
+    "route": "#", 
+    "name": "Formulários"
+  }, 
+  {
+    "divider": true
+  }, 
+  {
+    "namediv": "Sistema"
+  }, 
+  {
+    "route": "/register", 
+    "name": "Registros", 
+    "icon": "fa-address-card"
+  }, 
+  {
+    "divider": true
+  }
+]
+%}
+
+{% for item in menus %}
+    {% if item.divider is defined %}
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    {% elseif item.namediv is defined %}
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        {{ item.namediv }}
+    </div>
+    {% else %}
+    <li class="nav-item">
+    <a class="nav-link {% if item.subitems is defined %}collapsed{% endif %}" href="{{ item.route }}" {% if item.subitems is defined %}data-toggle="collapse" data-target="#{{item.collapseName}}" aria-expanded="true" aria-controls="{{item.collapseName}}"{% endif %}>
+        <i class="fas fa-fw {{item.icon }}"></i>
+        <span>{{ item.name }}</span>
+    </a>
+    {% if item.subitems is defined %}
+        <div id="{{ item.collapseName }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+        {% for sitem in item.subitems %}
+            {% if sitem.name is defined %}<h6 class="collapse-header">{{ sitem.name }}</h6>{% endif %}
+            {% for subitem in sitem.items %}
+                <a class="collapse-item" href="{{ subitem.route }}">{{ subitem.name }}</a>
+            {% endfor %}
+        {% endfor %}
+        </div>
+        </div>
+    {% endif %}
+    </li>
+    {% endif %}
+{% endfor %}
