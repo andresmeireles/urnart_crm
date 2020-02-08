@@ -1,12 +1,12 @@
 SYSADMIN - FERRAMENTA DE GERENCIAMENTO URNART
 =============================================
 
-Projeto de software de administração completa.
+Projeto de software de administração completa da empresa Urnas Mart Ltda `http://urnart.com.br`.
 
 Requisitos
 ==========
 
-1. `php 7.1^`
+1. `php 7.4^`
 2. `Ter composer instalado https://getcomposer.org/`
 3. `Ter mariaDB instalado`
 3. `NodeJS e Yarn`
