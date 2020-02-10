@@ -70,7 +70,7 @@ final class DateFunctions extends \DateTime
 
     /**
      * @param string $plusFormat
-     * @return MyDateTime
+     * @return DateFunctions
      * @throws \Exception
      */
     public function plusDate(string $plusFormat): self
@@ -82,7 +82,7 @@ final class DateFunctions extends \DateTime
 
     /**
      * @param string $minusFormat
-     * @return MyDateTime
+     * @return DateFunctions
      * @throws \Exception
      */
     public function minusDate(string $minusFormat): self

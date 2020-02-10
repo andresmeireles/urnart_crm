@@ -6,7 +6,7 @@ use App\Entity\ManualOrderReport;
 use App\Entity\ManualProductCart;
 use App\Entity\TravelTruckOrders;
 use App\Utils\Andresmei\FlashResponse;
-use App\Utils\Andresmei\MyDateTime;
+use App\Utils\Andresmei\DateFunctions;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -37,7 +37,7 @@ final class TravelTruckOrderModel extends Model
         try {
             $truckReport->setDriverName($reportData['driverName']);
             $truckReport->setKmout($reportData['kmout']);
-            $date = new MyDateTime($reportData['departureDate'], 'America/Belem');
+            $date = new DateFunctions($reportData['departureDate'], 'America/Belem');
             $truckReport->setDepartureDate($date);
             $truckReport->getOrderId()->map(static function ($value) use ($truckReport) {
                 $truckReport->removeOrderId($value);
@@ -92,7 +92,7 @@ final class TravelTruckOrderModel extends Model
         try {
             $truckArrivalReport->setDriverName($reportData['driverName']);
             $truckArrivalReport->setKmout($reportData['kmout']);
-            $date = new MyDateTime($reportData['departureDate'], 'America/Belem');
+            $date = new DateFunctions($reportData['departureDate'], 'America/Belem');
             $truckArrivalReport->setDepartureDate($date);
             foreach ($orders as $order) {
                 $simpleArray[$order['id']] = isset($order['isChecked']) ? (bool) $order['isChecked'] : false;
@@ -128,7 +128,7 @@ final class TravelTruckOrderModel extends Model
             ->getRepository(ManualOrderReport::class);
         $travelTruckOrder->setDriverName($parameters['driverName']);
         $travelTruckOrder->setKmout($parameters['kmout']);
-        $date = new MyDateTime($parameters['departureDate'], 'America/Belem');
+        $date = new DateFunctions($parameters['departureDate'], 'America/Belem');
         $travelTruckOrder->setDepartureDate($date);
         foreach ($parameters['orders'] as $order) {
             $simpleArray[$order['id']] = isset($order['isChecked']) ? (bool) $order['isChecked'] : false;

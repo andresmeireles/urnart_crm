@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\ModelName;
-use App\Model\ManualOrderModel;
 use App\Model\ProductionCountModel;
 use App\Model\ReportModel;
 use App\Model\SurveyModel;
 use App\Repository\ManualOrderReportRepository;
 use App\Repository\ProductionCountRepository;
 use App\Utils\Andresmei\DateFunctions;
-use App\Utils\Andresmei\MyDateTime;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\CustomException;
@@ -73,6 +71,34 @@ final class ReportController extends AbstractController
         return $this->render('report/print/monthSellReport.html.twig', [
             'monthReportData' => $reportQueryResults,
             'cd' => $chartData
+        ]);
+    }
+
+    /**
+     * @Route("/report/sell/range", name="report_sells_range", methods="POST")
+     */
+    public function sellReportWithRange(Request $request, ManualOrderReportRepository $manualOrderReportRepository): Response
+    {
+        $this->isEncodedCSRFTokenValidPhrase($request->request->get('_csrf_token'), 'rangeReport');
+        $range1 = $request->request->get('range1');
+        $range2 = $request->request->get('range2');
+        if ($range1 > $range2 || $range1 === $range2) {
+            $this->addFlash('error', 'Data 1 não pode ser maior que data 2 ou igual');
+
+            return $this->redirectToRoute('report_sells');
+        }
+        if ($range1 === null || $range2 === null) {
+            $this->addFlash('error', 'Data 1 nem data 2 podem ficar indefinidos');
+
+            return $this->redirectToRoute('report_sells');
+        }
+        $rangeReportData = $manualOrderReportRepository->getSellReportInRange(new \DateTime($range1), new \DateTime($range2));
+        $rangeReportChartData = $manualOrderReportRepository->getSellReportChartDataInRange(new \DateTime($range1), new \DateTime($range2));
+
+        return $this->render('report/print/inRangeSellReport.html.twig', [
+            'rangeReportData' => $rangeReportData,
+            'bd' => new \DateTime($range1),
+            'ed' => new \DateTime($range2)
         ]);
     }
 
@@ -188,8 +214,8 @@ final class ReportController extends AbstractController
         ProductionCountRepository $productionCountRepository
     ): Response {
         /** @var string $today */
-        $today = (new MyDateTime())->output('d-m-Y');
-        $aMonthDate = (new MyDateTime())->minusDate('P1M')->output('d-m-Y');
+        $today = (new DateFunctions())->output('d-m-Y');
+        $aMonthDate = (new DateFunctions())->minusDate('P1M')->output('d-m-Y');
         $productionByDayOnMonth = $model->getByDateIntervalProductAmount($aMonthDate, $today);
         $year = (new \DateTime('now'))->format('Y');
         $monthChart = $productionCountRepository->getYearReport($year);
@@ -428,7 +454,7 @@ final class ReportController extends AbstractController
     {
         $data = $request->request->all();
         $customerData = (new NestedArraySeparator($data))->getArrayInArray();
-        $surveyDate = (new MyDateTime())->format('d.m.Y');
+        $surveyDate = (new DateFunctions())->format('d.m.Y');
         $result = $surveyModel->createRegistry($customerData, $surveyDate, 'travel_survey');
 
         return new Response($result['msg'], 200);

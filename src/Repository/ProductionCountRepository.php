@@ -40,8 +40,11 @@ final class ProductionCountRepository extends ServiceEntityRepository
     /**
      * @return array|ProductionCount|null
      */
-    public function findInTimeInterval(array $search, \DateTimeInterface $beginDate, \DateTimeInterface $endDate): ?array
-    {
+    public function findInTimeInterval(
+        array $search,
+        \DateTimeInterface $beginDate,
+        \DateTimeInterface $endDate
+    ): ?array {
         $searchList = '';
         foreach ($search as $ser) {
             $searchList .= 'p.'.$ser;
@@ -112,11 +115,9 @@ final class ProductionCountRepository extends ServiceEntityRepository
         $query->bindValue(':monthstmt', $monthNumber);
         $query->bindValue(':yearstmt', $year);
         $query->execute();
-        // dump($query->fetchAll());die;
         $result = $query->fetchAll();
         $amount = array_map(fn ($queryResult) => $queryResult['itemamount'], $result);
         $names = array_map(fn ($queryResult) => $queryResult['names'], $result);
-        // dump($names, $amount);die;
         $agglometaredResultQuery['products'] = array_combine($names, $amount);
 
         return $agglometaredResultQuery;

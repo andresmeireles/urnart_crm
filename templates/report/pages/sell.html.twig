@@ -6,7 +6,7 @@
 <div class="card">
     <div class="card-title">
         <div class="text-center py-2 h3">
-            Relatorio Por mês
+            Relatório Por mês
         </div>
     </div>
     <div class="card-body">
@@ -14,7 +14,7 @@
             <form action="/report/sell/month" method="POST" target="_blank">
                 <div class="form-group">
                     <label>Selecione o mês</label>
-                    <input type="text" class="form-control no-keypress calendar-selector-month" placeholder="Selecione um mês" date-target="#month" />
+                    <input type="text" class="form-control no-keypress calendar-selector-month" placeholder="Selecione um mês" date-target="#month" required />
                     <input type="hidden" id="month" name="month" />
                 </div>
                 {% include "components/csrfToken.html.twig" with {tokenText: 'monthReport'} %}
@@ -27,16 +27,27 @@
 <div class="card my-2">
     <div class="card-title">
         <div class="text-center py-2 h3">
-            Relatorio em um intervalo de datas
+            Relatório em um intervalo de datas
         </div>
     </div>
     <div class="card-body">
         <div>
-            <form action="/report/sell/range" method="POST">
-                <div class="form-group">
-                    <label>Selecione o intervalo</label>
-                    <input type="text" class="form-control no-keypress calendar-selector-month" placeholder="Selecione um mês" date-target="#month" />
-                    <input type="hidden" id="month" name="month" />
+            <form action="/report/sell/range" method="POST" target="_blank">
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Selecione o dia</label>
+                            <input type="text" class="form-control no-keypress calendar-selector" placeholder="Selecione uma data de inicio" date-target="#range1" required />
+                            <input type="hidden" id="range1" name="range1" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Selecione o dia</label>
+                            <input type="text" class="form-control no-keypress calendar-selector" placeholder="Selecione uma data limite" date-target="#range2" required />
+                            <input type="hidden" id="range2" name="range2" />
+                        </div>
+                    </div>
                 </div>
                 {% include "components/csrfToken.html.twig" with {tokenText: 'rangeReport'} %}
                 <input type="submit" class="btn btn-success btn-block" value="Fazer relatório de vendas" />

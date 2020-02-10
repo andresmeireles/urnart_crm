@@ -46,6 +46,42 @@ final class ManualOrderReportRepository extends ServiceEntityRepository
         return $query->fetchAll();
     }
 
+    public function getSellReportInRange(\DateTime $beginDate, \DateTime $endDate): array
+    {
+        $sqlQuery = "SELECT mor.create_date AS cdate, mor.customer_name AS cname, mor.customer_city AS city, SUM(mpc.product_amount) AS amount FROM manual_order_report mor JOIN manual_product_cart mpc ON mpc.manual_order_report_id = mor.id WHERE DATE(mor.create_date) BETWEEN :bdate AND :edate AND mor.create_date IS NOT NULL GROUP BY cdate, cname, city";
+        $stmt = $this->getEntityManager()->getConnection();
+        $query = $stmt->prepare($sqlQuery);
+        $query->bindValue(
+            ':bdate',
+            sprintf('%s-%s-%s', $beginDate->format('Y'), $beginDate->format('m'), $beginDate->format('d'))
+        );
+        $query->bindValue(
+            ':edate',
+            sprintf('%s-%s-%s', $endDate->format('Y'), $endDate->format('m'), $endDate->format('d'))
+        );
+        $query->execute();
+
+        return $query->fetchAll();
+    }
+
+    public function getSellReportChartDataInRange(\DateTime $beginDate, \DateTime $endDate): array
+    {
+        $sqlQuery = "SELECT DATE(mor.create_date) AS dt, SUM(mpc.product_amount) AS amount FROM manual_order_report mor JOIN manual_product_cart mpc ON mpc.manual_order_report_id = mor.id WHERE DATE(mor.create_date) BETWEEN :bdate AND :edate AND mor.create_date IS NOT NULL GROUP BY dt";
+        $stmt = $this->getEntityManager()->getConnection();
+        $query = $stmt->prepare($sqlQuery);
+        $query->bindValue(
+            ':bdate',
+            sprintf('%s-%s-%s', $beginDate->format('Y'), $beginDate->format('m'), $beginDate->format('d'))
+        );
+        $query->bindValue(
+            ':edate',
+            sprintf('%s-%s-%s', $endDate->format('Y'), $endDate->format('m'), $endDate->format('d'))
+        );
+        $query->execute();
+
+        return $query->fetchAll();
+    }
+
     public function changeOrderStatus(ManualOrderReport $orderRegistry, int $status): bool
     {
         $order = $this->find($orderRegistry);

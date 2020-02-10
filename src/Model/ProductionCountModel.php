@@ -6,7 +6,7 @@ use App\Entity\ModelName;
 use App\Entity\ProductionCount;
 use App\Repository\ProductionCountRepository;
 use App\Utils\Andresmei\FlashResponse;
-use App\Utils\Andresmei\MyDateTime;
+use App\Utils\Andresmei\DateFunctions;
 use App\Utils\Andresmei\StdResponse;
 use App\Utils\Exceptions\CustomException;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -320,7 +320,7 @@ final class ProductionCountModel extends Model
         $monthYear = explode('-', $monthYear);
         $requestInformation['month'] = $monthYear[0];
         $requestInformation['year'] = $monthYear[1];
-        $lastMonthDay = MyDateTime::getLastDayOfMonth($monthYear[0]);
+        $lastMonthDay = DateFunctions::getLastDayOfMonth($monthYear[0]);
         $requestInformation['beginDate'] = sprintf(
             '%s-%s-%s',
             01,

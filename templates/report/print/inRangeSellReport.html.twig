@@ -1,0 +1,107 @@
+<html>
+
+<head>
+    <style>
+        body {
+            height: 100%;
+            width: 100%;
+            font-family: Arial, "Times New Roman", Helvetica, sans-serif;
+        }
+
+        table {
+            width: 80%;
+            border: 1px solid black;
+            border-spacing: 0;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        td {
+            border: 1px solid black;
+        }
+
+        .page {
+            page-break-after: always;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .grey {
+            background-color: lightgrey;
+            font-size: 12px;
+        }
+
+        .chart {
+            width: 75%;
+            page-break-after: always;
+        }
+
+        .monthamt {
+            font-size: 23px;
+        }
+
+        .title {
+            background-color: lightsteelblue;
+            font-size: 25px;
+        }
+    </style>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+
+<body>
+    {% set monthAmount = 0 %}
+    {% set dt = '' %}
+    {% set amount = 0 %}
+    {% set finalAmt = 0 %}
+    {% set cdt = [] %}
+    {% set camt = [] %}
+    <div class="page">
+        <div class="form page">
+            <table>
+            <tr>
+                <th colspan="3" class="title">RELATORIO DE VENDAS {{ bd | date('d/m/Y') }} a {{ ed | date('d/m/Y') }}</th>
+            </tr>
+            <tr><td colspan="3">&nbsp;</td></tr>
+                {% for day in rangeReportData %}
+                    {% if dt is not same as(day.cdate | date('d/m/Y')) %}
+                        {% set dt = day.cdate | date('d/m/Y') %}
+                        {% if amount is not same as(0) %}
+                            <tr>
+                                <td colspan="2" style="text-align: right"><b>TOTAL</b>&nbsp;</td>
+                                <td class="center">{{ amount }}</td>
+                                {% set finalAmt = finalAmt + amount %}
+                                {% set amount = 0 %}
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td colspan="3" class="center grey">{{ day.cdate | date('d/m/Y') }}</td>
+                        </tr>
+                    {% endif %}
+                        <tr>
+                            <td width="40%">{{ day.cname | upper }}</td>
+                            <td class="center" width="40%">{{ day.city }}</td>
+                            <td class="center" width="10%">{{ day.amount }}</td>
+                        </tr>
+                    {% set amount = amount + day.amount %}
+                    {% if loop.index is same as (rangeReportData | length) %}
+                        <tr>
+                            <td colspan="2" style="text-align: right"><b>TOTAL</b>&nbsp;</td>                        
+                            <td class="center">{{ amount }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>                        
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="monthamt" style="text-align: right"><b>Valor total do relátorio</b></td>                        
+                            <td class="monthamt center">{{ finalAmt + amount }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html> 
