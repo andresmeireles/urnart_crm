@@ -12,7 +12,7 @@ use Andresmeireles\RespectAnnotation\ValidationAnnotation as Respect;
  */
 class ManualOrderReport extends BaseEntity
 {
-    private CONST ALLOWED_STATUS = [9,2,1,0];
+    private CONST ALLOWED_STATUS = [9,3,2,1,0];
 
     /**
      * @ORM\Id()
@@ -59,8 +59,9 @@ class ManualOrderReport extends BaseEntity
     private $comments;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
-     * 9 - checar
+     * @ORM\Column(type="smallint", nullable=true, options={"comment": "9 - em analise, 3 - cancelado, 2 - debito, 1 - liberado, 0 - fechado"})
+     * 9 - em analise
+     * 3 - cancelado
      * 2 - debito
      * 1 - liberado
      * 0 - fechado

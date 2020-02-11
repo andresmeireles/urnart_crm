@@ -117,6 +117,7 @@ notify.setTimeout(2500)
 							<button class="badge badge-pill badge-success cursor-decoration order-print" style="border: none;" onclick="document.getElementById('printsubmit{{ order.getId }}').click()">
 								<i class="fas fa-print" title="Imprimir"></i>
 							</button>
+							{% if order.orderStatus is not same as(3) %}
 							<form action="/order/action/print" method="POST" class="d-none" target="_blank">
 								<input type="hidden" name="orderId" value="{{ order.getId }}"/>
 								<input type="submit" id="printsubmit{{ order.getId }}" value="Imprimir"/>
@@ -124,12 +125,15 @@ notify.setTimeout(2500)
 							<a class="badge badge-pill badge-warning order-edit" href="/order/manual/{{order.getId}}">
 								<i class="fas fa-edit" title="Editar"></i>
 							</a>
+							{% endif %}
 							<a class="badge badge-pill badge-danger order-close fas fa-times" href="/order/manual/{{order.getId}}">
-								<i></i>
+								<i title="fechar pedido"></i>
 							</a>
+							{% if order.orderStatus is not same as(3) %}
 							<a href="order/auth/manual/print/{{ order.id }}" class="badge badge-pill badge-secondary order-auth" target="_blank">
 								<i class="fas fa-hand-point-right" title="Imprimir autorização"></i>
 							</a>
+							{% endif %}
 						{% endif %}
 					</td>
 				</tr>

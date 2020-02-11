@@ -33,23 +33,6 @@ final class ManualOrderController extends AbstractController
     }
 
     /**
-     * @Route("/order/manual/{orderId<\d+>}", methods={"DELETE"})
-     */
-    public function removeManualOrder(int $orderId, OrderModel $orderModel): Response
-    {
-        $order = $this->manualOrderRepository->find($orderId);
-        $cart = $this->manualOrderRepository->findBy([
-            'manualOrderReport' => $orderId,
-        ]);
-        if (! $order instanceof ManualOrderReport) {
-            throw new \Exception('Nada foi mandado para ser apagado');
-        }
-        $orderModel->removeManualProductCart((array) $cart);
-        $orderModel->removeManualOrder($order);
-        return new Response('200');
-    }
-
-    /**
      * @Route("/order/manual/list", name="manualList", methods="GET")
      */
     public function manualListing(Request $request, ListModel $listModel, PaginatorInterface $paginator): Response
@@ -84,6 +67,9 @@ final class ManualOrderController extends AbstractController
      */
     public function closeManualOrder(int $orderId, OrderModel $orderModel): Response
     {
+        if (!$this->manualOrderRepository->find($orderId)->getActive()) {
+            return new Response('Pedido já está fechado');
+        }
         $order = $this->manualOrderRepository->find($orderId);
         if (!$order instanceof ManualOrderreport) {
             throw new \Exception('Erro. pedido não pode ser fechado.');
@@ -109,6 +95,14 @@ final class ManualOrderController extends AbstractController
     {
         $this->isEncodedCSRFTokenValidPhrase($request->request->get('_csrf_token'), 'changeStatus');
         $order = $this->manualOrderRepository->find($orderId);
+        if (!$order->getActive()) {
+            $this->addFlash(
+                'error',
+                sprintf("Pedido fechado não pode ter seu status alterado", $orderId)
+            );
+
+            return $this->redirectToRoute('order');
+        }
         if ($this->manualOrderRepository->changeOrderStatus($order, (int) $request->request->get('status'))) {
             $this->addFlash(
                 'success',
@@ -141,7 +135,7 @@ final class ManualOrderController extends AbstractController
     }
 
     /**
-     * @Route("/order/manual/{orderModelId}", methods="GET", name="no_async_manual_order")
+     * @Route("/order/manual/{orderModelId}", methods={"GET", "POST"}, name="no_async_manual_order")
      * @Route("/order/async/editManualOrder/{orderModelId<\d+>}", methods={"GET", "POST"},
      *     name="async_edit_manual_order")
      */
@@ -149,6 +143,12 @@ final class ManualOrderController extends AbstractController
     {
         if ($request->isMethod('POST')) {
             $this->isEncodedCSRFTokenValidPhrase($request->request->get('_csrf_token'), 'formOrder');
+            $order = $this->manualOrderRepository->find($orderModelId);
+            if ($order->getActive() === false || $order->getOrderStatus() === 3) {
+                $this->addFlash('error', 'Pedido não pode ser alterado');
+
+                return $this->redirectToRoute('order');
+            }
             $response = $model->editOrderModelById($orderModelId, $request->request->all());
             $this->addFlash($response->getType(), $response->getMessage());
 
@@ -181,7 +181,7 @@ final class ManualOrderController extends AbstractController
     public function printManualOrderProductAuthAllowWithdraw(int $orderId): Response
     {
         /** @var ManualOrderReport */
-        $productOrder = $this->getDoctrine()->getRepository(ManualOrderReport::class)->find($orderId);
+        $productOrder = $this->manualOrderRepository->find($orderId);
         if (!$productOrder->getActive()) {
             $this->addFlash('warning', 'Pedido fechado.');
 

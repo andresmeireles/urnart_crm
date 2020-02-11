@@ -9,7 +9,8 @@ use Twig\TwigFunction;
 final class FormatExtension extends AbstractExtension
 {
     private CONST ALLOWED_STATUS = [
-        9 => 'checar',
+        9 => 'em analise',
+        3 => 'cancelado',
         2 => 'em debito',
         1 => 'liberado',
         0 => 'fechado'
