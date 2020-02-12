@@ -247,7 +247,7 @@
       <tfoot>
         <tr>
           <th class="text-center p-16">{{ totalAmount }}</th>
-          <th colspan=3></th>
+          <th colspan=3>Status: {{ order.orderStatus | status_converter | upper }}</th>
         </tr>
       </tfoot>
     </table>
