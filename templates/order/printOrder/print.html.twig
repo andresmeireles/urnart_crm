@@ -147,7 +147,8 @@
       <tfoot>
         <tr>
           <th class="text-center p-16">{{ totalAmount }}</th>
-          <th colspan=3>&nbsp;</th>
+          <th>Pgto. {{ order.getPaymentType.getName }}</th>
+          <th colspan="2">Status: {{ order.orderStatus | status_converter | upper }}</th>
         </tr>
         <tr>
           <th colspan=2 class="text-right">Valor total produtos</th>
