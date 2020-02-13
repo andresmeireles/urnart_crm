@@ -1,4 +1,7 @@
-<?php declare(strict_types = 1);
+<?php 
+
+declare(strict_types = 1);
+
 /**
  * @category Controller
  * @package  App\Controller
@@ -56,19 +59,19 @@ final class FormController extends AbstractController
         $repoType = $request->query->get('type');
         $reportFolder = sprintf(
             '%s/%s/%s',
-            $this->getParameter('kernel.root_dir'),
+            $this->getParameter('app.path.root'),
             $this->getParameter('app.path.report_folder'),
             ucwords($repoType)
         );
-
         $files = $fileFunc->getFilesFromFolder($reportFolder);
         $reports = [];
-        foreach (array_keys($files) as $key) {
-            $arrayFile = file_get_contents($key);
-            if (is_string($arrayFile)) {
+        foreach (\array_keys($files) as $key) {
+            $arrayFile = \file_get_contents($key);
+            if (\is_string($arrayFile)) {
                 $reports[] = Yaml::parse($arrayFile);
             }
         }
+        
         return $this->render('form/saveReports.html.twig', [
             'reports' => $reports,
             'type' => $repoType,
@@ -86,8 +89,9 @@ final class FormController extends AbstractController
         $formName = $request->query->get('formName');
         $parameterName = sprintf('app.path.%s_report', $formName);
         $path = $this->getParameter($parameterName);
-        $rootDir = $this->getParameter('kernel.root_dir');
+        $rootDir = $this->getParameter('app.path.root');
         $reportPath = sprintf('%s/%s', $rootDir, $path);
+        //dump($reportPath);die;
         $result = $model->saveReport($data, $reportPath);
         $this->addFlash(
             $result->getType(),
