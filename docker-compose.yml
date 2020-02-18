@@ -13,9 +13,9 @@ services:
     #     BLACKFIRE_CLIENT_ID: 3494667e-3845-4922-aa53-1d777215b27f
     #     BLACKFIRE_CLIENT_TOKEN: 70daf1f2a5c9d29b4b1aaad35c91d641c07e4c2cdf26943cce4e7c7fc470ea0b
 
-    redis:
-      image: redis:alpine
-      container_name: sa-redis
+    # redis:
+    #   image: redis:alpine
+    #   container_name: sa-redis
 
     mongo:
       image: mongo

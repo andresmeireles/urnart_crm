@@ -8,7 +8,7 @@ RUN apt update && apt install -y wget gnupg2
 
 # Install selected extensions and other stuff
 RUN apt-get update \
-    && apt-get -y --no-install-recommends install  php7.4-mysql php-redis \
+    && apt-get -y --no-install-recommends install  php7.4-mysql php-redis php-mongodb \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Install git
