@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Utils\Andresmei;
 
@@ -22,7 +24,7 @@ final class NestedArraySeparator
     public function __construct(array $nestedArray)
     {
         foreach ($nestedArray as $key => $value) {
-            if (! is_array($value)) {
+            if (!is_array($value)) {
                 $this->setSimpleArray($key, $value);
                 continue;
             }
@@ -90,7 +92,7 @@ final class NestedArraySeparator
         $keyName = '';
         $arrayResult = [];
         foreach ($value as $key => $val) {
-            if (! is_array($val)) {
+            if (!is_array($val)) {
                 continue;
             }
 

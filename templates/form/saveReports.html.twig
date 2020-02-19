@@ -1,28 +1,31 @@
 {% extends "index.html.twig" %}
-{% block title %}Lista de relatórios{% endblock %}
+{% block title %}Lista de relatórios
+{% endblock %}
 {% block content %}
-    <div class="col py-5 px-3">
-        <div class="col">
-            <h2>Lista de {{ type }}(s)</h2>
-            <hr>
-        </div>
-        <div class="col px-3">
-            {% for report in reports %}
-            <div class="card">
-                <div class="card-body row">
-                    <div class="col text-center">
-                        <a href="/forms/{{ type }}?repofile={{ report.name }}" class="text-center text-primary h4">
-                            Relatorio de {{ report.created | date('d/m/Y') }}
-                        </a>
-                    </div>
-                    <div class="col text-center">
-                        <a href="/forms/{{ type }}?repofile={{ report.name }}" class="btn btn-secondary text-light font-weight-bold">
-                            Visualizar
-                        </a>
-                    </div>
-                </div>
-            </div>    
-            {% endfor %}
-        </div>
-    </div>
+	<div class="col py-5 px-3">
+		<div class="col">
+			<h2>Lista de
+				{{ type }}(s)</h2>
+			<hr>
+		</div>
+		<div class="col px-3">
+			{% for report in reports %}
+				<div class="card">
+					<div class="card-body row">
+						<div class="col text-center">
+							<a href="/forms/edit/romaneio/{{ report.id }}" class="text-center text-primary h4">
+								Relatorio de
+								{{ report.createDate | timestampToDate('d/m/Y') }}
+							</a>
+						</div>
+						<div class="col text-center">
+							<a href="/forms/edit/romaneio/{{ report.id }}" class="btn btn-secondary text-light font-weight-bold">
+								Visualizar
+							</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 {% endblock %}
