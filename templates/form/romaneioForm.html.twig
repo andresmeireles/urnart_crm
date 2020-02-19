@@ -1,122 +1,148 @@
 {% extends 'index.html.twig' %}
-{% block title %}Romaeio{% endblock %}
-{% block content %}
-      <div class="col py-5 px-4" id="romaneioForm">
-        <div class="col-12">
-          <h1 class="display-3">Romaneio</h1>
-          <a href="/forms/view?type=romaneio" class="text-primary">Ver romaneios salvos</a>
-          <hr> </div>
-        <div class="row">
-          <div class="col" id="type-form">
-            <form method="GET" id="formObject" action="/forms/{{ formName }}/print" target="_blank">
-              <input type="hidden" name="formName" value="{{ formName }}" />
-              <div class="row">
-                <div class="col-4">
-                    <input type="submit" class="disable-on-submit btn btn-primary col" value="Criar Romaneio">
-                </div>
-                <div class="col-4">
-                    <input type="submit" class="hide-cursor no-keypress disable-on-submit save-button-action btn btn-secondary col" id="save-action" value="Salvar">
-                </div>
-                <div class="col-4">
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" form-name="romaneio/print" name="type" id="inlineRadio1" value="2" checked="">
-                    <label class="form-check-label" for="inlineRadio1">Entrega</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" form-name="romaneio-board/print" name="type" id="inlineRadio1" value="1" required="">
-                    <label class="form-check-label" for="inlineRadio1">Carregamento</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" form-name="travel/print" name="type" id="inlineRadio1" value="1" required="">
-                    <label class="form-check-label" for="inlineRadio1">Relatorio de Viagem</label>
-                  </div>
-                </div>
-              </div>
-              <div class="row py-2">
-                <div class="col" id="driverNameFiled" style="display: none" />
-                    <fieldset class="border border-light">
-                      <legend class="px-1 bg-light">Nome do motorista</legend>
-                      <div class="row m-1 ">
-                        <div class="input-group row">
-                          <label class="col-sm-2 col-form-label">Nome do motorista</label> 
-                          <input type="text" class="form-control my-1" id="driverName" name="driverName" />
-                        </div>
-                      </div>
-                    </fieldset>
-                </div>
-              </div>
-              <div class="row py-2">
-                <div class="col">
-                  <fieldset class="border border-light">
-                    <legend class="px-1 bg-light">Produtos</legend>
-                    <div class="row m-1">
-                      <div class="col-md-12">
-                        <div class="input-group w-100">
-                          <div class="col-3">Nome do Cliente</div>
-                          <div class="col"> Cidade </div>
-                          <div class="col-3 text-center"> Tamnho das Urnas </div>
-                          <div class="col"> Faturamento </div>
-                          <div class="col"> Frete </div>
-                          <div class="col-1">&nbsp;</div>
-                        </div>
-                        {% if formFill is same as(null) %}
-                          <div class="input-group my-1 w-100" id="cloneableField">
-                            <div class="col-3">
-                              <input type="hidden" input-number="true" input-name="cloneableField" id="id" name="cloneableField0[id]" value="1">
-                              <input type="text" class="form-control my-1" placeholder="Nome" id="name" name="cloneableField0[name]" required> </div>
-                            <div class="col">
-                              <input type="text" class="form-control my-1" placeholder="Cidade" id="city" name="cloneableField0[city]" required> </div>
-                            <div class="col-1">
-                              <input type="text" class="form-control my-1" placeholder="G" id="urnG" name="cloneableField0[urnG]" required> </div>
-                            <div class="col-1">
-                              <input type="text" class="form-control my-1" placeholder="M" id="urnM" name="cloneableField0[urnM]" required> </div>
-                            <div class="col-1">
-                              <input type="text" class="form-control my-1" placeholder="P" id="urnP" name="cloneableField0[urnP]" required> </div>
-                            <div class="col">
-                              <input type="text" class="form-control my-1" placeholder="Tipo" id="type" name="cloneableField0[type]" required> </div>
-                            <div class="col">
-                              <input type="text" class="form-control my-1" placeholder="Valor" id="freight" name="cloneableField0[freight]" required> </div>
-                            <button type="submit" class="btn btn-success" add-btn="true">
-                              <span class="fas fa-fw fa-plus" add-btn="true"></span>
-                            </button>
-                            <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
-                              <i class="fas fa-fw fa-times" remove-btn="true"></i>
-                            </button>
-                          </div>
-                        {% else %}
-                          {% for report in formFill %}
-                            <div class="input-group my-1 w-100" id="cloneableField">
-                              <div class="col-3">
-                                <input type="hidden" input-number="true" input-name="cloneableField" id="id" name="cloneableField{{ loop.index }}[id]" value="{{ report.id }}">
-                                <input type="text" class="form-control my-1" placeholder="Nome" id="name" name="cloneableField{{ loop.index }}[name]" value="{{ report.name }}" required> </div>
-                              <div class="col">
-                                <input type="text" class="form-control my-1" placeholder="Cidade" id="city" name="cloneableField{{ loop.index }}[city]" value="{{ report.city }}" required> </div>
-                              <div class="col-1">
-                                <input type="text" class="form-control my-1" placeholder="G" id="urnG" name="cloneableField{{ loop.index }}[urnG]" value="{{ report.urnG }}" required> </div>
-                              <div class="col-1">
-                                <input type="text" class="form-control my-1" placeholder="M" id="urnM" name="cloneableField{{ loop.index }}[urnM]" value="{{ report.urnM }}" required> </div>
-                              <div class="col-1">
-                                <input type="text" class="form-control my-1" placeholder="P" id="urnP" name="cloneableField{{ loop.index }}[urnP]" value="{{ report.urnP }}" required> </div>
-                              <div class="col">
-                                <input type="text" class="form-control my-1" placeholder="Tipo" id="type" name="cloneableField{{ loop.index }}[type]" value="{{ report.type }}" required> </div>
-                              <div class="col">
-                                <input type="text" class="form-control my-1" placeholder="Valor" id="freight" name="cloneableField{{ loop.index }}[freight]" value="{{ report.freight }}" required> </div>
-                              <button type="submit" class="btn btn-success" add-btn="true">
-                                <span class="fas fa-fw fa-plus" add-btn="true"></span>
-                              </button>
-                              <button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
-                                <i class="fas fa-fw fa-times" remove-btn="true"></i>
-                              </button>
-                            </div>
-                          {% endfor %}
-                        {% endif %}
-                      </div>
-                    </div>
-                  </fieldset>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+{% block title %}Romaeio
 {% endblock %}
+{% block content %}
+	<div class="col py-5 px-4" id="romaneioForm">
+		<div class="col-12">
+			<h1 class="display-3">Romaneio</h1>
+			<a href="/forms/view?type=romaneio" class="text-primary">Ver romaneios salvos</a>
+			<hr>
+		</div>
+		<div class="row">
+			<div class="col" id="type-form">
+				<form method="GET" id="formObject" action="/forms/{{ formName }}/print" target="_blank">
+					<input type="hidden" name="formName" value="{{ formName }}"/>
+					{% if formData is not same as(null) %}
+						<input type="hidden" name="_id" value="{{ formData.id }}"/>
+					{% endif %}
+					<div class="row">
+						<div class="col-4">
+							<input type="submit" class="disable-on-submit btn btn-primary col" value="Criar Romaneio">
+						</div>
+						<div class="col-4">
+							<input type="submit" class="hide-cursor no-keypress disable-on-submit save-button-action btn btn-secondary col" id="save-action" value="Salvar">
+						</div>
+						<div class="col-4">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" form-name="romaneio/print" name="type" id="inlineRadio1" value="2" checked="">
+								<label class="form-check-label" for="inlineRadio1">Entrega</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" form-name="romaneio-board/print" name="type" id="inlineRadio1" value="1" required="">
+								<label class="form-check-label" for="inlineRadio1">Carregamento</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" form-name="travel/print" name="type" id="inlineRadio1" value="1" required="">
+								<label class="form-check-label" for="inlineRadio1">Relatorio de Viagem</label>
+							</div>
+						</div>
+					</div>
+					<div class="row py-2">
+						<div class="col" id="driverNameFiled" style="display: none"/>
+						<fieldset class="border border-light">
+							<legend class="px-1 bg-light">Nome do motorista</legend>
+							<div class="row m-1 ">
+								<div class="input-group row">
+									<label class="col-sm-2 col-form-label">Nome do motorista</label>
+									<input type="text" class="form-control my-1" id="driverName" name="driverName" value="{{ formData is not same as (null) ? formData.driverName : '' }}"/>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div class="row py-2">
+					<div class="col">
+						<fieldset class="border border-light">
+							<legend class="px-1 bg-light">Produtos</legend>
+							<div class="row m-1">
+								<div class="col-md-12">
+									<div class="input-group w-100">
+										<div class="col-3">Nome do Cliente</div>
+										<div class="col">
+											Cidade
+										</div>
+										<div class="col-3 text-center">
+											Tamnho das Urnas
+										</div>
+										<div class="col">
+											Faturamento
+										</div>
+										<div class="col">
+											Frete
+										</div>
+										<div class="col-1">&nbsp;</div>
+									</div>
+									{% if formData is same as(null) or formData.items is same as(null) %}
+										<div class="input-group my-1 w-100" id="cloneableField">
+											<div class="col-3">
+												<input type="hidden" input-number="true" input-name="cloneableField" id="id" name="cloneableField0[id]" value="1">
+												<input type="text" class="form-control my-1" placeholder="Nome" id="name" name="cloneableField0[name]" required>
+											</div>
+											<div class="col">
+												<input type="text" class="form-control my-1" placeholder="Cidade" id="city" name="cloneableField0[city]" required>
+											</div>
+											<div class="col-1">
+												<input type="text" class="form-control my-1" placeholder="G" id="urnG" name="cloneableField0[urnG]" required>
+											</div>
+											<div class="col-1">
+												<input type="text" class="form-control my-1" placeholder="M" id="urnM" name="cloneableField0[urnM]" required>
+											</div>
+											<div class="col-1">
+												<input type="text" class="form-control my-1" placeholder="P" id="urnP" name="cloneableField0[urnP]" required>
+											</div>
+											<div class="col">
+												<input type="text" class="form-control my-1" placeholder="Tipo" id="type" name="cloneableField0[type]" required>
+											</div>
+											<div class="col">
+												<input type="text" class="form-control my-1" placeholder="Valor" id="freight" name="cloneableField0[freight]" required>
+											</div>
+											<button type="submit" class="btn btn-success" add-btn="true">
+												<span class="fas fa-fw fa-plus" add-btn="true"></span>
+											</button>
+											<button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
+												<i class="fas fa-fw fa-times" remove-btn="true"></i>
+											</button>
+										</div>
+									{% else %}
+										{% for report in formData.items %}
+											<div class="input-group my-1 w-100" id="cloneableField">
+												<div class="col-3">
+													<input type="hidden" input-number="true" input-name="cloneableField" id="id" name="cloneableField{{ loop.index }}[id]" value="{{ loop.index }}">
+													<input type="text" class="form-control my-1" placeholder="Nome" id="name" name="cloneableField{{ loop.index }}[name]" value="{{ report.name }}" required>
+												</div>
+												<div class="col">
+													<input type="text" class="form-control my-1" placeholder="Cidade" id="city" name="cloneableField{{ loop.index }}[city]" value="{{ report.city }}" required>
+												</div>
+												<div class="col-1">
+													<input type="text" class="form-control my-1" placeholder="G" id="urnG" name="cloneableField{{ loop.index }}[urnG]" value="{{ report.urnG }}" required>
+												</div>
+												<div class="col-1">
+													<input type="text" class="form-control my-1" placeholder="M" id="urnM" name="cloneableField{{ loop.index }}[urnM]" value="{{ report.urnM }}" required>
+												</div>
+												<div class="col-1">
+													<input type="text" class="form-control my-1" placeholder="P" id="urnP" name="cloneableField{{ loop.index }}[urnP]" value="{{ report.urnP }}" required>
+												</div>
+												<div class="col">
+													<input type="text" class="form-control my-1" placeholder="Tipo" id="type" name="cloneableField{{ loop.index }}[type]" value="{{ report.type }}" required>
+												</div>
+												<div class="col">
+													<input type="text" class="form-control my-1" placeholder="Valor" id="freight" name="cloneableField{{ loop.index }}[freight]" value="{{ report.freight }}" required>
+												</div>
+												<button type="submit" class="btn btn-success" add-btn="true">
+													<span class="fas fa-fw fa-plus" add-btn="true"></span>
+												</button>
+												<button type="submit" class="btn mx-1 btn-danger" remove-btn="true">
+													<i class="fas fa-fw fa-times" remove-btn="true"></i>
+												</button>
+											</div>
+										{% endfor %}
+									{% endif %}
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>{% endblock %}

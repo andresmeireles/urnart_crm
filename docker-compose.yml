@@ -60,6 +60,8 @@ services:
       build: phpdocker/php-fpm
       container_name: sa-php-fpm
       working_dir: /application
+      links:
+        - mongo:mongo
       volumes:
         - .:/application
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini

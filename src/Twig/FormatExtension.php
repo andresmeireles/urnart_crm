@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Twig;
 
@@ -8,7 +10,7 @@ use Twig\TwigFunction;
 
 final class FormatExtension extends AbstractExtension
 {
-    private CONST ALLOWED_STATUS = [
+    private const ALLOWED_STATUS = [
         9 => 'em analise',
         3 => 'cancelado',
         2 => 'em debito',
@@ -29,6 +31,7 @@ final class FormatExtension extends AbstractExtension
             new TwigFilter('month_converter', [$this, 'monthConverter']),
             new TwigFilter('month', [$this, 'numMonthConverter']),
             new TwigFilter('status_converter', [$this, 'statusConverter']),
+            new TwigFilter('timestampToDate', [$this, 'timestampToDate']),
         ];
     }
 
@@ -41,6 +44,7 @@ final class FormatExtension extends AbstractExtension
             new TwigFunction('formatBrl', [$this, 'formatBrl']),
             new TwigFunction('month_converter', [$this, 'monthConverter']),
             new TwigFunction('status_converter', [$this, 'statusConverter']),
+            new TwigFunction('timestampToDate', [$this, 'timestampToDate']),
         ];
     }
 
@@ -52,6 +56,11 @@ final class FormatExtension extends AbstractExtension
     {
         $number = (float) $number;
         return number_format($number, 2, ',', '.');
+    }
+
+    public function timestampToDate($timestamp, string $format)
+    {
+        return date($format, $timestamp);
     }
 
     public function statusConverter($status): string

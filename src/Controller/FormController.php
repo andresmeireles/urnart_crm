@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /**
  * @category Controller
@@ -12,6 +12,7 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Document\Romaneio;
 use App\Entity\PaymentType;
 use App\Entity\Product;
 use App\Entity\Transporter;
@@ -23,6 +24,7 @@ use App\Utils\Andresmei\Form;
 use App\Utils\Andresmei\NestedArraySeparator;
 use App\Utils\Andresmei\StringConvertions;
 use App\Utils\Exceptions\CustomException;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -54,27 +56,32 @@ final class FormController extends AbstractController
      */
     public function viewSaveReports(
         Request $request,
-        FileFunctions $fileFunc
+        DocumentManager $dcm
     ): Response {
-        $repoType = $request->query->get('type');
-        $reportFolder = sprintf(
-            '%s/%s/%s',
-            $this->getParameter('app.path.root'),
-            $this->getParameter('app.path.report_folder'),
-            ucwords($repoType)
+        $document = sprintf(
+            'App\Document\%s',
+            ucfirst($request->query->get('type'))
         );
-        $files = $fileFunc->getFilesFromFolder($reportFolder);
-        $reports = [];
-        foreach (\array_keys($files) as $key) {
-            $arrayFile = \file_get_contents($key);
-            if (\is_string($arrayFile)) {
-                $reports[] = Yaml::parse($arrayFile);
-            }
-        }
-        
+        $reports = $dcm->getRepository($document)->findAll();
+        // $reportFolder = sprintf(
+        //     '%s/%s/%s',
+        //     $this->getParameter('app.path.root'),
+        //     $this->getParameter('app.path.report_folder'),
+        //     ucwords($repoType)
+        // );
+        // $files = $fileFunc->getFilesFromFolder($reportFolder);
+        // $reports = [];
+        // foreach (\array_keys($files) as $key) {
+        //     $arrayFile = \file_get_contents($key);
+        //     if (\is_string($arrayFile)) {
+        //         $reports[] = Yaml::parse($arrayFile);
+        //     }
+        // }
+
+
         return $this->render('form/saveReports.html.twig', [
             'reports' => $reports,
-            'type' => $repoType,
+            'type' => $request->query->get('type'),
         ]);
     }
 
@@ -83,15 +90,12 @@ final class FormController extends AbstractController
      */
     public function saveFunction(
         Request $request,
-        FormModel $model
+        FormModel $model,
+        DocumentManager $dcm
     ): Response {
         $data = $request->query->all();
         $formName = $request->query->get('formName');
-        $parameterName = sprintf('app.path.%s_report', $formName);
-        $path = $this->getParameter($parameterName);
-        $rootDir = $this->getParameter('app.path.root');
-        $reportPath = sprintf('%s/%s', $rootDir, $path);
-        $result = $model->saveReport($data, $reportPath);
+        $result = $model->saveReportDocument($data, $dcm);
         $this->addFlash(
             $result->getType(),
             $result->getMessage()
@@ -101,32 +105,31 @@ final class FormController extends AbstractController
     }
 
     /**
+     * @Route("/forms/edit/romaneio/{romaneioId}", methods="GET", name="edit_romaneio")
+     */
+    public function renderRomaneioFormWithData(string $romaneioId, DocumentManager $dcm): Response
+    {
+        $formData = $dcm->getRepository(Romaneio::class)->find($romaneioId);
+
+        // dump($formData);
+        // die;
+
+        return $this->render('form/romaneioForm.html.twig', [
+            'formName' => 'romaneio',
+            'formData' => $formData,
+        ]);
+    }
+
+    /**
      * @Route("/forms/{formName}", methods={"GET"})
      * @throws \Exception
      */
-    public function findFormTemplate(Request $request, string $formName): Response
+    public function findFormTemplate(Request $request, string $formName, DocumentManager $dcm): Response
     {
-        $fileNamePath = sprintf(
-            '%s/../../templates/form/%sForm.html.twig',
-            __DIR__,
-            $formName
-        );
-        if (! file_exists($fileNamePath)) {
-            throw new \Exception('Page not found');
-        }
         if ($request->query->get('repofile') !== null) {
-            $reportFolder = sprintf(
-                '%s/%s/%s/%s.yaml',
-                $this->getParameter('kernel.root_dir'),
-                $this->getParameter('app.path.report_folder'),
-                ucwords($formName),
-                $request->query->get('repofile')
-            );
-            if (! is_string(file_get_contents($reportFolder))) {
-                throw new \Exception('Arquivo incorreto');
-            }
-            $reportData = Yaml::parse(file_get_contents($reportFolder));
-            $formAllData = new NestedArraySeparator($reportData);
+            $entity = sprintf('\App\Document\%s', ucfirst($formName));
+            $reportData = $dcm->getRepository($entity)->find($request->query->get('repofile'));
+            $formAllData = new NestedArraySeparator((array) $reportData);
         }
         $requestData = [
             'formName' => $formName,
@@ -184,7 +187,7 @@ final class FormController extends AbstractController
         string $formName,
         FormModel $model
     ): Response {
-        if (! $this->isCsrfTokenValid(
+        if (!$this->isCsrfTokenValid(
             'saveOnDb',
             $request->request->get('_csrf_token')
         )) {
@@ -216,7 +219,7 @@ final class FormController extends AbstractController
         //check if file exists
         $file = $result['pdf_path'];
         $filesystem = new Filesystem();
-        if (! $filesystem->exists($file)) {
+        if (!$filesystem->exists($file)) {
             throw $this->createNotFoundException('File not found.');
         }
 
@@ -236,36 +239,36 @@ final class FormController extends AbstractController
 //     * @Route("/forms/{formName}/{idOrder<\d+>}")
 //     * @throws CustomException
 //     */
-//    public function findFormFillWithId(string $formName, int $idOrder): Response
-//    {
-//        /** @var TravelAccountability $regitry */
-//        $regitry = $this->getDoctrine()
-//            ->getRepository(TravelAccountability::class)
-//            ->find($idOrder);
-//        if (! $regitry->getActive()) {
-//            throw new CustomException('Não se pode alterar item fechado.');
-//        }
-//        $pageName = sprintf('/form/%sForm.html.twig', $formName);
-//        $formFullName = sprintf(
-//            '%s/templates%s',
-//            $this->getParameter('kernel.project_dir'),
-//            $pageName
-//        );
-//
-//        if (! file_exists($formFullName)) {
-//            throw new FileNotFoundException('Pagina não existe');
-//        }
-//
-//        if ($formName === 'travel-report') {
-//            $responseData = [
-//                'dataFill' => $this->getDoctrine()
-//                    ->getRepository(TravelAccountability::class)
-//                    ->find($idOrder),
-//            ];
-//        }
-//
-//        return $this->render($pageName, $responseData ?? []);
-//    }
+    //    public function findFormFillWithId(string $formName, int $idOrder): Response
+    //    {
+    //        /** @var TravelAccountability $regitry */
+    //        $regitry = $this->getDoctrine()
+    //            ->getRepository(TravelAccountability::class)
+    //            ->find($idOrder);
+    //        if (! $regitry->getActive()) {
+    //            throw new CustomException('Não se pode alterar item fechado.');
+    //        }
+    //        $pageName = sprintf('/form/%sForm.html.twig', $formName);
+    //        $formFullName = sprintf(
+    //            '%s/templates%s',
+    //            $this->getParameter('kernel.project_dir'),
+    //            $pageName
+    //        );
+    //
+    //        if (! file_exists($formFullName)) {
+    //            throw new FileNotFoundException('Pagina não existe');
+    //        }
+    //
+    //        if ($formName === 'travel-report') {
+    //            $responseData = [
+    //                'dataFill' => $this->getDoctrine()
+    //                    ->getRepository(TravelAccountability::class)
+    //                    ->find($idOrder),
+    //            ];
+    //        }
+    //
+    //        return $this->render($pageName, $responseData ?? []);
+    //    }
 
     /**
      * @Route("/forms/{formName}/{idReport<\d+>}/edit", methods={"POST"})
@@ -281,7 +284,7 @@ final class FormController extends AbstractController
         $registry = $this->getDoctrine()
             ->getRepository(TravelAccountability::class)
             ->find($idReport);
-        if (! $registry->getActive()) {
+        if (!$registry->getActive()) {
             throw new CustomException('Não se pode alterar item fechado.');
         }
         $data = $request->request->all();
