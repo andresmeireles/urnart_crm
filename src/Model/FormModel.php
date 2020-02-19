@@ -34,6 +34,13 @@ final class FormModel extends Model
         return new FlashResponse(200, 'success', 'Arquivo salvo com sucesso!');
     }
 
+    public function saveReportDocument(array $data): FlashResponse
+    {
+        unset($data['save']);
+        $data['created'] = strtotime(new \DateTime('now', new \DateTimeZone('America/Sao_Paulo')));
+        
+    }
+
     /**
      * @return FlashResponse
      * @throws \Exception

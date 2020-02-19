@@ -91,7 +91,6 @@ final class FormController extends AbstractController
         $path = $this->getParameter($parameterName);
         $rootDir = $this->getParameter('app.path.root');
         $reportPath = sprintf('%s/%s', $rootDir, $path);
-        //dump($reportPath);die;
         $result = $model->saveReport($data, $reportPath);
         $this->addFlash(
             $result->getType(),
