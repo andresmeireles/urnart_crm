@@ -9,7 +9,9 @@ Requisitos
 1. `php 7.4^`
 2. `Ter composer instalado https://getcomposer.org/`
 3. `Ter mariaDB instalado`
-3. `NodeJS e Yarn`
+3. `NodeJS`
+4. `yarn ou npm`
+5. `mongodb`
 
 ====================================================
 
@@ -24,7 +26,6 @@ Dependencias do projeto
 Backend:
 
 1 - `composer update`
-
 
 Font-End:
 
@@ -43,6 +44,8 @@ Caso tenha o banco de dados criado, pular primeira etapa.
 2 - Criando Assets
 ==================
 
-Para criar, atualizar e monitorar assets em tempo real executar comando `yarn run encore dev --watch`. 
+Para criar, atualizar e monitorar assets em tempo real executar comando `yarn run encore dev --watch` ou `npm run encore dev --watch`.
+
+Para compilar os assets para produção use o comando `npm run build` ou `yarn run build`. 
 
 Para mais informações sebre assets ver `https://symfony.com/doc/current/frontend/` .
