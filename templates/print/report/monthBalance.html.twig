@@ -1,110 +1,106 @@
 {% extends "headerTemplatePrint.html.twig" %}
 {% block customStyle %}
-    @media print {
-        @page  {
-            size: landscape;
-        }
-    }
-    * {
-        font-size: 13.3px;
-    }
+	@media print {
+	        @page  {
+	            size: landscape;
+	        }
+	    }
+	    * {
+	        font-size: 13.3px;
+	    }
 {% endblock %}
 {% block body %}
-{% set modelOrder = ['CINZARIO', 'ECO SV SV', 'ECO SV CV', 'ECO CV', 'ECO SV', 'SL', 'S', 'P1', 'P2', 'P3', 'G2', 'G3', 'G5', 'M5', 'T7', 'A9', 'X12', 'C3', 'PETCAT', 'PET CAT', 'PETDOG', 'PET DOG'] %}
-{% set printModels = [] %}
-{% for mo in modelOrder if mo in model %}
-    {% set printModels = printModels|merge([mo]) %}
-{% endfor %}
-{% set orderHeights = ['040', '050', '070', '090', '110', '120', '130', '140', '150', '160', '170', '180', '190', '210', '160 GORDA', '170 GORDA', '180 GORDA', '190 GORDA', '210 GORDA', '170 BALEIA', '190 BALEIA', '170 SUPER GORDA', '180 SUPER GORDA', '190 SUPER GORDA', 'T1', 'T2', 'T3'] %}
-{% set height = [] %}
-{% for ho in orderHeights if ho in heights %}
-    {% set height = height|merge([ho]) %}
-{% endfor %}
-<pre>
-    {{ dump(heights) }}
-</pre>
-<div class="table-responsive">
-        <div class="h2 text-center">Relatorio do mês de {{ month | month }}/{{ year }}</div>
-    <table class="table table-sm table-bordered-black">
-        <thead>
-            <tr>
-                <th>Tam</th>
-                {% for modelName in printModels %}
-                    <th class="text-center {{ modelName | slugfy }}">{{ modelName }}</th>
-                {% endfor %}
-                {% for m in model if m not in modelOrder %}
-                    <th class="text-center {{ m | slugfy }}">{{ m }}</th>
-                {% endfor %}
-                <th class="bg-light"></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% set counter =  model | length %}
-            {% set reverseModelName = model | reverse %}
-            {% for h in height %}
-            <tr>
-                <th class="tam">{{ h }}</th>
-                {% for m in printModels %}
-                    {% set n = m ~ ' ' ~ h %}
-                    <td class="text-center font-weight-bolder mod {{ m | slugfy }} hei {{ 'h-' ~ h | slugfy }}">{{ products[n] is defined ? products[n] : '0' }}</td>
-                {% endfor %}
-                <th class="text-center mod table-info total-h-{{ h | slugfy }}">
-                </th>
-            </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot class="table-info">
-            <tr>
-                <th>&nbsp;</th>
-                {% for m in printModels %}
-                    <th class="text-center mod total-{{ m | slugfy }}">
-                    </th>
-                {% endfor %}
-                <th class="text-center">{{ totalAmountProducts }}</th>
-            </tr>
-        </tfoot>
-    </table>
-    <h1 class="text-center display-2">
-        <div class="badge badge-pill badge-light">
-            R$ {{ finalTotal | number_format(2, ',', '.') }}
-        </div>
-    </h1>
-</div>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const models = {{ printModels | json_encode | raw }}
-        const heights = {{ height | json_encode | raw }}
+	{% set modelOrder = ['CINZARIO', 'ECO SV SV', 'ECO SV CV', 'ECO CV', 'ECO SV', 'SL', 'S', 'P1', 'P2', 'P3', 'G2', 'G3', 'G5', 'M5', 'T7', 'A9', 'X12', 'C3', 'PETCAT', 'PET CAT', 'PETDOG', 'PET DOG'] %}
+	{% set printModels = [] %}
+	{% for mo in modelOrder if mo in model %}
+		{% set printModels = printModels|merge([mo]) %}
+	{% endfor %}
+	{% set orderHeights = ['040', '050', '070', '090', '110', '120', '130', '140', '150', '160', '170', '180', '190', '210', '160 GORDA', '170 GORDA', '180 GORDA', '190 GORDA', '210 GORDA', '170 BALEIA', '190 BALEIA', '170 SUPER GORDA', '180 SUPER GORDA', '190 SUPER GORDA', 'T1', 'T2', 'T3'] %}
+	{% set height = [] %}
+	{% for ho in orderHeights if ho in heights %}
+		{% set height = height|merge([ho]) %}
+	{% endfor %}
+	<div class="table-responsive">
+		<div class="h2 text-center">Relatorio do mês de
+			{{ month | month }}/{{ year }}</div>
+		<table class="table table-sm table-bordered-black">
+			<thead>
+				<tr>
+					<th>Tam</th>
+					{% for modelName in printModels %}
+						<th class="text-center {{ modelName | slugfy }}">{{ modelName }}</th>
+					{% endfor %}
+					{% for m in model if m not in modelOrder %}
+						<th class="text-center {{ m | slugfy }}">{{ m }}</th>
+					{% endfor %}
+					<th class="bg-light"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set counter =  model | length %}
+				{% set reverseModelName = model | reverse %}
+				{% for h in height %}
+					<tr>
+						<th class="tam">{{ h }}</th>
+						{% for m in printModels %}
+							{% set n = m ~ ' ' ~ h %}
+							<td class="text-center font-weight-bolder mod {{ m | slugfy }} hei {{ 'h-' ~ h | slugfy }}">{{ products[n] is defined ? products[n] : '0' }}</td>
+						{% endfor %}
+						<th class="text-center mod table-info total-h-{{ h | slugfy }}"></th>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot class="table-info">
+				<tr>
+					<th>&nbsp;</th>
+					{% for m in printModels %}
+						<th class="text-center mod total-{{ m | slugfy }}"></th>
+					{% endfor %}
+					<th class="text-center">{{ totalAmountProducts }}</th>
+				</tr>
+			</tfoot>
+		</table>
+		<h1 class="text-center display-2">
+			<div class="badge badge-pill badge-light">
+				R$
+				{{ finalTotal | number_format(2, ',', '.') }}
+			</div>
+		</h1>
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+const models = {{ printModels | json_encode | raw }}
+const heights = {{ height | json_encode | raw }}
 
-        for (let model of models) {
-            let slugModel = model.replace(/ /g, '-').toLocaleLowerCase();
-            sumAllModelAmount(slugModel);
-        }
+for (let model of models) {
+let slugModel = model.replace(/ /g, '-').toLocaleLowerCase();
+sumAllModelAmount(slugModel);
+}
 
-        for (let height of heights) {
-            let slugHeight = height.replace(/ /g, '-').toLocaleLowerCase();
-            sumAllHeightAmount(slugHeight);
-        }
-    });
+for (let height of heights) {
+let slugHeight = height.replace(/ /g, '-').toLocaleLowerCase();
+sumAllHeightAmount(slugHeight);
+}
+});
 
-    const sumAllModelAmount = (searchModel) => {
-        // let fieldToPrintResult = document.querySelector(`.total-${searchModel}`);
-        let modelAmount = 0;
-        let productFields = document.querySelectorAll(`.mod.${searchModel}`);
-        for (let prod of productFields) {
-            let castProd = parseInt(prod.innerHTML);
-            modelAmount += castProd;
-        }
-        document.querySelector(`.total-${searchModel}`).innerHTML = modelAmount;
-    };
+const sumAllModelAmount = (searchModel) => { // let fieldToPrintResult = document.querySelector(`.total-${searchModel}`);
+let modelAmount = 0;
+let productFields = document.querySelectorAll (`.mod.${searchModel}`);
+for (let prod of productFields) {
+let castProd = parseInt(prod.innerHTML);
+modelAmount += castProd;
+}
+document.querySelector (`.total-${searchModel}`).innerHTML = modelAmount;
+};
 
-    const sumAllHeightAmount = (searchHeight) => {
-        let heightAmount = 0;
-        let productFields = document.querySelectorAll(`.hei.h-${searchHeight}`);
-        for (let prod of productFields) {
-            let castProd = parseInt(prod.innerHTML);
-            heightAmount += castProd;
-        }
-        document.querySelector(`.total-h-${searchHeight}`).innerHTML = heightAmount || 0;
-    };
-</script>
+const sumAllHeightAmount = (searchHeight) => {
+let heightAmount = 0;
+let productFields = document.querySelectorAll (`.hei.h-${searchHeight}`);
+for (let prod of productFields) {
+let castProd = parseInt(prod.innerHTML);
+heightAmount += castProd;
+}
+document.querySelector (`.total-h-${searchHeight}`).innerHTML = heightAmount || 0;
+};
+	</script>
 {% endblock %}

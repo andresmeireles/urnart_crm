@@ -97,5 +97,11 @@
         "symfony": {
             "allow-contrib": "true"
         }
+    },
+    "repositories": {
+        "phpunit-bridge": {
+            "type": "path",
+            "url": "vendor\\symfony\\phpunit-bridge"
+        }
     }
 }

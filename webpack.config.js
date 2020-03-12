@@ -10,7 +10,9 @@ Encore
     // uncomment to create hashed filenames (e.g. app.abc123.css)
     //.enableVersioning(Encore.isProduction())
     .enableVersioning()
-    
+    .enableSingleRuntimeChunk()
+    // .disableSingleRuntimeChunk()
+
     // uncomment to define the assets of the project
     .addEntry('app', './assets/js/app.js')
     .addStyleEntry('css/app', './assets/scss/app.scss')
@@ -18,12 +20,12 @@ Encore
 
     // uncomment if you use Sass/SCSS files
     .enableSassLoader()
-    
+
     // uncomment if you use LESS files
     //.enableLessLoader()
 
     // uncomment for legacy applications that require $/jQuery as a global variable
     .autoProvidejQuery()
-;
+    ;
 
 module.exports = Encore.getWebpackConfig();

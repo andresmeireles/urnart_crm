@@ -21,7 +21,7 @@ numeralJs.register("locale", "br", {
     billion: "b",
     trillion: "t"
   },
-  ordinal: function(number) {
+  ordinal: function (number) {
     return number === 1 ? "er" : "ème";
   },
   currency: {
@@ -42,7 +42,10 @@ import "@chenfengyuan/datepicker/dist/datepicker";
 import "@chenfengyuan/datepicker/i18n/datepicker.pt-BR";
 
 import "chart.js";
+// import Chart from Chart;
 import "chartjs-plugin-labels";
+
+window.chart = Chart;
 
 //globals
 global.$ = global.jQuery = $;
