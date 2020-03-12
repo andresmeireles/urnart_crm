@@ -1,235 +1,264 @@
 <html>
 
-<head>
-    <style>
-        body {
-            height: 100%;
-            width: 100%;
-        }
+	<head>
+		<style>
+			body {
+				height: 100%;
+				width: 100%;
+			}
 
-        table {
-            width: 80%;
-            border: 1px solid black;
-            border-spacing: 0;
-            border-collapse: collapse;
-            font-size: 11px;
-        }
+			table {
+				width: 80%;
+				border: 1px solid black;
+				border-spacing: 0;
+				border-collapse: collapse;
+				font-size: 11px;
+			}
 
-        td {
-            border: 1px solid black;
-        }
+			td {
+				border: 1px solid black;
+			}
 
-        .page {
-            page-break-after: always;
-        }
+			.page {
+				page-break-after: always;
+			}
 
-        .center {
-            text-align: center;
-        }
+			.center {
+				text-align: center;
+			}
 
-        .grey {
-            background-color: lightgrey;
-            font-size: 12px;
-        }
+			.grey {
+				background-color: lightgrey;
+				font-size: 12px;
+			}
 
-        .chart {
-            width: 75%;
-            page-break-after: always;
-        }
+			.chart {
+				width: 75%;
+				page-break-after: always;
+			}
 
-        .monthamt {
-            font-size: 23px;
-        }
+			.monthamt {
+				font-size: 23px;
+			}
+		</style>
 
-    </style>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	</head>
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-</head>
+	<body>
+		{% set monthAmount = 0 %}
+		{% set dt = '' %}
+		{% set amount = 0 %}
+		{% set finalAmt = 0 %}
+		{% set cdt = [] %}
+		{% set camt = [] %}
+		{% for week in monthReportData %}
+			{% set amount = 0 %}
+			<div class="page">
+				<div class="form page">
+					<table>
+						<tr>
+							<th colspan="3">
+								VENDAS: SEMANA
+								{{ loop.index }}
+							</th>
+						</tr>
+						{% for day in week %}
+							{% if dt is not same as(day.cdate | date('d/m/Y')) %}
+								{% if amount is not same as(0) %}
+									<tr>
+										<td colspan="2" style="text-align: right">
+											<b>TOTAL</b>
+										</td>
+										<td class="center">{{ amount }}</td>
+										{% set camt = camt|merge([amount]) %}
+										{% set finalAmt = finalAmt + amount %}
+										{% set amount = 0 %}
+									</tr>
+								{% endif %}
+								<tr>
+									<td colspan="3">&nbsp;</td>
+								</tr>
+								<tr>
+									<th class="grey" colspan="3">{{ day.cdate | date('d/m/Y') }}</th>
+								</tr>
+								<tr>
+									{% set dt = day.cdate | date('d/m/Y') %}
+								{% endif %}
+								<tr>
+									<td width="40%">{{ day.cname }}</td>
+									<td class="center" width="40%">{{ day.city }}</td>
+									<td class="center" width="10%">{{ day.amount }}</td>
+								</tr>
+								{% set amount = amount + day.amount %}
+							{% endfor %}
+							<tr>
+								<td colspan="2" style="text-align: right">
+									<b>TOTAL</b>
+								</td>
+								<td class="center">{{ amount }}</td>
+								{% set camt = camt|merge([amount]) %}
+								{% set finalAmt = finalAmt + amount %}
+								{% set amount = 0 %}
+							</tr>
+							<tr>
+								<td colspan="3">&nbsp;</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td style="text-align: right">
+									<b>TOTAL DA SEMANA</b>
+								</td>
+								<td class="center">{{ finalAmt }}</td>
+								{% set monthAmount = monthAmount + finalAmt %}
+							</tr>
+							<tr>
+								<td colspan="3">&nbsp;</td>
+							</tr>
+							<tr>
+								<td colspan="3">&nbsp;</td>
+							</tr>
+							{% if loop.index is same as(monthReportData | length) %}
+								<tr>
+									<td colspan="2" class="monthamt" style="text-align: right">
+										<b>TOTAL DE VENDAS DO MÊS</b>
+									</td>
+									<td class="center monthamt">{{ monthAmount }}</td>
+								</tr>
+							{% endif %}
+						</table>
+					</div>
+				</div>
+				{% set cdt = [] %}
+				{% set camt = [] %}
+				{% set finalAmt = 0 %}
+			{% endfor %}
+			{% set totalOfTotals = [] %}
+			{% for week in cd %}
+				{% set finalAmount = 0 %}
+				<div
+					class="page">
+					{# {% for day in week %} #}
+					<div id="top_x_div-{{loop.index}}" style="width: 800px; height: 600px;"></div>
+					<script>
+						setTimeout(function () {
+google.charts.load("current", {packages: ['corechart']});
+google.charts.setOnLoadCallback(drawStuff);
 
-<body>
-    {% set monthAmount = 0 %}
-    {% set dt = '' %}
-    {% set amount = 0 %}
-    {% set finalAmt = 0 %}
-    {% set cdt = [] %}
-    {% set camt = [] %}
-    {% for week in monthReportData %}
-    {% set amount = 0 %}
-    <div class="page">
-        <div class="form page">
-            <table>
-                <tr>
-                    <th colspan="3">
-                        VENDAS: SEMANA {{ loop.index }}
-                    </th>
-                </tr>
-                {% for day in week %}
-                {% if dt is not same as(day.cdate | date('d/m/Y')) %}
-                {% if amount is not same as(0) %}
-                <tr>
-                    <td colspan="2" style="text-align: right"><b>TOTAL</b></td>
-                    <td class="center">{{ amount }}</td>
-                    {% set camt = camt|merge([amount]) %}
-                    {% set finalAmt = finalAmt + amount %}
-                    {% set amount = 0 %}
-                </tr>
-                {% endif %}
-                <tr>
-                    <td colspan="3">&nbsp;</td>
-                </tr>
-                <tr>
-                    <th class="grey" colspan="3">{{ day.cdate | date('d/m/Y') }}</th>
-                <tr>
-                    {% set dt = day.cdate | date('d/m/Y') %}
-                    {% endif %}
-                <tr>
-                    <td width="40%">{{ day.cname }}</td>
-                    <td class="center" width="40%">{{ day.city }}</td>
-                    <td class="center" width="10%">{{ day.amount }}</td>
-                </tr>
-                {% set amount = amount + day.amount %}
-                {% endfor %}
-                <tr>
-                    <td colspan="2" style="text-align: right"><b>TOTAL</b></td>
-                    <td class="center">{{ amount }}</td>
-                    {% set camt = camt|merge([amount]) %}
-                    {% set finalAmt = finalAmt + amount %}
-                    {% set amount = 0 %}
-                </tr>
-                <tr>
-                    <td colspan="3">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td style="text-align: right"><b>TOTAL DA SEMANA</b></td>
-                    <td class="center">{{ finalAmt }}</td>
-                    {% set monthAmount = monthAmount + finalAmt %}
-                </tr>
-                <tr>
-                    <td colspan="3">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td colspan="3">&nbsp;</td>
-                </tr>
-                {% if loop.index is same as(monthReportData | length) %}
-                <tr>
-                    <td colspan="2" class="monthamt" style="text-align: right"><b>TOTAL DE VENDAS DO MÊS</b></td>
-                    <td class="center monthamt">{{ monthAmount }}</td>
-                </tr>
-                {% endif %}
-            </table>
-        </div>
-    </div>
-    {% set cdt = [] %}
-    {% set camt = [] %}
-    {% set finalAmt = 0 %}
-    {% endfor %}
-    {% set totalOfTotals = [] %}
-    {% for week in cd %}
-    {% set finalAmount = 0 %}
-    <div class="page">
-    {# {% for day in week %} #}
-    <div id="top_x_div-{{loop.index}}" style="width: 800px; height: 600px;"></div>
-    <script>
-    setTimeout(function () {
-        google.charts.load("current", {packages:['corechart']});
-        google.charts.setOnLoadCallback(drawStuff);
+function drawStuff() {
+var data = new google.visualization.arrayToDataTable([
+[
+'Datas', 'Percentage', {
+role: 'style'
+}
+],{% for day in week %}[
+'{{ day.dt }}', {{ day.amount }}, 'grey'
+],
+{% set finalAmount = finalAmount + day.amount %}
+{% endfor %}
+['Total', {{ finalAmount }}, 'grey']{% set totalOfTotals = totalOfTotals|merge([finalAmount]) %}
+]);
 
-        function drawStuff() {
-        var data = new google.visualization.arrayToDataTable([
-          ['Datas', 'Percentage', { role: 'style' }],
-          {% for day in week %}
-            ['{{ day.dt }}', {{ day.amount }}, 'grey'],
-            {% set finalAmount = finalAmount + day.amount %}
-          {% endfor %}
-            ['Total', {{ finalAmount}}, 'grey']
-            {% set totalOfTotals = totalOfTotals|merge([finalAmount]) %}
-        ]);
+var view = new google.visualization.DataView(data);
+view.setColumns([
+0, 1, {
+calc: "stringify",
+sourceColumn: 1,
+type: "string",
+role: "annotation"
+},
+2
+]);
 
-        var view = new google.visualization.DataView(data);
-        view.setColumns([
-            0,
-            1,
-            { calc: "stringify",
-              sourceColumn: 1,
-              type: "string",
-              role: "annotation"
-            },
-            2
-            ]);
+var options = {
+title: "Vendas Semana       {{ loop.index }}",
+width: 800,
+legend: {
+position: 'none'
+},
+annotations: {
+alwaysOutside: true
+},
+vAxis: {
+scaleType: 'log'
+},
+bar: {
+groupWidth: "90%"
+}
+};
 
-        var options = {
-            title: "Vendas Semana {{ loop.index }}",
-          width: 800,
-          legend: { position: 'none' },
-          annotations: {
-              alwaysOutside: true
-          },
-          vAxis: {
-              scaleType: 'log',
-          },
-          bar: { groupWidth: "90%" }
-        };
+var chart = new google.visualization.ColumnChart(document.getElementById('top_x_div-{{ loop.index }}'));
+chart.draw(view, options);
+}
+}, 600);
+					</script>
+				</div>
+			{% endfor %}
 
-        var chart = new google.visualization.ColumnChart(document.getElementById('top_x_div-{{ loop.index }}'));
-        chart.draw(view, options);
-      }}, 600);
-    </script>
-    </div>
-    {% endfor %}
+			{% set endTotal = 0 %}
+			<div class="page">
+				<div id="final_chart" style="width: 800px; height: 600px;"></div>
+				<script>
+					setTimeout(function () {
+google.charts.load("current", {packages: ['corechart']});
+google.charts.setOnLoadCallback(drawStuff);
 
-    {% set endTotal = 0 %}
-    <div class="page">
-        <div id="final_chart" style="width: 800px; height: 600px;"></div>
-    <script>
-    setTimeout(function () {
-        google.charts.load("current", {packages:['corechart']});
-        google.charts.setOnLoadCallback(drawStuff);
+function drawStuff() {
+var data = new google.visualization.arrayToDataTable([
+[
+'Datas', 'Percentage', {
+role: 'style'
+}
+],{% for weekTotal in totalOfTotals %}[
+'Semana       {{ loop.index }}', {{ weekTotal }}, 'grey'
+],
+{% set endTotal = endTotal + weekTotal %}
+{% endfor %}
+['Total', {{ endTotal }}, 'grey']
+]);
 
-        function drawStuff() {
-        var data = new google.visualization.arrayToDataTable([
-          ['Datas', 'Percentage', { role: 'style' }],
-          {% for weekTotal in totalOfTotals %}
-            ['Semana {{ loop.index }}', {{ weekTotal }}, 'grey'],
-            {% set endTotal = endTotal + weekTotal %}
-          {% endfor %}
-            ['Total', {{ endTotal}}, 'grey']
-        ]);
+var view = new google.visualization.DataView(data);
+view.setColumns([
+0, 1, {
+calc: "stringify",
+sourceColumn: 1,
+type: "string",
+role: "annotation"
+},
+2
+]);
 
-        var view = new google.visualization.DataView(data);
-        view.setColumns([
-            0,
-            1,
-            { calc: "stringify",
-              sourceColumn: 1,
-              type: "string",
-              role: "annotation"
-            },
-            2
-            ]);
+var options = {
+title: "Resumo do mês",
+width: 800,
+legend: {
+position: 'none'
+},
+annotations: {
+alwaysOutside: true
+},
+vAxis: {
+scaleType: 'log'
+},
+axes: {
+x: {
+0: {
+side: 'top',
+label: 'White to move'
+} // Top x-axis.
+}
+},
+bar: {
+groupWidth: "90%"
+}
+};
 
-        var options = {
-            title: "Resumo do mês",
-          width: 800,
-          legend: { position: 'none' },
-          annotations: {
-              alwaysOutside: true
-          },
-          vAxis: {
-              scaleType: 'log',
-          },
-          axes: {
-            x: {
-              0: { side: 'top', label: 'White to move'} // Top x-axis.
-            }
-          },
-          bar: { groupWidth: "90%" }
-        };
-
-        var chart = new google.visualization.ColumnChart(document.getElementById('final_chart'));
-        chart.draw(view, options);
-      }}, 600);
-    </script>
-    </div>
-</body>
-</html> 
+var chart = new google.visualization.ColumnChart(document.getElementById('final_chart'));
+chart.draw(view, options);
+}
+}, 600);
+				</script>
+			</div>
+		</body>
+	</body>
+</html>

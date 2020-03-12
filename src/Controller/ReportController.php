@@ -57,15 +57,18 @@ final class ReportController extends AbstractController
     ): Response {
         $this->isEncodedCSRFTokenValidPhrase($request->request->get('_csrf_token'), 'monthReport');
         $date = $request->request->get('month');
-        $date = new \DateTime('01-'.$date);
+        $date = new \DateTime('01-' . $date);
         $week = $dateFunctions->monthWeeks($date);
-        $reportQueryResults = array_map(fn ($weekDates) => $repository->getSellReport($weekDates['begin'], $weekDates['end']) ,$week);
-        $chartData = array_map(fn ($weekDates) => $repository->getSellReportChartData($weekDates['begin'], $weekDates['end']) ,$week);
+        $reportQueryRawResults = array_map(fn ($weekDates) => $repository->getSellReport($weekDates['begin'], $weekDates['end']), $week);
+        $chartRawData = array_map(fn ($weekDates) => $repository->getSellReportChartData($weekDates['begin'], $weekDates['end']), $week);
+        $chartData = array_values(array_filter($chartRawData));
+        $reportQueryResults = array_values(array_filter($reportQueryRawResults));
+        // dump($chartData, $reportQueryResults);
+        // die;
+        if (reset($chartData) === []) {
+            $this->addFlash('warning', 'esté mês não possui dados para criar um relátorio');
 
-        if ($chartData[0] === []) {
-           $this->addFlash('warning', 'esté mês não possui dados para criar um relátorio');
-           
-           return $this->redirectToRoute('report_sells');
+            return $this->redirectToRoute('report_sells');
         }
 
         return $this->render('report/print/monthSellReport.html.twig', [
@@ -414,7 +417,8 @@ final class ReportController extends AbstractController
         string $entity,
         int $idConsult
     ): Response {
-        if ('POST' === $request->getMethod() &&
+        if (
+            'POST' === $request->getMethod() &&
             $this->isEncodedCSRFTokenValidPhrase(
                 $request->request->get('_csrf_token'),
                 'autenticateBoleto'
