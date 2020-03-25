@@ -63,8 +63,6 @@ final class ReportController extends AbstractController
         $chartRawData = array_map(fn ($weekDates) => $repository->getSellReportChartData($weekDates['begin'], $weekDates['end']), $week);
         $chartData = array_values(array_filter($chartRawData));
         $reportQueryResults = array_values(array_filter($reportQueryRawResults));
-        // dump($chartData, $reportQueryResults);
-        // die;
         if (reset($chartData) === []) {
             $this->addFlash('warning', 'esté mês não possui dados para criar um relátorio');
 
