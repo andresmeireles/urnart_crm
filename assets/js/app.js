@@ -13,20 +13,20 @@ const numeralJs = require("numeral");
 numeralJs.register("locale", "br", {
   delimiters: {
     thousands: ".",
-    decimal: ","
+    decimal: ",",
   },
   abbreviations: {
     thousand: "k",
     million: "m",
     billion: "b",
-    trillion: "t"
+    trillion: "t",
   },
   ordinal: function (number) {
     return number === 1 ? "er" : "ème";
   },
   currency: {
-    symbol: "R$"
-  }
+    symbol: "R$",
+  },
 });
 numeralJs.locale("br");
 
@@ -37,7 +37,6 @@ vexjs.dialog.buttons.YES.text = "Sim";
 vexjs.dialog.buttons.NO.text = "Não";
 
 const pond = require("filepond");
-
 import "@chenfengyuan/datepicker/dist/datepicker";
 import "@chenfengyuan/datepicker/i18n/datepicker.pt-BR";
 
@@ -141,7 +140,7 @@ import "./src/register/loadAjax";
 import "./src/truck/truckAction";
 import "./src/truck/truckIndex";
 import "./src/truck/closeTruckOrder";
-import "./src/truck/truckArrivalCreation"
+import "./src/truck/truckArrivalCreation";
 
 // reports
 import "./src/reports/survey";

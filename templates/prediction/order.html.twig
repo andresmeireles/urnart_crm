@@ -1,0 +1,45 @@
+{% extends "index.html.twig" %}
+{% block title %}Previsões
+{% endblock %}
+{% block content %}
+	<div class="py-4 my-1 px-3 col">
+		<div>
+			<h1>Previsão de pedidos
+			</h1>
+			<hr>
+		</div>
+	</div>
+	<table class="table table-sm">
+		<thead>
+			<tr>
+				<th>Id do pedido</th>
+				<th>Nome do cliente</th>
+				<th class="text-center">Data de previsão</th>
+				<th class="text-center">Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for order in orders %}
+				<tr>
+					<td>{{ order.orderId.id }}</td>
+					<td>{{ order.orderId.customerName }}</td>
+					<td class="text-center">{{ order.getFormatedPredictionDate }}</td>
+					<td class="text-center">
+						<button class="btn btn-primary" data-fancybox data-src="#c{{order.id}}">Alterar previsão</button>
+					</td>
+					<div style="display:none;" id="c{{order.id}}">
+						<div class="text-center">
+							<span class="font-weight-bold h5">Definir previsão</span>
+							<form method="POST">
+								<input type="hidden" name="itemId" value="{{order.id}}"/>
+								<input type="submit" class="btn btn-outline-success my-3" value="alterar"/>
+								{% include "components/csrfToken.html.twig" with {'tokenText': "predict"} only %}
+								{% include "components/singleDateChnage.html.twig" with {'orderId': order.id, 'inputName': 'predictionDate' } only %}
+							</form>
+						</div>
+					</div>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

@@ -1,31 +1,30 @@
-var Encore = require('@symfony/webpack-encore');
+var Encore = require("@symfony/webpack-encore");
 
 Encore
-    // the project directory where compiled assets will be stored
-    .setOutputPath('public/build/')
-    // the public path used by the web server to access the previous directory
-    .setPublicPath('/build')
-    .cleanupOutputBeforeBuild()
-    .enableSourceMaps(!Encore.isProduction())
-    // uncomment to create hashed filenames (e.g. app.abc123.css)
-    //.enableVersioning(Encore.isProduction())
-    .enableVersioning()
-    .enableSingleRuntimeChunk()
-    // .disableSingleRuntimeChunk()
+  // the project directory where compiled assets will be stored
+  .setOutputPath("public/build/")
+  // the public path used by the web server to access the previous directory
+  .setPublicPath("/build")
+  .cleanupOutputBeforeBuild()
+  .enableSourceMaps(!Encore.isProduction())
+  // uncomment to create hashed filenames (e.g. app.abc123.css)
+  //.enableVersioning(Encore.isProduction())
+  .enableVersioning()
+  // .enableSingleRuntimeChunk()
+  .disableSingleRuntimeChunk()
 
-    // uncomment to define the assets of the project
-    .addEntry('app', './assets/js/app.js')
-    .addStyleEntry('css/app', './assets/scss/app.scss')
-    //.addStyleEntry('css/lapp', './assets/css/less/app.less')
+  // uncomment to define the assets of the project
+  .addEntry("app", "./assets/js/app.js")
+  .addStyleEntry("css/app", "./assets/scss/app.scss")
+  //.addStyleEntry('css/lapp', './assets/css/less/app.less')
 
-    // uncomment if you use Sass/SCSS files
-    .enableSassLoader()
+  // uncomment if you use Sass/SCSS files
+  .enableSassLoader()
 
-    // uncomment if you use LESS files
-    //.enableLessLoader()
+  // uncomment if you use LESS files
+  //.enableLessLoader()
 
-    // uncomment for legacy applications that require $/jQuery as a global variable
-    .autoProvidejQuery()
-    ;
+  // uncomment for legacy applications that require $/jQuery as a global variable
+  .autoProvidejQuery();
 
 module.exports = Encore.getWebpackConfig();

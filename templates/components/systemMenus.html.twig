@@ -44,6 +44,10 @@
           {
             "route": "/forms/order", 
             "name": "Criar pedido"
+          },
+          {
+            "route": "/prediction/order", 
+            "name": "Previsão de pedido"
           }, 
           {
             "route": "/order", 
@@ -117,32 +121,34 @@
 %}
 
 {% for item in menus %}
-    {% if item.divider is defined %}
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-    {% elseif item.namediv is defined %}
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        {{ item.namediv }}
-    </div>
-    {% else %}
-    <li class="nav-item">
-    <a class="nav-link {% if item.subitems is defined %}collapsed{% endif %}" href="{{ item.route }}" {% if item.subitems is defined %}data-toggle="collapse" data-target="#{{item.collapseName}}" aria-expanded="true" aria-controls="{{item.collapseName}}"{% endif %}>
-        <i class="fas fa-fw {{item.icon }}"></i>
-        <span>{{ item.name }}</span>
-    </a>
-    {% if item.subitems is defined %}
-        <div id="{{ item.collapseName }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-        {% for sitem in item.subitems %}
-            {% if sitem.name is defined %}<h6 class="collapse-header">{{ sitem.name }}</h6>{% endif %}
-            {% for subitem in sitem.items %}
-                <a class="collapse-item" href="{{ subitem.route }}">{{ subitem.name }}</a>
-            {% endfor %}
-        {% endfor %}
-        </div>
-        </div>
-    {% endif %}
-    </li>
-    {% endif %}
+	{% if item.divider is defined %}
+		<!-- Divider -->
+		<hr class="sidebar-divider">
+	{% elseif item.namediv is defined %}
+		<!-- Heading -->
+		<div class="sidebar-heading">
+			{{ item.namediv }}
+		</div>
+	{% else %}
+		<li class="nav-item">
+			<a class="nav-link {% if item.subitems is defined %}collapsed{% endif %}" href="{{ item.route }}" {% if item.subitems is defined %} data-toggle="collapse" data-target="#{{item.collapseName}}" aria-expanded="true" aria-controls="{{item.collapseName}}" {% endif %}>
+				<i class="fas fa-fw {{item.icon }}"></i>
+				<span>{{ item.name }}</span>
+			</a>
+			{% if item.subitems is defined %}
+				<div id="{{ item.collapseName }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						{% for sitem in item.subitems %}
+							{% if sitem.name is defined %}
+								<h6 class="collapse-header">{{ sitem.name }}</h6>
+							{% endif %}
+							{% for subitem in sitem.items %}
+								<a class="collapse-item" href="{{ subitem.route }}">{{ subitem.name }}</a>
+							{% endfor %}
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
+		</li>
+	{% endif %}
 {% endfor %}
