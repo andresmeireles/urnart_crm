@@ -21,7 +21,12 @@
 		<tbody>
 			{% for order in orders %}
 				<tr>
-					<td>{{ order.orderId.id }}</td>
+					<td>
+						<a href="javascript:;" class="" data-fancybox data-src="#viewManualOrder{{order.orderId.id}}">
+							{{ order.orderId.id }}
+						</a>
+					</td>
+					{% include "order/pages/viewManualOrder.html.twig" with {'order': order.orderId} %}
 					<td>{{ order.orderId.customerName }}</td>
 					<td class="text-center">{{ order.getFormatedPredictionDate }}</td>
 					<td class="text-center">
