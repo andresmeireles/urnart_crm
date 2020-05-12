@@ -47,7 +47,7 @@ class PredictionController extends AbstractController
         $data = $request->request->all();
         $itemId = $data['itemId'];
         $predictionDate = $data['predictionDate'];
-        $response = $model->setOrderPredictionDate($itemId, new \DateTime($predictionDate));
+        $response = $model->setOrderPredictionDate((int) $itemId, new \DateTime($predictionDate));
         $this->addFlash($response->getType(), $response->getMessage());
 
         return $this->redirectToRoute('prediction_order');
