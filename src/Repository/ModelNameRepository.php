@@ -4,7 +4,8 @@ namespace App\Repository;
 
 use App\Entity\ModelName;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+// use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 /**
  * @method ModelName|null find($id, $lockMode = null, $lockVersion = null)
  * @method ModelName|null findOneBy(array $criteria, array $orderBy = null)

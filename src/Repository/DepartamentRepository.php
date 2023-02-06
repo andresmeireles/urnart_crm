@@ -4,7 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Departament;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+// use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Departament|null find($id, $lockMode = null, $lockVersion = null)

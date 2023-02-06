@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Expenses;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+// use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
+
 /**
  * @method Expenses|null find($id, $lockMode = null, $lockVersion = null)
  * @method Expenses|null findOneBy(array $criteria, array $orderBy = null)

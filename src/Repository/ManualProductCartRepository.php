@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\ManualProductCart;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+// use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
+
 /**
  * @method ManualProductCart|null find($id, $lockMode = null, $lockVersion = null)
  * @method ManualProductCart|null findOneBy(array $criteria, array $orderBy = null)

@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\ProductInventory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+// use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
+
 /**
  * @method ProductInventory|null find($id, $lockMode = null, $lockVersion = null)
  * @method ProductInventory|null findOneBy(array $criteria, array $orderBy = null)

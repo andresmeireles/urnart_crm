@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Boleto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+// use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
+
 /**
  * @method Boleto|null find($id, $lockMode = null, $lockVersion = null)
  * @method Boleto|null findOneBy(array $criteria, array $orderBy = null)
