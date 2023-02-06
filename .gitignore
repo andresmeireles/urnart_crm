@@ -1,49 +1,18 @@
-###> symfony/framework-bundle ###
-.env
-/public/bundles/
-/public/reportBuilder/
-/var/
-/vendor/
-/.phpintel
-/.vscode
-/.idea
-/public/form/*
-###< symfony/framework-bundle ###
-
-###> symfony/webpack-encore-pack ###
-/node_modules/
-/public/build/
-/public/report.pdf
-npm-debug.log
-yarn-error.log
-###< symfony/webpack-encore-pack ###
-/nbproject/private/
-###> squizlabs/php_codesniffer ###
-/.phpcs-cache
-/phpcs.xml
-###< squizlabs/php_codesniffer ###
-
-###> friendsofphp/php-cs-fixer ###
-/.php_cs
-/.php_cs.cache
-
 /node_modules
-###< friendsofphp/php-cs-fixer ###
-
-###> symfony/webpack-encore-bundle ###
-/node_modules/
-/public/build/
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
 npm-debug.log
 yarn-error.log
-###< symfony/webpack-encore-bundle ###
-
-###> symfony/phpunit-bridge ###
-.phpunit
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-tags
-
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###
+/.fleet
+/.idea
+/.vscode

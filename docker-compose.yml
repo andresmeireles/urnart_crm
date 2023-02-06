@@ -3,31 +3,6 @@
 ###############################################################################
 version: "3.1"
 services:
-        
-    # blackfire_agent:
-    #   image: blackfire/blackfire
-    #   restart: always
-    #   environment:
-    #     BLACKFIRE_SERVER_ID: 390e6f77-417b-414b-9832-b509b4812357
-    #     BLACKFIRE_SERVER_TOKEN: 84dfb38b2c664a83e5a3a43eb143942a7395949a0a781350835aa7748e6b74da 
-    #     BLACKFIRE_CLIENT_ID: 3494667e-3845-4922-aa53-1d777215b27f
-    #     BLACKFIRE_CLIENT_TOKEN: 70daf1f2a5c9d29b4b1aaad35c91d641c07e4c2cdf26943cce4e7c7fc470ea0b
-
-    # redis:
-    #   image: redis:alpine
-    #   container_name: sa-redis
-
-    mongo:
-      image: mongo
-      container_name: sa-mongo
-      restart: always
-      environment:
-        - MONGO_INITDB_ROOT_USERNAME=root
-        - MONGO_INITDB_ROOT_PASSWORD=dev
-      working_dir: /application
-      volumes:
-        - .:/application
-
     mariadb:
       image: mariadb:10.4
       container_name: sa-mariadb
@@ -42,10 +17,6 @@ services:
       ports:
         - "8003:3306"
 
-    elasticsearch:
-      image: elasticsearch:6.5.4
-      container_name: sa-elasticsearch
-
     webserver:
       image: nginx:alpine
       container_name: sa-webserver
@@ -57,13 +28,10 @@ services:
        - "8000:80"
 
     php-fpm:
-      build: phpdocker/php-fpm
-      container_name: sa-php-fpm
-      working_dir: /application
-      links:
-        - mongo:mongo
-      volumes:
-        - .:/application
-        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
-        - ./phpdocker/php-fpm/zz-blackfire.ini:/usr/local/etc/php/7.4/fpm/conf.d/zz-blackfire.ini
+        build: phpdocker/php-fpm
+        container_name: ucrm-php
+        working_dir: /application
+        volumes:
+            - '.:/application'
+            - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.2/fpm/conf.d/99-overrides.ini'
 

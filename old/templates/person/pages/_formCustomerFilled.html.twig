@@ -1,0 +1,180 @@
+<div id="view-customer{{ person.getId }}" class="col-md-11 py-4 d-none">
+    <div class="card">
+        <div class="card-header text-center">
+            <span style="font-size: 25px">Visualizar {{ person.razaoSocial }}</span>
+        </div>
+        <div class="card-body">
+            <fieldset class="p-1 border border-light my-1">
+                <legend class="bg-light">
+                    &nbsp;Informações da Empresa
+                </legend>
+                <div class="px-1">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="razaoSocial" class="required">Razão Social</label>
+                            <p class="h3">{{ person.razaoSocial }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="firstName">Nome Fantasia</label>
+                            <p class="h3">{{ person.nomeFantasia }}</p>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="p-1 border border-light my-1">
+                <legend class="bg-light">&nbsp;Informações fiscais</legend>
+                <div class="px-1">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="firstName">CNPJ</label>
+                            <p class="h4 cnpj-mask">{{ person.cnpj }}</p>
+                        </div>
+                        <div class="form-inline">
+                            <label for="situcaoCadastral">Situação Cadastral</label>
+                            <div class="input-group mx-1">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="radio" class="form-check" name="customer[situacaoCadastral]"
+                                               id="contribuente" value="1" {{ person.situacaoCadastral == 1 ? 'checked' : '' }} disabled>
+                                    </div>
+                                </div>
+                                <div type="text" class="form-control">contribuente</div>
+                            </div>
+                            <div class="input-group mx-1">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="radio" class="form-check" name="customer[situacaoCadastral]"
+                                               id="contribuente" value="2" {{ person.situacaoCadastral == 2 ? 'checked' : '' }} disabled>
+                                    </div>
+                                </div>
+                                <div type="text" class="form-control">não contribuente</div>
+                            </div>
+                            <div class="input-group mx-1">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="radio" class="form-check"
+                                               id="contribuente" value="3" {{ person.situacaoCadastral == 3 ? 'checked' : '' }} disabled>
+                                    </div>
+                                </div>
+                                <div type="text" class="form-control">Isento</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="firstName">Inscrição Estadual</label>
+                            <p class="h4">{{ person.inscricaoEstadual }}</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="birthData">
+                                <small>Data de Fundação</small>
+                            </label>
+                            <p class="h4">{{ person.dataDeFundacao }}</p>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="p-1 my-1 border border-light">
+                <legend class="bg-light">
+                    &nbsp;Informações de Proprietários
+                    <span class="btn btn-primary btn-sm float-right m-1"><i class="fas fa-fw fa-plus"></i></span>
+                </legend>
+                <div class="px-1">
+                    <div class="row">
+                        {% set pf = person.getProprietarioPrincipal %}
+                        <div class="form-group col-md-6">
+                            <label for="firstName" class="required">Primeiro Nome</label>
+                            <p class="h4">{{ pf.getFirstName }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="firstName">Ultimo Nome</label>
+                            <p class="h4">{{ pf.getLastName }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="firstName">Cpf</label>
+                            <p class="h4">{{ pf.cpf }}</p>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="firstName">RG (Registro Geral)</label>
+                            <p class="h4">{{ pf.rg }}</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="birthData">
+                                <small>Data de Nascimento</small>
+                            </label>
+                            <p class="h4">{{ pf.getBirthDate }}</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="firstName">Genero</label>
+                            <p class="h4">{{ pf.genre == 'm' ? 'Masculino' : '' }}{{ pf.genre == 'f' ? 'Feminino' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="row p-2">
+                <fieldset class="p-1 my-1 border border-light col-md-8">
+                    <legend class="bg-light">&nbsp;Endereço</legend>
+                    <div class="row">
+                        <div class="form-group col-md-5">
+                            <label for="road">Rua</label>
+                            <p class="h4">{{ pf.address.road }}</p>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="road">Bairro</label>
+                            <p class="h4">{{ pf.address.neighborhood }}</p>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="road">Numero</label>
+                            <p class="h4">{{ pf.address.number }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="zipcode">CEP</label>
+                            <p class="h4">{{ pf.address.zipcode }}</p>
+                        </div>
+                        <div class="form-group col">
+                            <label for="estado">Estado</label>
+                            <p class="h4">{{ person.getEstado }}</p>
+                        </div>
+                        <div class="form-group col">
+                            <label for="municipio">Municipio</label>
+                            <p class="h4">{{ person.getMunicipio }}</p>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="p-1 my-1 border border-light col-md-4">
+                    <legend class="bg-light">&nbsp;Contato</legend>
+                    <label for="numeber">Telefone</label>
+                    <div class="form-inline my-1" cloneableField>
+                        <div clone-area>
+                            <div clone-field>
+                                {% for phones in pf.phones %}
+                                    <p class="h4 phone-with-ddd-br">{{ phones.number == 0 ? '' : phones.number }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <label for="numeber">Email</label>
+                    <div class="form-inline my-1" cloneableField>
+                        <div clone-area>
+                            <div clone-field>
+                                {% for email in pf.emails  %}
+                                    <p class="h4">{{ email.email }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="card-footer text-muted text-center">
+            <!-- <input type="submit" class="btn btn-secondary w-50" send="/person/add/person" target="customer-form" value="Adicionar"> -->
+            <input type="submit" class="btn btn-secondary w-50" target="customer-form" value="Adicionar">
+        </div>
+    </div>
+</div>

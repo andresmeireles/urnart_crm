@@ -1,0 +1,90 @@
+<?php //%255B92dc686eaecebef555897d0c73ebb6db%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Query\\ParserResult'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ParserResult')),
+        clone ($p['Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\Exec\\SingleSelectExecutor')),
+        clone ($p['Doctrine\\ORM\\Query\\ResultSetMapping'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Query\\ResultSetMapping')),
+    ],
+    null,
+    [
+        'Doctrine\\ORM\\Query\\ParserResult' => [
+            '_sqlExecutor' => [
+                $o[1],
+            ],
+            '_resultSetMapping' => [
+                $o[2],
+            ],
+        ],
+        'Doctrine\\ORM\\Query\\Exec\\AbstractSqlExecutor' => [
+            '_sqlStatements' => [
+                1 => 'SELECT b0_.active AS active_0, b0_.create_date AS create_date_1, b0_.id AS id_2, b0_.boleto_customer_owner AS boleto_customer_owner_3, b0_.boleto_number AS boleto_number_4, b0_.boleto_status AS boleto_status_5, b0_.boleto_payment_date AS boleto_payment_date_6, b0_.boleto_value AS boleto_value_7, b0_.boleto_installment AS boleto_installment_8, b0_.boleto_vencimento AS boleto_vencimento_9, b0_.boleto_provisionamento_date AS boleto_provisionamento_date_10, b0_.boleto_por_conta_status AS boleto_por_conta_status_11, b0_.last_update AS last_update_12 FROM boleto b0_ WHERE b0_.boleto_vencimento < \'2023-02-06 %\' AND b0_.boleto_status <> 1',
+            ],
+        ],
+        'stdClass' => [
+            'aliasMap' => [
+                2 => [
+                    'u' => 'App\\Entity\\Boleto',
+                ],
+            ],
+            'fieldMappings' => [
+                2 => [
+                    'active_0' => 'active',
+                    'create_date_1' => 'createDate',
+                    'id_2' => 'id',
+                    'boleto_customer_owner_3' => 'boletoCustomerOwner',
+                    'boleto_number_4' => 'boletoNumber',
+                    'boleto_status_5' => 'boletoStatus',
+                    'boleto_payment_date_6' => 'boletoPaymentDate',
+                    'boleto_value_7' => 'boletoValue',
+                    'boleto_installment_8' => 'boletoInstallment',
+                    'boleto_vencimento_9' => 'boletoVencimento',
+                    'boleto_provisionamento_date_10' => 'boletoProvisionamentoDate',
+                    'boleto_por_conta_status_11' => 'boletoPorContaStatus',
+                    'last_update_12' => 'lastUpdate',
+                ],
+            ],
+            'entityMappings' => [
+                2 => [
+                    'u' => null,
+                ],
+            ],
+            'columnOwnerMap' => [
+                2 => [
+                    'active_0' => 'u',
+                    'create_date_1' => 'u',
+                    'id_2' => 'u',
+                    'boleto_customer_owner_3' => 'u',
+                    'boleto_number_4' => 'u',
+                    'boleto_status_5' => 'u',
+                    'boleto_payment_date_6' => 'u',
+                    'boleto_value_7' => 'u',
+                    'boleto_installment_8' => 'u',
+                    'boleto_vencimento_9' => 'u',
+                    'boleto_provisionamento_date_10' => 'u',
+                    'boleto_por_conta_status_11' => 'u',
+                    'last_update_12' => 'u',
+                ],
+            ],
+            'declaringClasses' => [
+                2 => [
+                    'active_0' => 'App\\Entity\\Boleto',
+                    'create_date_1' => 'App\\Entity\\Boleto',
+                    'id_2' => 'App\\Entity\\Boleto',
+                    'boleto_customer_owner_3' => 'App\\Entity\\Boleto',
+                    'boleto_number_4' => 'App\\Entity\\Boleto',
+                    'boleto_status_5' => 'App\\Entity\\Boleto',
+                    'boleto_payment_date_6' => 'App\\Entity\\Boleto',
+                    'boleto_value_7' => 'App\\Entity\\Boleto',
+                    'boleto_installment_8' => 'App\\Entity\\Boleto',
+                    'boleto_vencimento_9' => 'App\\Entity\\Boleto',
+                    'boleto_provisionamento_date_10' => 'App\\Entity\\Boleto',
+                    'boleto_por_conta_status_11' => 'App\\Entity\\Boleto',
+                    'last_update_12' => 'App\\Entity\\Boleto',
+                ],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

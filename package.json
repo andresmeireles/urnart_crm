@@ -1,44 +1,14 @@
 {
-    "devDependencies": {
-        "@symfony/webpack-encore": "^0.28.3",
-        "node-sass": "^4.14.1",
-        "popper.js": "^1.16.1",
-        "sass-loader": "^7.3.1"
-    },
-    "license": "UNLICENSED",
     "private": true,
     "scripts": {
-        "dev-server": "encore dev-server",
-        "dev": "encore dev",
-        "watch": "encore dev --watch",
-        "build": "encore production"
+        "dev": "vite",
+        "build": "vite build"
     },
-    "dependencies": {
-        "@chenfengyuan/datepicker": "^1.0.9",
-        "@fancyapps/fancybox": "^3.3.5",
-        "@fortawesome/fontawesome-free": "^5.13.0",
-        "@tarekraafat/autocomplete.js": "^5.3.0",
-        "axios": "^0.18.0",
-        "balloon-css": "^0.5.0",
-        "bootstrap": "^4.4.1",
-        "chart.js": "^2.9.3",
-        "chartjs-plugin-labels": "^1.1.0",
-        "datatables.net-bs4": "^1.10.20",
-        "devbridge-autocomplete": "^1.4.11",
-        "filepond": "^3.1.1",
-        "imask": "^3.4.0",
-        "jquery": "^3.5.1",
-        "jquery-mask-plugin": "^1.14.16",
-        "jquery.easing": "^1.4.1",
-        "modernizr": "^3.11.1",
-        "moment": "^2.25.3",
-        "noty": "^3.2.0-beta",
-        "npm": "^6.14.5",
-        "numeral": "^2.0.6",
-        "pickadate": "^3.5.6",
-        "puppeteer": "^1.20.0",
-        "rot": "^0.1.0",
-        "selectize": "^0.12.6",
-        "vex-js": "^4.1.0"
+    "devDependencies": {
+        "axios": "^1.1.2",
+        "laravel-vite-plugin": "^0.7.2",
+        "lodash": "^4.17.19",
+        "postcss": "^8.1.14",
+        "vite": "^4.0.0"
     }
 }
