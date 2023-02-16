@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Actions\Product;
+
+use App\Models\Model;
+use App\Models\Color;
+use App\Models\Product;
+use App\Models\Spec;
+use App\Models\Type;
+use App\Models\User;
+
+class Create
+{
+    public function __construct(
+        private readonly User $user
+    )
+    {
+    }
+
+    public function create(Model $model, Type $type, Color $color, float $price, string $height, ?Spec $spec = null): Product
+    {
+        $prod = new Product();
+        $prod->model_id = $model->id;
+        $prod->type_id = $type->id;
+        $prod->color_id = $color->id;
+        $prod->spec_id = $spec?->id;
+        $prod->price = $price;
+        $prod->height = $height;
+        $prod->created_by = $this->user->id;
+        $prod->save();
+        return $prod;
+    }
+}
