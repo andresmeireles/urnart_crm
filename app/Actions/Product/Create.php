@@ -15,12 +15,17 @@ class Create
 {
     public function __construct(
         private readonly User $user
-    )
-    {
+    ) {
     }
 
-    public function create(Model $model, Type $type, Color $color, float $price, string $height, ?Spec $spec = null): Product
-    {
+    public function create(
+        Model $model,
+        Type $type,
+        Color $color,
+        float $price,
+        string $height,
+        ?Spec $spec = null
+    ): Product {
         $prod = new Product();
         $prod->model_id = $model->id;
         $prod->type_id = $type->id;

@@ -20,4 +20,12 @@ class Spec extends Model
     {
         return $this->hasOne(User::class);
     }
+
+    public function createdBy(User $user): void
+    {
+        if ($this->created_by !== null) {
+            throw new \Exception('already filled param');
+        }
+        $this->created_by = $user->id;
+    }
 }
