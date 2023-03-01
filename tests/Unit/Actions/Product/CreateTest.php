@@ -37,4 +37,18 @@ class CreateTest extends TestCase
 
         self::assertIsObject($result);
     }
+
+    public function testCreateWithNoRegisteredModel(): void
+    {
+        $this->expectException(\TypeError::class);
+        $result = $this->action->create(
+            model: Model::find(1),
+            type: Type::factory()->create(),
+            color: Color::factory()->create(),
+            price: 206.00,
+            height: '190'
+        );
+
+        self::assertIsObject($result);
+    }
 }
