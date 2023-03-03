@@ -4,34 +4,33 @@
 version: "3.1"
 services:
     mariadb:
-      image: mariadb:10.4
-      container_name: sa-mariadb
-      working_dir: /application
-      volumes:
-        - .:/application
-      environment:
-        - MYSQL_ROOT_PASSWORD=devtst
-        - MYSQL_DATABASE=dev
-        - MYSQL_USER=user
-        - MYSQL_PASSWORD=usertst
-      ports:
-        - "8003:3306"
+        image: mariadb:10.4
+        container_name: sa-mariadb
+        working_dir: /application
+        volumes:
+            - .:/application
+        environment:
+            - MYSQL_ROOT_PASSWORD=devtst
+            - MYSQL_DATABASE=dev
+            - MYSQL_USER=user
+            - MYSQL_PASSWORD=usertst
+        ports:
+            - "8003:3306"
 
     webserver:
-      image: nginx:alpine
-      container_name: sa-webserver
-      working_dir: /application
-      volumes:
-          - .:/application
-          - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      ports:
-       - "8000:80"
+        image: nginx:alpine
+        container_name: sa-webserver
+        working_dir: /application
+        volumes:
+            - .:/application
+            - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - "8000:80"
 
     php-fpm:
         build: phpdocker/php-fpm
         container_name: ucrm-php
         working_dir: /application
         volumes:
-            - '.:/application'
-            - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.2/fpm/conf.d/99-overrides.ini'
-
+            - ".:/application"
+            - "./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.2/fpm/conf.d/99-overrides.ini"
