@@ -17,15 +17,15 @@ class Create
         User $user,
         Model $model,
         Type $type,
-        Color $color,
         float $price,
         string $height,
+        ?Color $color,
         ?Spec $spec = null
     ): Product {
         $prod = new Product();
         $prod->model_id = $model->id;
         $prod->type_id = $type->id;
-        $prod->color_id = $color->id;
+        $prod->color_id = $color?->id;
         $prod->spec_id = $spec?->id;
         $prod->price = $price;
         $prod->height = $height;

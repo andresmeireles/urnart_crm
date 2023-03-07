@@ -1,1 +1,1 @@
-getColor: [Color!]! @guard
+colors: [Color!]! @all @guard

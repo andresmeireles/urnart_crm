@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Mutators;
+namespace App\GraphQL\Mutations;
 
 use App\Actions\Product\CreateSpec;
+use App\Models\Spec;
 use Illuminate\Support\Facades\Auth;
 
 class AddSpec
@@ -17,8 +18,8 @@ class AddSpec
      * @param  null  $_
      * @param  array{name: string}  $args
      */
-    public function addColor($_, array $args): void
+    public function __invoke($_, array $args): Spec
     {
-        $this->createColor->create($args['name'], Auth::user());
+        return $this->createColor->create($args['name'], Auth::user());
     }
 }

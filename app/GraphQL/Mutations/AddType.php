@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Mutators;
+namespace App\GraphQL\Mutations;
 
 use App\Actions\Product\CreateType;
+use App\Models\Type;
 use Illuminate\Support\Facades\Auth;
 
 class AddType
@@ -17,8 +18,8 @@ class AddType
      * @param  null  $_
      * @param  array{name: string}  $args
      */
-    public function addColor($_, array $args): void
+    public function __invoke($_, array $args): Type
     {
-        $this->createColor->create($args['name'], Auth::user());
+        return $this->createColor->create($args['name'], Auth::user());
     }
 }

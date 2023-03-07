@@ -13,7 +13,8 @@ class Model extends LaravelModel
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        'created_by'
     ];
 
     public function user(): HasOne

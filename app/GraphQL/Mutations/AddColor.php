@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Mutators;
+namespace App\GraphQL\Mutations;
 
 use App\Actions\Product\CreateColor;
+use App\Models\Color;
 use Illuminate\Support\Facades\Auth;
 
-class AddColor
+final class AddColor
 {
     public function __construct(private readonly CreateColor $createColor)
     {
@@ -17,8 +18,8 @@ class AddColor
      * @param  null  $_
      * @param  array{name: string}  $args
      */
-    public function addColor($_, array $args): void
+    public function __invoke($_, array $args): Color
     {
-        $this->createColor->create($args['name'], Auth::user());
+        return $this->createColor->create($args['name'], Auth::user());
     }
 }
