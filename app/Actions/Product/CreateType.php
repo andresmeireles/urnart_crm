@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Actions\Product;
 
+use App\Actions\Api\Product\CreateInterface;
 use App\Models\Type;
 use App\Models\User;
 
-class CreateType
+/**
+ * @implements CreateInterface<Type>
+ */
+class CreateType implements CreateInterface
 {
-    public function __construct(private readonly User $user)
-    {
-    }
-
-    public function create(string $name): Type
+    public function create(string $name, User $user): Type
     {
         $type = new Type();
         $type->name = $name;
-        $type->createdBy($this->user);
+        $type->createdBy($user);
         $type->save();
         return $type;
     }

@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Actions\Product;
 
+use App\Actions\Api\Product\CreateInterface;
 use App\Models\Spec;
 use App\Models\User;
 
-class CreateSpec
+/**
+ * @implements CreateInterface<Spec>
+ */
+class CreateSpec implements CreateInterface
 {
-    public function __construct(private readonly User $user)
-    {
-    }
-
-    public function create(string $name): Spec
+    public function create(string $name, User $user): Spec
     {
         $spec = new Spec();
         $spec->name = $name;
-        $spec->createdBy($this->user);
+        $spec->createdBy($user);
         $spec->save();
         return $spec;
     }

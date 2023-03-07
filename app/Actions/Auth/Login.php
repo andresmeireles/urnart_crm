@@ -6,6 +6,7 @@ namespace App\Actions\Auth;
 
 use App\Actions\Api\Auth\LoginInterface;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 
 class Login implements LoginInterface
@@ -19,6 +20,8 @@ class Login implements LoginInterface
         if (!Hash::check($password, $user->password)) {
             throw new \Exception('user not found');
         }
-        return $user->createToken($user->name, expiresAt: $remember ? null : now()->addHour(2))->plainTextToken;
+        return $user
+            ->createToken($user->name, expiresAt: $remember ? null : now()->addHours(2))
+            ->plainTextToken;
     }
 }

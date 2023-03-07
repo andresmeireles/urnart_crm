@@ -1,7 +1,6 @@
+"Get login token"
 login(
         name: String!
         password: String!
         remember: Boolean! = false
     ): String!
-
-getUser: User! @guard

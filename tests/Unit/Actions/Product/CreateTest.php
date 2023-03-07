@@ -17,17 +17,19 @@ class CreateTest extends TestCase
     use RefreshDatabase;
 
     private Create $action;
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $user = User::factory()->create();
-        $this->action = new Create($user);
+        $this->user = User::factory()->create();
+        $this->action = new Create();
     }
 
     public function testCreate(): void
     {
         $result = $this->action->create(
+            user: $this->user,
             model: Model::factory()->create(),
             type: Type::factory()->create(),
             color: Color::factory()->create(),
@@ -42,6 +44,7 @@ class CreateTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $result = $this->action->create(
+            user: $this->user,
             model: Model::find(1),
             type: Type::factory()->create(),
             color: Color::factory()->create(),

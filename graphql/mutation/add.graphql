@@ -1,0 +1,7 @@
+addType(name: String!): Type @create @guard
+
+addModel(name: String!): Model @create @guard
+
+addColor(name: String!): Color @create @guard
+
+addSpec(name: String!): Spec @create @guard

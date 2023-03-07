@@ -15,23 +15,24 @@ class CreateTypeTest extends TestCase
     use RefreshDatabase;
 
     private CreateType $action;
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $user = User::factory()->create();
+        $this->user = User::factory()->create();
         $this->action = new CreateType($user);
     }
 
     public function testCreate(): void
     {
-        $result = $this->action->create('blue');
+        $result = $this->action->create('blue', $this->user);
         self::assertIsObject($result);
     }
 
     public function testId(): void
     {
-        $result = $this->action->create('blue');
+        $result = $this->action->create('blue', $this->user);
         self::assertSame(1, $result->id);
     }
 }

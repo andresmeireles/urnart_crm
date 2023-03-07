@@ -13,12 +13,8 @@ use App\Models\User;
 
 class Create
 {
-    public function __construct(
-        private readonly User $user
-    ) {
-    }
-
     public function create(
+        User $user,
         Model $model,
         Type $type,
         Color $color,
@@ -33,7 +29,7 @@ class Create
         $prod->spec_id = $spec?->id;
         $prod->price = $price;
         $prod->height = $height;
-        $prod->created_by = $this->user->id;
+        $prod->created_by = $user->id;
         $prod->save();
         return $prod;
     }

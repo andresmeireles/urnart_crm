@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Actions\Product;
 
+use App\Actions\Api\Product\CreateInterface;
 use App\Models\Color;
 use App\Models\User;
 
-class CreateColor
+/**
+ * @implements CreateInterface<Color>
+ */
+class CreateColor implements CreateInterface
 {
-    public function __construct(private readonly User $user)
-    {
-    }
-
-    public function create(string $name): Color
+    public function create(string $name, User $user): Color
     {
         $color = new Color();
         $color->name = $name;
-        $color->createdBy($this->user);
+        $color->createdBy($user);
         $color->save();
         return $color;
     }

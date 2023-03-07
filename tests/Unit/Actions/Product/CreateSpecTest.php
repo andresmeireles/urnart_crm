@@ -15,23 +15,24 @@ class CreateSpecTest extends TestCase
     use RefreshDatabase;
 
     private CreateSpec $action;
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $user = User::factory()->create();
-        $this->action = new CreateSpec($user);
+        $this->user = User::factory()->create();
+        $this->action = new CreateSpec();
     }
 
     public function testCreate(): void
     {
-        $result = $this->action->create('blue');
+        $result = $this->action->create('blue', $this->user);
         self::assertIsObject($result);
     }
 
     public function testId(): void
     {
-        $result = $this->action->create('blue');
+        $result = $this->action->create('blue', $this->user);
         self::assertSame(1, $result->id);
     }
 }

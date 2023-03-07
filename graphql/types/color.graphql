@@ -1,0 +1,15 @@
+type Color {
+    id: ID!
+
+    "Non-unique name."
+    name: String!
+
+    "When the email was verified."
+    created_by: User!
+
+    "When the account was created."
+    created_at: DateTime!
+
+    "When the account was last updated."
+    updated_at: DateTime!
+}
