@@ -1,0 +1,24 @@
+type Product {
+    id: ID!
+
+    model: Model!
+
+    type: Type
+
+    height: String!
+
+    price: Float!
+
+    spec: Spec
+
+    color: Color
+
+    "When the email was verified."
+    created_by: User!
+
+    "When the account was created."
+    created_at: DateTime!
+
+    "When the account was last updated."
+    updated_at: DateTime!
+}

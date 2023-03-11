@@ -30,6 +30,17 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('specs', function (Blueprint $table) {
+            $table->string('name')->change();
+        });
+        Schema::table('types', function (Blueprint $table) {
+            $table->string('name')->change();
+        });
+        Schema::table('models', function (Blueprint $table) {
+            $table->string('name')->change();
+        });
+        Schema::table('colors', function (Blueprint $table) {
+            $table->string('name')->change();
+        });
     }
 };

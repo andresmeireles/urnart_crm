@@ -25,22 +25,22 @@ class Product extends Model
 
     public function model(): HasOne
     {
-        return $this->hasOne(ProductModel::class);
+        return $this->hasOne(ProductModel::class, 'id', 'model_id');
     }
 
     public function type(): HasOne
     {
-        return $this->hasOne(Type::class);
+        return $this->hasOne(Type::class, 'id', 'type_id');
     }
 
     public function color(): HasOne
     {
-        return $this->hasOne(Color::class);
+        return $this->hasOne(Color::class, 'id', 'color_id');
     }
 
     public function spec(): HasOne
     {
-        return $this->hasOne(Spec::class);
+        return $this->hasOne(Spec::class, 'id', 'spec_id');
     }
 
     public function user(): HasOne

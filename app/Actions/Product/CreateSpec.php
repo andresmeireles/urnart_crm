@@ -16,7 +16,7 @@ class CreateSpec implements CreateInterface
     public function create(string $name, User $user): Spec
     {
         $spec = new Spec();
-        $spec->name = $name;
+        $spec->name = strtoupper($name);
         $spec->createdBy($user);
         $spec->save();
         return $spec;

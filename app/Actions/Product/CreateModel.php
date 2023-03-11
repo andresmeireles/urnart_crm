@@ -16,7 +16,7 @@ class CreateModel implements CreateInterface
     public function create(string $name, User $user): Model
     {
         $model = new Model();
-        $model->name = $name;
+        $model->name = strtoupper($name);
         $model->createdBy($user);
         $model->save();
         return $model;

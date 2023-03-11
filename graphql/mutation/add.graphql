@@ -5,3 +5,12 @@ addModel(name: String!): Model! @guard
 addColor(name: String!): Color! @guard
 
 addSpec(name: String!): Spec! @guard
+
+addProduct(
+    model: Int!
+    height: String!
+    price: Float!
+    type: Int
+    color: Int
+    spec: Int
+): Product! @guard

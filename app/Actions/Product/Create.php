@@ -16,15 +16,15 @@ class Create
     public function create(
         User $user,
         Model $model,
-        Type $type,
         float $price,
         string $height,
+        ?Type $type,
         ?Color $color,
         ?Spec $spec = null
     ): Product {
         $prod = new Product();
         $prod->model_id = $model->id;
-        $prod->type_id = $type->id;
+        $prod->type_id = $type?->id;
         $prod->color_id = $color?->id;
         $prod->spec_id = $spec?->id;
         $prod->price = $price;

@@ -8,9 +8,9 @@ use App\Actions\Product\Create;
 use App\Exceptions\GraphQL\NotFoundException;
 use App\Models\Color;
 use App\Models\Model;
+use App\Models\Product;
 use App\Models\Spec;
 use App\Models\Type;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 
 class AddProduct
@@ -21,23 +21,23 @@ class AddProduct
 
     /**
      * @param  null  $_
-     * @param  array{model: int, type: int, spec?: int, color?: int, price: float, height: string}  $args
+     * @param  array{model: int, type?: int, spec?: int, color?: int, price: float, height: string}  $args
      */
-    public function __invoke($_, array $args): void
+    public function __invoke($_, array $args): Product
     {
         $model = Model::find($args['model']);
-        $type = Type::find($args['type']);
-        if ($model === null || $type === null) {
+        if ($model === null) {
             throw new NotFoundException('model or type not founded', category: 'model or type');
         }
-        $color = Color::find($args['color']) ?? null;
-        $spec = Spec::find($args['spec']) ?? null;
-        $this->createColor->create(
+        $type = Type::find($args['type'] ?? 0);
+        $color = Color::find($args['color'] ?? 0);
+        $spec = Spec::find($args['spec'] ?? 0);
+        return $this->createColor->create(
             Auth::user(),
             $model,
-            $type,
             $args['price'],
             $args['height'],
+            $type,
             $color,
             $spec,
         );

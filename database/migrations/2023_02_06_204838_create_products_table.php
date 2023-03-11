@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('model_id')->constrained();
-            $table->foreignId('type_id')->constrained();
+            $table->foreignId('type_id')->nullable()->constrained();
             $table->foreignId('spec_id')->nullable(true)->constrained();
             $table->foreignId('color_id')->nullable(true)->constrained();
             $table->string('height');

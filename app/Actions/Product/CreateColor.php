@@ -16,7 +16,7 @@ class CreateColor implements CreateInterface
     public function create(string $name, User $user): Color
     {
         $color = new Color();
-        $color->name = $name;
+        $color->name = strtoupper($name);
         $color->createdBy($user);
         $color->save();
         return $color;

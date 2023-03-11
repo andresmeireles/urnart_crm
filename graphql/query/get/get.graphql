@@ -3,3 +3,4 @@
 #import type.graphql
 #import spec.graphql
 #import user.graphql
+#import product.graphql
