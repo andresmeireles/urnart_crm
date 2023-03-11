@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions\Product;
 
 use App\Actions\Product\CreateColor;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -33,5 +34,13 @@ class CreateColorTest extends TestCase
     {
         $result = $this->action->create('blue', $this->user);
         self::assertSame(1, $result->id);
+    }
+
+    public function testRepeatedName(): void
+    {
+        $this->expectException(QueryException::class);
+        $this->action->create('blue', $this->user);
+        $this->action->create('blue', $this->user);
+        // self::assertSame(1, $result->id);
     }
 }
