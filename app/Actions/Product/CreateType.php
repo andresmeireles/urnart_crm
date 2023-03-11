@@ -16,7 +16,7 @@ class CreateType implements CreateInterface
     public function create(string $name, User $user): Type
     {
         $type = new Type();
-        $type->name = $name;
+        $type->name = strtoupper($name);
         $type->createdBy($user);
         $type->save();
         return $type;

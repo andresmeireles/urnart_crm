@@ -1,5 +1,7 @@
 <?php
 
+use App\GraphQL\SqlErrorFormatter;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -268,6 +270,7 @@ return [
     */
 
     'error_handlers' => [
+        SqlErrorFormatter::class,
         \Nuwave\Lighthouse\Execution\AuthenticationErrorHandler::class,
         \Nuwave\Lighthouse\Execution\AuthorizationErrorHandler::class,
         \Nuwave\Lighthouse\Execution\ValidationErrorHandler::class,

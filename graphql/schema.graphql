@@ -3,6 +3,10 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 
 "Indicates what fields are available at the top level of a query operation."
 type Query {
+    #import query/auth/auth.graphql
+}
+
+extend type Query {
     #import query/query.graphql
 }
 
