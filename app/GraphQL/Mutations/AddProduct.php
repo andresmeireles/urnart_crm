@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
-use App\Actions\Product\CreateProduct;
+use App\Actions\Api\Product\CreateProductInterface;
 use App\Exceptions\GraphQL\NotFoundException;
 use App\Models\Color;
 use App\Models\Model;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AddProduct
 {
-    public function __construct(private readonly CreateProduct $createColor)
+    public function __construct(private readonly CreateProductInterface $createColor)
     {
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Product;
 
+use App\Actions\Api\Product\CreateProductInterface;
 use App\Models\Model;
 use App\Models\Color;
 use App\Models\Product;
@@ -11,7 +12,7 @@ use App\Models\Spec;
 use App\Models\Type;
 use App\Models\User;
 
-class CreateProduct
+class CreateProduct implements CreateProductInterface
 {
     public function create(
         User $user,

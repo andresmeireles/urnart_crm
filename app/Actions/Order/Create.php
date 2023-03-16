@@ -6,7 +6,7 @@ namespace App\Actions\Order;
 
 class Create
 {
-    public function create(array $products,)
+    public function create(array $products)
     {
     }
 }

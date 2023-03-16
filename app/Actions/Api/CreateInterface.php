@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Api\Product;
+namespace App\Actions\Api;
 
 use App\Models\User;
 use Doctrine\DBAL\Query\QueryException;

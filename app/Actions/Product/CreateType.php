@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Product;
 
-use App\Actions\Api\Product\CreateInterface;
+use App\Actions\Api\CreateInterface;
 use App\Models\Type;
 use App\Models\User;
 
