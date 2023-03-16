@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Product;
 
-use App\Actions\Product\Create;
+use App\Actions\Product\CreateProduct;
 use App\Models\Color;
 use App\Models\Model;
 use App\Models\Type;
@@ -16,14 +16,14 @@ class CreateTest extends TestCase
 {
     use RefreshDatabase;
 
-    private Create $action;
+    private CreateProduct $action;
     private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->action = new Create();
+        $this->action = new CreateProduct();
     }
 
     public function testCreate(): void

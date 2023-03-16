@@ -11,7 +11,7 @@ use App\Models\Spec;
 use App\Models\Type;
 use App\Models\User;
 
-class Create
+class CreateProduct
 {
     public function create(
         User $user,

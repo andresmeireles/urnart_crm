@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
-use App\Actions\Product\Create;
+use App\Actions\Product\CreateProduct;
 use App\Exceptions\GraphQL\NotFoundException;
 use App\Models\Color;
 use App\Models\Model;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AddProduct
 {
-    public function __construct(private readonly Create $createColor)
+    public function __construct(private readonly CreateProduct $createColor)
     {
     }
 
@@ -33,13 +33,13 @@ class AddProduct
         $color = Color::find($args['color'] ?? 0);
         $spec = Spec::find($args['spec'] ?? 0);
         return $this->createColor->create(
-            Auth::user(),
-            $model,
-            $args['price'],
-            $args['height'],
-            $type,
-            $color,
-            $spec,
+            user: Auth::user(),
+            model: $model,
+            price: $args['price'],
+            height: $args['height'],
+            type: $type,
+            color: $color,
+            spec: $spec,
         );
     }
 }
