@@ -6,6 +6,10 @@ addColor(name: String!): Color! @guard
 
 addSpec(name: String!): Spec! @guard
 
+addDelivery(name: String!, is_paid: Boolean = true): Delivery @guard
+
+addPayment(name: String!, installmentable: Boolean = false): Payment @guard
+
 addProduct(
     model: Int!
     height: String!

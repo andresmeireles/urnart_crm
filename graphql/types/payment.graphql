@@ -1,0 +1,11 @@
+type Payment {
+    id: ID!
+
+    name: String!
+
+    installmentable: Boolean!
+
+    created_at: DateTime!
+
+    updated_at: DateTime!
+}

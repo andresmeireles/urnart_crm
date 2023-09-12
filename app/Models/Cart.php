@@ -17,4 +17,14 @@ class Cart extends Model
         'price',
         'order_id'
     ];
+
+    public static function create(int $productId, int $amount, float $price, int $orderId): self
+    {
+        $cart = new self();
+        $cart->product_id = $productId;
+        $cart->amount = $amount;
+        $cart->price = $price;
+        $cart->order_id = $orderId;
+        return $cart;
+    }
 }

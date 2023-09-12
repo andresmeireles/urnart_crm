@@ -23,7 +23,7 @@ class Order extends Model
         'delivery_id',
         'delivery_price',
         'port_name',
-        'deliver_name',
+        'deliverer',
         'status_id',
         'valid',
         'created_at'

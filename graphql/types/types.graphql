@@ -3,3 +3,5 @@
 #import type.graphql
 #import spec.graphql
 #import product.graphql
+#import payment.graphql
+#import delivery.graphql

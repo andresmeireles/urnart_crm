@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreignId('delivery_id')->constrained();
             $table->float('delivery_price')->default(0);
             $table->string('port_name')->nullable();
-            $table->string('deliver_name')->nullable();
+            $table->string('deliverer')->nullable();
             $table->foreignId('status_id')->constrained();
             $table->boolean('valid')->default(true);
             $table->timestamp('created_at');

@@ -1,0 +1,11 @@
+type Delivery {
+    id: ID!
+
+    name: String!
+
+    is_paid: Boolean!
+
+    created_at: DateTime!
+
+    updated_at: DateTime!
+}
